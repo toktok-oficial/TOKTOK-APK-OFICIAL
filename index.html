@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TokTok - Billetera Digital</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#0066FF">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="toktok" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        }
+        
+        .auth-card {
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 82, 204, 0.08);
+            background: white;
+            overflow: hidden;
+            border: 1px solid rgba(0, 102, 255, 0.1);
+        }
+        
+        .brand-gradient {
+            background: linear-gradient(90deg, #0066FF 0%, #00AAFF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(90deg, #0066FF 0%, #00AAFF 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 102, 255, 0.2);
+        }
+        
+        .input-field {
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .input-field:focus {
+            border-color: #0066FF;
+            box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+        }
+        
+        .tab-button {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .tab-button.active {
+            color: #0066FF;
+        }
+        
+        .tab-button.active:after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #0066FF 0%, #00AAFF 100%);
+            border-radius: 2px;
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes logoAnimation {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .animate-fade-in-up {
+            animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        
+        .animate-logo {
+            animation: logoAnimation 1s ease-out forwards;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #64748b;
+        }
+        
+        .password-toggle:hover {
+            color: #0066FF;
+        }
+        
+        .password-container {
+            position: relative;
+        }
+        
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transform: translateX(150%);
+            transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            max-width: 300px;
+        }
+        
+        .toast.show {
+            transform: translateX(0);
+        }
+        
+        .toast.success {
+            background: #10b981;
+            color: white;
+        }
+        
+        .toast.error {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .toast.warning {
+            background: #f59e0b;
+            color: white;
+        }
+        
+        .toast.info {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0066FF 0%, #00AAFF 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        
+        .splash-logo {
+            font-size: 3rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 2rem;
+        }
+        
+        .splash-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .forgot-password-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s ease;
+        }
+        
+        .forgot-password-btn:hover {
+            color: #0066FF;
+            transform: translateX(2px);
+        }
+
+        /* MODAL DE RECUPERACIÓN */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            display: none;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            padding: 24px 24px 16px;
+            border-bottom: 1px solid #e2e8f0;
+            position: relative;
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .modal-footer {
+            padding: 16px 24px 24px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #f1f5f9;
+            color: #64748b;
+        }
+
+        .close-modal:hover {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .step-indicator:before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #e2e8f0;
+            z-index: 1;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+
+        .step.active .step-number {
+            background: #0066FF;
+            border-color: #0066FF;
+            color: white;
+        }
+
+        .step-label {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .step.active .step-label {
+            color: #0066FF;
+        }
+
+        .step-content {
+            display: none;
+        }
+
+        .step-content.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #334155;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1.5px solid #e2e8f0;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #0066FF;
+            box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+        }
+
+        .select-department {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1.5px solid #e2e8f0;
+            background: white;
+        }
+
+        .terms-box {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 16px;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 20px;
+        }
+
+        .terms-text {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            margin-top: 4px;
+        }
+
+        .department-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .department-option {
+            padding: 12px 8px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 13px;
+            font-weight: 500;
+            color: #475569;
+        }
+
+        .department-option:hover {
+            border-color: #0066FF;
+            background: #f0f7ff;
+        }
+
+        .department-option.selected {
+            background: #0066FF;
+            color: white;
+            border-color: #0066FF;
+        }
+
+        .telegram-notice {
+            background: #0088cc;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 12px;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+        }
+
+        .confirmation-message {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .confirmation-icon {
+            width: 64px;
+            height: 64px;
+            background: #10b981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 28px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+    <!-- Splash Screen -->
+    <div id="splash-screen" class="splash-screen">
+        <div class="splash-logo animate-logo">TokTok</div>
+        <div class="splash-spinner"></div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div id="toast-container"></div>
+
+    <!-- Modal de Recuperación de Contraseña -->
+    <div id="password-recovery-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="text-2xl font-bold text-gray-800">Recuperación de Contraseña</h2>
+                <div class="close-modal" id="close-recovery-modal">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            
+            <div class="modal-body">
+                <div class="step-indicator">
+                    <div class="step active" data-step="1">
+                        <div class="step-number">1</div>
+                        <div class="step-label">Situación</div>
+                    </div>
+                    <div class="step" data-step="2">
+                        <div class="step-number">2</div>
+                        <div class="step-label">Términos</div>
+                    </div>
+                    <div class="step" data-step="3">
+                        <div class="step-number">3</div>
+                        <div class="step-label">Contacto</div>
+                    </div>
+                    <div class="step" data-step="4">
+                        <div class="step-number">4</div>
+                        <div class="step-label">Confirmación</div>
+                    </div>
+                </div>
+                
+                <!-- Paso 1: Descripción de la situación -->
+                <div id="step-1" class="step-content active">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Describe tu situación</h3>
+                    <p class="text-gray-600 mb-6 text-sm">Por favor, describe detalladamente lo que ocurrió con tu cuenta y por qué necesitas recuperar el acceso.</p>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Descripción de tu situación *</label>
+                        <textarea id="situation-description" class="form-control" rows="4" 
+                                  placeholder="Ej: Olvidé mi contraseña y no tengo acceso al correo de recuperación..." 
+                                  required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Correo electrónico de la cuenta *</label>
+                        <input type="email" id="recovery-email" class="form-control" 
+                               placeholder="ejemplo@gmail.com" required>
+                    </div>
+                    
+                    <div class="flex justify-end">
+                        <button id="next-to-step-2" class="btn-primary text-white py-3 px-6 rounded-lg font-medium">
+                            Siguiente
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Paso 2: Términos y condiciones -->
+                <div id="step-2" class="step-content">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Términos del proceso de recuperación</h3>
+                    
+                    <div class="terms-box">
+                        <div class="terms-text">
+                            <p><strong>Proceso de recuperación de cuenta:</strong></p>
+                            <ol class="list-decimal pl-5 mt-2 space-y-2">
+                                <li>Se evaluará tu situación mediante el mensaje proporcionado.</li>
+                                <li>Una vez aprobada la solicitud, se procederá a eliminar la cuenta existente asociada al correo electrónico proporcionado.</li>
+                                <li>Podrás crear una nueva cuenta utilizando el mismo correo electrónico.</li>
+                                <li>Durante la creación de la nueva cuenta, establecerás una nueva contraseña.</li>
+                                <li>Una vez creada la nueva cuenta, se transferirá automáticamente el saldo registrado anteriormente en la aplicación.</li>
+                                <li>Todo el proceso será monitoreado y asistido por nuestro equipo de soporte vía WhatsApp.</li>
+                                <li>El tiempo de respuesta puede variar entre 2 a 24 horas hábiles.</li>
+                            </ol>
+                            <p class="mt-4"><strong>Importante:</strong> Este proceso es irreversible.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="accept-terms" required>
+                            <span class="text-sm text-gray-700">
+                                He leído y acepto los términos del proceso de recuperación.
+                            </span>
+                        </label>
+                    </div>
+                    
+                    <div class="flex justify-between">
+                        <button id="back-to-step-1" class="text-blue-500 hover:text-blue-600 py-3 px-6 rounded-lg font-medium">
+                            <i class="fas fa-arrow-left mr-2"></i>
+                            Anterior
+                        </button>
+                        <button id="next-to-step-3" class="btn-primary text-white py-3 px-6 rounded-lg font-medium" disabled>
+                            Siguiente
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Paso 3: Información de contacto -->
+                <div id="step-3" class="step-content">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Información de contacto</h3>
+                    <p class="text-gray-600 mb-6 text-sm">Proporciona tus datos para que nuestro equipo pueda contactarte vía WhatsApp.</p>
+                    
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div class="form-group">
+                            <label class="form-label">Nombre completo *</label>
+                            <input type="text" id="contact-name" class="form-control" placeholder="Juan Pérez" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Número de celular *</label>
+                            <input type="tel" id="contact-phone" class="form-control" placeholder="77777777" pattern="[0-9]{8}" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Departamento *</label>
+                        <div class="department-grid">
+                            <div class="department-option" data-dept="LP">La Paz</div>
+                            <div class="department-option" data-dept="SC">Santa Cruz</div>
+                            <div class="department-option" data-dept="CB">Cochabamba</div>
+                            <div class="department-option" data-dept="OR">Oruro</div>
+                            <div class="department-option" data-dept="PT">Potosí</div>
+                            <div class="department-option" data-dept="TJ">Tarija</div>
+                            <div class="department-option" data-dept="CH">Chuquisaca</div>
+                            <div class="department-option" data-dept="BE">Beni</div>
+                            <div class="department-option" data-dept="PD">Pando</div>
+                        </div>
+                        <input type="hidden" id="selected-department" required>
+                    </div>
+                    
+                    <div class="telegram-notice">
+                        <i class="fab fa-telegram"></i>
+                        <div>
+                            <strong>Nota:</strong> Tu solicitud será enviada a nuestro sistema de Telegram.
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between mt-6">
+                        <button id="back-to-step-2" class="text-blue-500 hover:text-blue-600 py-3 px-6 rounded-lg font-medium">
+                            <i class="fas fa-arrow-left mr-2"></i>
+                            Anterior
+                        </button>
+                        <button id="next-to-step-4" class="btn-primary text-white py-3 px-6 rounded-lg font-medium">
+                            Siguiente
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Paso 4: Confirmación -->
+                <div id="step-4" class="step-content">
+                    <div class="confirmation-message">
+                        <div class="confirmation-icon">
+                            <i class="fas fa-paper-plane"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">¡Solicitud Enviada!</h3>
+                        <p class="text-gray-600 mb-4">
+                            Tu solicitud de recuperación ha sido enviada exitosamente.
+                        </p>
+                        <p class="text-gray-600 mb-6 text-sm">
+                            <strong>Tiempo de respuesta:</strong> Entre 2 a 24 horas hábiles.<br>
+                            <strong>Medio de contacto:</strong> WhatsApp al número proporcionado.
+                        </p>
+                        
+                        <p class="text-sm text-gray-500 mt-4">
+                            Nuestro equipo evaluará tu situación y te contactará pronto.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Auth Card -->
+    <div class="auth-card w-full max-w-md animate-fade-in-up" style="display: none;">
+        <div class="p-8">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-bold mb-2">
+                    <span class="brand-gradient">TokTok</span>
+                </h1>
+                <p class="text-gray-500">Tu billetera digital segura</p>
+            </div>
+            
+            <!-- Pestañas -->
+            <div class="flex border-b border-gray-200 mb-6">
+                <button id="login-tab" class="tab-button active flex-1 py-3 font-medium text-center">
+                    Iniciar Sesión
+                </button>
+                <button id="signup-tab" class="tab-button flex-1 py-3 font-medium text-center text-gray-500">
+                    Registrarse
+                </button>
+            </div>
+            
+            <!-- Contenido de pestañas -->
+            <div id="auth-container">
+                <!-- Formulario de Login -->
+                <div id="login-form-container">
+                    <form id="login-form" class="space-y-5">
+                        <div>
+                            <label for="login-email" class="block text-sm font-medium text-gray-700 mb-1">Correo electrónico</label>
+                            <input type="email" id="login-email" required 
+                                   class="input-field w-full rounded-lg py-3 px-4 text-gray-800 focus:outline-none">
+                        </div>
+                        <div class="password-container">
+                            <label for="login-password" class="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
+                            <input type="password" id="login-password" required 
+                                   class="input-field w-full rounded-lg py-3 px-4 text-gray-800 focus:outline-none pr-10">
+                            <i class="password-toggle fas fa-eye" id="toggle-login-password"></i>
+                            <div class="flex justify-end mt-1">
+                                <button type="button" id="forgot-password-btn" class="forgot-password-btn text-sm text-blue-500">
+                                    <i class="fas fa-question-circle"></i> ¿Olvidaste tu contraseña?
+                                </button>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="remember-session" class="mr-2">
+                            <label for="remember-session" class="text-sm text-gray-700">Mantener sesión iniciada</label>
+                        </div>
+                        <button type="submit" class="btn-primary w-full text-white py-3 px-4 rounded-lg font-medium">
+                            Iniciar Sesión
+                        </button>
+                    </form>
+                    
+                    <div class="mt-6 text-center text-sm text-gray-500">
+                        ¿No tienes cuenta? <button id="switch-to-signup" class="text-blue-500 hover:underline">Regístrate</button>
+                    </div>
+                </div>
+                
+                <!-- Formulario de Registro -->
+                <div id="signup-form-container" class="hidden">
+                    <form id="signup-form" class="space-y-5">
+                        <div>
+                            <label for="signup-name" class="block text-sm font-medium text-gray-700 mb-1">Nombre completo *</label>
+                            <input type="text" id="signup-name" required 
+                                   class="input-field w-full rounded-lg py-3 px-4 text-gray-800 focus:outline-none"
+                                   placeholder="Ej: Juan Pérez">
+                        </div>
+                        <div>
+                            <label for="signup-email" class="block text-sm font-medium text-gray-700 mb-1">Correo electrónico *</label>
+                            <input type="email" id="signup-email" required 
+                                   class="input-field w-full rounded-lg py-3 px-4 text-gray-800 focus:outline-none">
+                        </div>
+                        <div>
+                            <label for="signup-phone" class="block text-sm font-medium text-gray-700 mb-1">Número de celular *</label>
+                            <input type="tel" id="signup-phone" pattern="[0-9]{8}" required 
+                                   class="input-field w-full rounded-lg py-3 px-4 text-gray-800 focus:outline-none"
+                                   placeholder="Ej: 76543210">
+                        </div>
+                        <div class="password-container">
+                            <label for="signup-password" class="block text-sm font-medium text-gray-700 mb-1">Crear Contraseña *</label>
+                            <input type="password" id="signup-password" required 
+                                   class="input-field w-full rounded-lg py-3 px-4 text-gray-800 focus:outline-none pr-10">
+                            <i class="password-toggle fas fa-eye" id="toggle-signup-password"></i>
+                            <p class="text-xs text-gray-500 mt-1">Mínimo 8 caracteres con números y letras</p>
+                        </div>
+                        <button type="submit" class="btn-primary w-full text-white py-3 px-4 rounded-lg font-medium">
+                            Crear Cuenta
+                        </button>
+                    </form>
+                    
+                    <div class="mt-6 text-center text-sm text-gray-500">
+                        ¿Ya tienes cuenta? <button id="switch-to-login" class="text-blue-500 hover:underline">Inicia sesión</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="auth-message" class="mt-6 p-4 rounded-lg text-sm text-center hidden"></div>
+            
+            <div class="mt-8 pt-6 border-t border-gray-100 text-center text-xs text-gray-500">
+                <p>Al registrarte, aceptas nuestros <a href="#" class="text-blue-500 hover:underline">Términos</a> y <a href="#" class="text-blue-500 hover:underline">Privacidad</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Configuración de Supabase
+        const supabaseUrl = 'https://aleadadisazocjovibeh.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFsZWFkYWRpc2F6b2Nqb3ZpYmVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk0NDE5NjMsImV4cCI6MjA3NTAxNzk2M30.z82tP0C-UiiNuzP_jqrQf4LBusFqrDi1WYbdnuTh47E';
+        window.supabase = supabase.createClient(supabaseUrl, supabaseKey);
+        
+        // Verificar sesión al cargar la página
+        async function checkSession() {
+            try {
+                // Verificar si hay una sesión activa
+                const { data: { session }, error } = await window.supabase.auth.getSession();
+                
+                if (error) {
+                    console.error('Error al verificar sesión:', error);
+                    return false;
+                }
+                
+                if (session) {
+                    // Hay una sesión activa, redirigir al dashboard
+                    console.log('Sesión activa encontrada, redirigiendo al dashboard...');
+                    showToast('info', 'Sesión activa', 'Redirigiendo al dashboard...');
+                    
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1000);
+                    
+                    return true;
+                }
+                
+                return false;
+            } catch (error) {
+                console.error('Error inesperado al verificar sesión:', error);
+                return false;
+            }
+        }
+        
+        // Mostrar pantalla de inicio y luego ocultarla
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Primero verificar si hay sesión activa
+            const hasActiveSession = await checkSession();
+            
+            if (hasActiveSession) {
+                // Si hay sesión activa, mantener el splash screen hasta la redirección
+                return;
+            }
+            
+            // Si no hay sesión activa, proceder normalmente
+            setTimeout(() => {
+                const splashScreen = document.getElementById('splash-screen');
+                const authCard = document.querySelector('.auth-card');
+                
+                splashScreen.style.opacity = '0';
+                setTimeout(() => {
+                    splashScreen.style.display = 'none';
+                    authCard.style.display = 'block';
+                }, 500);
+            }, 1500);
+            
+            // Lógica para cambiar entre pestañas
+            const loginTab = document.getElementById('login-tab');
+            const signupTab = document.getElementById('signup-tab');
+            const loginForm = document.getElementById('login-form-container');
+            const signupForm = document.getElementById('signup-form-container');
+            const switchToSignup = document.getElementById('switch-to-signup');
+            const switchToLogin = document.getElementById('switch-to-login');
+            
+            function showLogin() {
+                loginTab.classList.add('active');
+                loginTab.classList.remove('text-gray-500');
+                signupTab.classList.remove('active');
+                signupTab.classList.add('text-gray-500');
+                loginForm.classList.remove('hidden');
+                signupForm.classList.add('hidden');
+            }
+            
+            function showSignup() {
+                signupTab.classList.add('active');
+                signupTab.classList.remove('text-gray-500');
+                loginTab.classList.remove('active');
+                loginTab.classList.add('text-gray-500');
+                signupForm.classList.remove('hidden');
+                loginForm.classList.add('hidden');
+            }
+            
+            loginTab.addEventListener('click', showLogin);
+            signupTab.addEventListener('click', showSignup);
+            switchToSignup.addEventListener('click', showSignup);
+            switchToLogin.addEventListener('click', showLogin);
+            
+            // Toggle para mostrar/ocultar contraseña
+            const toggleLoginPassword = document.getElementById('toggle-login-password');
+            const loginPassword = document.getElementById('login-password');
+            const toggleSignupPassword = document.getElementById('toggle-signup-password');
+            const signupPassword = document.getElementById('signup-password');
+            
+            toggleLoginPassword.addEventListener('click', function() {
+                const type = loginPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+                loginPassword.setAttribute('type', type);
+                this.classList.toggle('fa-eye');
+                this.classList.toggle('fa-eye-slash');
+            });
+            
+            toggleSignupPassword.addEventListener('click', function() {
+                const type = signupPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+                signupPassword.setAttribute('type', type);
+                this.classList.toggle('fa-eye');
+                this.classList.toggle('fa-eye-slash');
+            });
+            
+            // Modal de recuperación de contraseña
+            const forgotPasswordBtn = document.getElementById('forgot-password-btn');
+            const recoveryModal = document.getElementById('password-recovery-modal');
+            const closeModalBtn = document.getElementById('close-recovery-modal');
+            
+            // Variables para el modal
+            let currentStep = 1;
+            let selectedDepartment = '';
+            
+            // Abrir modal
+            forgotPasswordBtn.addEventListener('click', function() {
+                recoveryModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                resetRecoveryForm();
+            });
+            
+            // Cerrar modal
+            closeModalBtn.addEventListener('click', closeRecoveryModal);
+            
+            // Cerrar modal al hacer clic fuera
+            recoveryModal.addEventListener('click', function(e) {
+                if (e.target === recoveryModal) {
+                    closeRecoveryModal();
+                }
+            });
+            
+            // Navegación entre pasos del modal
+            document.getElementById('next-to-step-2').addEventListener('click', function() {
+                const situation = document.getElementById('situation-description').value;
+                const email = document.getElementById('recovery-email').value;
+                
+                if (!situation || !email) {
+                    showToast('warning', 'Campos requeridos', 'Por favor, completa todos los campos obligatorios.');
+                    return;
+                }
+                
+                goToStep(2);
+            });
+            
+            document.getElementById('back-to-step-1').addEventListener('click', function() {
+                goToStep(1);
+            });
+            
+            document.getElementById('next-to-step-3').addEventListener('click', function() {
+                if (!document.getElementById('accept-terms').checked) {
+                    showToast('warning', 'Términos no aceptados', 'Debes aceptar los términos para continuar.');
+                    return;
+                }
+                
+                goToStep(3);
+            });
+            
+            document.getElementById('back-to-step-2').addEventListener('click', function() {
+                goToStep(2);
+            });
+            
+            document.getElementById('next-to-step-4').addEventListener('click', function() {
+                const name = document.getElementById('contact-name').value;
+                const phone = document.getElementById('contact-phone').value;
+                
+                if (!name || !phone || !selectedDepartment) {
+                    showToast('warning', 'Información incompleta', 'Por favor, completa todos los campos obligatorios.');
+                    return;
+                }
+                
+                // Enviar solicitud a Telegram
+                sendToTelegram();
+                
+                goToStep(4);
+                
+                // Cerrar modal automáticamente después de 3 segundos
+                setTimeout(() => {
+                    closeRecoveryModal();
+                }, 3000);
+            });
+            
+            // Validación de términos en tiempo real
+            document.getElementById('accept-terms').addEventListener('change', function() {
+                const nextBtn = document.getElementById('next-to-step-3');
+                nextBtn.disabled = !this.checked;
+            });
+            
+            // Selección de departamentos
+            document.querySelectorAll('.department-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.department-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    this.classList.add('selected');
+                    selectedDepartment = this.getAttribute('data-dept');
+                    document.getElementById('selected-department').value = selectedDepartment;
+                });
+            });
+            
+            // Login form submission
+            document.getElementById('login-form').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+                const rememberSession = document.getElementById('remember-session').checked;
+                
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const originalText = submitBtn.textContent;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Iniciando...';
+                submitBtn.disabled = true;
+                
+                try {
+                    // Configurar la persistencia de sesión
+                    const persistence = rememberSession ? 'local' : 'session';
+                    
+                    // Iniciar sesión con Supabase
+                    const { data, error } = await window.supabase.auth.signInWithPassword({
+                        email: email,
+                        password: password
+                    });
+                    
+                    if (error) throw error;
+                    
+                    // Guardar preferencia de persistencia en localStorage
+                    if (rememberSession) {
+                        localStorage.setItem('toktok_remember_session', 'true');
+                    } else {
+                        localStorage.setItem('toktok_remember_session', 'false');
+                    }
+                    
+                    showToast('success', '¡Éxito!', 'Inicio de sesión exitoso');
+                    
+                    // Redirigir al dashboard después de 1 segundo
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1000);
+                    
+                } catch (error) {
+                    showToast('error', 'Error', error.message || 'Error al iniciar sesión');
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                }
+            });
+            
+            // Signup form submission - CON NUEVO CAMPO NOMBRE
+            document.getElementById('signup-form').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('signup-name').value;
+                const email = document.getElementById('signup-email').value;
+                const phone = document.getElementById('signup-phone').value;
+                const password = document.getElementById('signup-password').value;
+                
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const originalText = submitBtn.textContent;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Creando cuenta...';
+                submitBtn.disabled = true;
+                
+                try {
+                    // Primero registrar en Supabase Auth
+                    const { data: authData, error: authError } = await window.supabase.auth.signUp({
+                        email: email,
+                        password: password,
+                        options: {
+                            data: {
+                                phone: phone
+                            }
+                        }
+                    });
+                    
+                    if (authError) throw authError;
+                    
+                    // Obtener el ID del usuario recién creado
+                    const userId = authData.user?.id;
+                    
+                    if (!userId) {
+                        throw new Error('No se pudo obtener el ID del usuario');
+                    }
+                    
+                    // Luego guardar en la tabla user_profiles con el nombre
+                    const { error: dbError } = await window.supabase
+                        .from('user_profiles')
+                        .insert([
+                            {
+                                id: userId,
+                                full_name: name, // Aquí se guarda el nombre
+                                email: email,
+                                phone: phone,
+                                avatar_url: null
+                            }
+                        ]);
+                    
+                    if (dbError) {
+                        console.error('Error insertando en user_profiles:', dbError);
+                        throw dbError;
+                    }
+                    
+                    showToast('success', '¡Éxito!', 'Cuenta creada exitosamente. Verifica tu correo.');
+                    
+                    // Cambiar a login después de 2 segundos
+                    setTimeout(() => {
+                        showLogin();
+                        document.getElementById('login-email').value = email;
+                        showToast('info', 'Listo', 'Ahora puedes iniciar sesión con tus credenciales');
+                    }, 2000);
+                    
+                } catch (error) {
+                    showToast('error', 'Error', error.message || 'Error al crear la cuenta');
+                } finally {
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                }
+            });
+        });
+        
+        // Funciones para el modal de recuperación
+        function closeRecoveryModal() {
+            const recoveryModal = document.getElementById('password-recovery-modal');
+            recoveryModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        
+        function resetRecoveryForm() {
+            currentStep = 1;
+            selectedDepartment = '';
+            
+            // Resetear todos los pasos
+            for (let i = 1; i <= 4; i++) {
+                const step = document.querySelector(`.step[data-step="${i}"]`);
+                const content = document.getElementById(`step-${i}`);
+                
+                if (i === 1) {
+                    step.classList.add('active');
+                    content.classList.add('active');
+                } else {
+                    step.classList.remove('active');
+                    content.classList.remove('active');
+                }
+            }
+            
+            // Resetear campos del formulario
+            document.getElementById('situation-description').value = '';
+            document.getElementById('recovery-email').value = '';
+            document.getElementById('accept-terms').checked = false;
+            document.getElementById('contact-name').value = '';
+            document.getElementById('contact-phone').value = '';
+            document.getElementById('selected-department').value = '';
+            
+            // Resetear selección de departamentos
+            document.querySelectorAll('.department-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Resetear botones
+            document.getElementById('next-to-step-3').disabled = true;
+        }
+        
+        function goToStep(step) {
+            // Ocultar paso actual
+            const currentStepElement = document.getElementById(`step-${currentStep}`);
+            const currentStepIndicator = document.querySelector(`.step[data-step="${currentStep}"]`);
+            
+            currentStepElement.classList.remove('active');
+            currentStepIndicator.classList.remove('active');
+            
+            // Mostrar nuevo paso
+            currentStep = step;
+            const newStepElement = document.getElementById(`step-${step}`);
+            const newStepIndicator = document.querySelector(`.step[data-step="${step}"]`);
+            
+            newStepElement.classList.add('active');
+            newStepIndicator.classList.add('active');
+        }
+        
+        function sendToTelegram() {
+            const situation = document.getElementById('situation-description').value;
+            const email = document.getElementById('recovery-email').value;
+            const name = document.getElementById('contact-name').value;
+            const phone = document.getElementById('contact-phone').value;
+            const department = selectedDepartment;
+            
+            // Configuración de Telegram
+            const botToken = 'TU_BOT_TOKEN_AQUI';
+            const chatId = 'TU_CHAT_ID_AQUI';
+            
+            const message = `📋 *NUEVA SOLICITUD DE RECUPERACIÓN*\n\n` +
+                          `👤 *Nombre:* ${name}\n` +
+                          `📧 *Email:* ${email}\n` +
+                          `📱 *Teléfono:* ${phone}\n` +
+                          `📍 *Departamento:* ${getDepartmentName(department)}\n\n` +
+                          `📝 *Situación:*\n${situation}\n\n` +
+                          `⏰ *Hora:* ${new Date().toLocaleString()}`;
+            
+            // Para pruebas, mostrar en consola
+            console.log('Solicitud para Telegram:', message);
+            
+            showToast('success', 'Solicitud enviada', 'Tu solicitud ha sido enviada a nuestro equipo.');
+        }
+        
+        function getDepartmentName(code) {
+            const departments = {
+                'LP': 'La Paz',
+                'SC': 'Santa Cruz',
+                'CB': 'Cochabamba',
+                'OR': 'Oruro',
+                'PT': 'Potosí',
+                'TJ': 'Tarija',
+                'CH': 'Chuquisaca',
+                'BE': 'Beni',
+                'PD': 'Pando'
+            };
+            return departments[code] || 'Desconocido';
+        }
+        
+        // Función para mostrar notificaciones toast
+        function showToast(type, title, message) {
+            const toastContainer = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const toastContent = `
+                <div class="font-medium">${title}</div>
+                <div class="text-sm">${message}</div>
+            `;
+            
+            toast.innerHTML = toastContent;
+            toastContainer.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 10);
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 5000);
+        }
+        
+        // Registra el Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => console.log('SW registered'))
+                    .catch(err => console.log('SW registration failed'));
+            });
+        }
+
+        // Botón de instalación
+        let deferredPrompt;
+        const installButton = document.createElement('button');
+        installButton.textContent = 'Instalar TokTok';
+        installButton.className = 'btn-primary fixed bottom-4 right-4 z-50 py-2 px-4 rounded-full shadow-lg animate-bounce';
+        installButton.style.display = 'none';
+
+        document.body.appendChild(installButton);
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installButton.style.display = 'block';
+            
+            installButton.addEventListener('click', () => {
+                installButton.style.display = 'none';
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then(choiceResult => {
+                    if (choiceResult.outcome === 'accepted') {
+                        showToast('success', 'Instalación', 'TokTok se está instalando...');
+                    } else {
+                        showToast('info', 'Instalación', 'Puedes instalarlo más tarde desde el menú.');
+                    }
+                    deferredPrompt = null;
+                });
+            });
+        });
+
+        window.addEventListener('appinstalled', () => {
+            installButton.style.display = 'none';
+            deferredPrompt = null;
+            showToast('success', '¡Instalado!', 'TokTok ha sido instalado correctamente.');
+        });
+    </script>
+</body>
+</html>
