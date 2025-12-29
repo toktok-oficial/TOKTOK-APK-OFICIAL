@@ -1479,8 +1479,8 @@
                 <div class="mb-4">
                     <label for="mobile-recharge-amount" class="block text-sm font-medium text-gray-700 mb-1">Monto</label>
                     <select id="mobile-recharge-amount" class="mobile-input">
-                        <option value="11">11 Bs (20 crédito)</option>
-                        <option value="22">22 Bs (40 crédito)</option>
+                        <option value="13">13 Bs (20 crédito)</option>
+                        <option value="26">26 Bs (40 crédito)</option>
                         <option value="33">33 Bs (60 crédito)</option>
                         <option value="44">44 Bs (80 crédito)</option>
                         <option value="55">55 Bs (100 crédito)</option>
@@ -1533,23 +1533,23 @@
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700 mb-2">Seleccione paquete</label>
                     <div class="space-y-2">
-                        <button data-package="11" class="mobile-operator-btn w-full text-left flex items-center justify-between">
+                        <button data-package="13" class="mobile-operator-btn w-full text-left flex items-center justify-between">
                             <div>
-                                <div class="font-medium">11 Bs</div>
+                                <div class="font-medium">13 Bs</div>
                                 <div class="text-xs text-gray-500">10 crédito + 1400 MB</div>
                             </div>
                             <i class="fas fa-check-circle text-green-600 hidden"></i>
                         </button>
                         
-                        <button data-package="11.01" class="mobile-operator-btn w-full text-left flex items-center justify-between">
+                        <button data-package="13.01" class="mobile-operator-btn w-full text-left flex items-center justify-between">
                             <div>
-                                <div class="font-medium">11.01 Bs</div>
+                                <div class="font-medium">13.01 Bs</div>
                                 <div class="text-xs text-gray-500">10 crédito + Internet Ilimitado 24h</div>
                             </div>
                             <i class="fas fa-check-circle text-green-600 hidden"></i>
                         </button>
                         
-                        <button data-package="11.02" class="mobile-operator-btn w-full text-left flex items-center justify-between">
+                        <button data-package="13.02" class="mobile-operator-btn w-full text-left flex items-center justify-between">
                             <div>
                                 <div class="font-medium">11.02 Bs</div>
                                 <div class="text-xs text-gray-500">10 crédito + 640 seg (válido 5 días)</div>
@@ -1952,8 +1952,8 @@
                     <div>
                         <label for="recharge-amount" class="block text-sm font-medium text-gray-700 mb-1">Monto</label>
                         <select id="recharge-amount" class="input-field select-field w-full">
-                            <option value="11">11 Bs (20 crédito)</option>
-                            <option value="22">22 Bs (40 crédito)</option>
+                            <option value="13">13 Bs (20 crédito)</option>
+                            <option value="26">26 Bs (40 crédito)</option>
                             <option value="33">33 Bs (60 crédito)</option>
                             <option value="44">44 Bs (80 crédito)</option>
                             <option value="55">55 Bs (100 crédito)</option>
@@ -2011,25 +2011,25 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Seleccione paquete</label>
                         <div class="space-y-3">
-                            <button data-package="11" class="operator-btn w-full text-left flex items-center justify-between p-4">
+                            <button data-package="13" class="operator-btn w-full text-left flex items-center justify-between p-4">
                                 <div>
-                                    <div class="font-medium">11 Bs</div>
+                                    <div class="font-medium">13 Bs</div>
                                     <div class="text-sm text-gray-500">10 crédito + 1400 MB</div>
                                 </div>
                                 <i class="fas fa-check-circle text-green-600 hidden"></i>
                             </button>
                             
-                            <button data-package="11.01" class="operator-btn w-full text-left flex items-center justify-between p-4">
+                            <button data-package="13.01" class="operator-btn w-full text-left flex items-center justify-between p-4">
                                 <div>
-                                    <div class="font-medium">11.01 Bs</div>
+                                    <div class="font-medium">13.01 Bs</div>
                                     <div class="text-sm text-gray-500">10 crédito + Internet Ilimitado 24h</div>
                                 </div>
                                 <i class="fas fa-check-circle text-green-600 hidden"></i>
                             </button>
                             
-                            <button data-package="11.02" class="operator-btn w-full text-left flex items-center justify-between p-4">
+                            <button data-package="13.02" class="operator-btn w-full text-left flex items-center justify-between p-4">
                                 <div>
-                                    <div class="font-medium">11.02 Bs</div>
+                                    <div class="font-medium">13.02 Bs</div>
                                     <div class="text-sm text-gray-500">10 crédito + 640 seg (válido 5 días)</div>
                                 </div>
                                 <i class="fas fa-check-circle text-green-600 hidden"></i>
@@ -2836,15 +2836,15 @@ const invoiceHTML = `
             amount = parseFloat(amount);
             
             if (operator === 'entel' || operator === 'tigo') {
-                if (amount === 11) return '20 crédito';
-                if (amount === 22) return '40 crédito';
+                if (amount === 13) return '20 crédito';
+                if (amount === 26) return '40 crédito';
                 if (amount === 33) return '60 crédito';
                 if (amount === 44) return '80 crédito';
                 if (amount === 55) return '100 crédito';
             } else if (operator === 'viva') {
-                if (amount === 11) return '10 crédito + 1400 MB';
-                if (amount === 11.01) return '10 crédito + Internet Ilimitado 24h';
-                if (amount === 11.02) return '10 crédito + 640 seg (válido 5 días)';
+                if (amount === 13) return '10 crédito + 1400 MB';
+                if (amount === 13.01) return '10 crédito + Internet Ilimitado 24h';
+                if (amount === 13.02) return '10 crédito + 640 seg (válido 5 días)';
             }
             
             return `${amount} Bs crédito`;
@@ -2869,9 +2869,9 @@ const invoiceHTML = `
                 if (vivaDetailsElement && vivaDetailsTextElement) {
                     let details = '';
                     
-                    if (amount === 11) details = 'Recibirás 10 Bs de crédito + 1400 MB de datos';
-                    else if (amount === 11.01) details = 'Recibirás 10 Bs de crédito + Internet Ilimitado por 24 horas';
-                    else if (amount === 11.02) details = 'Recibirás 10 Bs de crédito + 640 segundos (válido por 5 días)';
+                    if (amount === 13) details = 'Recibirás 10 Bs de crédito + 1400 MB de datos';
+                    else if (amount === 13.01) details = 'Recibirás 10 Bs de crédito + Internet Ilimitado por 24 horas';
+                    else if (amount === 13.02) details = 'Recibirás 10 Bs de crédito + 640 segundos (válido por 5 días)';
                     else details = `Recibirás ${amount} Bs de crédito`;
                     
                     if (details) {
@@ -2888,8 +2888,8 @@ const invoiceHTML = `
                     let details = '';
                     
                     if (operator === 'entel' || operator === 'tigo') {
-                        if (amount === 11) details = 'Recibirás 20 Bs de crédito';
-                        else if (amount === 22) details = 'Recibirás 40 Bs de crédito';
+                        if (amount === 13) details = 'Recibirás 20 Bs de crédito';
+                        else if (amount === 26) details = 'Recibirás 40 Bs de crédito';
                         else if (amount === 33) details = 'Recibirás 60 Bs de crédito';
                         else if (amount === 44) details = 'Recibirás 80 Bs de crédito';
                         else if (amount === 55) details = 'Recibirás 100 Bs de crédito';
@@ -3999,3 +3999,4 @@ const invoiceHTML = `
     </script>
 </body>
 </html>
+
