@@ -1237,7 +1237,7 @@
                 <div class="mb-4">
                     <label for="mobile-recharge-amount" class="block text-sm font-medium text-gray-700 mb-1">Monto</label>
                     <select id="mobile-recharge-amount" class="mobile-input">
-                        <option value="11">11 Bs (20 crédito)</option>
+                        <option value="12">12 Bs (20 crédito)</option>
                         <option value="24">24 Bs (40 crédito)</option>
                         <option value="36">36 Bs (60 crédito)</option>
                         <option value="48">48 Bs (80 crédito)</option>
@@ -1759,7 +1759,7 @@
                     <div>
                         <label for="recharge-amount" class="block text-sm font-medium text-gray-700 mb-1">Monto</label>
                         <select id="recharge-amount" class="input-field select-field w-full">
-                            <option value="11">11 Bs (20 crédito)</option>
+                            <option value="12">12 Bs (20 crédito)</option>
                             <option value="24">24 Bs (40 crédito)</option>
                             <option value="36">36 Bs (60 crédito)</option>
                             <option value="48">48 Bs (80 crédito)</option>
@@ -2647,7 +2647,7 @@ const invoiceHTML = `
             amount = parseFloat(amount);
             
             if (operator === 'entel' || operator === 'tigo') {
-                if (amount === 11) return '20 crédito';
+                if (amount === 12) return '20 crédito';
                 if (amount === 24) return '40 crédito';
                 if (amount === 36) return '60 crédito';
                 if (amount === 48) return '80 crédito';
@@ -2699,7 +2699,7 @@ const invoiceHTML = `
                     let details = '';
                     
                     if (operator === 'entel' || operator === 'tigo') {
-                        if (amount === 11) details = 'Recibirás 20 Bs de crédito';
+                        if (amount === 12) details = 'Recibirás 20 Bs de crédito';
                         else if (amount === 24) details = 'Recibirás 40 Bs de crédito';
                         else if (amount === 36) details = 'Recibirás 60 Bs de crédito';
                         else if (amount === 48) details = 'Recibirás 80 Bs de crédito';
@@ -3937,4 +3937,5 @@ const invoiceHTML = `
     </script>
 </body>
 </html>
+
 
