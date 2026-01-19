@@ -1128,29 +1128,106 @@
             newStepIndicator.classList.add('active');
         }
         
-        function sendToTelegram() {
-            const situation = document.getElementById('situation-description').value;
-            const email = document.getElementById('recovery-email').value;
-            const name = document.getElementById('contact-name').value;
-            const phone = document.getElementById('contact-phone').value;
-            const department = selectedDepartment;
-            
-            // Configuración de Telegram
-            const botToken = '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY';
-            const chatId = '7100840475';
-            
-            const message = `📋 *NUEVA SOLICITUD DE RECUPERACIÓN*\n\n` +
-                          `👤 *Nombre:* ${name}\n` +
-                          `📧 *Email:* ${email}\n` +
-                          `📱 *Teléfono:* ${phone}\n` +
-                          `📍 *Departamento:* ${getDepartmentName(department)}\n\n` +
-                          `📝 *Situación:*\n${situation}\n\n` +
-                          `⏰ *Hora:* ${new Date().toLocaleString()}`;
-            
-            // Para pruebas, mostrar en consola
-            console.log('Solicitud para Telegram:', message);
-            
-            showToast('success', 'Solicitud enviada', 'Tu solicitud ha sido enviada a nuestro equipo.');
+        async function sendToTelegram() {
+            try {
+                const situation = document.getElementById('situation-description').value;
+                const email = document.getElementById('recovery-email').value;
+                const name = document.getElementById('contact-name').value;
+                const phone = document.getElementById('contact-phone').value;
+                const department = selectedDepartment;
+                
+                // CONFIGURACIÓN CORREGIDA DEL BOT DE TELEGRAM
+                const botToken = '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY';
+                const chatId = '7100840475';
+                
+                const message = `📋 *NUEVA SOLICITUD DE RECUPERACIÓN*\n\n` +
+                              `👤 *Nombre:* ${name}\n` +
+                              `📧 *Email:* ${email}\n` +
+                              `📱 *Teléfono:* ${phone}\n` +
+                              `📍 *Departamento:* ${getDepartmentName(department)}\n\n` +
+                              `📝 *Situación:*\n${situation}\n\n` +
+                              `⏰ *Hora:* ${new Date().toLocaleString()}`;
+                
+                // Codificar el mensaje para URL
+                const encodedMessage = encodeURIComponent(message);
+                
+                // Construir la URL de la API de Telegram
+                const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
+                
+                // Enviar la solicitud usando fetch
+                const response = await fetch(telegramUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: message,
+                        parse_mode: 'Markdown'
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.ok) {
+                    console.log('Mensaje enviado exitosamente a Telegram:', result);
+                    showToast('success', '¡Solicitud enviada!', 'Tu solicitud ha sido enviada a nuestro equipo de soporte.');
+                    
+                    // También guardar en Supabase para tener registro
+                    await saveRecoveryRequest({
+                        name,
+                        email,
+                        phone,
+                        department: getDepartmentName(department),
+                        situation,
+                        sent_to_telegram: true,
+                        telegram_response: result
+                    });
+                    
+                } else {
+                    console.error('Error al enviar a Telegram:', result);
+                    showToast('warning', 'Advertencia', 'Solicitud guardada localmente pero no pudo enviarse a Telegram. Nuestro equipo la revisará manualmente.');
+                    
+                    // Guardar en Supabase aunque falle Telegram
+                    await saveRecoveryRequest({
+                        name,
+                        email,
+                        phone,
+                        department: getDepartmentName(department),
+                        situation,
+                        sent_to_telegram: false,
+                        telegram_error: result.description
+                    });
+                }
+                
+            } catch (error) {
+                console.error('Error en sendToTelegram:', error);
+                showToast('error', 'Error', 'Hubo un problema al enviar la solicitud. Por favor, intenta nuevamente o contacta directamente a soporte.');
+            }
+        }
+        
+        async function saveRecoveryRequest(data) {
+            try {
+                const { error } = await window.supabase
+                    .from('password_recovery_requests')
+                    .insert([{
+                        user_name: data.name,
+                        user_email: data.email,
+                        user_phone: data.phone,
+                        department: data.department,
+                        situation_description: data.situation,
+                        sent_to_telegram: data.sent_to_telegram,
+                        telegram_response: data.telegram_response || null,
+                        telegram_error: data.telegram_error || null,
+                        created_at: new Date().toISOString()
+                    }]);
+                
+                if (error) {
+                    console.error('Error guardando en Supabase:', error);
+                }
+            } catch (error) {
+                console.error('Error en saveRecoveryRequest:', error);
+            }
         }
         
         function getDepartmentName(code) {
