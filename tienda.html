@@ -13,279 +13,81 @@
         :root {
             --primary: #6d28d9;
             --primary-dark: #5b21b6;
-            --iphone-bg: #f2f2f7;
-            --card-bg: #ffffff;
-            --section-bg: #f8f8fa;
         }
         
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--iphone-bg);
-            color: #1c1c1e;
-            font-size: 14px;
-            line-height: 1.4;
-            -webkit-font-smoothing: antialiased;
-        }
-        
-        /* Diseño tipo iPhone */
-        .iphone-container {
-            max-width: 428px;
-            margin: 0 auto;
-            background: white;
-            min-height: 100vh;
-            box-shadow: 0 0 30px rgba(0,0,0,0.05);
-        }
-        
-        .header {
-            padding: 16px;
-            background: white;
-            position: sticky;
-            top: 0;
-            z-index: 90;
-            border-bottom: 1px solid #e5e5ea;
-        }
-        
-        .header-title {
-            font-size: 22px;
-            font-weight: 700;
-            color: #1c1c1e;
-        }
-        
-        .header-subtitle {
-            font-size: 14px;
-            color: #8e8e93;
-            margin-top: 2px;
-        }
-        
-        /* Filtros de categoría */
-        .categories-container {
-            padding: 8px 16px 12px;
-            background: white;
-            border-bottom: 1px solid #e5e5ea;
-            position: sticky;
-            top: 72px;
-            z-index: 80;
-        }
-        
-        .categories-scroll {
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            padding-bottom: 4px;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-        }
-        
-        .categories-scroll::-webkit-scrollbar {
-            display: none;
-        }
-        
-        .category-chip {
-            padding: 6px 14px;
-            border-radius: 20px;
-            background: #f2f2f7;
-            color: #3c3c43;
-            font-size: 13px;
-            font-weight: 500;
-            white-space: nowrap;
-            border: 1px solid transparent;
-            transition: all 0.2s;
-        }
-        
-        .category-chip.active {
-            background: #6d28d9;
-            color: white;
-            border-color: #6d28d9;
-        }
-        
-        .category-chip i {
-            margin-right: 4px;
-            font-size: 12px;
-        }
-        
-        /* Productos optimizados */
-        .products-container {
-            padding: 12px 16px;
-        }
-        
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
+            background-color: #f8fafc;
+            color: #1e293b;
+            -webkit-tap-highlight-color: transparent;
+            padding-bottom: env(safe-area-inset-bottom);
         }
         
         .product-card {
-            background: var(--card-bg);
-            border-radius: 14px;
+            transition: all 0.3s ease;
+            border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-            transition: all 0.2s;
-            border: 1px solid #f0f0f5;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+            background: white;
+            height: 100%;
+            border: 1px solid #e2e8f0;
         }
         
         .product-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
         
         .product-image {
             width: 100%;
             height: 120px;
             object-fit: cover;
-            background: #f8f8fa;
-        }
-        
-        .product-content {
-            padding: 10px;
-        }
-        
-        .product-name {
-            font-size: 13px;
-            font-weight: 600;
-            color: #1c1c1e;
-            margin-bottom: 4px;
-            line-height: 1.3;
-            height: 34px;
-            overflow: hidden;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-        }
-        
-        .product-description {
-            font-size: 11px;
-            color: #8e8e93;
-            margin-bottom: 8px;
-            height: 32px;
-            overflow: hidden;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            line-height: 1.3;
-        }
-        
-        .product-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 8px;
+            background: #f1f5f9;
         }
         
         .product-price {
             color: var(--primary);
             font-weight: 700;
-            font-size: 14px;
+            font-size: 0.95rem;
         }
         
         .stock-badge {
             display: inline-block;
-            padding: 3px 6px;
-            border-radius: 6px;
-            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.65rem;
             font-weight: 600;
         }
         
         .stock-available {
-            background-color: rgba(52, 199, 89, 0.1);
-            color: #34c759;
+            background-color: #d1fae5;
+            color: #059669;
         }
         
         .stock-low {
-            background-color: rgba(255, 149, 0, 0.1);
-            color: #ff9500;
+            background-color: #fef3c7;
+            color: #d97706;
         }
         
         .stock-out {
-            background-color: rgba(255, 59, 48, 0.1);
-            color: #ff3b30;
+            background-color: #fee2e2;
+            color: #dc2626;
         }
         
-        .buy-btn {
-            background: #6d28d9;
-            color: white;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 12px;
-            border: none;
-            transition: all 0.2s;
-            min-width: 70px;
-        }
-        
-        .buy-btn:hover:not(:disabled) {
-            background: #5b21b6;
-            transform: scale(1.05);
-        }
-        
-        .buy-btn:disabled {
-            background: #c7c7cc;
-            cursor: not-allowed;
-        }
-        
-        /* Barra de búsqueda mejorada */
-        .search-container {
-            padding: 12px 16px;
-            background: white;
-            border-bottom: 1px solid #e5e5ea;
-        }
-        
-        .search-input {
-            width: 100%;
-            padding: 10px 14px;
-            padding-left: 40px;
-            border: 1px solid #e5e5ea;
-            border-radius: 10px;
-            font-size: 14px;
-            background: #f8f8fa url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%238e8e93' width='18' height='18'%3E%3Cpath d='M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z'/%3E%3C/svg%3E") no-repeat 12px center;
-            background-size: 18px;
-        }
-        
-        .search-input:focus {
-            border-color: var(--primary);
-            outline: none;
-            background-color: white;
-        }
-        
-        /* Saldo optimizado */
-        .balance-display {
-            background: linear-gradient(135deg, #6d28d9 0%, #5b21b6 100%);
-            color: white;
-            padding: 12px 16px;
-            margin: 12px 16px;
-            border-radius: 14px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 12px rgba(109, 40, 217, 0.15);
-        }
-        
-        .balance-label {
-            font-size: 12px;
-            opacity: 0.9;
-        }
-        
-        .balance-amount {
-            font-size: 20px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-        
-        /* Modales tipo iOS */
         .modal {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.4);
-            z-index: 1000;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 100;
             display: flex;
             align-items: center;
             justify-content: center;
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s;
-            padding: 16px;
         }
         
         .modal.active {
@@ -295,162 +97,439 @@
         
         .modal-content {
             background: white;
-            width: 100%;
+            width: 90%;
             max-width: 380px;
-            border-radius: 20px;
-            max-height: 85vh;
-            overflow: hidden;
+            border-radius: 16px;
+            padding: 20px;
             transform: translateY(20px);
             transition: all 0.3s;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            max-height: 90vh;
+            overflow-y: auto;
         }
         
         .modal.active .modal-content {
             transform: translateY(0);
         }
         
-        .modal-header {
-            padding: 16px;
-            border-bottom: 1px solid #e5e5ea;
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            font-size: 14px;
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(109, 40, 217, 0.2);
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .loading-spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 12px;
+            background: white;
+        }
+        
+        .input-field:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(109, 40, 217, 0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-header {
+                position: sticky;
+                top: 0;
+                z-index: 40;
+                background: white;
+                padding: 12px 16px;
+                border-bottom: 1px solid #f1f5f9;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+            
+            .mobile-header-title {
+                font-size: 16px;
+                font-weight: 700;
+                color: #1e293b;
+            }
+            
+            .products-container {
+                padding: 12px;
+            }
+            
+            .search-container {
+                padding: 12px 16px;
+                background: white;
+                border-bottom: 1px solid #f1f5f9;
+            }
+        }
+        
+        .balance-display {
+            background: linear-gradient(135deg, #6d28d9 0%, #5b21b6 100%);
+            color: white;
+            padding: 10px 14px;
+            border-radius: 10px;
+            margin: 0 12px 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         
-        .modal-title {
-            font-size: 18px;
+        .balance-label {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+        
+        .balance-amount {
+            font-size: 16px;
             font-weight: 700;
-            color: #1c1c1e;
         }
         
-        .modal-body {
-            padding: 16px;
-            max-height: 60vh;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
+        /* Estilos para la factura */
+        .invoice-container {
+            background: white;
+            border-radius: 8px;
+            padding: 14px;
+            max-width: 100%;
         }
         
-        .modal-close {
-            background: none;
-            border: none;
-            color: #8e8e93;
-            font-size: 18px;
-            cursor: pointer;
-            padding: 4px;
+        .invoice-header {
+            text-align: center;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #6d28d9;
+            padding-bottom: 10px;
         }
         
-        /* Product detail optimizado */
-        .product-detail-image {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            background: #f8f8fa;
-            border-radius: 12px;
+        .invoice-logo {
+            font-size: 16px;
+            font-weight: bold;
+            color: #6d28d9;
+            margin-bottom: 2px;
+        }
+        
+        .invoice-title {
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 2px;
+            color: #1e293b;
+        }
+        
+        .invoice-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
             margin-bottom: 12px;
         }
         
-        .detail-price {
-            font-size: 24px;
-            font-weight: 700;
-            color: #6d28d9;
-            margin: 8px 0;
+        .invoice-section {
+            margin-bottom: 6px;
         }
         
-        .detail-stock {
-            font-size: 14px;
-            color: #8e8e93;
-        }
-        
-        .detail-stock span {
+        .invoice-label {
             font-weight: 600;
-            color: #34c759;
+            color: #4b5563;
+            margin-bottom: 2px;
+            font-size: 10px;
         }
         
-        /* Selector de cantidad */
+        .invoice-value {
+            color: #1f2937;
+            font-size: 11px;
+            line-height: 1.2;
+        }
+        
+        .invoice-amount {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 12px 0;
+            padding: 10px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            grid-column: 1 / -1;
+        }
+        
+        .invoice-footer {
+            text-align: center;
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px solid #e5e7eb;
+            color: #6b7280;
+            font-size: 9px;
+            line-height: 1.1;
+            grid-column: 1 / -1;
+        }
+        
+        .positive-amount {
+            color: #059669;
+        }
+        
+        .negative-amount {
+            color: #dc2626;
+        }
+        
+        .success-animation {
+            animation: successPulse 1.5s ease-in-out;
+        }
+        
+        @keyframes successPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.01); }
+            100% { transform: scale(1); }
+        }
+        
+        .status-badge-small {
+            padding: 1px 4px;
+            border-radius: 6px;
+            font-size: 9px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-success {
+            background-color: #d1fae5;
+            color: #059669;
+        }
+        
         .quantity-selector {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 16px;
-            margin: 16px 0;
+            gap: 10px;
+            margin: 12px 0;
         }
         
         .quantity-btn {
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-            background: #f2f2f7;
+            background: #f1f5f9;
             border: none;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
-            color: #3c3c43;
+            color: #475569;
             cursor: pointer;
             transition: all 0.2s;
         }
         
-        .quantity-btn:active:not(:disabled) {
-            background: #e5e5ea;
-            transform: scale(0.95);
+        .quantity-btn:hover:not(:disabled) {
+            background: #e2e8f0;
+        }
+        
+        .quantity-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
         
         .quantity-display {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
             min-width: 36px;
             text-align: center;
-            color: #1c1c1e;
         }
         
-        /* Sección de entrega optimizada */
+        .product-detail-image {
+            width: 100%;
+            height: 180px;
+            object-fit: contain;
+            background: #f8fafc;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 10px 14px;
+            padding-left: 36px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239ca3af'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'%3E%3C/path%3E%3C/svg%3E") no-repeat 10px center;
+            background-size: 18px;
+        }
+        
+        .search-input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(109, 40, 217, 0.1);
+        }
+        
+        .time-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+        
+        .time-option {
+            padding: 8px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 13px;
+        }
+        
+        .time-option:hover {
+            border-color: var(--primary);
+        }
+        
+        .time-option.selected {
+            border-color: var(--primary);
+            background-color: #6d28d9;
+            color: white;
+        }
+        
+        .time-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 2px;
+            font-size: 12px;
+        }
+        
+        .time-value {
+            font-size: 11px;
+            color: #6b7280;
+        }
+        
+        .time-option.selected .time-value {
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
         .delivery-section {
-            background: #f8f8fa;
-            border-radius: 12px;
-            padding: 14px;
-            margin: 16px 0;
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 12px;
+            border: 1px solid #e2e8f0;
         }
         
         .section-title {
             font-weight: 600;
-            color: #3c3c43;
-            margin-bottom: 12px;
+            color: #374151;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 15px;
+            gap: 6px;
+            font-size: 14px;
         }
         
-        .map-btn {
-            width: 100%;
-            padding: 12px;
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+            gap: 10px;
+        }
+        
+        .buy-btn {
+            background: linear-gradient(135deg, #6d28d9 0%, #5b21b6 100%);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            border: none;
+            transition: all 0.2s;
+        }
+        
+        .buy-btn:hover:not(:disabled) {
+            transform: translateY(-1px);
+        }
+        
+        .buy-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+        
+        /* Filtros de categorías */
+        .category-filters {
+            display: flex;
+            gap: 6px;
+            padding: 10px 12px;
+            overflow-x: auto;
+            background: white;
+            border-bottom: 1px solid #f1f5f9;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        
+        .category-filters::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .category-btn {
+            padding: 6px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            background: white;
+            color: #4b5563;
+            font-size: 12px;
+            font-weight: 500;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .category-btn:hover {
+            border-color: #6d28d9;
+            color: #6d28d9;
+        }
+        
+        .category-btn.active {
             background: #6d28d9;
             color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 15px;
-            font-weight: 500;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.2s;
-            margin-bottom: 12px;
+            border-color: #6d28d9;
         }
         
-        .map-btn:active {
-            background: #5b21b6;
-            transform: scale(0.98);
-        }
-        
+        /* Estilos para el mapa - AHORA SOLO BOTÓN */
         .location-preview {
-            background: white;
-            padding: 12px;
-            border-radius: 10px;
+            background: #f8fafc;
+            padding: 10px;
+            border-radius: 8px;
             margin-bottom: 12px;
-            border: 1px solid #e5e5ea;
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .location-preview:hover {
+            background: #f1f5f9;
+            border-color: #c7d2fe;
         }
         
         .location-preview-header {
@@ -462,236 +541,267 @@
         
         .location-preview-title {
             font-weight: 600;
-            color: #3c3c43;
+            color: #374151;
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-size: 14px;
+            gap: 4px;
+            font-size: 13px;
+        }
+        
+        .location-preview-change {
+            color: #6d28d9;
+            font-size: 12px;
+            font-weight: 500;
         }
         
         .location-preview-text {
-            color: #3c3c43;
-            font-size: 13px;
-            line-height: 1.4;
+            color: #4b5563;
+            font-size: 12px;
+            line-height: 1.3;
         }
         
-        /* Selector de hora */
-        .time-selector {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-            margin: 12px 0;
+        .location-preview-coords {
+            color: #6b7280;
+            font-size: 10px;
+            font-family: monospace;
+            margin-top: 2px;
         }
         
-        .time-option {
-            padding: 10px;
-            border: 1.5px solid #e5e5ea;
-            border-radius: 10px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            background: white;
-        }
-        
-        .time-option.selected {
-            border-color: #6d28d9;
-            background-color: #6d28d9;
-            color: white;
-        }
-        
-        .time-label {
-            display: block;
-            font-weight: 500;
-            margin-bottom: 2px;
-            font-size: 13px;
-        }
-        
-        .time-value {
-            font-size: 11px;
-            color: #8e8e93;
-        }
-        
-        .time-option.selected .time-value {
-            color: rgba(255, 255, 255, 0.9);
-        }
-        
-        /* Input fields */
-        .input-field {
+        .map-btn {
             width: 100%;
-            padding: 12px;
-            border: 1.5px solid #e5e5ea;
-            border-radius: 10px;
-            font-size: 15px;
-            margin-bottom: 12px;
-            background: white;
-        }
-        
-        .input-field:focus {
-            border-color: #6d28d9;
-            outline: none;
-        }
-        
-        /* Botón primario */
-        .btn-primary {
+            padding: 10px 14px;
             background: #6d28d9;
             color: white;
-            padding: 14px;
-            border-radius: 12px;
-            font-weight: 600;
             border: none;
-            width: 100%;
-            font-size: 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
+            transition: all 0.2s;
+            margin-bottom: 12px;
         }
         
-        .btn-primary:active:not(:disabled) {
+        .map-btn:hover {
             background: #5b21b6;
-            transform: scale(0.98);
+            transform: translateY(-1px);
         }
         
-        .btn-primary:disabled {
-            background: #c7c7cc;
-            cursor: not-allowed;
+        /* Estilos para el modal del mapa (ventana aparte) */
+        .map-modal .modal-content {
+            max-width: 95%;
+            width: 95%;
+            max-height: 85vh;
+            padding: 0;
+            overflow: hidden;
+            border-radius: 16px;
         }
         
-        /* Estilos para el mapa */
+        .map-modal-header {
+            padding: 14px 16px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .map-modal-body {
+            height: 60vh;
+            position: relative;
+            background: #f1f5f9;
+        }
+        
         #fullscreen-map {
             width: 100%;
             height: 100%;
         }
         
-        .map-modal .modal-content {
-            max-width: 95%;
-            height: 85vh;
+        .map-instructions {
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 8px 16px;
+            border-radius: 18px;
+            font-size: 13px;
+            font-weight: 500;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            color: #6d28d9;
+            backdrop-filter: blur(4px);
         }
         
-        .map-modal-body {
-            flex: 1;
-            position: relative;
+        .map-controls {
+            position: absolute;
+            bottom: 16px;
+            right: 16px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .control-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            border: none;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: #4b5563;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .control-btn:hover {
+            background: #f8fafc;
+            transform: scale(1.05);
+            color: #6d28d9;
         }
         
         .map-footer {
-            padding: 16px;
-            border-top: 1px solid #e5e5ea;
+            padding: 14px 16px;
+            border-top: 1px solid #e2e8f0;
             background: white;
         }
         
-        /* Factura optimizada */
-        .invoice-container {
-            background: white;
-            padding: 16px;
-            font-size: 12px;
-            line-height: 1.3;
-        }
-        
-        .invoice-header {
-            text-align: center;
-            margin-bottom: 12px;
-            border-bottom: 2px solid #6d28d9;
-            padding-bottom: 8px;
-        }
-        
-        .invoice-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: #1c1c1e;
-            margin: 4px 0;
-        }
-        
-        /* Estados vacíos */
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-        }
-        
-        .empty-state-icon {
-            font-size: 40px;
-            color: #c7c7cc;
-            margin-bottom: 12px;
-        }
-        
-        .empty-state-title {
-            font-size: 16px;
+        .map-footer-btn {
+            width: 100%;
+            padding: 12px;
+            background: #6d28d9;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
             font-weight: 600;
-            color: #8e8e93;
-            margin-bottom: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.2s;
         }
         
-        .empty-state-text {
-            font-size: 14px;
-            color: #c7c7cc;
+        .map-footer-btn:hover {
+            background: #5b21b6;
         }
         
-        /* Loading */
-        .loading-spinner {
-            width: 20px;
-            height: 20px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
+        .map-footer-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+        
+        .current-location-marker {
+            background-color: #6d28d9;
             border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
+            border: 2px solid white;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+            width: 14px;
+            height: 14px;
         }
         
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        .selected-location-marker {
+            background-color: #dc2626;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+            width: 18px;
+            height: 18px;
         }
         
-        /* Animaciones iOS */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .fade-in {
-            animation: fadeIn 0.3s ease-out;
-        }
-        
-        /* Ajustes para el scroll */
-        * {
-            -webkit-tap-highlight-color: transparent;
-        }
-        
-        /* Responsive */
-        @media (max-width: 428px) {
-            .iphone-container {
-                max-width: 100%;
-                box-shadow: none;
-            }
-            
-            .products-grid {
-                grid-template-columns: repeat(2, 1fr);
+        /* Estilos responsivos para el mapa */
+        @media (max-height: 700px) {
+            .map-modal-body {
+                height: 55vh;
             }
         }
         
-        @media (max-width: 320px) {
-            .products-grid {
-                grid-template-columns: 1fr;
+        @media (max-height: 600px) {
+            .map-modal-body {
+                height: 50vh;
             }
+        }
+        
+        @media (min-width: 768px) {
+            .map-modal .modal-content {
+                max-width: 500px;
+                width: 500px;
+            }
+        }
+        
+        /* Estilo para enlace de Google Maps */
+        .gmaps-link {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            font-size: 11px;
+        }
+        
+        .gmaps-link:hover {
+            text-decoration: underline;
+            color: #1d4ed8;
+        }
+        
+        /* Mejoras para el diseño tipo iPhone */
+        .product-description {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.2;
+            height: 2.4em;
+        }
+        
+        .product-name {
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        /* Scroll suave iOS */
+        .products-container {
+            -webkit-overflow-scrolling: touch;
         }
     </style>
 </head>
 <body>
-    <div class="iphone-container">
-        <!-- Header -->
-        <div class="header">
-            <div class="header-title">TokTok Shop</div>
-            <div class="header-subtitle">Compra rápida y segura</div>
+    <!-- Versión Mobile -->
+    <div class="mobile-only">
+        <div class="mobile-header">
+            <div class="mobile-header-title">Tienda TokTok</div>
+            <a href="dashboard.html" class="text-purple-600">
+                <i class="fas fa-arrow-left"></i>
+            </a>
         </div>
         
-        <!-- Saldo -->
-        <div class="balance-display fade-in">
+        <!-- Mostrar saldo disponible -->
+        <div class="balance-display">
             <div>
                 <div class="balance-label">Saldo disponible</div>
                 <div id="current-balance" class="balance-amount">Cargando...</div>
             </div>
-            <i class="fas fa-wallet text-white text-xl"></i>
+            <i class="fas fa-wallet text-white text-lg"></i>
         </div>
         
         <!-- Barra de búsqueda -->
@@ -699,31 +809,13 @@
             <input type="text" id="product-search" class="search-input" placeholder="Buscar productos...">
         </div>
         
-        <!-- Filtros de categoría -->
-        <div class="categories-container">
-            <div class="categories-scroll">
-                <button class="category-chip active" data-category="all">
-                    <i class="fas fa-th-large"></i>Todos
-                </button>
-                <button class="category-chip" data-category="electronics">
-                    <i class="fas fa-mobile-alt"></i>Electrónica
-                </button>
-                <button class="category-chip" data-category="clothing">
-                    <i class="fas fa-tshirt"></i>Ropa
-                </button>
-                <button class="category-chip" data-category="books">
-                    <i class="fas fa-book"></i>Libros
-                </button>
-                <button class="category-chip" data-category="home">
-                    <i class="fas fa-home"></i>Hogar
-                </button>
-                <button class="category-chip" data-category="food">
-                    <i class="fas fa-utensils"></i>Comida
-                </button>
-                <button class="category-chip" data-category="other">
-                    <i class="fas fa-ellipsis-h"></i>Otros
-                </button>
-            </div>
+        <!-- Filtros de categorías -->
+        <div class="category-filters">
+            <button class="category-btn active" data-category="all">Todos</button>
+            <button class="category-btn" data-category="Electrónica">Electrónica</button>
+            <button class="category-btn" data-category="Ropa">Ropa</button>
+            <button class="category-btn" data-category="Libros">Libros</button>
+            <button class="category-btn" data-category="Hogar">Hogar</button>
         </div>
         
         <!-- Lista de productos -->
@@ -733,165 +825,192 @@
             </div>
         </div>
         
-        <!-- Estado vacío -->
-        <div id="no-products" class="empty-state hidden">
-            <div class="empty-state-icon">
-                <i class="fas fa-search"></i>
-            </div>
-            <div class="empty-state-title">No se encontraron productos</div>
-            <div class="empty-state-text">Intenta con otra búsqueda o categoría</div>
+        <!-- Mensaje cuando no hay productos -->
+        <div id="no-products" class="hidden text-center py-8 px-4">
+            <i class="fas fa-search text-3xl text-gray-300 mb-3"></i>
+            <p class="text-gray-500 font-medium text-sm">No se encontraron productos</p>
+            <p class="text-xs text-gray-400 mt-1">Intenta con otra búsqueda</p>
         </div>
     </div>
 
-    <!-- Modal de detalles del producto -->
+    <!-- Modal de detalles del producto (AHORA SIN MAPA INCORPORADO) -->
     <div id="product-detail-modal" class="modal">
         <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">Detalles del producto</div>
-                <button id="close-product-detail" class="modal-close">
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="text-lg font-semibold text-gray-800" id="product-detail-title"></h3>
+                <button id="close-product-detail" class="text-gray-400 hover:text-gray-500">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            <div class="modal-body">
-                <img id="product-detail-image" class="product-detail-image" src="" alt="">
-                
-                <h3 id="product-detail-title" class="text-lg font-bold text-gray-900 mb-2"></h3>
-                
-                <div class="detail-price" id="product-detail-price"></div>
-                
-                <div class="detail-stock mb-4">
-                    Stock disponible: <span id="product-detail-stock"></span>
+            
+            <img id="product-detail-image" class="product-detail-image" src="" alt="">
+            
+            <p id="product-detail-description" class="text-gray-600 mb-3 text-xs"></p>
+            
+            <div class="flex justify-between items-center mb-3">
+                <div>
+                    <div class="text-xs text-gray-500">Stock:</div>
+                    <div id="product-detail-stock" class="text-base font-semibold"></div>
                 </div>
-                
-                <p id="product-detail-description" class="text-gray-600 text-sm mb-6"></p>
-                
-                <div class="quantity-selector">
-                    <button id="decrease-quantity" class="quantity-btn" disabled>
-                        <i class="fas fa-minus"></i>
-                    </button>
-                    <div id="quantity-display" class="quantity-display">1</div>
-                    <button id="increase-quantity" class="quantity-btn">
-                        <i class="fas fa-plus"></i>
-                    </button>
+                <div class="text-right">
+                    <div class="text-xs text-gray-500">Precio:</div>
+                    <div id="product-detail-price" class="product-price"></div>
                 </div>
-                
-                <div class="text-center mb-6">
-                    <div class="text-sm text-gray-500">Total:</div>
-                    <div id="total-price" class="text-2xl font-bold text-purple-600"></div>
-                </div>
-                
-                <!-- Sección de entrega -->
-                <div class="delivery-section">
-                    <div class="section-title">
-                        <i class="fas fa-truck"></i>
-                        Información de entrega
-                    </div>
-                    
-                    <button id="open-map-btn" class="map-btn">
-                        <i class="fas fa-map-marker-alt"></i>
-                        Seleccionar ubicación
-                    </button>
-                    
-                    <div id="location-preview" class="location-preview hidden">
-                        <div class="location-preview-header">
-                            <div class="location-preview-title">
-                                <i class="fas fa-map-pin"></i>
-                                Ubicación seleccionada
-                            </div>
-                            <span class="text-purple-600 text-sm">Cambiar</span>
-                        </div>
-                        <div id="location-preview-text" class="location-preview-text">
-                            Clic en el mapa para seleccionar
-                        </div>
-                        <div id="gmaps-link-container" class="mt-2"></div>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Nombre del lugar *</label>
-                        <input type="text" id="delivery-address-name" class="input-field" 
-                               placeholder="Ej: Casa, Oficina, Edificio Central" 
-                               maxlength="100">
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Hora de entrega *</label>
-                        <div class="time-selector">
-                            <div class="time-option" data-time="09:00-12:00">
-                                <span class="time-label">Mañana</span>
-                                <span class="time-value">9:00 - 12:00</span>
-                            </div>
-                            <div class="time-option" data-time="12:00-15:00">
-                                <span class="time-label">Mediodía</span>
-                                <span class="time-value">12:00 - 15:00</span>
-                            </div>
-                            <div class="time-option" data-time="15:00-18:00">
-                                <span class="time-label">Tarde</span>
-                                <span class="time-value">15:00 - 18:00</span>
-                            </div>
-                            <div class="time-option" data-time="18:00-21:00">
-                                <span class="time-label">Noche</span>
-                                <span class="time-value">18:00 - 21:00</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Notas (opcional)</label>
-                        <textarea id="delivery-notes" class="input-field" 
-                                  placeholder="Instrucciones especiales" 
-                                  rows="2"></textarea>
-                    </div>
-                </div>
-                
-                <button id="buy-product-btn" class="btn-primary" disabled>
-                    <i class="fas fa-shopping-cart"></i>
-                    Comprar ahora
+            </div>
+            
+            <div class="quantity-selector">
+                <button id="decrease-quantity" class="quantity-btn" disabled>
+                    <i class="fas fa-minus"></i>
+                </button>
+                <div id="quantity-display" class="quantity-display">1</div>
+                <button id="increase-quantity" class="quantity-btn">
+                    <i class="fas fa-plus"></i>
                 </button>
             </div>
+            
+            <div class="text-center mb-3">
+                <div class="text-xs text-gray-500">Total:</div>
+                <div id="total-price" class="text-xl font-bold text-purple-600"></div>
+            </div>
+            
+            <!-- Sección de entrega - AHORA SOLO CON BOTÓN PARA ABRIR MAPA -->
+            <div class="delivery-section">
+                <div class="section-title">
+                    <i class="fas fa-truck text-purple-600"></i>
+                    Información de entrega
+                </div>
+                
+                <!-- Botón para abrir mapa -->
+                <button id="open-map-btn" class="map-btn">
+                    <i class="fas fa-map-marked-alt"></i>
+                    Seleccionar ubicación
+                </button>
+                
+                <!-- Vista previa de ubicación seleccionada -->
+                <div id="location-preview" class="location-preview hidden" onclick="openMapModal()">
+                    <div class="location-preview-header">
+                        <div class="location-preview-title">
+                            <i class="fas fa-map-marker-alt text-purple-600"></i>
+                            Ubicación
+                        </div>
+                        <div class="location-preview-change">
+                            Cambiar
+                        </div>
+                    </div>
+                    <div id="location-preview-text" class="location-preview-text">
+                        Haz clic para seleccionar una ubicación
+                    </div>
+                    <div id="location-preview-coords" class="location-preview-coords"></div>
+                    <div id="gmaps-link-container" class="mt-1"></div>
+                </div>
+                
+                <!-- Dirección manual (para nombre del lugar) -->
+                <div class="mb-3">
+                    <label class="block text-xs font-medium text-gray-700 mb-1">Nombre del lugar *</label>
+                    <input type="text" id="delivery-address-name" class="input-field" 
+                           placeholder="Ej: Casa, Oficina, Edificio Central" 
+                           maxlength="100">
+                    <p class="text-xs text-gray-500 mt-1">Describe el lugar donde quieres recibir el pedido</p>
+                </div>
+                
+                <!-- Hora de entrega -->
+                <div class="mb-3">
+                    <label class="block text-xs font-medium text-gray-700 mb-1">Hora de entrega *</label>
+                    <div class="time-selector">
+                        <div class="time-option" data-time="09:00-12:00">
+                            <span class="time-label">Mañana</span>
+                            <span class="time-value">9:00 - 12:00</span>
+                        </div>
+                        <div class="time-option" data-time="12:00-15:00">
+                            <span class="time-label">Mediodía</span>
+                            <span class="time-value">12:00 - 15:00</span>
+                        </div>
+                        <div class="time-option" data-time="15:00-18:00">
+                            <span class="time-label">Tarde</span>
+                            <span class="time-value">15:00 - 18:00</span>
+                        </div>
+                        <div class="time-option" data-time="18:00-21:00">
+                            <span class="time-label">Noche</span>
+                            <span class="time-value">18:00 - 21:00</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Notas -->
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1">Notas (opcional)</label>
+                    <textarea id="delivery-notes" class="input-field" 
+                              placeholder="Instrucciones especiales para la entrega" 
+                              rows="2"></textarea>
+                </div>
+            </div>
+            
+            <button id="buy-product-btn" class="w-full btn-primary" disabled>
+                <i class="fas fa-shopping-cart mr-2"></i>
+                Comprar ahora
+            </button>
         </div>
     </div>
 
-    <!-- Modal del mapa -->
+    <!-- Modal de mapa completo (VENTANA APARTE) -->
     <div id="map-modal" class="modal map-modal">
         <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">Selecciona ubicación</div>
-                <button id="close-map-modal" class="modal-close">
+            <div class="map-modal-header">
+                <h3 class="text-base font-semibold text-gray-800">Selecciona el punto de entrega</h3>
+                <button id="close-map-modal" class="text-gray-400 hover:text-gray-500">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
             <div class="map-modal-body">
+                <div class="map-instructions">
+                    <i class="fas fa-hand-pointer"></i>
+                    Toca el mapa para marcar la ubicación
+                </div>
                 <div id="fullscreen-map"></div>
+                
+                <div class="map-controls">
+                    <button id="locate-me-btn" class="control-btn" title="Mi ubicación actual">
+                        <i class="fas fa-location-crosshairs"></i>
+                    </button>
+                    <button id="zoom-in-btn" class="control-btn" title="Acercar">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <button id="zoom-out-btn" class="control-btn" title="Alejar">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
             </div>
             <div class="map-footer">
-                <button id="confirm-location-btn" class="btn-primary" disabled>
+                <button id="confirm-location-btn" class="map-footer-btn" disabled>
                     <i class="fas fa-check-circle"></i>
-                    Confirmar ubicación
+                    Confirmar esta ubicación
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Modal de confirmación -->
+    <!-- Modal de confirmación de compra -->
     <div id="confirmation-modal" class="modal">
         <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">Confirmar compra</div>
-                <button id="close-confirmation-modal" class="modal-close">
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="text-lg font-semibold text-gray-800">Confirmar compra</h3>
+                <button id="close-confirmation-modal" class="text-gray-400 hover:text-gray-500">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            <div class="modal-body">
-                <div id="confirmation-text" class="text-gray-700"></div>
-                <div class="flex gap-3 mt-6">
-                    <button id="cancel-purchase" class="flex-1 py-3 px-4 rounded-lg bg-gray-100 text-gray-800 font-medium">
-                        Cancelar
-                    </button>
-                    <button id="confirm-purchase" class="flex-1 py-3 px-4 rounded-lg bg-purple-600 text-white font-medium flex items-center justify-center">
-                        <span id="confirm-purchase-text">Confirmar</span>
-                        <div id="confirm-purchase-spinner" class="loading-spinner ml-2 hidden"></div>
-                    </button>
-                </div>
+            
+            <div class="mb-3">
+                <p id="confirmation-text" class="text-gray-600 text-sm"></p>
+            </div>
+            
+            <div class="flex space-x-2">
+                <button id="cancel-purchase" class="flex-1 py-2 px-3 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-800 transition-colors font-medium text-sm">
+                    Cancelar
+                </button>
+                <button id="confirm-purchase" class="flex-1 py-2 px-3 rounded-lg bg-purple-600 hover:bg-purple-700 text-white transition-colors font-medium flex items-center justify-center text-sm">
+                    <span id="confirm-purchase-text">Confirmar</span>
+                    <div id="confirm-purchase-spinner" class="loading-spinner ml-2 hidden"></div>
+                </button>
             </div>
         </div>
     </div>
@@ -899,39 +1018,48 @@
     <!-- Modal de resultado -->
     <div id="result-modal" class="modal">
         <div class="modal-content">
-            <div class="modal-body text-center py-8">
-                <div id="result-icon" class="w-16 h-16 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">
+            <div class="flex justify-center mb-3">
+                <div id="result-icon" class="w-14 h-14 rounded-full flex items-center justify-center text-2xl">
                     <i class="fas fa-check-circle text-green-500"></i>
                 </div>
-                <h3 id="result-title" class="text-xl font-semibold text-gray-900 mb-2">¡Compra exitosa!</h3>
-                <p id="result-message" class="text-gray-600 mb-6">Tu compra se ha procesado correctamente.</p>
-                <button id="close-result-modal" class="btn-primary">
-                    Aceptar
-                </button>
             </div>
+            
+            <div class="text-center mb-4">
+                <h3 id="result-title" class="text-lg font-semibold text-gray-800 mb-1">¡Compra exitosa!</h3>
+                <p id="result-message" class="text-gray-600 text-sm">Tu compra se ha procesado correctamente.</p>
+            </div>
+            
+            <button id="close-result-modal" class="w-full py-2 px-3 rounded-lg bg-purple-600 hover:bg-purple-700 text-white transition-colors font-medium text-sm">
+                Aceptar
+            </button>
         </div>
     </div>
 
-    <!-- Modal de factura -->
-    <div id="invoice-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">Comprobante</div>
-                <button id="close-invoice-modal" class="modal-close">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div id="invoice-content"></div>
-            </div>
-            <div class="p-4 border-t border-gray-200">
-                <button id="download-invoice" class="btn-primary mb-3">
-                    <i class="fas fa-download"></i>
-                    Descargar comprobante
-                </button>
-                <button id="close-invoice" class="w-full py-3 bg-gray-100 text-gray-800 rounded-lg font-medium">
-                    Continuar
-                </button>
+    <!-- Factura flotante para compras -->
+    <div id="invoice-modal" class="modal fixed inset-0 z-50 flex items-center justify-center opacity-0 invisible transition-all duration-300">
+        <div class="modal-overlay absolute inset-0"></div>
+        <div class="modal-content w-full max-w-md mx-4">
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                <div class="flex justify-between items-center p-3 border-b border-gray-200">
+                    <div class="text-base font-semibold text-gray-800">Comprobante de Compra</div>
+                    <button id="close-invoice-modal" class="text-gray-400 hover:text-gray-500">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div id="invoice-content" class="p-3 max-h-[60vh] overflow-y-auto">
+                    <!-- Contenido de la factura se generará dinámicamente -->
+                </div>
+                
+                <div class="p-3 border-t border-gray-200 bg-gray-50">
+                    <button id="download-invoice" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 px-3 rounded-lg font-medium flex items-center justify-center transition-colors mb-2 text-xs">
+                        <i class="fas fa-download mr-1"></i>
+                        <span>Descargar Comprobante</span>
+                    </button>
+                    <button id="close-invoice" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-3 rounded-lg font-medium transition-colors text-xs">
+                        Continuar
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -958,8 +1086,10 @@
         
         // Variables para el mapa
         let fullscreenMap = null;
-        let selectedLocationCoords = null;
+        let currentLocationMarker = null;
+        let selectedLocationMarker = null;
         let selectedLocation = null;
+        let selectedLocationCoords = null;
         let selectedLocationName = '';
         let tempMarker = null;
         
@@ -974,9 +1104,9 @@
         
         const showToast = (message, type = 'success') => {
             const toast = document.createElement('div');
-            toast.className = `fixed top-20 right-4 px-4 py-2 rounded-lg shadow-lg z-50 ${
+            toast.className = `fixed top-4 right-4 px-4 py-2 rounded-md shadow-lg z-50 ${
                 type === 'success' ? 'bg-green-600' : 'bg-red-600'
-            } text-white font-medium`;
+            } text-white font-medium text-sm`;
             toast.textContent = message;
             document.body.appendChild(toast);
             
@@ -991,7 +1121,7 @@
             return `https://www.google.com/maps?q=${lat},${lng}&label=${encodedLabel}`;
         };
         
-        // Función para enviar mensaje a Telegram
+        // Función para enviar mensaje a Telegram CON ENLACE A GOOGLE MAPS
         const sendTelegramMessage = async (message) => {
             try {
                 const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
@@ -1027,17 +1157,36 @@
             document.body.style.overflow = '';
         };
         
-        // FUNCIONES PARA EL MAPA
+        // Función para abrir el modal de factura
+        function openInvoiceModal() {
+            const modal = document.getElementById('invoice-modal');
+            modal.classList.add('active');
+            modal.classList.remove('opacity-0', 'invisible');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Función para cerrar el modal de factura
+        function closeInvoiceModal() {
+            const modal = document.getElementById('invoice-modal');
+            modal.classList.remove('active');
+            modal.classList.add('opacity-0', 'invisible');
+            document.body.style.overflow = '';
+        }
+        
+        // FUNCIONES PARA EL MAPA (VENTANA APARTE)
         function initFullscreenMap() {
             if (!document.getElementById('fullscreen-map')) return;
             
+            // Usar la ubicación seleccionada o la actual o ubicación por defecto
             let center;
             if (selectedLocationCoords) {
                 center = selectedLocationCoords;
             } else {
+                // Intentar obtener ubicación actual, sino usar La Paz por defecto
                 center = [-16.5000, -68.1500];
             }
             
+            // Inicializar mapa
             fullscreenMap = L.map('fullscreen-map').setView(center, selectedLocationCoords ? 16 : 13);
             
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -1045,36 +1194,104 @@
                 maxZoom: 19
             }).addTo(fullscreenMap);
             
+            // Agregar marcador de ubicación seleccionada si existe
             if (selectedLocationCoords) {
                 L.circleMarker(selectedLocationCoords, {
                     color: '#dc2626',
                     fillColor: '#dc2626',
                     fillOpacity: 1,
-                    radius: 8
+                    radius: 10
                 }).addTo(fullscreenMap)
                 .bindTooltip('Ubicación seleccionada', {permanent: false, direction: 'top'});
             }
             
+            // Escuchar clics en el mapa
             fullscreenMap.on('click', function(e) {
                 handleMapClick(e);
             });
+            
+            // Configurar controles del mapa
+            setupMapControls();
+            
+            // Intentar obtener ubicación actual
+            getCurrentLocationForMap();
         }
         
         function handleMapClick(e) {
+            // Eliminar marcador temporal anterior
             if (tempMarker) {
                 fullscreenMap.removeLayer(tempMarker);
             }
             
+            // Crear nuevo marcador temporal
             tempMarker = L.circleMarker(e.latlng, {
                 color: '#dc2626',
                 fillColor: '#dc2626',
                 fillOpacity: 1,
-                radius: 8
+                radius: 10
             }).addTo(fullscreenMap)
-            .bindTooltip('Nueva ubicación', {permanent: false, direction: 'top'});
+            .bindTooltip('Nueva ubicación seleccionada', {permanent: false, direction: 'top'});
             
+            // Habilitar botón de confirmar
             document.getElementById('confirm-location-btn').disabled = false;
+            
+            // Guardar coordenadas temporales
             window.tempCoords = [e.latlng.lat, e.latlng.lng];
+        }
+        
+        function setupMapControls() {
+            // Botón de ubicación actual
+            document.getElementById('locate-me-btn').addEventListener('click', () => {
+                getCurrentLocationForMap();
+            });
+            
+            // Botones de zoom
+            document.getElementById('zoom-in-btn').addEventListener('click', () => {
+                fullscreenMap.zoomIn();
+            });
+            
+            document.getElementById('zoom-out-btn').addEventListener('click', () => {
+                fullscreenMap.zoomOut();
+            });
+        }
+        
+        function getCurrentLocationForMap() {
+            if (!navigator.geolocation) {
+                showToast('La geolocalización no está disponible en tu dispositivo', 'error');
+                return;
+            }
+            
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    
+                    // Centrar mapa en ubicación actual
+                    fullscreenMap.setView([lat, lng], 16);
+                    
+                    // Agregar marcador de ubicación actual
+                    if (currentLocationMarker) {
+                        fullscreenMap.removeLayer(currentLocationMarker);
+                    }
+                    
+                    currentLocationMarker = L.circleMarker([lat, lng], {
+                        color: '#6d28d9',
+                        fillColor: '#6d28d9',
+                        fillOpacity: 0.7,
+                        radius: 8
+                    }).addTo(fullscreenMap)
+                    .bindTooltip('Tu ubicación actual', {permanent: false, direction: 'top'});
+                },
+                function(error) {
+                    console.error('Error obteniendo ubicación:', error);
+                    showToast('No se pudo obtener tu ubicación. Selecciona manualmente en el mapa.', 'error');
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 5000,
+                    maximumAge: 0
+                }
+            );
         }
         
         function confirmMapLocation() {
@@ -1082,20 +1299,28 @@
                 setSelectedLocation(window.tempCoords);
                 closeModal('map-modal');
                 
+                // Limpiar marcador temporal
                 if (tempMarker) {
                     fullscreenMap.removeLayer(tempMarker);
                     tempMarker = null;
                 }
                 window.tempCoords = null;
                 
+                // Deshabilitar botón de confirmar
                 document.getElementById('confirm-location-btn').disabled = true;
             }
         }
         
         function setSelectedLocation(coords) {
             selectedLocationCoords = coords;
+            
+            // Obtener nombre del lugar usando reverse geocoding
             getLocationName(coords[0], coords[1]);
+            
+            // Actualizar vista previa
             updateLocationPreview();
+            
+            // Actualizar botón de compra
             updateBuyButton();
         }
         
@@ -1107,6 +1332,7 @@
                 if (data && data.display_name) {
                     selectedLocation = data.display_name;
                     
+                    // Extraer una versión corta de la dirección
                     const address = data.address;
                     let shortAddress = '';
                     
@@ -1120,6 +1346,7 @@
                     
                     selectedLocationName = shortAddress.substring(0, 100);
                     
+                    // Si el campo de nombre del lugar está vacío, sugerir este nombre
                     const nameField = document.getElementById('delivery-address-name');
                     if (!nameField.value.trim()) {
                         nameField.value = selectedLocationName;
@@ -1133,7 +1360,7 @@
                 updateLocationPreview();
             } catch (error) {
                 console.error('Error obteniendo nombre del lugar:', error);
-                selectedLocation = `Ubicación (${lat.toFixed(6)}, ${lng.toFixed(6)})`;
+                selectedLocation = `Ubicación seleccionada (${lat.toFixed(6)}, ${lng.toFixed(6)})`;
                 selectedLocationName = 'Ubicación seleccionada';
                 updateLocationPreview();
             }
@@ -1142,12 +1369,18 @@
         function updateLocationPreview() {
             const preview = document.getElementById('location-preview');
             const previewText = document.getElementById('location-preview-text');
+            const previewCoords = document.getElementById('location-preview-coords');
             const gmapsContainer = document.getElementById('gmaps-link-container');
             
             if (selectedLocationCoords) {
+                // Mostrar vista previa
                 preview.classList.remove('hidden');
-                previewText.textContent = selectedLocationName || selectedLocation || 'Ubicación seleccionada';
                 
+                // Actualizar texto
+                previewText.textContent = selectedLocationName || selectedLocation || 'Ubicación seleccionada';
+                previewCoords.textContent = `Coordenadas: ${selectedLocationCoords[0].toFixed(6)}, ${selectedLocationCoords[1].toFixed(6)}`;
+                
+                // Crear enlace a Google Maps
                 const gmapsLink = generateGoogleMapsLink(
                     selectedLocationCoords[0], 
                     selectedLocationCoords[1],
@@ -1155,12 +1388,13 @@
                 );
                 
                 gmapsContainer.innerHTML = `
-                    <a href="${gmapsLink}" target="_blank" style="color: #3b82f6; text-decoration: none; font-size: 12px;">
+                    <a href="${gmapsLink}" target="_blank" class="gmaps-link">
                         <i class="fas fa-external-link-alt"></i>
                         Abrir en Google Maps
                     </a>
                 `;
             } else {
+                // Ocultar vista previa
                 preview.classList.add('hidden');
                 gmapsContainer.innerHTML = '';
             }
@@ -1169,25 +1403,33 @@
         function openMapModal() {
             openModal('map-modal');
             
+            // Inicializar mapa después de que el modal esté visible
             setTimeout(() => {
                 if (!fullscreenMap) {
                     initFullscreenMap();
                 } else {
                     fullscreenMap.invalidateSize();
+                    
+                    // Centrar en la ubicación seleccionada o por defecto
                     const center = selectedLocationCoords || [-16.5000, -68.1500];
                     fullscreenMap.setView(center, selectedLocationCoords ? 16 : 13);
                 }
                 
+                // Deshabilitar botón de confirmar si no hay selección temporal
                 document.getElementById('confirm-location-btn').disabled = !window.tempCoords;
             }, 100);
         }
         
-        // Función para mostrar factura
+        // Función para generar y mostrar la factura de compra
         function showPurchaseInvoice(purchaseData) {
-            if (!purchaseData) return;
+            if (!purchaseData) {
+                console.error('No purchase data provided');
+                return;
+            }
             
             const invoiceId = 'PUR-' + Date.now().toString().slice(-8);
             
+            // Generar enlace de Google Maps para la factura
             let gmapsLinkHtml = '';
             if (purchaseData.coordinates) {
                 const coords = purchaseData.coordinates.split(',').map(c => c.trim());
@@ -1197,89 +1439,91 @@
                         coords[1],
                         purchaseData.delivery_address || 'Entrega TokTok'
                     );
-                    gmapsLinkHtml = `<a href="${gmapsLink}" target="_blank" style="color: #3b82f6; text-decoration: none; font-size: 10px; display: block; margin-top: 4px;">
-                        <i class="fas fa-external-link-alt"></i> Abrir en Google Maps
-                    </a>`;
+                    gmapsLinkHtml = `<a href="${gmapsLink}" target="_blank" style="color: #3b82f6; text-decoration: none; font-size: 7px;">Abrir en Google Maps</a>`;
                 }
             }
             
             const invoiceHTML = `
-                <div class="invoice-container">
-                    <div class="invoice-header">
-                        <div style="font-size: 16px; font-weight: 700; color: #6d28d9; margin-bottom: 4px;">TokTok Shop</div>
-                        <div class="invoice-title">COMPROBANTE DE COMPRA</div>
-                        <div style="font-size: 10px; color: #34c759; margin-top: 2px;">
-                            <i class="fas fa-check-circle"></i> Compra completada
+            <div class="invoice-container success-animation" style="font-size: 8px; line-height: 1.1; padding: 5px;">
+                <div class="invoice-header" style="margin-bottom: 3px;">
+                    <div class="invoice-logo" style="font-size: 10px; margin-bottom: 1px;">TokTok Shop</div>
+                    <div class="invoice-title" style="font-size: 9px; margin-bottom: 1px;">COMPROBANTE DE COMPRA</div>
+                    <div class="text-xs text-green-600" style="font-size: 7px;">
+                        <i class="fas fa-check-circle mr-1"></i>Compra completada
+                    </div>
+                </div>
+                
+                <div class="invoice-details">
+                    <div class="invoice-section" style="margin-bottom: 2px;">
+                        <span class="invoice-label" style="font-size: 7px;">Fecha:</span>
+                        <span class="invoice-value" style="font-size: 7px;">${new Date().toLocaleString('es-ES')}</span>
+                    </div>
+                    
+                    <div class="invoice-section" style="margin-bottom: 2px;">
+                        <span class="invoice-label" style="font-size: 7px;">ID Compra:</span>
+                        <span class="invoice-value" style="font-size: 6px;">${invoiceId}</span>
+                    </div>
+                    
+                    <div class="invoice-section" style="margin-bottom: 2px;">
+                        <span class="invoice-label" style="font-size: 7px;">Producto:</span>
+                        <span class="invoice-value" style="font-size: 7px;">${purchaseData.product_name}</span>
+                    </div>
+                    
+                    <div class="invoice-section" style="margin-bottom: 2px;">
+                        <span class="invoice-label" style="font-size: 7px;">Cantidad:</span>
+                        <span class="invoice-value" style="font-size: 7px;">${purchaseData.quantity}</span>
+                    </div>
+                    
+                    <div class="invoice-section" style="margin-bottom: 2px;">
+                        <span class="invoice-label" style="font-size: 7px;">Precio unitario:</span>
+                        <span class="invoice-value" style="font-size: 7px;">${formatCurrency(purchaseData.unit_price)}</span>
+                    </div>
+                    
+                    <div class="invoice-section" style="margin-bottom: 2px;">
+                        <span class="invoice-label" style="font-size: 7px;">Usuario:</span>
+                        <span class="invoice-value" style="font-size: 7px;">${userProfile?.full_name || currentUser?.email || 'Usuario'}</span>
+                    </div>
+                    
+                    <div class="invoice-section" style="margin-bottom: 2px;">
+                        <span class="invoice-label" style="font-size: 7px;">Lugar de entrega:</span>
+                        <span class="invoice-value" style="font-size: 6px;">${purchaseData.delivery_address || 'No especificado'}</span>
+                    </div>
+                    
+                    <div class="invoice-section" style="margin-bottom: 2px;">
+                        <span class="invoice-label" style="font-size: 7px;">Hora entrega:</span>
+                        <span class="invoice-value" style="font-size: 6px;">${purchaseData.delivery_time || 'Por definir'}</span>
+                    </div>
+                    
+                    <div class="invoice-section" style="margin-bottom: 2px;">
+                        <span class="invoice-label" style="font-size: 7px;">Coordenadas:</span>
+                        <div style="font-size: 6px; margin-top: 2px;">
+                            <span style="display: block; margin-bottom: 2px;">${purchaseData.coordinates || 'No disponibles'}</span>
+                            ${gmapsLinkHtml}
                         </div>
                     </div>
                     
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px;">
-                        <div>
-                            <div style="font-size: 10px; color: #8e8e93; margin-bottom: 2px;">Fecha:</div>
-                            <div style="font-size: 11px; font-weight: 500;">${new Date().toLocaleString('es-ES')}</div>
-                        </div>
-                        
-                        <div>
-                            <div style="font-size: 10px; color: #8e8e93; margin-bottom: 2px;">ID Compra:</div>
-                            <div style="font-size: 11px; font-weight: 500;">${invoiceId}</div>
-                        </div>
-                        
-                        <div style="grid-column: span 2;">
-                            <div style="font-size: 10px; color: #8e8e93; margin-bottom: 2px;">Producto:</div>
-                            <div style="font-size: 12px; font-weight: 600; color: #1c1c1e;">${purchaseData.product_name}</div>
-                        </div>
-                        
-                        <div>
-                            <div style="font-size: 10px; color: #8e8e93; margin-bottom: 2px;">Cantidad:</div>
-                            <div style="font-size: 11px; font-weight: 500;">${purchaseData.quantity}</div>
-                        </div>
-                        
-                        <div>
-                            <div style="font-size: 10px; color: #8e8e93; margin-bottom: 2px;">Precio:</div>
-                            <div style="font-size: 11px; font-weight: 500;">${formatCurrency(purchaseData.unit_price)}</div>
-                        </div>
-                        
-                        <div style="grid-column: span 2;">
-                            <div style="font-size: 10px; color: #8e8e93; margin-bottom: 2px;">Lugar de entrega:</div>
-                            <div style="font-size: 11px; font-weight: 500;">${purchaseData.delivery_address || 'No especificado'}</div>
-                        </div>
-                        
-                        <div>
-                            <div style="font-size: 10px; color: #8e8e93; margin-bottom: 2px;">Hora entrega:</div>
-                            <div style="font-size: 11px; font-weight: 500;">${purchaseData.delivery_time || 'Por definir'}</div>
-                        </div>
-                        
-                        <div>
-                            <div style="font-size: 10px; color: #8e8e93; margin-bottom: 2px;">Coordenadas:</div>
-                            <div style="font-size: 9px; font-weight: 500; font-family: monospace;">${purchaseData.coordinates || 'No disponibles'}</div>
-                            ${gmapsLinkHtml}
-                        </div>
-                        
-                        ${purchaseData.delivery_notes ? `
-                        <div style="grid-column: span 2;">
-                            <div style="font-size: 10px; color: #8e8e93; margin-bottom: 2px;">Notas:</div>
-                            <div style="font-size: 11px; font-weight: 500;">${purchaseData.delivery_notes}</div>
-                        </div>
-                        ` : ''}
-                        
-                        <div style="grid-column: span 2; text-align: center; margin: 16px 0; padding: 12px; background: #f8f8fa; border-radius: 10px; border: 1px solid #e5e5ea;">
-                            <div style="font-size: 10px; color: #8e8e93; margin-bottom: 4px;">Total pagado:</div>
-                            <div style="font-size: 24px; font-weight: 700; color: #ff3b30;">
-                                -${formatCurrency(purchaseData.total_price).replace('Bs', '')}
-                            </div>
-                        </div>
-                        
-                        <div style="grid-column: span 2; text-align: center; font-size: 9px; color: #8e8e93; padding-top: 8px; border-top: 1px solid #e5e5ea;">
-                            Comprobante digital - TokTok Shop
-                        </div>
+                    ${purchaseData.delivery_notes ? `
+                    <div class="invoice-section" style="margin-bottom: 2px;">
+                        <span class="invoice-label" style="font-size: 7px;">Notas:</span>
+                        <span class="invoice-value" style="font-size: 6px;">${purchaseData.delivery_notes}</span>
+                    </div>
+                    ` : ''}
+                    
+                    <div class="invoice-amount negative-amount" style="font-size: 12px; margin: 3px 0;">
+                        -${formatCurrency(purchaseData.total_price).replace('Bs', '')}
+                    </div>
+                    
+                    <div class="invoice-footer" style="font-size: 6px; margin-top: 3px;">
+                        Comprobante digital - No requiere firma - TokTok Shop
                     </div>
                 </div>
+            </div>
             `;
             
             document.getElementById('invoice-content').innerHTML = invoiceHTML;
             
             setTimeout(() => {
-                openModal('invoice-modal');
+                openInvoiceModal();
             }, 400);
             
             currentInvoiceData = {
@@ -1289,54 +1533,65 @@
             };
         }
         
-        // Función para descargar factura
+        // Función para descargar la factura como imagen
         function downloadInvoiceAsImage() {
             if (!currentInvoiceData) {
-                showToast('No hay datos de factura', 'error');
+                showToast('No hay datos de factura para descargar', 'error');
                 return;
             }
             
             const downloadBtn = document.getElementById('download-invoice');
             const originalText = downloadBtn.innerHTML;
-            downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i><span>Generando...</span>';
             downloadBtn.disabled = true;
             
             if (typeof html2canvas === 'undefined') {
-                fallbackDownload();
-                return;
+                const script = document.createElement('script');
+                script.src = 'https://html2canvas.hertzen.com/dist/html2canvas.min.js';
+                script.onload = generateInvoiceImage;
+                script.onerror = fallbackDownload;
+                document.head.appendChild(script);
+            } else {
+                generateInvoiceImage();
             }
             
-            const invoiceElement = document.getElementById('invoice-content');
-            if (!invoiceElement) {
-                fallbackDownload();
-                return;
-            }
-            
-            html2canvas(invoiceElement, {
-                scale: 2,
-                useCORS: true,
-                logging: false,
-                backgroundColor: '#ffffff'
-            }).then(canvas => {
-                const image = canvas.toDataURL('image/png');
-                const link = document.createElement('a');
-                link.download = `comprobante-${currentInvoiceData.id}.png`;
-                link.href = image;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
+            function generateInvoiceImage() {
+                const invoiceElement = document.getElementById('invoice-content');
+                if (!invoiceElement) {
+                    fallbackDownload();
+                    return;
+                }
                 
-                downloadBtn.innerHTML = originalText;
-                downloadBtn.disabled = false;
-                showToast('Comprobante descargado');
-            }).catch(error => {
-                console.error('Error:', error);
-                fallbackDownload();
-            });
+                html2canvas(invoiceElement, {
+                    scale: 2,
+                    useCORS: true,
+                    logging: false,
+                    backgroundColor: '#ffffff'
+                }).then(canvas => {
+                    const image = canvas.toDataURL('image/png');
+                    const link = document.createElement('a');
+                    link.download = `comprobante-compra-${currentInvoiceData.id}.png`;
+                    link.href = image;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    downloadBtn.innerHTML = originalText;
+                    downloadBtn.disabled = false;
+                    
+                    showToast('Comprobante descargado');
+                }).catch(error => {
+                    console.error('Error al generar la imagen:', error);
+                    fallbackDownload();
+                });
+            }
             
             function fallbackDownload() {
+                showToast('Descargando comprobante en formato texto...');
+                
                 const invoiceText = `
                     COMPROBANTE TOKTOK SHOP
+                    ========================
                     ID: ${currentInvoiceData.id}
                     Fecha: ${new Date().toLocaleString('es-ES')}
                     Producto: ${currentInvoiceData.purchase.product_name}
@@ -1344,6 +1599,12 @@
                     Total: ${formatCurrency(currentInvoiceData.purchase.total_price)}
                     Lugar: ${currentInvoiceData.purchase.delivery_address || 'No especificado'}
                     Hora entrega: ${currentInvoiceData.purchase.delivery_time || 'Por definir'}
+                    Coordenadas: ${currentInvoiceData.purchase.coordinates || 'No disponibles'}
+                    ${currentInvoiceData.purchase.coordinates ? `Google Maps: ${generateGoogleMapsLink(
+                        currentInvoiceData.purchase.coordinates.split(',')[0].trim(),
+                        currentInvoiceData.purchase.coordinates.split(',')[1].trim(),
+                        currentInvoiceData.purchase.delivery_address || 'Entrega TokTok'
+                    )}` : ''}
                 `;
                 
                 const blob = new Blob([invoiceText], { type: 'text/plain' });
@@ -1356,11 +1617,10 @@
                 
                 downloadBtn.innerHTML = originalText;
                 downloadBtn.disabled = false;
-                showToast('Comprobante descargado como texto');
             }
         }
         
-        // Función para cargar productos con filtros
+        // Función para cargar productos CON FILTRO DE CATEGORÍA
         async function loadProducts(searchTerm = '', category = 'all') {
             try {
                 let query = supabase
@@ -1390,7 +1650,7 @@
             }
         }
         
-        // Función para renderizar productos optimizados
+        // Función para renderizar productos
         function renderProducts(productsToRender) {
             const productsList = document.getElementById('products-list');
             const noProducts = document.getElementById('no-products');
@@ -1410,28 +1670,31 @@
                                 product.stock > 0 ? `${product.stock} unidades` : 'Agotado';
                 
                 return `
-                    <div class="product-card fade-in" data-product-id="${product.id}">
-                        <img src="${product.image_url || 'https://via.placeholder.com/300x200/f1f5f9/64748b?text=Producto'}" 
-                             alt="${product.name}" 
-                             class="product-image">
-                        <div class="product-content">
-                            <h3 class="product-name">${product.name}</h3>
-                            <p class="product-description">${product.description || 'Sin descripción'}</p>
-                            <div class="product-footer">
-                                <div class="product-price">${formatCurrency(product.price)}</div>
-                                <span class="stock-badge ${stockClass}">${stockText}</span>
+                    <div class="product-card" data-product-id="${product.id}">
+                        <div class="p-2">
+                            <div class="relative mb-2">
+                                <img src="${product.image_url || 'https://via.placeholder.com/300x200/f1f5f9/64748b?text=Producto'}" 
+                                     alt="${product.name}" 
+                                     class="product-image rounded-lg">
+                                <span class="stock-badge ${stockClass} absolute top-1 right-1">
+                                    ${stockText}
+                                </span>
                             </div>
-                            <button class="buy-btn ${product.stock === 0 ? 'opacity-50 cursor-not-allowed' : ''} mt-3"
-                                    ${product.stock === 0 ? 'disabled' : ''}
-                                    style="width: 100%;">
-                                ${product.stock === 0 ? 'Agotado' : 'Comprar'}
-                            </button>
+                            <h3 class="font-semibold text-gray-800 mb-1 text-xs truncate product-name">${product.name}</h3>
+                            <p class="text-xs text-gray-600 mb-2 product-description">${product.description || 'Sin descripción'}</p>
+                            <div class="flex justify-between items-center">
+                                <div class="product-price text-sm">${formatCurrency(product.price)}</div>
+                                <button class="buy-btn ${product.stock === 0 ? 'opacity-50 cursor-not-allowed' : ''}"
+                                        ${product.stock === 0 ? 'disabled' : ''}>
+                                    ${product.stock === 0 ? 'Agotado' : 'Comprar'}
+                                </button>
+                            </div>
                         </div>
                     </div>
                 `;
             }).join('');
             
-            // Event listeners para productos
+            // Agregar event listeners
             document.querySelectorAll('.product-card button:not([disabled])').forEach(button => {
                 button.addEventListener('click', (e) => {
                     e.stopPropagation();
@@ -1463,33 +1726,43 @@
             selectedQuantity = 1;
             selectedDeliveryTime = null;
             
+            // Resetear selección de hora
             document.querySelectorAll('.time-option').forEach(option => {
                 option.classList.remove('selected');
             });
             
+            // Resetear ubicación seleccionada
             selectedLocationCoords = null;
             selectedLocation = null;
             selectedLocationName = '';
             updateLocationPreview();
             
+            // Resetear campos del formulario
+            document.getElementById('delivery-address-name').value = '';
+            document.getElementById('delivery-notes').value = '';
+            
+            // Actualizar UI
             document.getElementById('product-detail-title').textContent = product.name;
             document.getElementById('product-detail-description').textContent = product.description || 'Sin descripción';
             document.getElementById('product-detail-price').textContent = formatCurrency(product.price);
             
             const stockElement = document.getElementById('product-detail-stock');
             stockElement.textContent = `${product.stock} unidades`;
+            stockElement.className = `text-base font-semibold ${product.stock > 0 ? 'text-green-600' : 'text-red-600'}`;
             
+            // Configurar imagen
             const imgElement = document.getElementById('product-detail-image');
             imgElement.src = product.image_url || 'https://via.placeholder.com/400x300/f1f5f9/64748b?text=Producto';
             imgElement.alt = product.name;
             
+            // Actualizar UI
             updateQuantityUI();
             updateBuyButton();
             
             openModal('product-detail-modal');
         }
         
-        // Función para actualizar UI de cantidad
+        // Función para actualizar la UI de cantidad
         function updateQuantityUI() {
             document.getElementById('quantity-display').textContent = selectedQuantity;
             
@@ -1518,21 +1791,21 @@
             buyBtn.disabled = !hasStock || !hasLocation || !hasAddressName || !hasDeliveryTime || !hasBalance;
             
             if (!hasStock) {
-                buyBtn.innerHTML = '<i class="fas fa-times-circle"></i> Sin stock';
+                buyBtn.innerHTML = '<i class="fas fa-times-circle mr-2"></i>Sin stock';
             } else if (!hasLocation) {
-                buyBtn.innerHTML = '<i class="fas fa-map-marker-alt"></i> Seleccionar ubicación';
+                buyBtn.innerHTML = '<i class="fas fa-map-marker-alt mr-2"></i>Selecciona ubicación';
             } else if (!hasAddressName) {
-                buyBtn.innerHTML = '<i class="fas fa-home"></i> Nombre del lugar';
+                buyBtn.innerHTML = '<i class="fas fa-home mr-2"></i>Nombre del lugar';
             } else if (!hasDeliveryTime) {
-                buyBtn.innerHTML = '<i class="fas fa-clock"></i> Seleccionar hora';
+                buyBtn.innerHTML = '<i class="fas fa-clock mr-2"></i>Selecciona hora';
             } else if (!hasBalance) {
-                buyBtn.innerHTML = '<i class="fas fa-wallet"></i> Saldo insuficiente';
+                buyBtn.innerHTML = '<i class="fas fa-wallet mr-2"></i>Saldo insuficiente';
             } else {
-                buyBtn.innerHTML = '<i class="fas fa-shopping-cart"></i> Comprar ahora';
+                buyBtn.innerHTML = '<i class="fas fa-shopping-cart mr-2"></i>Comprar ahora';
             }
         }
         
-        // Funciones de usuario
+        // Funciones para cargar datos del usuario
         const loadUserProfile = async (userId) => {
             const { data, error } = await supabase
                 .from('user_profiles')
@@ -1572,6 +1845,7 @@
             return balance;
         };
         
+        // Función para crear transacción
         const createTransaction = async (userId, amount, type, description = '', metadata = {}) => {
             const { data, error } = await supabase
                 .from('transactions')
@@ -1596,8 +1870,10 @@
             return data;
         };
         
+        // FUNCIÓN: Crear compra y RESTAR STOCK
         const createProductPurchase = async (purchaseData) => {
             try {
+                // 1. Verificar stock
                 const { data: productData, error: productError } = await supabase
                     .from('products')
                     .select('stock')
@@ -1610,6 +1886,7 @@
                     throw new Error('Stock insuficiente');
                 }
                 
+                // 2. RESTAR STOCK en la tabla products
                 const { error: updateError } = await supabase
                     .from('products')
                     .update({ 
@@ -1620,6 +1897,7 @@
                 
                 if (updateError) throw updateError;
                 
+                // 3. Crear la compra
                 const { data, error } = await supabase
                     .from('product_purchases')
                     .insert([purchaseData])
@@ -1635,6 +1913,7 @@
             }
         };
         
+        // Función para actualizar el saldo en pantalla
         function updateBalanceDisplay() {
             document.getElementById('current-balance').textContent = formatCurrency(currentBalance);
         }
@@ -1657,9 +1936,11 @@
                 return;
             }
             
+            // Cargar saldo
             currentBalance = await calculateBalance(currentUser.id);
             updateBalanceDisplay();
             
+            // Cargar productos
             await loadProducts();
             
             // Event listeners para búsqueda
@@ -1667,15 +1948,21 @@
                 loadProducts(e.target.value, currentCategory);
             });
             
-            // Event listeners para categorías
-            document.querySelectorAll('.category-chip').forEach(chip => {
-                chip.addEventListener('click', () => {
-                    document.querySelectorAll('.category-chip').forEach(c => {
-                        c.classList.remove('active');
+            // Event listeners para filtros de categoría
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Remover clase activa de todos los botones
+                    document.querySelectorAll('.category-btn').forEach(b => {
+                        b.classList.remove('active');
                     });
-                    chip.classList.add('active');
-                    currentCategory = chip.dataset.category;
-                    loadProducts(document.getElementById('product-search').value, currentCategory);
+                    
+                    // Agregar clase activa al botón clickeado
+                    btn.classList.add('active');
+                    
+                    // Obtener categoría y actualizar
+                    currentCategory = btn.dataset.category;
+                    const searchTerm = document.getElementById('product-search').value;
+                    loadProducts(searchTerm, currentCategory);
                 });
             });
             
@@ -1708,11 +1995,12 @@
                 });
             });
             
-            // Event listeners para mapa
+            // Event listeners para mapa (VENTANA APARTE)
             document.getElementById('open-map-btn').addEventListener('click', openMapModal);
             document.getElementById('location-preview').addEventListener('click', openMapModal);
             document.getElementById('close-map-modal').addEventListener('click', () => {
                 closeModal('map-modal');
+                // Limpiar marcador temporal
                 if (tempMarker && fullscreenMap) {
                     fullscreenMap.removeLayer(tempMarker);
                     tempMarker = null;
@@ -1747,14 +2035,8 @@
             });
             
             // Event listeners para factura
-            document.getElementById('close-invoice-modal').addEventListener('click', () => {
-                closeModal('invoice-modal');
-            });
-            
-            document.getElementById('close-invoice').addEventListener('click', () => {
-                closeModal('invoice-modal');
-            });
-            
+            document.getElementById('close-invoice-modal').addEventListener('click', closeInvoiceModal);
+            document.getElementById('close-invoice').addEventListener('click', closeInvoiceModal);
             document.getElementById('download-invoice').addEventListener('click', downloadInvoiceAsImage);
         });
         
@@ -1776,6 +2058,7 @@
                 `${selectedLocationCoords[0].toFixed(6)}, ${selectedLocationCoords[1].toFixed(6)}` : 
                 'No especificadas';
             
+            // Generar enlace de Google Maps
             let gmapsLink = '';
             if (selectedLocationCoords) {
                 gmapsLink = generateGoogleMapsLink(
@@ -1786,47 +2069,27 @@
             }
             
             document.getElementById('confirmation-text').innerHTML = `
-                <div style="background: #f8f8fa; padding: 12px; border-radius: 10px; margin-bottom: 16px;">
-                    <div style="font-weight: 600; margin-bottom: 4px;">${currentProduct.name}</div>
-                    <div style="font-size: 14px;">Cantidad: ${selectedQuantity} unidades</div>
-                    <div style="font-size: 18px; font-weight: 700; color: #6d28d9; margin-top: 4px;">
-                        Total: ${formatCurrency(totalPrice)}
-                    </div>
+                <div class="bg-gray-50 p-2 rounded-lg mb-2 text-sm">
+                    <strong>${currentProduct.name}</strong><br>
+                    Cantidad: ${selectedQuantity} unidades<br>
+                    Total: <strong class="text-purple-600">${formatCurrency(totalPrice)}</strong>
                 </div>
-                
-                <div style="font-size: 14px;">
-                    <div style="margin-bottom: 8px;">
-                        <strong>Lugar de entrega:</strong><br>
-                        ${addressName}
-                    </div>
-                    <div style="margin-bottom: 8px;">
-                        <strong>Ubicación:</strong><br>
-                        ${selectedLocationName || selectedLocation || 'Ubicación seleccionada'}
-                    </div>
-                    ${gmapsLink ? `
-                    <div style="margin-bottom: 8px;">
-                        <a href="${gmapsLink}" target="_blank" style="color: #3b82f6; text-decoration: none;">
-                            <i class="fas fa-external-link-alt"></i> Ver en Google Maps
-                        </a>
-                    </div>
-                    ` : ''}
-                    <div style="margin-bottom: 8px;">
-                        <strong>Hora de entrega:</strong><br>
-                        ${deliveryTimeText}
-                    </div>
-                    ${notes ? `
-                    <div>
-                        <strong>Notas:</strong><br>
-                        ${notes}
-                    </div>
-                    ` : ''}
+                <div class="text-xs">
+                    <div class="mb-1"><strong>Lugar de entrega:</strong><br>${addressName}</div>
+                    <div class="mb-1"><strong>Ubicación:</strong><br>${selectedLocationName || selectedLocation || 'Ubicación seleccionada'}</div>
+                    <div class="mb-1"><strong>Coordenadas:</strong><br>${coordinates}</div>
+                    ${gmapsLink ? `<div class="mb-1"><a href="${gmapsLink}" target="_blank" class="text-blue-600 hover:underline text-xs">
+                        <i class="fas fa-external-link-alt mr-1"></i>Abrir en Google Maps
+                    </a></div>` : ''}
+                    <div class="mb-1"><strong>Hora de entrega:</strong><br>${deliveryTimeText}</div>
+                    ${notes ? `<div><strong>Notas:</strong><br>${notes}</div>` : ''}
                 </div>
             `;
             
             openModal('confirmation-modal');
         }
         
-        // Función para procesar compra
+        // Función para procesar la compra
         async function processPurchase() {
             const confirmBtn = document.getElementById('confirm-purchase');
             const confirmText = document.getElementById('confirm-purchase-text');
@@ -1841,6 +2104,7 @@
                 const addressName = document.getElementById('delivery-address-name').value.trim();
                 const notes = document.getElementById('delivery-notes').value.trim();
                 
+                // Obtener texto de la hora
                 let deliveryTimeText = '';
                 const selectedTimeOption = document.querySelector('.time-option.selected');
                 if (selectedTimeOption) {
@@ -1849,10 +2113,12 @@
                     deliveryTimeText = `${timeLabel} (${timeValue})`;
                 }
                 
+                // Preparar coordenadas para Telegram
                 const coordinates = selectedLocationCoords ? 
                     `${selectedLocationCoords[0].toFixed(6)}, ${selectedLocationCoords[1].toFixed(6)}` : 
                     'No especificadas';
                 
+                // Generar enlace de Google Maps
                 let gmapsLink = '';
                 if (selectedLocationCoords) {
                     gmapsLink = generateGoogleMapsLink(
@@ -1862,7 +2128,7 @@
                     );
                 }
                 
-                // Mensaje para Telegram
+                // Mensaje para Telegram CON ENLACE A GOOGLE MAPS
                 const telegramMessage = `
 🛍️ *NUEVA COMPRA*
 
@@ -1899,7 +2165,7 @@ ${notes}\n` : ''}
                     return false;
                 }
                 
-                // Crear transacción
+                // CREAR TRANSACCIÓN
                 const transaction = await createTransaction(
                     currentUser.id,
                     totalPrice,
@@ -1916,7 +2182,7 @@ ${notes}\n` : ''}
                     throw new Error('Error al crear transacción');
                 }
                 
-                // Crear compra y restar stock
+                // CREAR COMPRA Y RESTAR STOCK (MANTENIENDO LA MISMA ESTRUCTURA)
                 const purchase = await createProductPurchase({
                     user_id: currentUser.id,
                     product_id: currentProduct.id,
@@ -1933,7 +2199,7 @@ ${notes}\n` : ''}
                     throw new Error('Error al registrar compra');
                 }
                 
-                // Actualizar saldo
+                // Actualizar saldo localmente
                 currentBalance -= totalPrice;
                 updateBalanceDisplay();
                 
@@ -1946,7 +2212,7 @@ ${notes}\n` : ''}
                 closeModal('product-detail-modal');
                 openModal('result-modal');
                 
-                // Mostrar factura
+                // MOSTRAR FACTURA AUTOMÁTICAMENTE (CON ENLACE A GOOGLE MAPS)
                 const purchaseData = {
                     ...purchase,
                     product_name: currentProduct.name,
