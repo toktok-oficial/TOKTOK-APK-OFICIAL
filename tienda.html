@@ -19,28 +19,26 @@
             font-family: 'Inter', sans-serif;
             background-color: #f8fafc;
             color: #1e293b;
-            -webkit-tap-highlight-color: transparent;
-            padding-bottom: env(safe-area-inset-bottom);
         }
         
         .product-card {
             transition: all 0.3s ease;
-            border-radius: 10px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
             background: white;
             height: 100%;
             border: 1px solid #e2e8f0;
         }
         
         .product-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
         }
         
         .product-image {
             width: 100%;
-            height: 120px;
+            height: 160px;
             object-fit: cover;
             background: #f1f5f9;
         }
@@ -48,14 +46,14 @@
         .product-price {
             color: var(--primary);
             font-weight: 700;
-            font-size: 0.95rem;
+            font-size: 1.1rem;
         }
         
         .stock-badge {
             display: inline-block;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 0.65rem;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.7rem;
             font-weight: 600;
         }
         
@@ -98,9 +96,9 @@
         .modal-content {
             background: white;
             width: 90%;
-            max-width: 380px;
+            max-width: 400px;
             border-radius: 16px;
-            padding: 20px;
+            padding: 24px;
             transform: translateY(20px);
             transition: all 0.3s;
             max-height: 90vh;
@@ -114,7 +112,7 @@
         .btn-primary {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
-            padding: 10px 16px;
+            padding: 12px 20px;
             border-radius: 10px;
             font-weight: 600;
             transition: all 0.3s;
@@ -122,12 +120,12 @@
             align-items: center;
             justify-content: center;
             border: none;
-            font-size: 14px;
+            font-size: 15px;
         }
         
         .btn-primary:hover:not(:disabled) {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(109, 40, 217, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(109, 40, 217, 0.25);
         }
         
         .btn-primary:disabled {
@@ -136,8 +134,8 @@
         }
         
         .loading-spinner {
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             border: 2px solid rgba(255, 255, 255, 0.3);
             border-radius: 50%;
             border-top-color: white;
@@ -150,18 +148,18 @@
         
         .input-field {
             width: 100%;
-            padding: 10px 12px;
+            padding: 12px 14px;
             border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 14px;
-            margin-bottom: 12px;
+            border-radius: 10px;
+            font-size: 15px;
+            margin-bottom: 14px;
             background: white;
         }
         
         .input-field:focus {
             border-color: var(--primary);
             outline: none;
-            box-shadow: 0 0 0 2px rgba(109, 40, 217, 0.1);
+            box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.1);
         }
         
         @media (max-width: 768px) {
@@ -170,7 +168,7 @@
                 top: 0;
                 z-index: 40;
                 background: white;
-                padding: 12px 16px;
+                padding: 14px 16px;
                 border-bottom: 1px solid #f1f5f9;
                 display: flex;
                 align-items: center;
@@ -178,17 +176,17 @@
             }
             
             .mobile-header-title {
-                font-size: 16px;
+                font-size: 18px;
                 font-weight: 700;
                 color: #1e293b;
             }
             
             .products-container {
-                padding: 12px;
+                padding: 16px;
             }
             
             .search-container {
-                padding: 12px 16px;
+                padding: 14px 16px;
                 background: white;
                 border-bottom: 1px solid #f1f5f9;
             }
@@ -197,21 +195,21 @@
         .balance-display {
             background: linear-gradient(135deg, #6d28d9 0%, #5b21b6 100%);
             color: white;
-            padding: 10px 14px;
-            border-radius: 10px;
-            margin: 0 12px 12px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            margin: 0 16px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         
         .balance-label {
-            font-size: 13px;
+            font-size: 14px;
             opacity: 0.9;
         }
         
         .balance-amount {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 700;
         }
         
@@ -219,61 +217,61 @@
         .invoice-container {
             background: white;
             border-radius: 8px;
-            padding: 14px;
+            padding: 16px;
             max-width: 100%;
         }
         
         .invoice-header {
             text-align: center;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
             border-bottom: 1px solid #6d28d9;
-            padding-bottom: 10px;
+            padding-bottom: 12px;
         }
         
         .invoice-logo {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: bold;
             color: #6d28d9;
-            margin-bottom: 2px;
+            margin-bottom: 4px;
         }
         
         .invoice-title {
-            font-size: 12px;
+            font-size: 14px;
             font-weight: 600;
-            margin-bottom: 2px;
+            margin-bottom: 4px;
             color: #1e293b;
         }
         
         .invoice-details {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 12px;
+            gap: 12px;
+            margin-bottom: 16px;
         }
         
         .invoice-section {
-            margin-bottom: 6px;
+            margin-bottom: 8px;
         }
         
         .invoice-label {
             font-weight: 600;
             color: #4b5563;
             margin-bottom: 2px;
-            font-size: 10px;
+            font-size: 11px;
         }
         
         .invoice-value {
             color: #1f2937;
-            font-size: 11px;
-            line-height: 1.2;
+            font-size: 12px;
+            line-height: 1.3;
         }
         
         .invoice-amount {
             text-align: center;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: bold;
-            margin: 12px 0;
-            padding: 10px;
+            margin: 16px 0;
+            padding: 12px;
             background: #f8fafc;
             border-radius: 8px;
             border: 1px solid #e2e8f0;
@@ -282,12 +280,12 @@
         
         .invoice-footer {
             text-align: center;
-            margin-top: 12px;
-            padding-top: 10px;
+            margin-top: 16px;
+            padding-top: 12px;
             border-top: 1px solid #e5e7eb;
             color: #6b7280;
-            font-size: 9px;
-            line-height: 1.1;
+            font-size: 10px;
+            line-height: 1.2;
             grid-column: 1 / -1;
         }
         
@@ -310,9 +308,9 @@
         }
         
         .status-badge-small {
-            padding: 1px 4px;
-            border-radius: 6px;
-            font-size: 9px;
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-size: 10px;
             font-weight: 600;
             text-transform: uppercase;
         }
@@ -326,20 +324,20 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            margin: 12px 0;
+            gap: 12px;
+            margin: 16px 0;
         }
         
         .quantity-btn {
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             background: #f1f5f9;
             border: none;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: bold;
             color: #475569;
             cursor: pointer;
@@ -356,54 +354,54 @@
         }
         
         .quantity-display {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 600;
-            min-width: 36px;
+            min-width: 40px;
             text-align: center;
         }
         
         .product-detail-image {
             width: 100%;
-            height: 180px;
+            height: 200px;
             object-fit: contain;
             background: #f8fafc;
-            border-radius: 10px;
-            margin-bottom: 12px;
+            border-radius: 12px;
+            margin-bottom: 16px;
             border: 1px solid #e2e8f0;
         }
         
         .search-input {
             width: 100%;
-            padding: 10px 14px;
-            padding-left: 36px;
+            padding: 12px 16px;
+            padding-left: 40px;
             border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 14px;
-            background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239ca3af'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'%3E%3C/path%3E%3C/svg%3E") no-repeat 10px center;
-            background-size: 18px;
+            border-radius: 10px;
+            font-size: 15px;
+            background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239ca3af'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'%3E%3C/path%3E%3C/svg%3E") no-repeat 12px center;
+            background-size: 20px;
         }
         
         .search-input:focus {
             border-color: var(--primary);
             outline: none;
-            box-shadow: 0 0 0 2px rgba(109, 40, 217, 0.1);
+            box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.1);
         }
         
         .time-selector {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 6px;
-            margin-bottom: 12px;
+            gap: 8px;
+            margin-bottom: 16px;
         }
         
         .time-option {
-            padding: 8px;
+            padding: 10px;
             border: 2px solid #e2e8f0;
-            border-radius: 8px;
+            border-radius: 10px;
             text-align: center;
             cursor: pointer;
             transition: all 0.2s;
-            font-size: 13px;
+            font-size: 14px;
         }
         
         .time-option:hover {
@@ -419,12 +417,11 @@
         .time-label {
             display: block;
             font-weight: 500;
-            margin-bottom: 2px;
-            font-size: 12px;
+            margin-bottom: 4px;
         }
         
         .time-value {
-            font-size: 11px;
+            font-size: 12px;
             color: #6b7280;
         }
         
@@ -434,35 +431,34 @@
         
         .delivery-section {
             background: #f8fafc;
-            border-radius: 10px;
-            padding: 12px;
-            margin-bottom: 12px;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
             border: 1px solid #e2e8f0;
         }
         
         .section-title {
             font-weight: 600;
             color: #374151;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-size: 14px;
+            gap: 8px;
         }
         
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
-            gap: 10px;
+            grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+            gap: 14px;
         }
         
         .buy-btn {
             background: linear-gradient(135deg, #6d28d9 0%, #5b21b6 100%);
             color: white;
-            padding: 6px 12px;
-            border-radius: 6px;
+            padding: 8px 16px;
+            border-radius: 8px;
             font-weight: 600;
-            font-size: 12px;
+            font-size: 13px;
             border: none;
             transition: all 0.2s;
         }
@@ -476,52 +472,12 @@
             cursor: not-allowed;
         }
         
-        /* Filtros de categorías */
-        .category-filters {
-            display: flex;
-            gap: 6px;
-            padding: 10px 12px;
-            overflow-x: auto;
-            background: white;
-            border-bottom: 1px solid #f1f5f9;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-        }
-        
-        .category-filters::-webkit-scrollbar {
-            display: none;
-        }
-        
-        .category-btn {
-            padding: 6px 12px;
-            border: 1px solid #e2e8f0;
-            border-radius: 20px;
-            background: white;
-            color: #4b5563;
-            font-size: 12px;
-            font-weight: 500;
-            white-space: nowrap;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .category-btn:hover {
-            border-color: #6d28d9;
-            color: #6d28d9;
-        }
-        
-        .category-btn.active {
-            background: #6d28d9;
-            color: white;
-            border-color: #6d28d9;
-        }
-        
         /* Estilos para el mapa - AHORA SOLO BOTÓN */
         .location-preview {
             background: #f8fafc;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 12px;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 16px;
             border: 1px solid #e2e8f0;
             cursor: pointer;
             transition: all 0.2s;
@@ -536,7 +492,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
         }
         
         .location-preview-title {
@@ -544,45 +500,44 @@
             color: #374151;
             display: flex;
             align-items: center;
-            gap: 4px;
-            font-size: 13px;
+            gap: 6px;
         }
         
         .location-preview-change {
             color: #6d28d9;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 500;
         }
         
         .location-preview-text {
             color: #4b5563;
-            font-size: 12px;
-            line-height: 1.3;
+            font-size: 13px;
+            line-height: 1.4;
         }
         
         .location-preview-coords {
             color: #6b7280;
-            font-size: 10px;
+            font-size: 11px;
             font-family: monospace;
-            margin-top: 2px;
+            margin-top: 4px;
         }
         
         .map-btn {
             width: 100%;
-            padding: 10px 14px;
+            padding: 12px 16px;
             background: #6d28d9;
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 14px;
+            border-radius: 10px;
+            font-size: 15px;
             font-weight: 500;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 8px;
             transition: all 0.2s;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
         }
         
         .map-btn:hover {
@@ -601,7 +556,7 @@
         }
         
         .map-modal-header {
-            padding: 14px 16px;
+            padding: 16px 20px;
             border-bottom: 1px solid #e2e8f0;
             display: flex;
             justify-content: space-between;
@@ -625,44 +580,44 @@
         
         .map-instructions {
             position: absolute;
-            top: 12px;
+            top: 16px;
             left: 50%;
             transform: translateX(-50%);
             background: rgba(255, 255, 255, 0.95);
-            padding: 8px 16px;
-            border-radius: 18px;
-            font-size: 13px;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
             font-weight: 500;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             z-index: 1000;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             color: #6d28d9;
             backdrop-filter: blur(4px);
         }
         
         .map-controls {
             position: absolute;
-            bottom: 16px;
-            right: 16px;
+            bottom: 20px;
+            right: 20px;
             z-index: 1000;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
         }
         
         .control-btn {
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             background: white;
             border: none;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
+            font-size: 18px;
             color: #4b5563;
             cursor: pointer;
             transition: all 0.2s;
@@ -675,25 +630,25 @@
         }
         
         .map-footer {
-            padding: 14px 16px;
+            padding: 16px 20px;
             border-top: 1px solid #e2e8f0;
             background: white;
         }
         
         .map-footer-btn {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             background: #6d28d9;
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 15px;
+            border-radius: 10px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 8px;
             transition: all 0.2s;
         }
         
@@ -709,19 +664,19 @@
         .current-location-marker {
             background-color: #6d28d9;
             border-radius: 50%;
-            border: 2px solid white;
-            box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
-            width: 14px;
-            height: 14px;
+            border: 3px solid white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            width: 16px;
+            height: 16px;
         }
         
         .selected-location-marker {
             background-color: #dc2626;
             border-radius: 50%;
-            border: 2px solid white;
-            box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
-            width: 18px;
-            height: 18px;
+            border: 3px solid white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            width: 20px;
+            height: 20px;
         }
         
         /* Estilos responsivos para el mapa */
@@ -751,37 +706,13 @@
             font-weight: 500;
             display: inline-flex;
             align-items: center;
-            gap: 3px;
-            font-size: 11px;
+            gap: 4px;
+            font-size: 12px;
         }
         
         .gmaps-link:hover {
             text-decoration: underline;
             color: #1d4ed8;
-        }
-        
-        /* Mejoras para el diseño tipo iPhone */
-        .product-description {
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            line-height: 1.2;
-            height: 2.4em;
-        }
-        
-        .product-name {
-            display: -webkit-box;
-            -webkit-line-clamp: 1;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        
-        /* Scroll suave iOS */
-        .products-container {
-            -webkit-overflow-scrolling: touch;
         }
     </style>
 </head>
@@ -801,21 +732,12 @@
                 <div class="balance-label">Saldo disponible</div>
                 <div id="current-balance" class="balance-amount">Cargando...</div>
             </div>
-            <i class="fas fa-wallet text-white text-lg"></i>
+            <i class="fas fa-wallet text-white text-xl"></i>
         </div>
         
         <!-- Barra de búsqueda -->
         <div class="search-container">
             <input type="text" id="product-search" class="search-input" placeholder="Buscar productos...">
-        </div>
-        
-        <!-- Filtros de categorías -->
-        <div class="category-filters">
-            <button class="category-btn active" data-category="all">Todos</button>
-            <button class="category-btn" data-category="Electrónica">Electrónica</button>
-            <button class="category-btn" data-category="Ropa">Ropa</button>
-            <button class="category-btn" data-category="Libros">Libros</button>
-            <button class="category-btn" data-category="Hogar">Hogar</button>
         </div>
         
         <!-- Lista de productos -->
@@ -826,18 +748,18 @@
         </div>
         
         <!-- Mensaje cuando no hay productos -->
-        <div id="no-products" class="hidden text-center py-8 px-4">
-            <i class="fas fa-search text-3xl text-gray-300 mb-3"></i>
-            <p class="text-gray-500 font-medium text-sm">No se encontraron productos</p>
-            <p class="text-xs text-gray-400 mt-1">Intenta con otra búsqueda</p>
+        <div id="no-products" class="hidden text-center py-12 px-4">
+            <i class="fas fa-search text-4xl text-gray-300 mb-4"></i>
+            <p class="text-gray-500 font-medium">No se encontraron productos</p>
+            <p class="text-sm text-gray-400 mt-2">Intenta con otra búsqueda</p>
         </div>
     </div>
 
     <!-- Modal de detalles del producto (AHORA SIN MAPA INCORPORADO) -->
     <div id="product-detail-modal" class="modal">
         <div class="modal-content">
-            <div class="flex justify-between items-center mb-3">
-                <h3 class="text-lg font-semibold text-gray-800" id="product-detail-title"></h3>
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-semibold text-gray-800" id="product-detail-title"></h3>
                 <button id="close-product-detail" class="text-gray-400 hover:text-gray-500">
                     <i class="fas fa-times"></i>
                 </button>
@@ -845,15 +767,15 @@
             
             <img id="product-detail-image" class="product-detail-image" src="" alt="">
             
-            <p id="product-detail-description" class="text-gray-600 mb-3 text-xs"></p>
+            <p id="product-detail-description" class="text-gray-600 mb-4 text-sm"></p>
             
-            <div class="flex justify-between items-center mb-3">
+            <div class="flex justify-between items-center mb-4">
                 <div>
-                    <div class="text-xs text-gray-500">Stock:</div>
-                    <div id="product-detail-stock" class="text-base font-semibold"></div>
+                    <div class="text-sm text-gray-500">Stock disponible:</div>
+                    <div id="product-detail-stock" class="text-lg font-semibold"></div>
                 </div>
                 <div class="text-right">
-                    <div class="text-xs text-gray-500">Precio:</div>
+                    <div class="text-sm text-gray-500">Precio:</div>
                     <div id="product-detail-price" class="product-price"></div>
                 </div>
             </div>
@@ -868,9 +790,9 @@
                 </button>
             </div>
             
-            <div class="text-center mb-3">
-                <div class="text-xs text-gray-500">Total:</div>
-                <div id="total-price" class="text-xl font-bold text-purple-600"></div>
+            <div class="text-center mb-4">
+                <div class="text-sm text-gray-500">Total:</div>
+                <div id="total-price" class="text-2xl font-bold text-purple-600"></div>
             </div>
             
             <!-- Sección de entrega - AHORA SOLO CON BOTÓN PARA ABRIR MAPA -->
@@ -883,7 +805,7 @@
                 <!-- Botón para abrir mapa -->
                 <button id="open-map-btn" class="map-btn">
                     <i class="fas fa-map-marked-alt"></i>
-                    Seleccionar ubicación
+                    Seleccionar ubicación en el mapa
                 </button>
                 
                 <!-- Vista previa de ubicación seleccionada -->
@@ -891,22 +813,22 @@
                     <div class="location-preview-header">
                         <div class="location-preview-title">
                             <i class="fas fa-map-marker-alt text-purple-600"></i>
-                            Ubicación
+                            Ubicación seleccionada
                         </div>
                         <div class="location-preview-change">
                             Cambiar
                         </div>
                     </div>
                     <div id="location-preview-text" class="location-preview-text">
-                        Haz clic para seleccionar una ubicación
+                        Haz clic en el botón para seleccionar una ubicación
                     </div>
                     <div id="location-preview-coords" class="location-preview-coords"></div>
-                    <div id="gmaps-link-container" class="mt-1"></div>
+                    <div id="gmaps-link-container" class="mt-2"></div>
                 </div>
                 
                 <!-- Dirección manual (para nombre del lugar) -->
-                <div class="mb-3">
-                    <label class="block text-xs font-medium text-gray-700 mb-1">Nombre del lugar *</label>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nombre del lugar *</label>
                     <input type="text" id="delivery-address-name" class="input-field" 
                            placeholder="Ej: Casa, Oficina, Edificio Central" 
                            maxlength="100">
@@ -914,8 +836,8 @@
                 </div>
                 
                 <!-- Hora de entrega -->
-                <div class="mb-3">
-                    <label class="block text-xs font-medium text-gray-700 mb-1">Hora de entrega *</label>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Hora de entrega *</label>
                     <div class="time-selector">
                         <div class="time-option" data-time="09:00-12:00">
                             <span class="time-label">Mañana</span>
@@ -938,7 +860,7 @@
                 
                 <!-- Notas -->
                 <div>
-                    <label class="block text-xs font-medium text-gray-700 mb-1">Notas (opcional)</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Notas (opcional)</label>
                     <textarea id="delivery-notes" class="input-field" 
                               placeholder="Instrucciones especiales para la entrega" 
                               rows="2"></textarea>
@@ -956,7 +878,7 @@
     <div id="map-modal" class="modal map-modal">
         <div class="modal-content">
             <div class="map-modal-header">
-                <h3 class="text-base font-semibold text-gray-800">Selecciona el punto de entrega</h3>
+                <h3 class="text-lg font-semibold text-gray-800">Selecciona el punto de entrega</h3>
                 <button id="close-map-modal" class="text-gray-400 hover:text-gray-500">
                     <i class="fas fa-times"></i>
                 </button>
@@ -992,22 +914,22 @@
     <!-- Modal de confirmación de compra -->
     <div id="confirmation-modal" class="modal">
         <div class="modal-content">
-            <div class="flex justify-between items-center mb-3">
-                <h3 class="text-lg font-semibold text-gray-800">Confirmar compra</h3>
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-semibold text-gray-800">Confirmar compra</h3>
                 <button id="close-confirmation-modal" class="text-gray-400 hover:text-gray-500">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
             
-            <div class="mb-3">
-                <p id="confirmation-text" class="text-gray-600 text-sm"></p>
+            <div class="mb-4">
+                <p id="confirmation-text" class="text-gray-600"></p>
             </div>
             
-            <div class="flex space-x-2">
-                <button id="cancel-purchase" class="flex-1 py-2 px-3 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-800 transition-colors font-medium text-sm">
+            <div class="flex space-x-3">
+                <button id="cancel-purchase" class="flex-1 py-2.5 px-4 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-800 transition-colors font-medium">
                     Cancelar
                 </button>
-                <button id="confirm-purchase" class="flex-1 py-2 px-3 rounded-lg bg-purple-600 hover:bg-purple-700 text-white transition-colors font-medium flex items-center justify-center text-sm">
+                <button id="confirm-purchase" class="flex-1 py-2.5 px-4 rounded-lg bg-purple-600 hover:bg-purple-700 text-white transition-colors font-medium flex items-center justify-center">
                     <span id="confirm-purchase-text">Confirmar</span>
                     <div id="confirm-purchase-spinner" class="loading-spinner ml-2 hidden"></div>
                 </button>
@@ -1018,18 +940,18 @@
     <!-- Modal de resultado -->
     <div id="result-modal" class="modal">
         <div class="modal-content">
-            <div class="flex justify-center mb-3">
-                <div id="result-icon" class="w-14 h-14 rounded-full flex items-center justify-center text-2xl">
+            <div class="flex justify-center mb-4">
+                <div id="result-icon" class="w-16 h-16 rounded-full flex items-center justify-center text-3xl">
                     <i class="fas fa-check-circle text-green-500"></i>
                 </div>
             </div>
             
-            <div class="text-center mb-4">
-                <h3 id="result-title" class="text-lg font-semibold text-gray-800 mb-1">¡Compra exitosa!</h3>
-                <p id="result-message" class="text-gray-600 text-sm">Tu compra se ha procesado correctamente.</p>
+            <div class="text-center mb-6">
+                <h3 id="result-title" class="text-xl font-semibold text-gray-800 mb-2">¡Compra exitosa!</h3>
+                <p id="result-message" class="text-gray-600">Tu compra se ha procesado correctamente.</p>
             </div>
             
-            <button id="close-result-modal" class="w-full py-2 px-3 rounded-lg bg-purple-600 hover:bg-purple-700 text-white transition-colors font-medium text-sm">
+            <button id="close-result-modal" class="w-full py-2.5 px-4 rounded-lg bg-purple-600 hover:bg-purple-700 text-white transition-colors font-medium">
                 Aceptar
             </button>
         </div>
@@ -1040,23 +962,23 @@
         <div class="modal-overlay absolute inset-0"></div>
         <div class="modal-content w-full max-w-md mx-4">
             <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
-                <div class="flex justify-between items-center p-3 border-b border-gray-200">
-                    <div class="text-base font-semibold text-gray-800">Comprobante de Compra</div>
+                <div class="flex justify-between items-center p-4 border-b border-gray-200">
+                    <div class="text-lg font-semibold text-gray-800">Comprobante de Compra</div>
                     <button id="close-invoice-modal" class="text-gray-400 hover:text-gray-500">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
                 
-                <div id="invoice-content" class="p-3 max-h-[60vh] overflow-y-auto">
+                <div id="invoice-content" class="p-4 max-h-[60vh] overflow-y-auto">
                     <!-- Contenido de la factura se generará dinámicamente -->
                 </div>
                 
-                <div class="p-3 border-t border-gray-200 bg-gray-50">
-                    <button id="download-invoice" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 px-3 rounded-lg font-medium flex items-center justify-center transition-colors mb-2 text-xs">
-                        <i class="fas fa-download mr-1"></i>
+                <div class="p-4 border-t border-gray-200 bg-gray-50">
+                    <button id="download-invoice" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded-lg font-medium flex items-center justify-center transition-colors mb-2 text-sm">
+                        <i class="fas fa-download mr-2"></i>
                         <span>Descargar Comprobante</span>
                     </button>
-                    <button id="close-invoice" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-3 rounded-lg font-medium transition-colors text-xs">
+                    <button id="close-invoice" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded-lg font-medium transition-colors text-sm">
                         Continuar
                     </button>
                 </div>
@@ -1082,7 +1004,6 @@
         let selectedDeliveryTime = null;
         let currentInvoiceData = null;
         let products = [];
-        let currentCategory = 'all';
         
         // Variables para el mapa
         let fullscreenMap = null;
@@ -1106,7 +1027,7 @@
             const toast = document.createElement('div');
             toast.className = `fixed top-4 right-4 px-4 py-2 rounded-md shadow-lg z-50 ${
                 type === 'success' ? 'bg-green-600' : 'bg-red-600'
-            } text-white font-medium text-sm`;
+            } text-white font-medium`;
             toast.textContent = message;
             document.body.appendChild(toast);
             
@@ -1620,8 +1541,8 @@
             }
         }
         
-        // Función para cargar productos CON FILTRO DE CATEGORÍA
-        async function loadProducts(searchTerm = '', category = 'all') {
+        // Función para cargar productos
+        async function loadProducts(searchTerm = '') {
             try {
                 let query = supabase
                     .from('products')
@@ -1630,10 +1551,6 @@
                 
                 if (searchTerm) {
                     query = query.or(`name.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%`);
-                }
-                
-                if (category !== 'all') {
-                    query = query.eq('category', category);
                 }
                 
                 query = query.order('created_at', { ascending: false });
@@ -1671,19 +1588,19 @@
                 
                 return `
                     <div class="product-card" data-product-id="${product.id}">
-                        <div class="p-2">
-                            <div class="relative mb-2">
+                        <div class="p-3">
+                            <div class="relative mb-3">
                                 <img src="${product.image_url || 'https://via.placeholder.com/300x200/f1f5f9/64748b?text=Producto'}" 
                                      alt="${product.name}" 
                                      class="product-image rounded-lg">
-                                <span class="stock-badge ${stockClass} absolute top-1 right-1">
+                                <span class="stock-badge ${stockClass} absolute top-2 right-2">
                                     ${stockText}
                                 </span>
                             </div>
-                            <h3 class="font-semibold text-gray-800 mb-1 text-xs truncate product-name">${product.name}</h3>
-                            <p class="text-xs text-gray-600 mb-2 product-description">${product.description || 'Sin descripción'}</p>
+                            <h3 class="font-semibold text-gray-800 mb-1 text-sm truncate">${product.name}</h3>
+                            <p class="text-xs text-gray-600 mb-3 line-clamp-2 h-8">${product.description || 'Sin descripción'}</p>
                             <div class="flex justify-between items-center">
-                                <div class="product-price text-sm">${formatCurrency(product.price)}</div>
+                                <div class="product-price text-base">${formatCurrency(product.price)}</div>
                                 <button class="buy-btn ${product.stock === 0 ? 'opacity-50 cursor-not-allowed' : ''}"
                                         ${product.stock === 0 ? 'disabled' : ''}>
                                     ${product.stock === 0 ? 'Agotado' : 'Comprar'}
@@ -1737,10 +1654,6 @@
             selectedLocationName = '';
             updateLocationPreview();
             
-            // Resetear campos del formulario
-            document.getElementById('delivery-address-name').value = '';
-            document.getElementById('delivery-notes').value = '';
-            
             // Actualizar UI
             document.getElementById('product-detail-title').textContent = product.name;
             document.getElementById('product-detail-description').textContent = product.description || 'Sin descripción';
@@ -1748,7 +1661,7 @@
             
             const stockElement = document.getElementById('product-detail-stock');
             stockElement.textContent = `${product.stock} unidades`;
-            stockElement.className = `text-base font-semibold ${product.stock > 0 ? 'text-green-600' : 'text-red-600'}`;
+            stockElement.className = `text-lg font-semibold ${product.stock > 0 ? 'text-green-600' : 'text-red-600'}`;
             
             // Configurar imagen
             const imgElement = document.getElementById('product-detail-image');
@@ -1945,25 +1858,7 @@
             
             // Event listeners para búsqueda
             document.getElementById('product-search').addEventListener('input', (e) => {
-                loadProducts(e.target.value, currentCategory);
-            });
-            
-            // Event listeners para filtros de categoría
-            document.querySelectorAll('.category-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    // Remover clase activa de todos los botones
-                    document.querySelectorAll('.category-btn').forEach(b => {
-                        b.classList.remove('active');
-                    });
-                    
-                    // Agregar clase activa al botón clickeado
-                    btn.classList.add('active');
-                    
-                    // Obtener categoría y actualizar
-                    currentCategory = btn.dataset.category;
-                    const searchTerm = document.getElementById('product-search').value;
-                    loadProducts(searchTerm, currentCategory);
-                });
+                loadProducts(e.target.value);
             });
             
             // Event listeners para cantidad
@@ -2069,19 +1964,19 @@
             }
             
             document.getElementById('confirmation-text').innerHTML = `
-                <div class="bg-gray-50 p-2 rounded-lg mb-2 text-sm">
+                <div class="bg-gray-50 p-3 rounded-lg mb-3">
                     <strong>${currentProduct.name}</strong><br>
                     Cantidad: ${selectedQuantity} unidades<br>
                     Total: <strong class="text-purple-600">${formatCurrency(totalPrice)}</strong>
                 </div>
-                <div class="text-xs">
-                    <div class="mb-1"><strong>Lugar de entrega:</strong><br>${addressName}</div>
-                    <div class="mb-1"><strong>Ubicación:</strong><br>${selectedLocationName || selectedLocation || 'Ubicación seleccionada'}</div>
-                    <div class="mb-1"><strong>Coordenadas:</strong><br>${coordinates}</div>
-                    ${gmapsLink ? `<div class="mb-1"><a href="${gmapsLink}" target="_blank" class="text-blue-600 hover:underline text-xs">
+                <div class="text-sm">
+                    <div class="mb-2"><strong>Lugar de entrega:</strong><br>${addressName}</div>
+                    <div class="mb-2"><strong>Ubicación:</strong><br>${selectedLocationName || selectedLocation || 'Ubicación seleccionada'}</div>
+                    <div class="mb-2"><strong>Coordenadas:</strong><br>${coordinates}</div>
+                    ${gmapsLink ? `<div class="mb-2"><a href="${gmapsLink}" target="_blank" class="text-blue-600 hover:underline">
                         <i class="fas fa-external-link-alt mr-1"></i>Abrir en Google Maps
                     </a></div>` : ''}
-                    <div class="mb-1"><strong>Hora de entrega:</strong><br>${deliveryTimeText}</div>
+                    <div class="mb-2"><strong>Hora de entrega:</strong><br>${deliveryTimeText}</div>
                     ${notes ? `<div><strong>Notas:</strong><br>${notes}</div>` : ''}
                 </div>
             `;
@@ -2191,7 +2086,7 @@ ${notes}\n` : ''}
                     total_price: totalPrice,
                     transaction_id: transaction.id,
                     status: 'completed',
-                    delivery_address: addressName,
+                    delivery_address: addressName, // Se mantiene igual, pero ahora es el nombre del lugar
                     delivery_notes: notes
                 });
                 
