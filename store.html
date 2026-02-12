@@ -198,41 +198,6 @@
             cursor: pointer;
         }
 
-        /* ===== TABS ===== */
-        .store-tabs {
-            display: flex;
-            background-color: var(--bg-secondary);
-            padding: 8px 16px;
-            gap: 12px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .store-tab {
-            flex: 1;
-            padding: 10px;
-            border-radius: 8px;
-            background: transparent;
-            border: none;
-            color: var(--text-secondary);
-            font-weight: 600;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .store-tab i {
-            font-size: 16px;
-        }
-
-        .store-tab.active {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-        }
-
         /* ===== SEARCH ===== */
         .store-search {
             padding: 12px 16px;
@@ -1016,22 +981,6 @@
             </div>
         </div>
     </header>
-
-    <!-- TABS -->
-    <div class="store-tabs">
-        <button class="store-tab active" data-tab="apps">
-            <i class="fas fa-mobile-alt"></i>
-            <span>Apps</span>
-        </button>
-        <button class="store-tab" data-tab="accounts">
-            <i class="fas fa-tv"></i>
-            <span>Cuentas</span>
-        </button>
-        <button class="store-tab" data-tab="my-orders">
-            <i class="fas fa-shopping-bag"></i>
-            <span>Mis Compras</span>
-        </button>
-    </div>
 
     <!-- SEARCH -->
     <div class="store-search">
@@ -2162,10 +2111,6 @@
             currentTab = tab;
             currentCategory = 'all';
             
-            // Actualizar tabs UI
-            document.querySelectorAll('.store-tab').forEach(t => t.classList.remove('active'));
-            document.querySelector(`.store-tab[data-tab="${tab}"]`).classList.add('active');
-            
             // Actualizar navegación inferior
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             
@@ -2177,7 +2122,7 @@
                 document.querySelector('.nav-item[data-page="accounts"]').classList.add('active');
                 renderCategories();
                 renderAccountsView();
-            } else if (tab === 'my-orders') {
+            } else if (tab === 'my-orders' || tab === 'orders') {
                 document.querySelector('.nav-item[data-page="orders"]').classList.add('active');
                 renderMyOrdersView();
             }
@@ -2217,8 +2162,6 @@
                         renderHomePage();
                         document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
                         item.classList.add('active');
-                        document.querySelectorAll('.store-tab').forEach(t => t.classList.remove('active'));
-                        document.querySelector('.store-tab[data-tab="apps"]').classList.add('active');
                         currentTab = 'apps';
                         currentCategory = 'all';
                         renderCategories();
@@ -2227,7 +2170,7 @@
                     } else if (page === 'accounts') {
                         switchTab('accounts');
                     } else if (page === 'orders') {
-                        switchTab('my-orders');
+                        switchTab('orders');
                     } else if (page === 'profile') {
                         renderProfileView();
                         document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
