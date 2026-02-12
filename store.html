@@ -1,0 +1,2248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0f0f0f">
+    <meta name="description" content="GC Store - Tu tienda de apps y cuentas premium">
+    
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="GC Store" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <title>GC Store - Apps y Cuentas Premium</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.38.4/dist/umd/supabase.min.js"></script>
+    <style>
+        /* ===== VARIABLES ===== */
+        :root {
+            --bg-primary: #0f0f0f;
+            --bg-secondary: #1f1f1f;
+            --bg-card: #1f1f1f;
+            --bg-card-hover: #2a2a2a;
+            --bg-surface: #202124;
+            --bg-chip: #2d2d2d;
+            --bg-chip-hover: #3d3d3d;
+            --bg-nav: rgba(31, 31, 31, 0.95);
+            --bg-search: #2d2d2d;
+            
+            --primary: #6d28d9;
+            --primary-dark: #5b21b6;
+            --primary-light: #8b5cf6;
+            --secondary: #34a853;
+            --accent: #fbbc04;
+            --danger: #ea4335;
+            
+            --text-primary: #ffffff;
+            --text-secondary: #9aa0a6;
+            --text-tertiary: #5f6368;
+            
+            --border: #3c4043;
+            --divider: #3c4043;
+            --shadow: rgba(0, 0, 0, 0.3);
+            
+            --free: #34a853;
+            --paid: #ea4335;
+            --install: #6d28d9;
+            --install-hover: #5b21b6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Google Sans', 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+            padding-bottom: 80px;
+        }
+
+        /* ===== HEADER ===== */
+        .store-header {
+            background-color: var(--bg-secondary);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+            box-shadow: 0 1px 3px var(--shadow);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            transition: transform 0.2s;
+        }
+
+        .logo-container:hover {
+            transform: translateY(-1px);
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 2px solid var(--primary);
+            box-shadow: 0 4px 12px rgba(109, 40, 217, 0.3);
+            background-color: white;
+        }
+
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-text h1 {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text p {
+            font-size: 10px;
+            color: var(--text-secondary);
+            letter-spacing: 0.5px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .balance-badge {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding: 6px 12px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            color: white;
+            box-shadow: 0 2px 8px rgba(109, 40, 217, 0.3);
+        }
+
+        .balance-badge i {
+            font-size: 12px;
+        }
+
+        .header-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .header-icon:hover {
+            background-color: var(--bg-chip);
+        }
+
+        .profile-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* ===== TABS ===== */
+        .store-tabs {
+            display: flex;
+            background-color: var(--bg-secondary);
+            padding: 8px 16px;
+            gap: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .store-tab {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .store-tab i {
+            font-size: 16px;
+        }
+
+        .store-tab.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+
+        /* ===== SEARCH ===== */
+        .store-search {
+            padding: 12px 16px;
+            background-color: var(--bg-primary);
+        }
+
+        .search-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px 12px 44px;
+            background-color: var(--bg-search);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            color: var(--text-primary);
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+            background-color: var(--bg-surface);
+        }
+
+        .search-input::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-tertiary);
+            font-size: 16px;
+        }
+
+        /* ===== CATEGORIES ===== */
+        .store-categories {
+            padding: 12px 16px;
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .store-categories::-webkit-scrollbar {
+            display: none;
+        }
+
+        .categories-container {
+            display: inline-flex;
+            gap: 8px;
+        }
+
+        .category-chip {
+            padding: 8px 16px;
+            background-color: var(--bg-chip);
+            border-radius: 20px;
+            color: var(--text-primary);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .category-chip:hover,
+        .category-chip.active {
+            background-color: var(--bg-chip-hover);
+            color: var(--primary);
+        }
+
+        .category-chip.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .store-main {
+            padding: 16px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title i {
+            color: var(--primary);
+        }
+
+        .view-all {
+            color: var(--primary);
+            font-size: 13px;
+            font-weight: 500;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .view-all:hover {
+            background-color: rgba(109, 40, 217, 0.1);
+        }
+
+        /* ===== GRIDS ===== */
+        .apps-grid, .accounts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        @media (min-width: 380px) {
+            .apps-grid, .accounts-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (min-width: 450px) {
+            .apps-grid, .accounts-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        /* ===== CARDS ===== */
+        .app-card, .account-card {
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        .app-card:hover, .account-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 12px var(--shadow);
+            background-color: var(--bg-card-hover);
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 700;
+            z-index: 2;
+            backdrop-filter: blur(10px);
+        }
+
+        .badge-free {
+            background-color: rgba(52, 168, 83, 0.9);
+            color: white;
+        }
+
+        .badge-paid {
+            background-color: rgba(109, 40, 217, 0.9);
+            color: white;
+        }
+
+        .badge-account {
+            background-color: rgba(251, 188, 4, 0.9);
+            color: black;
+        }
+
+        .card-icon-container {
+            position: relative;
+            padding: 16px 16px 8px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(109, 40, 217, 0.1), rgba(109, 40, 217, 0.05));
+        }
+
+        .card-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            object-fit: cover;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+        }
+
+        .app-card:hover .card-icon,
+        .account-card:hover .card-icon {
+            transform: scale(1.05);
+        }
+
+        .card-content {
+            padding: 12px;
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+            line-height: 1.3;
+            height: 36px;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .card-subtitle {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .card-meta {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .card-price {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+
+        .price-free {
+            color: var(--free);
+        }
+
+        .card-action {
+            width: 100%;
+            padding: 8px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-install {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+
+        .btn-install:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(109, 40, 217, 0.3);
+        }
+
+        .btn-free {
+            background-color: rgba(52, 168, 83, 0.1);
+            color: var(--free);
+        }
+
+        .btn-free:hover {
+            background-color: rgba(52, 168, 83, 0.2);
+        }
+
+        .btn-account {
+            background-color: rgba(109, 40, 217, 0.1);
+            color: var(--primary);
+        }
+
+        .btn-account:hover {
+            background-color: rgba(109, 40, 217, 0.2);
+        }
+
+        /* ===== BOTTOM NAVIGATION ===== */
+        .store-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 500px;
+            background-color: var(--bg-nav);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            border-top: 1px solid var(--border);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 12px;
+            min-width: 60px;
+            transition: all 0.2s;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-item:hover {
+            background-color: var(--bg-chip);
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            color: var(--text-secondary);
+        }
+
+        .nav-item.active .nav-icon {
+            color: var(--primary);
+        }
+
+        .nav-label {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .nav-item.active .nav-label {
+            color: var(--primary);
+        }
+
+        /* ===== MODALS ===== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-container {
+            background-color: var(--bg-card);
+            border-radius: 24px;
+            width: 100%;
+            max-width: 400px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid var(--border);
+            animation: slideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(40px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background-color: var(--bg-card);
+            z-index: 10;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--bg-chip);
+            border: none;
+            color: var(--text-primary);
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+
+        .modal-close:hover {
+            background-color: var(--bg-chip-hover);
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        /* ===== APP DETAIL ===== */
+        .app-detail-header, .account-detail-header {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .detail-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            object-fit: cover;
+        }
+
+        .detail-info {
+            flex: 1;
+        }
+
+        .detail-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .detail-developer {
+            font-size: 13px;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .detail-meta {
+            font-size: 12px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .detail-price {
+            font-size: 24px;
+            font-weight: 800;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .detail-price-free {
+            color: var(--free);
+        }
+
+        .detail-price-paid {
+            color: var(--text-primary);
+        }
+
+        .detail-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 16px;
+            margin: 20px 0;
+        }
+
+        .detail-section-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-primary);
+        }
+
+        .detail-description {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        /* ===== CREDENTIALS DISPLAY ===== */
+        .credentials-box {
+            background: linear-gradient(135deg, rgba(109, 40, 217, 0.2), rgba(109, 40, 217, 0.1));
+            border: 1px solid var(--primary);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .credential-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .credential-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .credential-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .copy-btn {
+            background: transparent;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(109, 40, 217, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background-color: var(--bg-chip);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--bg-chip-hover);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        /* ===== FORM ===== */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--bg-search);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* ===== BALANCE DISPLAY ===== */
+        .balance-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .balance-label {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .balance-amount {
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        /* ===== MESSAGES ===== */
+        .message {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            z-index: 3000;
+            animation: slideDown 0.3s ease;
+            max-width: 90%;
+            text-align: center;
+            font-size: 14px;
+            backdrop-filter: blur(20px);
+        }
+
+        @keyframes slideDown {
+            from { transform: translate(-50%, -20px); opacity: 0; }
+            to { transform: translate(-50%, 0); opacity: 1; }
+        }
+
+        .message.success {
+            background-color: rgba(52, 168, 83, 0.95);
+            color: white;
+        }
+
+        .message.error {
+            background-color: rgba(234, 67, 53, 0.95);
+            color: white;
+        }
+
+        .message.info {
+            background-color: rgba(109, 40, 217, 0.95);
+            color: white;
+        }
+
+        /* ===== LOADING ===== */
+        .loading {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ===== EMPTY STATE ===== */
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            color: var(--text-secondary);
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .empty-description {
+            font-size: 14px;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        /* ===== UTILITY ===== */
+        .hidden {
+            display: none !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-4 {
+            margin-top: 16px;
+        }
+
+        .mb-4 {
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="store-header">
+        <div class="header-left">
+            <a href="/" class="logo-container">
+                <div class="logo-icon">
+                    <img src="Imagenes/store.png" alt="GC Store">
+                </div>
+                <div class="logo-text">
+                    <h1>GC Store</h1>
+                    <p>Apps + Cuentas</p>
+                </div>
+            </a>
+        </div>
+        <div class="header-right">
+            <div class="balance-badge" id="balanceBadge">
+                <i class="fas fa-wallet"></i>
+                <span id="balanceAmount">0.00</span>
+            </div>
+            <div class="profile-icon" id="userMenu">
+                <span id="userInitial">U</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- TABS -->
+    <div class="store-tabs">
+        <button class="store-tab active" data-tab="apps">
+            <i class="fas fa-mobile-alt"></i>
+            <span>Apps</span>
+        </button>
+        <button class="store-tab" data-tab="accounts">
+            <i class="fas fa-tv"></i>
+            <span>Cuentas</span>
+        </button>
+        <button class="store-tab" data-tab="my-orders">
+            <i class="fas fa-shopping-bag"></i>
+            <span>Mis Compras</span>
+        </button>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="store-search">
+        <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" class="search-input" id="searchInput" placeholder="Buscar apps o cuentas...">
+        </div>
+    </div>
+
+    <!-- CATEGORIES -->
+    <div class="store-categories">
+        <div class="categories-container" id="categoriesContainer"></div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="store-main" id="mainContent">
+        <!-- Dynamic content will be loaded here -->
+    </main>
+
+    <!-- BOTTOM NAVIGATION -->
+    <nav class="store-nav">
+        <div class="nav-item active" data-page="home">
+            <i class="fas fa-home nav-icon"></i>
+            <span class="nav-label">Inicio</span>
+        </div>
+        <div class="nav-item" data-page="apps">
+            <i class="fas fa-mobile-alt nav-icon"></i>
+            <span class="nav-label">Apps</span>
+        </div>
+        <div class="nav-item" data-page="accounts">
+            <i class="fas fa-tv nav-icon"></i>
+            <span class="nav-label">Cuentas</span>
+        </div>
+        <div class="nav-item" data-page="orders">
+            <i class="fas fa-shopping-bag nav-icon"></i>
+            <span class="nav-label">Compras</span>
+        </div>
+        <div class="nav-item" data-page="profile">
+            <i class="fas fa-user nav-icon"></i>
+            <span class="nav-label">Perfil</span>
+        </div>
+    </nav>
+
+    <!-- ===== MODALS ===== -->
+
+    <!-- App Detail Modal -->
+    <div class="modal-overlay" id="appDetailModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Detalles de la app</span>
+                </h3>
+                <button class="modal-close" onclick="closeModal('appDetail')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="appDetailContent"></div>
+        </div>
+    </div>
+
+    <!-- Account Detail Modal -->
+    <div class="modal-overlay" id="accountDetailModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <i class="fas fa-tv"></i>
+                    <span>Detalles de la cuenta</span>
+                </h3>
+                <button class="modal-close" onclick="closeModal('accountDetail')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="accountDetailContent"></div>
+        </div>
+    </div>
+
+    <!-- Purchase Confirmation Modal -->
+    <div class="modal-overlay" id="purchaseConfirmModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Confirmar compra</span>
+                </h3>
+                <button class="modal-close" onclick="closeModal('purchaseConfirm')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="purchaseConfirmContent"></div>
+        </div>
+    </div>
+
+    <!-- Credentials Modal (para mostrar cuenta comprada) -->
+    <div class="modal-overlay" id="credentialsModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <i class="fas fa-check-circle"></i>
+                    <span>¡Compra exitosa!</span>
+                </h3>
+                <button class="modal-close" onclick="closeModal('credentials')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="credentialsContent"></div>
+        </div>
+    </div>
+
+    <!-- User Profile Modal -->
+    <div class="modal-overlay" id="profileModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <i class="fas fa-user-circle"></i>
+                    <span>Mi Perfil</span>
+                </h3>
+                <button class="modal-close" onclick="closeModal('profile')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="profileContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // ========== CONFIGURACIÓN ==========
+        const SUPABASE_URL = 'https://aleadadisazocjovibeh.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFsZWFkYWRpc2F6b2Nqb3ZpYmVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk0NDE5NjMsImV4cCI6MjA3NTAxNzk2M30.z82tP0C-UiiNuzP_jqrQf4LBusFqrDi1WYbdnuTh47E';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // ========== VARIABLES GLOBALES ==========
+        let currentUser = null;
+        let currentUserProfile = null;
+        let currentBalance = 0;
+        let currentProduct = null;
+        let currentPackage = null;
+        let currentTab = 'apps';
+        let currentCategory = 'all';
+        let searchTerm = '';
+        
+        let storeProducts = [];
+        let storePackages = [];
+        let storeCategories = [];
+
+        // ========== INICIALIZACIÓN ==========
+        document.addEventListener('DOMContentLoaded', async () => {
+            await initAuth();
+            await loadUserBalance();
+            await loadStoreData();
+            setupEventListeners();
+            renderHomePage();
+        });
+
+        // ========== AUTENTICACIÓN ==========
+        async function initAuth() {
+            try {
+                const { data: { session } } = await supabase.auth.getSession();
+                
+                if (!session) {
+                    const { data, error } = await supabase.auth.signInAnonymously();
+                    if (error) throw error;
+                    currentUser = data.user;
+                } else {
+                    currentUser = session.user;
+                }
+
+                // Obtener o crear perfil
+                const { data: profile } = await supabase
+                    .from('user_profiles')
+                    .select('*')
+                    .eq('id', currentUser.id)
+                    .single();
+
+                if (!profile) {
+                    const { data: newProfile } = await supabase
+                        .from('user_profiles')
+                        .insert([{ 
+                            id: currentUser.id,
+                            full_name: 'Usuario',
+                            email: currentUser.email,
+                            created_at: new Date().toISOString()
+                        }])
+                        .select()
+                        .single();
+                    currentUserProfile = newProfile;
+                } else {
+                    currentUserProfile = profile;
+                }
+
+                document.getElementById('userInitial').textContent = 
+                    (currentUserProfile?.full_name || 'U').charAt(0).toUpperCase();
+
+            } catch (error) {
+                console.error('Error en auth:', error);
+                showMessage('Error al iniciar sesión', 'error');
+            }
+        }
+
+        // ========== BALANCE ==========
+        async function loadUserBalance() {
+            try {
+                const { data } = await supabase
+                    .from('transactions')
+                    .select('amount, type')
+                    .eq('user_id', currentUser.id)
+                    .eq('status', 'completed');
+
+                let balance = 0;
+                if (data) {
+                    data.forEach(t => {
+                        if (t.type === 'deposit' || t.type === 'recharge') {
+                            balance += t.amount;
+                        } else if (t.type === 'withdrawal') {
+                            balance -= t.amount;
+                        }
+                    });
+                }
+                currentBalance = balance;
+                document.getElementById('balanceAmount').textContent = balance.toFixed(2);
+            } catch (error) {
+                console.error('Error cargando balance:', error);
+            }
+        }
+
+        // ========== CARGAR DATOS DE LA STORE ==========
+        async function loadStoreData() {
+            try {
+                // Cargar categorías
+                const { data: categories } = await supabase
+                    .from('store_categories')
+                    .select('*')
+                    .eq('is_active', true)
+                    .order('name');
+
+                storeCategories = categories || [];
+
+                // Cargar productos (apps)
+                const { data: products } = await supabase
+                    .from('store_products')
+                    .select('*')
+                    .eq('is_active', true)
+                    .order('created_at', { ascending: false });
+
+                storeProducts = products || [];
+
+                // Cargar paquetes de cuentas
+                const { data: packages } = await supabase
+                    .from('store_account_packages')
+                    .select('*')
+                    .eq('is_active', true)
+                    .order('price_bs');
+
+                storePackages = packages || [];
+
+                // Renderizar categorías
+                renderCategories();
+
+            } catch (error) {
+                console.error('Error cargando datos:', error);
+                showMessage('Error al cargar la tienda', 'error');
+            }
+        }
+
+        // ========== RENDERIZAR CATEGORÍAS ==========
+        function renderCategories() {
+            const container = document.getElementById('categoriesContainer');
+            const type = currentTab === 'apps' ? 'app' : 'account';
+            
+            let html = `
+                <button class="category-chip active" data-category="all">
+                    <i class="fas fa-th-large"></i>
+                    <span>Todas</span>
+                </button>
+            `;
+
+            storeCategories
+                .filter(c => c.type === type)
+                .forEach(cat => {
+                    html += `
+                        <button class="category-chip" data-category="${cat.id}">
+                            <i class="${cat.icon}"></i>
+                            <span>${cat.name}</span>
+                        </button>
+                    `;
+                });
+
+            container.innerHTML = html;
+
+            // Event listeners
+            container.querySelectorAll('.category-chip').forEach(chip => {
+                chip.addEventListener('click', () => {
+                    container.querySelectorAll('.category-chip').forEach(c => c.classList.remove('active'));
+                    chip.classList.add('active');
+                    currentCategory = chip.dataset.category;
+                    filterContent();
+                });
+            });
+        }
+
+        // ========== RENDERIZAR PÁGINA PRINCIPAL ==========
+        function renderHomePage() {
+            const main = document.getElementById('mainContent');
+            
+            // Apps destacadas
+            const featuredApps = storeProducts
+                .filter(p => p.is_featured)
+                .slice(0, 6);
+
+            // Apps gratuitas
+            const freeApps = storeProducts
+                .filter(p => p.is_free)
+                .slice(0, 6);
+
+            // Paquetes destacados
+            const featuredPackages = storePackages
+                .filter(p => p.is_active)
+                .slice(0, 6);
+
+            main.innerHTML = `
+                <!-- Apps Destacadas -->
+                <section class="apps-section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <i class="fas fa-star"></i>
+                            Apps Destacadas
+                        </h2>
+                        <a class="view-all" onclick="switchTab('apps')">
+                            <span>Ver todas</span>
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </div>
+                    <div class="apps-grid" id="featuredAppsGrid">
+                        ${renderProductCards(featuredApps)}
+                    </div>
+                </section>
+
+                <!-- Apps Gratis -->
+                <section class="apps-section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <i class="fas fa-download"></i>
+                            Apps Gratis
+                        </h2>
+                        <a class="view-all" onclick="switchTab('apps')">
+                            <span>Ver todas</span>
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </div>
+                    <div class="apps-grid" id="freeAppsGrid">
+                        ${renderProductCards(freeApps)}
+                    </div>
+                </section>
+
+                <!-- Cuentas Premium -->
+                <section class="apps-section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <i class="fas fa-crown"></i>
+                            Cuentas Premium
+                        </h2>
+                        <a class="view-all" onclick="switchTab('accounts')">
+                            <span>Ver todas</span>
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </div>
+                    <div class="accounts-grid" id="featuredAccountsGrid">
+                        ${renderPackageCards(featuredPackages)}
+                    </div>
+                </section>
+            `;
+        }
+
+        // ========== RENDERIZAR TARJETAS DE PRODUCTOS ==========
+        function renderProductCards(products) {
+            if (!products || products.length === 0) {
+                return `
+                    <div class="empty-state" style="grid-column: 1/-1;">
+                        <div class="empty-icon">
+                            <i class="fas fa-box-open"></i>
+                        </div>
+                        <h3 class="empty-title">No hay aplicaciones</h3>
+                        <p class="empty-description">Pronto agregaremos más apps.</p>
+                    </div>
+                `;
+            }
+
+            return products.map(p => `
+                <div class="app-card" data-id="${p.id}">
+                    <div class="card-badge ${p.is_free ? 'badge-free' : 'badge-paid'}">
+                        ${p.is_free ? 'GRATIS' : 'Bs. ' + parseFloat(p.price_bs).toFixed(2)}
+                    </div>
+                    <div class="card-icon-container">
+                        <img src="${p.cover_url || 'https://via.placeholder.com/256x256/6d28d9/ffffff?text=App'}" 
+                             alt="${p.name}" 
+                             class="card-icon">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">${p.name}</h3>
+                        <div class="card-subtitle">${p.developer}</div>
+                        <div class="card-meta">
+                            <i class="fas fa-download"></i>
+                            <span>${(p.downloads || 0).toLocaleString()}</span>
+                        </div>
+                        <button class="card-action ${p.is_free ? 'btn-free' : 'btn-install'}" 
+                                onclick="event.stopPropagation(); handleProductClick('${p.id}')">
+                            <i class="fas ${p.is_free ? 'fa-download' : 'fa-shopping-cart'}"></i>
+                            ${p.is_free ? 'Instalar' : 'Comprar'}
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ========== RENDERIZAR TARJETAS DE PAQUETES ==========
+        function renderPackageCards(packages) {
+            if (!packages || packages.length === 0) {
+                return `
+                    <div class="empty-state" style="grid-column: 1/-1;">
+                        <div class="empty-icon">
+                            <i class="fas fa-box-open"></i>
+                        </div>
+                        <h3 class="empty-title">No hay cuentas disponibles</h3>
+                        <p class="empty-description">Pronto agregaremos más cuentas.</p>
+                    </div>
+                `;
+            }
+
+            return packages.map(p => `
+                <div class="account-card" data-id="${p.id}">
+                    <div class="card-badge badge-account">
+                        ${p.duration_days} días
+                    </div>
+                    <div class="card-icon-container">
+                        <i class="${p.features?.icon || 'fas fa-tv'}" 
+                           style="font-size: 48px; color: var(--primary);"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">${p.name}</h3>
+                        <div class="card-subtitle">${p.platform}</div>
+                        <div class="card-meta">
+                            <i class="fas fa-users"></i>
+                            <span>${p.profiles_count} perfil(es)</span>
+                        </div>
+                        <div class="card-price">Bs. ${parseFloat(p.price_bs).toFixed(2)}</div>
+                        <button class="card-action btn-account" 
+                                onclick="event.stopPropagation(); handlePackageClick('${p.id}')">
+                            <i class="fas fa-shopping-cart"></i>
+                            Comprar
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ========== RENDERIZAR APPS (VISTA COMPLETA) ==========
+        function renderAppsView() {
+            const main = document.getElementById('mainContent');
+            
+            let filteredProducts = storeProducts;
+            
+            // Filtrar por categoría
+            if (currentCategory !== 'all') {
+                filteredProducts = filteredProducts.filter(p => p.category_id == currentCategory);
+            }
+            
+            // Filtrar por búsqueda
+            if (searchTerm) {
+                filteredProducts = filteredProducts.filter(p => 
+                    p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    p.description?.toLowerCase().includes(searchTerm.toLowerCase())
+                );
+            }
+
+            main.innerHTML = `
+                <section class="apps-section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <i class="fas fa-mobile-alt"></i>
+                            Aplicaciones
+                        </h2>
+                        <span class="view-all">${filteredProducts.length} apps</span>
+                    </div>
+                    <div class="apps-grid" id="appsGridView">
+                        ${renderProductCards(filteredProducts)}
+                    </div>
+                </section>
+            `;
+
+            // Agregar event listeners a las cards
+            document.querySelectorAll('.app-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const productId = card.dataset.id;
+                    const product = storeProducts.find(p => p.id == productId);
+                    if (product) showAppDetail(product);
+                });
+            });
+        }
+
+        // ========== RENDERIZAR CUENTAS (VISTA COMPLETA) ==========
+        function renderAccountsView() {
+            const main = document.getElementById('mainContent');
+            
+            let filteredPackages = storePackages;
+            
+            // Filtrar por categoría
+            if (currentCategory !== 'all') {
+                filteredPackages = filteredPackages.filter(p => p.platform_category_id == currentCategory);
+            }
+            
+            // Filtrar por búsqueda
+            if (searchTerm) {
+                filteredPackages = filteredPackages.filter(p => 
+                    p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    p.platform.toLowerCase().includes(searchTerm.toLowerCase())
+                );
+            }
+
+            main.innerHTML = `
+                <section class="apps-section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <i class="fas fa-tv"></i>
+                            Cuentas Premium
+                        </h2>
+                        <span class="view-all">${filteredPackages.length} paquetes</span>
+                    </div>
+                    <div class="accounts-grid" id="accountsGridView">
+                        ${renderPackageCards(filteredPackages)}
+                    </div>
+                </section>
+            `;
+
+            // Agregar event listeners a las cards
+            document.querySelectorAll('.account-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const packageId = card.dataset.id;
+                    const pkg = storePackages.find(p => p.id == packageId);
+                    if (pkg) showAccountDetail(pkg);
+                });
+            });
+        }
+
+        // ========== RENDERIZAR MIS COMPRAS ==========
+        async function renderMyOrdersView() {
+            const main = document.getElementById('mainContent');
+            
+            try {
+                // Cargar compras de apps
+                const { data: appPurchases } = await supabase
+                    .from('store_product_purchases')
+                    .select('*, store_products(name, cover_url, apk_url)')
+                    .eq('user_id', currentUser.id)
+                    .order('created_at', { ascending: false });
+
+                // Cargar compras de cuentas
+                const { data: accountPurchases } = await supabase
+                    .from('store_account_sales')
+                    .select('*')
+                    .eq('user_id', currentUser.id)
+                    .order('created_at', { ascending: false });
+
+                const hasPurchases = (appPurchases?.length || 0) + (accountPurchases?.length || 0) > 0;
+
+                if (!hasPurchases) {
+                    main.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-icon">
+                                <i class="fas fa-shopping-bag"></i>
+                            </div>
+                            <h3 class="empty-title">No tienes compras</h3>
+                            <p class="empty-description">Cuando compres apps o cuentas, aparecerán aquí.</p>
+                            <button class="btn btn-primary" onclick="switchTab('apps')" style="margin-top: 24px;">
+                                <i class="fas fa-mobile-alt"></i>
+                                Explorar apps
+                            </button>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let html = '<section class="apps-section">';
+                html += '<div class="section-header"><h2 class="section-title">Mis Compras</h2></div>';
+                html += '<div style="display: flex; flex-direction: column; gap: 16px;">';
+
+                // Compras de apps
+                if (appPurchases?.length) {
+                    html += '<h3 style="margin-top: 16px; color: var(--primary);"><i class="fas fa-mobile-alt"></i> Apps</h3>';
+                    appPurchases.forEach(p => {
+                        html += `
+                            <div style="background: var(--bg-surface); border-radius: 12px; padding: 16px;">
+                                <div style="display: flex; gap: 12px;">
+                                    <img src="${p.store_products?.cover_url || 'https://via.placeholder.com/64/6d28d9/ffffff?text=App'}" 
+                                         style="width: 64px; height: 64px; border-radius: 12px; object-fit: cover;">
+                                    <div style="flex: 1;">
+                                        <h4 style="font-weight: 700; margin-bottom: 4px;">${p.store_products?.name || 'App'}</h4>
+                                        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">
+                                            <i class="fas fa-calendar"></i> ${new Date(p.created_at).toLocaleDateString()}
+                                        </div>
+                                        <div style="font-weight: 600; color: var(--primary);">
+                                            Bs. ${parseFloat(p.total_price).toFixed(2)}
+                                        </div>
+                                        ${p.store_products?.apk_url ? `
+                                            <a href="${p.store_products.apk_url}" target="_blank" 
+                                               style="display: inline-block; margin-top: 12px; padding: 8px 16px; 
+                                                      background: var(--primary); color: white; border-radius: 8px; 
+                                                      text-decoration: none; font-size: 12px;">
+                                                <i class="fas fa-download"></i> Descargar
+                                            </a>
+                                        ` : ''}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+
+                // Compras de cuentas
+                if (accountPurchases?.length) {
+                    html += '<h3 style="margin-top: 24px; color: var(--primary);"><i class="fas fa-tv"></i> Cuentas</h3>';
+                    accountPurchases.forEach(p => {
+                        html += `
+                            <div style="background: var(--bg-surface); border-radius: 12px; padding: 16px;">
+                                <div style="display: flex; justify-content: space-between; align-items: start;">
+                                    <div>
+                                        <h4 style="font-weight: 700; margin-bottom: 4px;">${p.package_name}</h4>
+                                        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">
+                                            ${p.platform}
+                                        </div>
+                                        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">
+                                            <i class="fas fa-calendar"></i> ${new Date(p.created_at).toLocaleDateString()}
+                                        </div>
+                                        <div style="font-weight: 600; color: var(--primary);">
+                                            Bs. ${parseFloat(p.amount_bs).toFixed(2)}
+                                        </div>
+                                    </div>
+                                    <span style="padding: 4px 12px; background: rgba(52, 168, 83, 0.2); color: #34A853; border-radius: 20px; font-size: 11px;">
+                                        Entregada
+                                    </span>
+                                </div>
+                                ${p.account_email ? `
+                                    <div style="margin-top: 16px; padding: 12px; background: rgba(109, 40, 217, 0.1); border-radius: 8px;">
+                                        <div style="margin-bottom: 8px;">
+                                            <span style="font-size: 11px; color: var(--text-secondary);">Email:</span>
+                                            <span style="font-size: 13px; font-weight: 600; margin-left: 8px;">${p.account_email}</span>
+                                        </div>
+                                        <div>
+                                            <span style="font-size: 11px; color: var(--text-secondary);">Contraseña:</span>
+                                            <span style="font-size: 13px; font-weight: 600; margin-left: 8px;">${p.account_password}</span>
+                                        </div>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        `;
+                    });
+                }
+
+                html += '</div></section>';
+                main.innerHTML = html;
+
+            } catch (error) {
+                console.error('Error cargando compras:', error);
+                showMessage('Error al cargar tus compras', 'error');
+            }
+        }
+
+        // ========== RENDERIZAR PERFIL ==========
+        function renderProfileView() {
+            const main = document.getElementById('mainContent');
+            
+            main.innerHTML = `
+                <div style="padding: 24px 0;">
+                    <div style="text-align: center; margin-bottom: 24px;">
+                        <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); 
+                             border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                            <i class="fas fa-user" style="font-size: 32px; color: white;"></i>
+                        </div>
+                        <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 4px;">
+                            ${currentUserProfile?.full_name || 'Usuario'}
+                        </h3>
+                        <p style="color: var(--text-secondary); font-size: 13px;">
+                            ${currentUserProfile?.email || 'Sin email'}
+                        </p>
+                    </div>
+
+                    <div class="balance-section">
+                        <span class="balance-label">Saldo disponible</span>
+                        <span class="balance-amount">Bs. ${currentBalance.toFixed(2)}</span>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <button class="btn btn-primary" onclick="switchTab('orders')">
+                            <i class="fas fa-shopping-bag"></i>
+                            Ver mis compras
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ========== MANEJAR CLICK EN PRODUCTO ==========
+        function handleProductClick(productId) {
+            const product = storeProducts.find(p => p.id == productId);
+            if (!product) return;
+            
+            currentProduct = product;
+            
+            if (product.is_free) {
+                downloadFreeApp(product);
+            } else {
+                showAppDetail(product);
+            }
+        }
+
+        // ========== MANEJAR CLICK EN PAQUETE ==========
+        function handlePackageClick(packageId) {
+            const pkg = storePackages.find(p => p.id == packageId);
+            if (!pkg) return;
+            
+            currentPackage = pkg;
+            showAccountDetail(pkg);
+        }
+
+        // ========== MOSTRAR DETALLE DE APP ==========
+        function showAppDetail(product) {
+            const content = document.getElementById('appDetailContent');
+            
+            content.innerHTML = `
+                <div class="app-detail-header">
+                    <img src="${product.cover_url || 'https://via.placeholder.com/256/6d28d9/ffffff?text=App'}" 
+                         alt="${product.name}" class="detail-icon">
+                    <div class="detail-info">
+                        <h1 class="detail-title">${product.name}</h1>
+                        <div class="detail-developer">${product.developer}</div>
+                        <div class="detail-meta">
+                            <span><i class="fas fa-download"></i> ${(product.downloads || 0).toLocaleString()}</span>
+                            <span><i class="fas fa-hdd"></i> ${product.file_size}</span>
+                            <span><i class="fas fa-code-branch"></i> v${product.version}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="detail-price ${product.is_free ? 'detail-price-free' : 'detail-price-paid'}">
+                    ${product.is_free ? 'GRATIS' : 'Bs. ' + parseFloat(product.price_bs).toFixed(2)}
+                </div>
+                
+                <div class="detail-section">
+                    <h3 class="detail-section-title">
+                        <i class="fas fa-align-left"></i>
+                        Descripción
+                    </h3>
+                    <p class="detail-description">${product.description || 'Sin descripción disponible.'}</p>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="purchaseProduct('${product.id}')" style="flex: 1;">
+                        <i class="fas ${product.is_free ? 'fa-download' : 'fa-shopping-cart'}"></i>
+                        ${product.is_free ? 'Instalar gratis' : 'Comprar ahora'}
+                    </button>
+                    <button class="btn btn-secondary" onclick="closeModal('appDetail')" style="flex: 1;">
+                        Cancelar
+                    </button>
+                </div>
+            `;
+            
+            document.getElementById('appDetailModal').classList.add('active');
+        }
+
+        // ========== MOSTRAR DETALLE DE CUENTA ==========
+        function showAccountDetail(pkg) {
+            const content = document.getElementById('accountDetailContent');
+            
+            const features = pkg.features || {};
+            
+            content.innerHTML = `
+                <div style="text-align: center; margin-bottom: 24px;">
+                    <div style="font-size: 64px; color: var(--primary); margin-bottom: 16px;">
+                        <i class="${storeCategories.find(c => c.id == pkg.platform_category_id)?.icon || 'fas fa-tv'}"></i>
+                    </div>
+                    <h1 style="font-size: 24px; font-weight: 700; margin-bottom: 8px;">${pkg.name}</h1>
+                    <div style="color: var(--primary); font-size: 16px; font-weight: 600;">${pkg.platform}</div>
+                </div>
+                
+                <div class="detail-price detail-price-paid">
+                    Bs. ${parseFloat(pkg.price_bs).toFixed(2)}
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px;">
+                    <div style="background: rgba(255,255,255,0.05); padding: 16px; border-radius: 12px; text-align: center;">
+                        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">Duración</div>
+                        <div style="font-size: 20px; font-weight: 700;">${pkg.duration_days} días</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.05); padding: 16px; border-radius: 12px; text-align: center;">
+                        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">Perfiles</div>
+                        <div style="font-size: 20px; font-weight: 700;">${pkg.profiles_count}</div>
+                    </div>
+                </div>
+                
+                <div class="detail-section">
+                    <h3 class="detail-section-title">
+                        <i class="fas fa-info-circle"></i>
+                        Descripción
+                    </h3>
+                    <p class="detail-description">${pkg.description || 'Cuenta premium compartida.'}</p>
+                </div>
+                
+                <div class="detail-section">
+                    <h3 class="detail-section-title">
+                        <i class="fas fa-check-circle"></i>
+                        Características
+                    </h3>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        ${Object.entries(features).map(([key, value]) => `
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <i class="fas fa-check" style="color: var(--secondary);"></i>
+                                <span style="font-size: 14px;">${key}: ${value}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                
+                <div style="margin-top: 24px;">
+                    <button class="btn btn-primary" style="width: 100%;" onclick="showPurchaseConfirmation('${pkg.id}')">
+                        <i class="fas fa-shopping-cart"></i>
+                        Comprar ahora - Bs. ${parseFloat(pkg.price_bs).toFixed(2)}
+                    </button>
+                </div>
+            `;
+            
+            document.getElementById('accountDetailModal').classList.add('active');
+        }
+
+        // ========== MOSTRAR CONFIRMACIÓN DE COMPRA ==========
+        function showPurchaseConfirmation(packageId) {
+            const pkg = storePackages.find(p => p.id == packageId);
+            if (!pkg) return;
+            
+            const content = document.getElementById('purchaseConfirmContent');
+            
+            content.innerHTML = `
+                <div style="text-align: center; margin-bottom: 24px;">
+                    <div style="font-size: 48px; color: var(--primary); margin-bottom: 16px;">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 8px;">Confirmar compra</h3>
+                    <p style="color: var(--text-secondary);">¿Estás seguro de comprar este paquete?</p>
+                </div>
+                
+                <div style="background: var(--bg-surface); border-radius: 16px; padding: 20px; margin-bottom: 24px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                        <span style="color: var(--text-secondary);">Paquete:</span>
+                        <span style="font-weight: 600;">${pkg.name}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                        <span style="color: var(--text-secondary);">Plataforma:</span>
+                        <span style="font-weight: 600;">${pkg.platform}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                        <span style="color: var(--text-secondary);">Duración:</span>
+                        <span style="font-weight: 600;">${pkg.duration_days} días</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                        <span style="color: var(--text-secondary);">Perfiles:</span>
+                        <span style="font-weight: 600;">${pkg.profiles_count}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding-top: 12px; border-top: 1px solid var(--border);">
+                        <span style="font-weight: 700;">Total:</span>
+                        <span style="font-size: 20px; font-weight: 800; color: var(--primary);">
+                            Bs. ${parseFloat(pkg.price_bs).toFixed(2)}
+                        </span>
+                    </div>
+                </div>
+                
+                <div style="background: rgba(109, 40, 217, 0.1); border-radius: 12px; padding: 16px; margin-bottom: 24px;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <i class="fas fa-wallet" style="color: var(--primary); font-size: 20px;"></i>
+                        <div>
+                            <div style="font-size: 13px; color: var(--text-secondary);">Saldo disponible</div>
+                            <div style="font-size: 18px; font-weight: 700;">Bs. ${currentBalance.toFixed(2)}</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="purchaseAccount('${pkg.id}')" style="flex: 1;" 
+                            ${currentBalance < pkg.price_bs ? 'disabled' : ''}>
+                        <i class="fas fa-check"></i>
+                        Confirmar compra
+                    </button>
+                    <button class="btn btn-secondary" onclick="closeModal('purchaseConfirm')" style="flex: 1;">
+                        Cancelar
+                    </button>
+                </div>
+                
+                ${currentBalance < pkg.price_bs ? `
+                    <p style="text-align: center; margin-top: 16px; color: var(--danger); font-size: 13px;">
+                        <i class="fas fa-exclamation-circle"></i>
+                        Saldo insuficiente. Recarga tu saldo para continuar.
+                    </p>
+                ` : ''}
+            `;
+            
+            closeModal('accountDetail');
+            document.getElementById('purchaseConfirmModal').classList.add('active');
+        }
+
+        // ========== COMPRAR PRODUCTO (APP) ==========
+        async function purchaseProduct(productId) {
+            try {
+                const product = storeProducts.find(p => p.id == productId);
+                if (!product) throw new Error('Producto no encontrado');
+
+                if (product.is_free) {
+                    await downloadFreeApp(product);
+                    return;
+                }
+
+                if (currentBalance < product.price_bs) {
+                    showMessage('Saldo insuficiente. Recarga tu saldo.', 'error');
+                    return;
+                }
+
+                const { data, error } = await supabase
+                    .rpc('purchase_store_product', {
+                        p_user_id: currentUser.id,
+                        p_product_id: product.id,
+                        p_quantity: 1
+                    });
+
+                if (error) throw error;
+
+                if (data.success) {
+                    currentBalance = data.new_balance;
+                    document.getElementById('balanceAmount').textContent = currentBalance.toFixed(2);
+                    
+                    closeModal('appDetail');
+                    showMessage('¡Compra exitosa!', 'success');
+                    
+                    if (data.apk_url) {
+                        window.open(data.apk_url, '_blank');
+                    }
+                    
+                    // Actualizar contador de descargas
+                    product.downloads = (product.downloads || 0) + 1;
+                    await loadStoreData();
+                } else {
+                    throw new Error(data.error);
+                }
+
+            } catch (error) {
+                console.error('Error comprando:', error);
+                showMessage(error.message || 'Error al comprar', 'error');
+            }
+        }
+
+        // ========== DESCARGAR APP GRATIS ==========
+        async function downloadFreeApp(product) {
+            try {
+                // Incrementar descargas
+                const { error } = await supabase
+                    .from('store_products')
+                    .update({ downloads: (product.downloads || 0) + 1 })
+                    .eq('id', product.id);
+
+                if (error) console.warn('No se pudo actualizar contador:', error);
+
+                // Registrar compra gratuita
+                await supabase
+                    .from('store_product_purchases')
+                    .insert([{
+                        user_id: currentUser.id,
+                        product_id: product.id,
+                        quantity: 1,
+                        unit_price: 0,
+                        total_price: 0,
+                        status: 'completed'
+                    }]);
+
+                closeModal('appDetail');
+                
+                if (product.apk_url) {
+                    window.open(product.apk_url, '_blank');
+                    showMessage('Descarga iniciada', 'success');
+                } else {
+                    showMessage('App disponible para descargar', 'success');
+                }
+
+            } catch (error) {
+                console.error('Error en descarga:', error);
+                if (product.apk_url) {
+                    window.open(product.apk_url, '_blank');
+                }
+            }
+        }
+
+        // ========== COMPRAR CUENTA ==========
+        async function purchaseAccount(packageId) {
+            try {
+                const pkg = storePackages.find(p => p.id == packageId);
+                if (!pkg) throw new Error('Paquete no encontrado');
+
+                if (currentBalance < pkg.price_bs) {
+                    showMessage('Saldo insuficiente', 'error');
+                    return;
+                }
+
+                closeModal('purchaseConfirm');
+
+                const { data, error } = await supabase
+                    .rpc('purchase_store_account', {
+                        p_user_id: currentUser.id,
+                        p_user_uid: currentUser.id,
+                        p_user_name: currentUserProfile?.full_name || 'Usuario',
+                        p_user_phone: currentUserProfile?.phone || 'N/A',
+                        p_package_id: pkg.id
+                    });
+
+                if (error) throw error;
+
+                if (data.success) {
+                    currentBalance = data.new_balance;
+                    document.getElementById('balanceAmount').textContent = currentBalance.toFixed(2);
+                    
+                    // Mostrar credenciales
+                    showCredentials(data);
+                    
+                    await loadStoreData();
+                } else {
+                    throw new Error(data.error);
+                }
+
+            } catch (error) {
+                console.error('Error comprando cuenta:', error);
+                showMessage(error.message || 'Error al comprar', 'error');
+            }
+        }
+
+        // ========== MOSTRAR CREDENCIALES ==========
+        function showCredentials(data) {
+            const content = document.getElementById('credentialsContent');
+            
+            content.innerHTML = `
+                <div style="text-align: center; margin-bottom: 24px;">
+                    <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--secondary), #2c8e4c); 
+                         border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                        <i class="fas fa-check" style="font-size: 32px; color: white;"></i>
+                    </div>
+                    <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 8px;">¡Compra exitosa!</h3>
+                    <p style="color: var(--text-secondary);">Tu cuenta ha sido entregada</p>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, rgba(109,40,217,0.2), rgba(109,40,217,0.1)); 
+                            border-radius: 16px; padding: 20px; margin-bottom: 24px;">
+                    <h4 style="margin-bottom: 16px; color: var(--primary); font-size: 16px;">
+                        <i class="fas fa-tv"></i> ${data.platform} - ${data.package_name}
+                    </h4>
+                    
+                    <div class="credential-item">
+                        <span class="credential-label">Email / Usuario:</span>
+                        <span class="credential-value">
+                            ${data.account_email}
+                            <button class="copy-btn" onclick="copyToClipboard('${data.account_email}')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </span>
+                    </div>
+                    
+                    <div class="credential-item">
+                        <span class="credential-label">Contraseña:</span>
+                        <span class="credential-value">
+                            ${data.account_password}
+                            <button class="copy-btn" onclick="copyToClipboard('${data.account_password}')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 24px;">
+                    <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">
+                        <i class="fas fa-info-circle"></i> 
+                        Guarda estas credenciales en un lugar seguro. 
+                        La cuenta ya está activa y lista para usar.
+                    </p>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-primary" style="flex: 1;" onclick="closeModal('credentials')">
+                        <i class="fas fa-check"></i>
+                        Aceptar
+                    </button>
+                    <button class="btn btn-secondary" style="flex: 1;" onclick="switchTab('orders')">
+                        <i class="fas fa-shopping-bag"></i>
+                        Mis compras
+                    </button>
+                </div>
+            `;
+            
+            document.getElementById('credentialsModal').classList.add('active');
+        }
+
+        // ========== COPIAR AL PORTAPAPELES ==========
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showMessage('¡Copiado!', 'success');
+            }).catch(() => {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                showMessage('¡Copiado!', 'success');
+            });
+        }
+
+        // ========== FILTRAR CONTENIDO ==========
+        function filterContent() {
+            if (currentTab === 'apps') {
+                renderAppsView();
+            } else if (currentTab === 'accounts') {
+                renderAccountsView();
+            }
+        }
+
+        // ========== CAMBIAR TAB ==========
+        function switchTab(tab) {
+            currentTab = tab;
+            currentCategory = 'all';
+            
+            // Actualizar tabs UI
+            document.querySelectorAll('.store-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector(`.store-tab[data-tab="${tab}"]`).classList.add('active');
+            
+            // Actualizar navegación inferior
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            
+            if (tab === 'apps') {
+                document.querySelector('.nav-item[data-page="apps"]').classList.add('active');
+                renderCategories();
+                renderAppsView();
+            } else if (tab === 'accounts') {
+                document.querySelector('.nav-item[data-page="accounts"]').classList.add('active');
+                renderCategories();
+                renderAccountsView();
+            } else if (tab === 'my-orders') {
+                document.querySelector('.nav-item[data-page="orders"]').classList.add('active');
+                renderMyOrdersView();
+            }
+        }
+
+        // ========== CERRAR MODAL ==========
+        function closeModal(modalName) {
+            document.getElementById(`${modalName}Modal`).classList.remove('active');
+        }
+
+        // ========== MOSTRAR MENSAJE ==========
+        function showMessage(text, type = 'success') {
+            const msg = document.createElement('div');
+            msg.className = `message ${type}`;
+            msg.textContent = text;
+            document.body.appendChild(msg);
+            
+            setTimeout(() => {
+                msg.remove();
+            }, 4000);
+        }
+
+        // ========== EVENT LISTENERS ==========
+        function setupEventListeners() {
+            // Búsqueda
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                searchTerm = e.target.value;
+                filterContent();
+            });
+
+            // Navegación inferior
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const page = item.dataset.page;
+                    
+                    if (page === 'home') {
+                        renderHomePage();
+                        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                        item.classList.add('active');
+                        document.querySelectorAll('.store-tab').forEach(t => t.classList.remove('active'));
+                        document.querySelector('.store-tab[data-tab="apps"]').classList.add('active');
+                        currentTab = 'apps';
+                        currentCategory = 'all';
+                        renderCategories();
+                    } else if (page === 'apps') {
+                        switchTab('apps');
+                    } else if (page === 'accounts') {
+                        switchTab('accounts');
+                    } else if (page === 'orders') {
+                        switchTab('my-orders');
+                    } else if (page === 'profile') {
+                        renderProfileView();
+                        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                        item.classList.add('active');
+                    }
+                });
+            });
+
+            // Menú de usuario
+            document.getElementById('userMenu').addEventListener('click', () => {
+                renderProfileView();
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                document.querySelector('.nav-item[data-page="profile"]').classList.add('active');
+            });
+        }
+    </script>
+</body>
+</html>
