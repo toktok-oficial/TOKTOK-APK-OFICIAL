@@ -593,26 +593,26 @@
             transform: scale(0.98);
         }
 
-        /* Botón de WhatsApp */
-        .btn-whatsapp {
+        /* Botón de WhatsApp solo para compras */
+        .btn-whatsapp-purchase {
             background: var(--whatsapp);
             color: white;
             border: none;
             width: 100%;
-            padding: 14px;
+            padding: 12px;
             border-radius: 30px;
-            font-weight: 700;
-            font-size: 15px;
+            font-weight: 600;
+            font-size: 14px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            margin-top: 12px;
+            margin-top: 16px;
             box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
         }
 
-        .btn-whatsapp:active {
+        .btn-whatsapp-purchase:active {
             transform: scale(0.98);
         }
 
@@ -1677,7 +1677,7 @@
                 // Cargar compras de apps
                 const { data: appPurchases } = await supabase
                     .from('store_product_purchases')
-                    .select('*, store_products(name, cover_url, apk_url)')
+                    .select('*, store_products(id, name, cover_url, apk_url)')
                     .eq('user_id', currentUser.id)
                     .order('created_at', { ascending: false });
 
@@ -1709,35 +1709,40 @@
 
                 let html = '<section class="apps-section">';
                 html += '<div class="section-header"><h2 class="section-title">Mis Compras</h2></div>';
-                html += '<div style="display: flex; flex-direction: column; gap: 16px;">';
+                html += '<div style="display: flex; flex-direction: column; gap: 20px;">';
 
                 // Compras de apps
                 if (appPurchases?.length) {
-                    html += '<h3 style="margin-top: 16px; color: var(--primary);"><i class="fas fa-mobile-alt"></i> Apps</h3>';
+                    html += '<h3 style="margin-top: 8px; color: var(--primary);"><i class="fas fa-mobile-alt"></i> Apps</h3>';
                     appPurchases.forEach(p => {
                         html += `
-                            <div style="background: var(--bg-surface); border-radius: 12px; padding: 16px;">
-                                <div style="display: flex; gap: 12px;">
+                            <div style="background: var(--bg-surface); border-radius: 20px; padding: 20px; border: 1px solid var(--border); box-shadow: 0 4px 12px var(--shadow);">
+                                <div style="display: flex; gap: 16px;">
                                     <img src="${p.store_products?.cover_url || 'https://via.placeholder.com/64/7c3aed/ffffff?text=App'}" 
-                                         style="width: 64px; height: 64px; border-radius: 12px; object-fit: cover;">
+                                         style="width: 72px; height: 72px; border-radius: 16px; object-fit: cover; border: 2px solid white; box-shadow: 0 4px 8px rgba(124,58,237,0.15);">
                                     <div style="flex: 1;">
-                                        <h4 style="font-weight: 700; margin-bottom: 4px;">${p.store_products?.name || 'App'}</h4>
+                                        <h4 style="font-weight: 800; margin-bottom: 4px; font-size: 16px;">${p.store_products?.name || 'App'}</h4>
                                         <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">
                                             <i class="fas fa-calendar"></i> ${new Date(p.created_at).toLocaleDateString()}
                                         </div>
-                                        <div style="font-weight: 600; color: var(--primary);">
+                                        <div style="font-weight: 700; color: var(--primary); font-size: 16px;">
                                             Bs. ${parseFloat(p.total_price).toFixed(2)}
                                         </div>
                                         ${p.store_products?.apk_url ? `
                                             <a href="${p.store_products.apk_url}" target="_blank" 
                                                style="display: inline-block; margin-top: 12px; padding: 8px 16px; 
-                                                      background: var(--primary); color: white; border-radius: 8px; 
-                                                      text-decoration: none; font-size: 12px;">
+                                                      background: var(--primary); color: white; border-radius: 30px; 
+                                                      text-decoration: none; font-size: 12px; font-weight: 600;">
                                                 <i class="fas fa-download"></i> Descargar
                                             </a>
                                         ` : ''}
                                     </div>
                                 </div>
+                                <!-- Botón de ayuda para instalación de app - SOLO AQUÍ APARECE -->
+                                <button class="btn-whatsapp-purchase" onclick="openWhatsApp('instalacion', '${p.store_products?.name || 'la app'}')">
+                                    <i class="fab fa-whatsapp"></i>
+                                    ¿Necesitas ayuda en la instalación?
+                                </button>
                             </div>
                         `;
                     });
@@ -1748,36 +1753,51 @@
                     html += '<h3 style="margin-top: 24px; color: var(--primary);"><i class="fas fa-tv"></i> Cuentas</h3>';
                     accountPurchases.forEach(p => {
                         html += `
-                            <div style="background: var(--bg-surface); border-radius: 12px; padding: 16px;">
+                            <div style="background: var(--bg-surface); border-radius: 20px; padding: 20px; border: 1px solid var(--border); box-shadow: 0 4px 12px var(--shadow);">
                                 <div style="display: flex; justify-content: space-between; align-items: start;">
                                     <div>
-                                        <h4 style="font-weight: 700; margin-bottom: 4px;">${p.package_name}</h4>
+                                        <h4 style="font-weight: 800; margin-bottom: 4px; font-size: 16px;">${p.package_name}</h4>
                                         <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">
                                             ${p.platform}
                                         </div>
                                         <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">
                                             <i class="fas fa-calendar"></i> ${new Date(p.created_at).toLocaleDateString()}
                                         </div>
-                                        <div style="font-weight: 600; color: var(--primary);">
+                                        <div style="font-weight: 700; color: var(--primary); font-size: 16px;">
                                             Bs. ${parseFloat(p.amount_bs).toFixed(2)}
                                         </div>
                                     </div>
-                                    <span style="padding: 4px 12px; background: rgba(16, 185, 129, 0.2); color: #10b981; border-radius: 20px; font-size: 11px;">
+                                    <span style="padding: 6px 14px; background: rgba(16, 185, 129, 0.15); color: #10b981; border-radius: 30px; font-size: 12px; font-weight: 600;">
                                         Entregada
                                     </span>
                                 </div>
                                 ${p.account_email ? `
-                                    <div style="margin-top: 16px; padding: 12px; background: rgba(124, 58, 237, 0.1); border-radius: 8px;">
-                                        <div style="margin-bottom: 8px;">
-                                            <span style="font-size: 11px; color: var(--text-secondary);">Email:</span>
-                                            <span style="font-size: 13px; font-weight: 600; margin-left: 8px;">${p.account_email}</span>
+                                    <div style="margin-top: 20px; padding: 16px; background: rgba(124, 58, 237, 0.08); border-radius: 16px; border: 1px solid var(--primary-light);">
+                                        <div style="margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+                                            <span style="font-size: 12px; color: var(--text-secondary); font-weight: 500;">Email:</span>
+                                            <span style="font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px;">
+                                                ${p.account_email}
+                                                <button class="copy-btn" onclick="copyToClipboard('${p.account_email}')" style="background: none; border: none; color: var(--primary);">
+                                                    <i class="fas fa-copy"></i>
+                                                </button>
+                                            </span>
                                         </div>
-                                        <div>
-                                            <span style="font-size: 11px; color: var(--text-secondary);">Contraseña:</span>
-                                            <span style="font-size: 13px; font-weight: 600; margin-left: 8px;">${p.account_password}</span>
+                                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                                            <span style="font-size: 12px; color: var(--text-secondary); font-weight: 500;">Contraseña:</span>
+                                            <span style="font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px;">
+                                                ${p.account_password}
+                                                <button class="copy-btn" onclick="copyToClipboard('${p.account_password}')" style="background: none; border: none; color: var(--primary);">
+                                                    <i class="fas fa-copy"></i>
+                                                </button>
+                                            </span>
                                         </div>
                                     </div>
                                 ` : ''}
+                                <!-- Botón de ayuda para activación de cuenta - SOLO AQUÍ APARECE -->
+                                <button class="btn-whatsapp-purchase" onclick="openWhatsApp('activacion', '${p.package_name}')">
+                                    <i class="fab fa-whatsapp"></i>
+                                    ¿Necesitas ayuda para la activación?
+                                </button>
                             </div>
                         `;
                     });
@@ -1889,12 +1909,6 @@
                         Cancelar
                     </button>
                 </div>
-
-                <!-- Botón de ayuda para instalación -->
-                <button class="btn-whatsapp" onclick="openWhatsApp('instalacion', '${product.name}')">
-                    <i class="fab fa-whatsapp"></i>
-                    ¿Necesitas ayuda en la instalación?
-                </button>
             `;
             
             document.getElementById('appDetailModal').classList.add('active');
@@ -1959,12 +1973,6 @@
                         Comprar ahora - Bs. ${parseFloat(pkg.price_bs).toFixed(2)}
                     </button>
                 </div>
-
-                <!-- Botón de ayuda para activación -->
-                <button class="btn-whatsapp" onclick="openWhatsApp('activacion', '${pkg.name}')">
-                    <i class="fab fa-whatsapp"></i>
-                    ¿Necesitas ayuda para la activación?
-                </button>
             `;
             
             document.getElementById('accountDetailModal').classList.add('active');
@@ -2223,12 +2231,6 @@
                         La cuenta ya está activa y lista para usar.
                     </p>
                 </div>
-
-                <!-- Botón de ayuda para activación después de compra -->
-                <button class="btn-whatsapp" onclick="openWhatsApp('activacion', '${data.package_name || 'tu cuenta'}')" style="margin-bottom: 16px;">
-                    <i class="fab fa-whatsapp"></i>
-                    ¿Necesitas ayuda para activar?
-                </button>
                 
                 <div class="btn-group">
                     <button class="btn btn-primary" style="flex: 1;" onclick="closeModal('credentials')">
