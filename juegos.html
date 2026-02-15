@@ -2,208 +2,724 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Recarga de Juegos - TokTok</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
         
-        :root {
-            --primary: #6d28d9;
-            --primary-dark: #5b21b6;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         
         body {
-            font-family: 'Inter', sans-serif;
-            background: #f8fafc;
-            color: #1e293b;
-            -webkit-tap-highlight-color: transparent;
-        }
-        
-        .game-card {
-            transition: all 0.3s ease;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-            background: white;
+            font-family: 'Space Grotesk', sans-serif;
+            background: #0f0f1a;
+            min-height: 100vh;
             position: relative;
+            overflow-x: hidden;
         }
         
-        .game-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(109, 40, 217, 0.15);
+        /* Fondo con partículas */
+        .bg-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.1) 0%, transparent 50%),
+                        linear-gradient(135deg, #0a0a0f 0%, #1a1a2f 100%);
         }
         
-        .game-logo-container {
-            width: 75px;
-            height: 75px;
-            border-radius: 20px;
+        /* Efecto de brillo móvil */
+        .bg-particles::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            animation: shine 8s infinite;
+        }
+        
+        @keyframes shine {
+            0% { left: -100%; }
+            20% { left: 100%; }
+            100% { left: 100%; }
+        }
+        
+        /* Header Glassmorphism */
+        .glass-header {
+            position: relative;
+            z-index: 10;
+            background: rgba(20, 20, 35, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .glass-header-title {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff 0%, #c4b5fd 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+            text-shadow: 0 2px 10px rgba(139, 92, 246, 0.3);
+        }
+        
+        .glass-back-button {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-            border: 3px solid white;
+            color: white;
+            font-size: 18px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
         
-        .game-logo {
+        .glass-back-button:active {
+            transform: scale(0.9) rotate(-10deg);
+            background: rgba(139, 92, 246, 0.3);
+            border-color: rgba(139, 92, 246, 0.5);
+        }
+        
+        /* Contenedor principal */
+        .games-showcase {
+            position: relative;
+            z-index: 5;
+            padding: 24px 20px 40px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        /* Tarjeta Free Fire - Estilo Battle Royale */
+        .ff-card {
+            background: linear-gradient(145deg, #2d1a1a 0%, #4a1f1f 100%);
+            border-radius: 36px;
+            margin-bottom: 24px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 140, 0, 0.3);
+            box-shadow: 0 25px 40px -15px rgba(255, 69, 0, 0.4),
+                        0 0 0 1px rgba(255, 140, 0, 0.1) inset;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+            animation: floatCard 3s ease-in-out infinite;
+        }
+        
+        .ff-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 140, 0, 0.3) 0%, transparent 70%);
+            animation: rotate 10s linear infinite;
+        }
+        
+        .ff-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255, 140, 0, 0.1) 10px, rgba(255, 140, 0, 0.1) 20px);
+            pointer-events: none;
+        }
+        
+        /* Tarjeta Mobile Legends - Estilo Épico */
+        .ml-card {
+            background: linear-gradient(145deg, #1a1f3a 0%, #2a2f5a 100%);
+            border-radius: 36px;
+            margin-bottom: 24px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(74, 144, 226, 0.4);
+            box-shadow: 0 25px 40px -15px rgba(74, 144, 226, 0.5),
+                        0 0 30px rgba(74, 144, 226, 0.2) inset;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+            animation: floatCard 3s ease-in-out infinite;
+            animation-delay: 1s;
+        }
+        
+        .ml-card::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, #4a90e2, #9b59b6, #4a90e2, #9b59b6);
+            background-size: 300% 300%;
+            animation: gradientShift 6s ease infinite;
+            opacity: 0.2;
+            border-radius: 46px;
+        }
+        
+        .ml-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        
+        /* Tarjeta eFootball - Estilo Campo de Fútbol */
+        .efootball-card {
+            background: linear-gradient(145deg, #1a3a2a 0%, #2a5a3a 100%);
+            border-radius: 36px;
+            margin-bottom: 24px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(46, 204, 113, 0.4);
+            box-shadow: 0 25px 40px -15px rgba(46, 204, 113, 0.4),
+                        0 0 0 1px rgba(46, 204, 113, 0.1) inset;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+            animation: floatCard 3s ease-in-out infinite;
+            animation-delay: 0.5s;
+            opacity: 0.9;
+        }
+        
+        .efootball-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(90deg, transparent, transparent 20px, rgba(255, 255, 255, 0.05) 20px, rgba(255, 255, 255, 0.05) 40px);
+            pointer-events: none;
+        }
+        
+        .efootball-card::after {
+            content: '⚽';
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            font-size: 120px;
+            opacity: 0.1;
+            transform: rotate(15deg);
+            pointer-events: none;
+        }
+        
+        /* Tarjeta Fortnite - Estilo Cómic/Battle Pass */
+        .fortnite-card {
+            background: linear-gradient(145deg, #3a2a5a 0%, #5a3a8a 100%);
+            border-radius: 36px;
+            margin-bottom: 24px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(155, 89, 182, 0.5);
+            box-shadow: 0 25px 40px -15px rgba(155, 89, 182, 0.5),
+                        0 0 30px rgba(155, 89, 182, 0.3) inset;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+            animation: floatCard 3s ease-in-out infinite;
+            animation-delay: 1.5s;
+            opacity: 0.9;
+        }
+        
+        .fortnite-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.2) 0%, transparent 60%);
+            animation: rotate 15s linear infinite;
+        }
+        
+        .fortnite-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 70% 30%, rgba(255, 215, 0, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        /* Badge de Próximamente */
+        .coming-soon-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 6px 14px;
+            border-radius: 30px;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .coming-soon-badge i {
+            font-size: 10px;
+            color: #f1c40f;
+        }
+        
+        @keyframes floatCard {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-5px) scale(1.02); }
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Logo container con efecto 3D */
+        .game-logo-3d {
+            width: 90px;
+            height: 90px;
+            border-radius: 30px;
+            overflow: hidden;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: perspective(500px) rotateY(5deg) rotateX(5deg);
+            box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.5),
+                        0 0 0 2px rgba(255, 255, 255, 0.2) inset;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+        }
+        
+        .ff-card:hover .game-logo-3d,
+        .ml-card:hover .game-logo-3d,
+        .efootball-card:hover .game-logo-3d,
+        .fortnite-card:hover .game-logo-3d {
+            transform: perspective(500px) rotateY(0deg) rotateX(0deg) scale(1.05);
+        }
+        
+        .game-logo-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 18px;
+            display: block;
+            transition: all 0.5s ease;
         }
         
-        .game-logo-fallback {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            color: white;
-            border-radius: 18px;
+        .ff-card:hover .game-logo-img,
+        .ml-card:hover .game-logo-img,
+        .efootball-card:hover .game-logo-img,
+        .fortnite-card:hover .game-logo-img {
+            transform: scale(1.1);
+            filter: brightness(1.2) saturate(1.2);
         }
         
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            padding: 12px 20px;
-            border-radius: 12px;
-            font-weight: 500;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        @media (max-width: 768px) {
-            .mobile-header {
-                position: sticky;
-                top: 0;
-                z-index: 40;
-                background: white;
-                padding: 18px 20px;
-                border-bottom: 1px solid #f1f5f9;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            }
-            
-            .mobile-header-title {
-                font-size: 20px;
-                font-weight: 700;
-                color: #1e293b;
-            }
-            
-            .games-container {
-                padding: 20px;
-                padding-top: 10px;
-            }
-            
-            .game-card {
-                margin-bottom: 20px;
-                padding: 22px;
-            }
-        }
-        
-        .game-info {
+        /* Info del juego mejorada */
+        .game-info-premium {
             flex: 1;
             margin-left: 20px;
+            position: relative;
         }
         
-        .game-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: #1e293b;
-            margin-bottom: 4px;
+        .game-title-premium {
+            font-size: 24px;
+            font-weight: 800;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            margin-bottom: 6px;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
         }
         
-        .game-subtitle {
-            font-size: 14px;
-            color: #64748b;
+        .game-subtitle-premium {
+            font-size: 16px;
             font-weight: 500;
+            color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
         }
         
-        .arrow-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            background: rgba(109, 40, 217, 0.1);
+        .game-badge {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            padding: 4px 10px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Botón de acción flotante */
+        .action-button {
+            width: 50px;
+            height: 50px;
+            border-radius: 25px;
+            background: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s;
+            font-size: 20px;
+            color: #1f1f1f;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
         }
         
-        .game-card:hover .arrow-icon {
-            background: rgba(109, 40, 217, 0.2);
-            transform: translateX(3px);
+        .ff-card .action-button {
+            background: linear-gradient(135deg, #ff8c00, #ff4500);
+            color: white;
+        }
+        
+        .ml-card .action-button {
+            background: linear-gradient(135deg, #4a90e2, #9b59b6);
+            color: white;
+        }
+        
+        .efootball-card .action-button {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+        }
+        
+        .fortnite-card .action-button {
+            background: linear-gradient(135deg, #f1c40f, #e67e22);
+            color: white;
+        }
+        
+        .action-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .ff-card:hover .action-button::before,
+        .ml-card:hover .action-button::before,
+        .efootball-card:hover .action-button::before,
+        .fortnite-card:hover .action-button::before {
+            width: 150px;
+            height: 150px;
+        }
+        
+        .action-button i {
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* Efecto de brillo en hover */
+        .ff-card:hover, .ml-card:hover, .efootball-card:hover, .fortnite-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 30px 50px -15px currentColor;
+        }
+        
+        .ff-card:hover {
+            box-shadow: 0 30px 50px -15px #ff4500;
+        }
+        
+        .ml-card:hover {
+            box-shadow: 0 30px 50px -15px #4a90e2;
+        }
+        
+        .efootball-card:hover {
+            box-shadow: 0 30px 50px -15px #2ecc71;
+        }
+        
+        .fortnite-card:hover {
+            box-shadow: 0 30px 50px -15px #f1c40f;
+        }
+        
+        /* Partículas flotantes */
+        .floating-particle {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.3;
+            pointer-events: none;
+            animation: particleFloat 3s ease-in-out infinite;
+        }
+        
+        @keyframes particleFloat {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(10px, -10px); }
+            50% { transform: translate(-5px, 15px); }
+            75% { transform: translate(-10px, -5px); }
+        }
+        
+        /* Ajustes para safe area */
+        @supports (padding: max(0px)) {
+            .glass-header {
+                padding-left: max(24px, env(safe-area-inset-left));
+                padding-right: max(24px, env(safe-area-inset-right));
+                padding-top: max(20px, env(safe-area-inset-top));
+            }
+            
+            .games-showcase {
+                padding-left: max(20px, env(safe-area-inset-left));
+                padding-right: max(20px, env(safe-area-inset-right));
+                padding-bottom: max(40px, env(safe-area-inset-bottom));
+            }
+        }
+        
+        /* Texto decorativo */
+        .ff-text, .ml-text, .efootball-text, .fortnite-text {
+            position: absolute;
+            bottom: 10px;
+            right: 20px;
+            font-size: 60px;
+            font-weight: 900;
+            opacity: 0.1;
+            color: white;
+            transform: rotate(-10deg);
+            pointer-events: none;
+            user-select: none;
+        }
+        
+        .ml-text {
+            right: 10px;
+            font-size: 40px;
+        }
+        
+        .efootball-text {
+            font-size: 30px;
+            bottom: 20px;
+            right: 15px;
+        }
+        
+        .fortnite-text {
+            font-size: 45px;
+            bottom: 15px;
+            right: 15px;
         }
     </style>
 </head>
 <body>
-    <!-- Versión Mobile -->
-    <div class="mobile-only">
-        <div class="mobile-header">
-            <div class="mobile-header-title">Recarga de Juegos</div>
-            <a href="dashboard.html" class="text-purple-600 text-xl">
-                <i class="fas fa-arrow-left"></i>
-            </a>
-        </div>
-        
-        <div class="games-container">
-            <div class="flex flex-col space-y-6 mt-6">
-                <!-- Botón Free Fire -->
-                <a href="freefire.html" class="game-card p-6 flex items-center justify-between">
-                    <div class="flex items-center">
-                        <div class="game-logo-container">
-                            <!-- PON AQUÍ LA URL DEL LOGO DE FREE FIRE -->
-                            <img src="https://www.citypng.com/public/uploads/preview/hd-ff-shirou-character-with-free-fire-logo-png-733961695035697kjthpswuq0.png?v=2026010606" 
-                                 alt="Free Fire Logo" 
-                                 class="game-logo"
-                                 onerror="this.style.display='none'; this.parentElement.querySelector('.game-logo-fallback').style.display='flex';">
-                            <div class="game-logo-fallback bg-gradient-to-br from-yellow-400 to-orange-500" style="display: none;">
-                                <i class="fas fa-fire"></i>
-                            </div>
-                        </div>
-                        <div class="game-info">
-                            <h3 class="game-title">Free Fire</h3>
-                            <p class="game-subtitle">Recarga de diamantes</p>
-                        </div>
+    <!-- Fondo con partículas -->
+    <div class="bg-particles"></div>
+    
+    <!-- Partículas flotantes generadas dinámicamente -->
+    <div id="particles"></div>
+    
+    <!-- Header Glassmorphism -->
+    <header class="glass-header">
+        <h1 class="glass-header-title">TokTok Games</h1>
+        <a href="dashboard.html" class="glass-back-button">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+    </header>
+    
+    <!-- Showcase de juegos -->
+    <main class="games-showcase">
+        <!-- Free Fire Card -->
+        <a href="freefire.html" class="ff-card">
+            <div class="flex items-center">
+                <div class="game-logo-3d">
+                    <img src="https://www.citypng.com/public/uploads/preview/hd-ff-shirou-character-with-free-fire-logo-png-733961695035697kjthpswuq0.png?v=2026010606" 
+                         alt="Free Fire" 
+                         class="game-logo-img"
+                         loading="lazy"
+                         onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg, #ff8c00, #ff4500)'; this.parentElement.innerHTML='<i class=\'fas fa-fire\' style=\'font-size: 40px; color: white; display: flex; align-items: center; justify-content: center; height: 100%;\'></i>'">
+                </div>
+                <div class="game-info-premium">
+                    <h2 class="game-title-premium">FREE FIRE</h2>
+                    <div class="game-subtitle-premium">
+                        <i class="fas fa-diamond"></i>
+                        <span>Recarga de diamantes</span>
                     </div>
-                    <div class="arrow-icon">
-                        <i class="fas fa-chevron-right text-purple-600"></i>
+                    <div style="display: flex; gap: 8px; margin-top: 8px;">
+                        <span class="game-badge" style="background: rgba(255, 69, 0, 0.3);">Battle Royale</span>
+                        <span class="game-badge" style="background: rgba(255, 140, 0, 0.3);">Popular</span>
                     </div>
-                </a>
-                
-                <!-- Botón Mobile Legends -->
-                <a href="Mobilegens.html" class="game-card p-6 flex items-center justify-between">
-                    <div class="flex items-center">
-                        <div class="game-logo-container">
-                            <!-- PON AQUÍ LA URL DEL LOGO DE MOBILE LEGENDS -->
-                            <img src="https://i.pinimg.com/1200x/76/87/70/76877062ca607ee7c7caee0a6b2755b1.jpg" 
-                                 alt="Mobile Legends Logo" 
-                                 class="game-logo"
-                                 onerror="this.style.display='none'; this.parentElement.querySelector('.game-logo-fallback').style.display='flex';">
-                            <div class="game-logo-fallback bg-gradient-to-br from-blue-500 to-purple-600" style="display: none;">
-                                <i class="fas fa-shield-alt"></i>
-                            </div>
-                        </div>
-                        <div class="game-info">
-                            <h3 class="game-title">Mobile Legends</h3>
-                            <p class="game-subtitle">Recarga de diamantes</p>
-                        </div>
-                    </div>
-                    <div class="arrow-icon">
-                        <i class="fas fa-chevron-right text-purple-600"></i>
-                    </div>
-                </a>
+                </div>
+                <div class="action-button">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
             </div>
-        </div>
-    </div>
+            <div class="ff-text">FF</div>
+        </a>
+        
+        <!-- Mobile Legends Card -->
+        <a href="Mobilegens.html" class="ml-card">
+            <div class="flex items-center">
+                <div class="game-logo-3d">
+                    <img src="https://i.pinimg.com/1200x/76/87/70/76877062ca607ee7c7caee0a6b2755b1.jpg" 
+                         alt="Mobile Legends" 
+                         class="game-logo-img"
+                         loading="lazy"
+                         onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg, #4a90e2, #9b59b6)'; this.parentElement.innerHTML='<i class=\'fas fa-shield-alt\' style=\'font-size: 40px; color: white; display: flex; align-items: center; justify-content: center; height: 100%;\'></i>'">
+                </div>
+                <div class="game-info-premium">
+                    <h2 class="game-title-premium">MOBILE LEGENDS</h2>
+                    <div class="game-subtitle-premium">
+                        <i class="fas fa-diamond"></i>
+                        <span>Recarga de diamantes</span>
+                    </div>
+                    <div style="display: flex; gap: 8px; margin-top: 8px;">
+                        <span class="game-badge" style="background: rgba(74, 144, 226, 0.3);">MOBA</span>
+                        <span class="game-badge" style="background: rgba(155, 89, 182, 0.3);">5v5</span>
+                    </div>
+                </div>
+                <div class="action-button">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+            </div>
+            <div class="ml-text">MLBB</div>
+        </a>
+        
+        <!-- eFootball Card (Próximamente) -->
+        <a href="#" class="efootball-card" onclick="return false;">
+            <div class="coming-soon-badge">
+                <i class="fas fa-hourglass-half"></i> PRÓX
+            </div>
+            <div class="flex items-center">
+                <div class="game-logo-3d">
+                    <img src="https://www.konami.com/efootball/s/img/main_page_1_sp.png?v=917" 
+                         alt="eFootball" 
+                         class="game-logo-img"
+                         loading="lazy"
+                         onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg, #2ecc71, #27ae60)'; this.parentElement.innerHTML='<i class=\'fas fa-futbol\' style=\'font-size: 40px; color: white; display: flex; align-items: center; justify-content: center; height: 100%;\'></i>'">
+                </div>
+                <div class="game-info-premium">
+                    <h2 class="game-title-premium">eFOOTBALL</h2>
+                    <div class="game-subtitle-premium">
+                        <i class="fas fa-futbol"></i>
+                        <span>Próximamente</span>
+                    </div>
+                    <div style="display: flex; gap: 8px; margin-top: 8px;">
+                        <span class="game-badge" style="background: rgba(46, 204, 113, 0.3);">Deportes</span>
+                        <span class="game-badge" style="background: rgba(39, 174, 96, 0.3);">Fútbol</span>
+                    </div>
+                </div>
+                <div class="action-button">
+                    <i class="fas fa-clock"></i>
+                </div>
+            </div>
+            <div class="efootball-text">eF</div>
+        </a>
+        
+        <!-- Fortnite Card (Próximamente) -->
+        <a href="#" class="fortnite-card" onclick="return false;">
+            <div class="coming-soon-badge">
+                <i class="fas fa-hourglass-half"></i> PRÓX
+            </div>
+            <div class="flex items-center">
+                <div class="game-logo-3d">
+                    <img src="https://i.ytimg.com/vi/adGdyCdvKz4/maxresdefault.jpg" 
+                         alt="Fortnite" 
+                         class="game-logo-img"
+                         loading="lazy"
+                         onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg, #f1c40f, #e67e22)'; this.parentElement.innerHTML='<i class=\'fas fa-skull\' style=\'font-size: 40px; color: white; display: flex; align-items: center; justify-content: center; height: 100%;\'></i>'">
+                </div>
+                <div class="game-info-premium">
+                    <h2 class="game-title-premium">FORTNITE</h2>
+                    <div class="game-subtitle-premium">
+                        <i class="fas fa-v-bucks"></i>
+                        <span>Próximamente</span>
+                    </div>
+                    <div style="display: flex; gap: 8px; margin-top: 8px;">
+                        <span class="game-badge" style="background: rgba(241, 196, 15, 0.3);">Battle Royale</span>
+                        <span class="game-badge" style="background: rgba(230, 126, 34, 0.3);">Construcción</span>
+                    </div>
+                </div>
+                <div class="action-button">
+                    <i class="fas fa-clock"></i>
+                </div>
+            </div>
+            <div class="fortnite-text">FN</div>
+        </a>
+    </main>
+
+    <script>
+        // Generar partículas flotantes
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 20; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'floating-particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 5 + 's';
+            particle.style.width = (Math.random() * 8 + 2) + 'px';
+            particle.style.height = particle.style.width;
+            particle.style.background = `rgba(255, 255, 255, ${Math.random() * 0.3 + 0.1})`;
+            particlesContainer.appendChild(particle);
+        }
+        
+        // Efecto de tilt 3D en las tarjetas
+        const cards = document.querySelectorAll('.ff-card, .ml-card, .efootball-card, .fortnite-card');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 20;
+                const rotateY = (centerX - x) / 20;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px) scale(1.02)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+            });
+        });
+    </script>
 </body>
 </html>
-
