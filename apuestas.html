@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BetPro - Apuestas Deportivas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.38.4/dist/umd/supabase.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        :root {
+            --bg-primary: #000000;
+            --bg-secondary: #0a0a0a;
+            --bg-card: #1a1a1a;
+            --green-primary: #00ff88;
+            --green-secondary: #00cc66;
+            --text-primary: #ffffff;
+            --text-secondary: #888888;
+            --border-color: #2a2a2a;
+            --error: #ff4444;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            max-width: 500px;
+            margin: 0 auto;
+            padding-bottom: 20px;
+        }
+
+        .app-header {
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--green-primary), var(--green-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .balance-container {
+            background-color: var(--bg-card);
+            padding: 8px 16px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .balance-amount {
+            font-weight: 600;
+            color: var(--green-primary);
+        }
+
+        .profile-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 22px;
+            background: linear-gradient(135deg, var(--green-primary), var(--green-secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .sports-menu {
+            padding: 12px 16px;
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .sports-menu::-webkit-scrollbar {
+            display: none;
+        }
+
+        .sport-item {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            margin-right: 20px;
+            padding: 8px 0;
+            opacity: 0.6;
+            cursor: pointer;
+        }
+
+        .sport-item.active {
+            opacity: 1;
+            border-bottom: 2px solid var(--green-primary);
+        }
+
+        .sport-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        .sport-name {
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .main-container {
+            padding: 16px;
+        }
+
+        .matches-grid {
+            display: grid;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .match-card {
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid var(--border-color);
+        }
+
+        .match-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .league {
+            background-color: var(--green-primary);
+            color: #000;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .match-time {
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        .match-teams {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .team-info {
+            text-align: center;
+        }
+
+        .team-logo {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 8px;
+            border-radius: 24px;
+            overflow: hidden;
+            background-color: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--green-primary);
+        }
+
+        .team-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .team-name {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .odds-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .odd-box {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .odd-box:hover {
+            border-color: var(--green-primary);
+        }
+
+        .odd-box.selected {
+            background-color: var(--green-primary);
+            border-color: var(--green-primary);
+        }
+
+        .odd-box.selected .odd-value {
+            color: #000;
+            font-weight: 700;
+        }
+
+        .odd-box.selected .odd-label {
+            color: #000;
+        }
+
+        .odd-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .odd-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--green-primary);
+        }
+
+        .bet-panel {
+            background-color: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid var(--border-color);
+        }
+
+        .bet-header {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .selected-bet-info {
+            background-color: var(--bg-card);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .selected-selection {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--green-primary);
+            margin-top: 4px;
+        }
+
+        .bet-input {
+            width: 100%;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            color: var(--text-primary);
+            margin: 8px 0 16px;
+            font-size: 16px;
+        }
+
+        .potential-win {
+            background: linear-gradient(135deg, var(--green-primary), var(--green-secondary));
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+            color: #000;
+            font-weight: 700;
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+
+        .btn-bet {
+            width: 100%;
+            background: linear-gradient(135deg, var(--green-primary), var(--green-secondary));
+            border: none;
+            border-radius: 8px;
+            padding: 16px;
+            color: #000;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-bet:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .history-section {
+            margin-top: 30px;
+        }
+
+        .history-item {
+            background-color: var(--bg-card);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+        }
+
+        .history-status {
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status-pending { background-color: #ffaa00; color: #000; }
+        .status-won { background-color: var(--green-primary); color: #000; }
+        .status-lost { background-color: var(--error); color: #fff; }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-container {
+            background-color: var(--bg-card);
+            border-radius: 24px;
+            padding: 24px;
+            width: 90%;
+            max-width: 400px;
+            border: 1px solid var(--border-color);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0 8px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn-primary {
+            flex: 1;
+            background: linear-gradient(135deg, var(--green-primary), var(--green-secondary));
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            color: #000;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-secondary {
+            flex: 1;
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        .message {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 12px 24px;
+            border-radius: 30px;
+            background-color: var(--green-primary);
+            color: #000;
+            font-weight: 600;
+            z-index: 2000;
+            animation: slideDown 0.3s;
+            box-shadow: 0 4px 12px rgba(0,255,136,0.3);
+        }
+
+        .message.error {
+            background-color: var(--error);
+            color: white;
+            box-shadow: 0 4px 12px rgba(255,68,68,0.3);
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes slideDown {
+            from { transform: translate(-50%, -20px); opacity: 0; }
+            to { transform: translate(-50%, 0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <header class="app-header">
+        <div class="logo">BETPRO</div>
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <div class="balance-container">
+                <span>💰</span>
+                <span class="balance-amount" id="balanceDisplay">Bs 0.00</span>
+            </div>
+            <div class="profile-icon" id="userInitial">U</div>
+        </div>
+    </header>
+
+    <div class="sports-menu" id="sportsMenu"></div>
+
+    <div class="main-container">
+        <div id="loading" style="text-align: center; padding: 40px; display: block;">
+            <div style="width: 40px; height: 40px; border: 3px solid var(--border-color); border-top-color: var(--green-primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto;"></div>
+            <p style="margin-top: 12px; color: var(--text-secondary);">Cargando partidos...</p>
+        </div>
+
+        <div id="matchesList" class="matches-grid"></div>
+
+        <div class="bet-panel" id="betPanel" style="display: none;">
+            <div class="bet-header">📝 TU APUESTA</div>
+            <div class="selected-bet-info" id="selectedBetInfo">
+                <div id="selectedMatchName" style="margin-bottom: 4px;"></div>
+                <div class="selected-selection" id="selectedSelection"></div>
+            </div>
+            <div>Monto a apostar (Bs)</div>
+            <input type="number" class="bet-input" id="betAmount" value="10" min="1" step="1">
+            <div class="potential-win" id="potentialWin">Bs 0.00</div>
+            <button class="btn-bet" id="placeBetBtn">APOSTAR AHORA</button>
+        </div>
+
+        <div class="history-section">
+            <h3 style="margin-bottom: 16px;">📋 MIS APUESTAS</h3>
+            <div id="betsHistory"></div>
+        </div>
+    </div>
+
+    <!-- Modal Confirmar Apuesta -->
+    <div class="modal-overlay" id="confirmModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3>Confirmar apuesta</h3>
+                <button class="modal-close" id="closeConfirmModal">&times;</button>
+            </div>
+            <div id="confirmModalBody"></div>
+            <div class="btn-group">
+                <button class="btn-secondary" id="cancelBetBtn">Cancelar</button>
+                <button class="btn-primary" id="confirmBetBtn">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Resultado -->
+    <div class="modal-overlay" id="resultModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 id="resultTitle">Éxito</h3>
+                <button class="modal-close" id="closeResultModal">&times;</button>
+            </div>
+            <div id="resultMessage" style="margin-bottom: 20px;"></div>
+            <button class="btn-primary" id="acceptResultBtn">Aceptar</button>
+        </div>
+    </div>
+
+    <!-- Modal Perfil -->
+    <div class="modal-overlay" id="profileModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3>Mi Perfil</h3>
+                <button class="modal-close" id="closeProfileModal">&times;</button>
+            </div>
+            <div id="profileContent" style="text-align: center;"></div>
+        </div>
+    </div>
+
+    <script>
+        // =====================================================
+        // CONFIGURACIÓN SUPABASE - IGUAL A TU SQL
+        // =====================================================
+        const SUPABASE_URL = 'https://aleadadisazocjovibeh.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFsZWFkYWRpc2F6b2Nqb3ZpYmVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk0NDE5NjMsImV4cCI6MjA3NTAxNzk2M30.z82tP0C-UiiNuzP_jqrQf4LBusFqrDi1WYbdnuTh47E';
+        
+        // =====================================================
+        // VARIABLES GLOBALES - IGUAL A TU SQL
+        // =====================================================
+        let currentUser = null;
+        let currentBalance = 0;
+        let currentSport = 'football';
+        let currentBet = { 
+            match: null, 
+            selection: null, 
+            odd: 0, 
+            selectionName: '', 
+            matchId: null, 
+            oddsId: null,
+            matchMarketId: null
+        };
+        let matches = [];
+        let sports = [];
+        let supabaseClient = null;
+
+        // =====================================================
+        // FUNCIÓN PARA MOSTRAR MENSAJES
+        // =====================================================
+        function showMessage(text, type = 'success') {
+            const msg = document.createElement('div');
+            msg.className = `message ${type}`;
+            msg.textContent = text;
+            document.body.appendChild(msg);
+            setTimeout(() => {
+                if (msg.parentNode) {
+                    msg.remove();
+                }
+            }, 3000);
+        }
+
+        // =====================================================
+        // INICIALIZACIÓN - DOMContentLoaded
+        // =====================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM cargado, iniciando aplicación...');
+            
+            try {
+                supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+                console.log('Cliente Supabase creado');
+            } catch (error) {
+                console.error('Error creando cliente Supabase:', error);
+                showMessage('Error de conexión', 'error');
+                return;
+            }
+            
+            initApp();
+        });
+
+        // =====================================================
+        // FUNCIÓN PRINCIPAL DE INICIALIZACIÓN
+        // =====================================================
+        async function initApp() {
+            try {
+                await checkUser();
+                await loadSports();
+                await loadMatches();
+                await loadBetsHistory();
+                setupEventListeners();
+                
+                // Ocultar loading después de cargar
+                const loadingEl = document.getElementById('loading');
+                if (loadingEl) loadingEl.style.display = 'none';
+                
+            } catch (error) {
+                console.error('Error en inicialización:', error);
+                const loadingEl = document.getElementById('loading');
+                if (loadingEl) loadingEl.style.display = 'none';
+                showMessage('Error al cargar la aplicación', 'error');
+            }
+        }
+
+        // =====================================================
+        // CONFIGURAR EVENT LISTENERS
+        // =====================================================
+        function setupEventListeners() {
+            // Botón de apostar
+            const placeBetBtn = document.getElementById('placeBetBtn');
+            if (placeBetBtn) {
+                placeBetBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    openConfirmModal();
+                });
+            }
+            
+            // Input de monto
+            const betAmount = document.getElementById('betAmount');
+            if (betAmount) {
+                betAmount.addEventListener('input', calculateWin);
+            }
+            
+            // Icono de perfil
+            const userInitial = document.getElementById('userInitial');
+            if (userInitial) {
+                userInitial.addEventListener('click', openProfileModal);
+            }
+            
+            // Modal de confirmación
+            const closeConfirmModal = document.getElementById('closeConfirmModal');
+            if (closeConfirmModal) {
+                closeConfirmModal.addEventListener('click', () => closeModal('confirm'));
+            }
+            
+            const cancelBetBtn = document.getElementById('cancelBetBtn');
+            if (cancelBetBtn) {
+                cancelBetBtn.addEventListener('click', () => closeModal('confirm'));
+            }
+            
+            const confirmBetBtn = document.getElementById('confirmBetBtn');
+            if (confirmBetBtn) {
+                confirmBetBtn.addEventListener('click', placeBet);
+            }
+            
+            // Modal de resultado
+            const closeResultModal = document.getElementById('closeResultModal');
+            if (closeResultModal) {
+                closeResultModal.addEventListener('click', () => closeModal('result'));
+            }
+            
+            const acceptResultBtn = document.getElementById('acceptResultBtn');
+            if (acceptResultBtn) {
+                acceptResultBtn.addEventListener('click', () => closeModal('result'));
+            }
+            
+            // Modal de perfil
+            const closeProfileModal = document.getElementById('closeProfileModal');
+            if (closeProfileModal) {
+                closeProfileModal.addEventListener('click', () => closeModal('profile'));
+            }
+        }
+
+        // =====================================================
+        // VERIFICAR USUARIO - auth.users
+        // =====================================================
+        async function checkUser() {
+            try {
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                
+                if (!session) {
+                    const { data } = await supabaseClient.auth.signInAnonymously();
+                    currentUser = data.user;
+                    console.log('Usuario anónimo creado:', currentUser.id);
+                } else {
+                    currentUser = session.user;
+                    console.log('Usuario existente:', currentUser.id);
+                }
+                
+                const userInitial = document.getElementById('userInitial');
+                if (userInitial) {
+                    userInitial.textContent = currentUser.email ? currentUser.email[0].toUpperCase() : 'U';
+                }
+                
+                await loadUserBalance();
+                
+            } catch (error) {
+                console.error('Error en auth:', error);
+                showMessage('Error de autenticación', 'error');
+            }
+        }
+
+        // =====================================================
+        // CARGAR BALANCE DESDE TU TABLA transactions
+        // =====================================================
+        async function loadUserBalance() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('transactions')
+                    .select('amount, type')
+                    .eq('user_id', currentUser.id)
+                    .eq('status', 'completed');
+
+                if (error) throw error;
+
+                let balance = 0;
+                if (data && data.length > 0) {
+                    data.forEach(t => {
+                        if (t.type === 'deposit' || t.type === 'winning' || t.type === 'bonus' || t.type === 'recharge') {
+                            balance += t.amount;
+                        } else if (t.type === 'withdrawal' || t.type === 'bet') {
+                            balance -= t.amount;
+                        }
+                    });
+                }
+                
+                currentBalance = balance;
+                
+                const balanceDisplay = document.getElementById('balanceDisplay');
+                if (balanceDisplay) {
+                    balanceDisplay.textContent = `Bs ${balance.toFixed(2)}`;
+                }
+                
+                console.log('Balance cargado:', balance);
+                
+            } catch (error) {
+                console.error('Error cargando balance:', error);
+            }
+        }
+
+        // =====================================================
+        // CARGAR DEPORTES - sports
+        // =====================================================
+        async function loadSports() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('sports')
+                    .select('*')
+                    .eq('is_active', true)
+                    .order('sort_order');
+                    
+                if (error) throw error;
+                
+                sports = data || [];
+                console.log('Deportes cargados:', sports.length);
+                renderSportsMenu();
+                
+            } catch (error) {
+                console.error('Error cargando deportes:', error);
+            }
+        }
+
+        // =====================================================
+        // RENDERIZAR MENÚ DE DEPORTES
+        // =====================================================
+        function renderSportsMenu() {
+            const menu = document.getElementById('sportsMenu');
+            if (!menu) return;
+            
+            if (sports.length === 0) {
+                menu.innerHTML = '<div class="sport-item active" data-code="football" onclick="window.selectSport(\'football\')"><span class="sport-icon">⚽</span><span class="sport-name">Fútbol</span></div>';
+                return;
+            }
+            
+            menu.innerHTML = sports.map(s => `
+                <div class="sport-item ${s.code === currentSport ? 'active' : ''}" data-code="${s.code}" onclick="window.selectSport('${s.code}')">
+                    <span class="sport-icon">${s.icon || '⚽'}</span>
+                    <span class="sport-name">${s.name}</span>
+                </div>
+            `).join('');
+        }
+
+        // =====================================================
+        // CARGAR PARTIDOS - matches + leagues + teams + odds
+        // =====================================================
+        async function loadMatches() {
+            try {
+                console.log('Cargando partidos...');
+                
+                const { data, error } = await supabaseClient
+                    .from('matches')
+                    .select(`
+                        id,
+                        match_date,
+                        status,
+                        home_score,
+                        away_score,
+                        is_featured,
+                        league:leagues(id, name, country, logo_url),
+                        home_team:teams!home_team_id(id, name, short_name, country, logo_url),
+                        away_team:teams!away_team_id(id, name, short_name, country, logo_url),
+                        match_markets(
+                            id,
+                            name,
+                            odds(
+                                id,
+                                selection_name,
+                                selection_key,
+                                odd_value,
+                                is_active
+                            )
+                        )
+                    `)
+                    .eq('is_active', true)
+                    .in('status', ['scheduled', 'live'])
+                    .order('match_date', { ascending: true });
+
+                if (error) throw error;
+                
+                matches = data || [];
+                console.log('Partidos cargados:', matches.length);
+                
+                if (matches.length === 0) {
+                    console.log('No hay partidos, cargando datos de ejemplo...');
+                    await loadDemoMatches();
+                } else {
+                    renderMatches();
+                }
+                
+            } catch (error) {
+                console.error('Error cargando partidos:', error);
+                await loadDemoMatches();
+            }
+        }
+
+        // =====================================================
+        // CARGAR PARTIDOS DE DEMOSTRACIÓN (si no hay datos)
+        // =====================================================
+        async function loadDemoMatches() {
+            try {
+                // Intentar obtener equipos de la BD
+                const { data: teams } = await supabaseClient
+                    .from('teams')
+                    .select('id, name, short_name, logo_url')
+                    .limit(4);
+                
+                if (teams && teams.length >= 2) {
+                    matches = [
+                        {
+                            id: 'demo1',
+                            match_date: new Date(Date.now() + 86400000).toISOString(),
+                            status: 'scheduled',
+                            league: { name: 'Liga Demo', country: 'Demo' },
+                            home_team: teams[0] || { name: 'Local', short_name: 'LOC' },
+                            away_team: teams[1] || { name: 'Visitante', short_name: 'VIS' },
+                            match_markets: [{
+                                id: 'market1',
+                                odds: [
+                                    { id: 'odd1', selection_name: 'Local', selection_key: 'home', odd_value: 2.10 },
+                                    { id: 'odd2', selection_name: 'Empate', selection_key: 'draw', odd_value: 3.20 },
+                                    { id: 'odd3', selection_name: 'Visitante', selection_key: 'away', odd_value: 2.80 }
+                                ]
+                            }]
+                        },
+                        {
+                            id: 'demo2',
+                            match_date: new Date(Date.now() + 172800000).toISOString(),
+                            status: 'scheduled',
+                            league: { name: 'Liga Demo 2', country: 'Demo' },
+                            home_team: teams[2] || { name: 'Equipo A', short_name: 'A' },
+                            away_team: teams[3] || { name: 'Equipo B', short_name: 'B' },
+                            match_markets: [{
+                                id: 'market2',
+                                odds: [
+                                    { id: 'odd4', selection_name: 'Local', selection_key: 'home', odd_value: 1.95 },
+                                    { id: 'odd5', selection_name: 'Empate', selection_key: 'draw', odd_value: 3.40 },
+                                    { id: 'odd6', selection_name: 'Visitante', selection_key: 'away', odd_value: 3.10 }
+                                ]
+                            }]
+                        }
+                    ];
+                } else {
+                    // Datos completamente de demostración
+                    matches = [
+                        {
+                            id: 'demo1',
+                            match_date: new Date(Date.now() + 86400000).toISOString(),
+                            status: 'scheduled',
+                            league: { name: 'Liga Española', country: 'España' },
+                            home_team: { name: 'Real Madrid', short_name: 'RMA' },
+                            away_team: { name: 'Barcelona', short_name: 'BAR' },
+                            match_markets: [{
+                                id: 'market1',
+                                odds: [
+                                    { id: 'odd1', selection_name: 'Local', selection_key: 'home', odd_value: 2.10 },
+                                    { id: 'odd2', selection_name: 'Empate', selection_key: 'draw', odd_value: 3.20 },
+                                    { id: 'odd3', selection_name: 'Visitante', selection_key: 'away', odd_value: 2.80 }
+                                ]
+                            }]
+                        },
+                        {
+                            id: 'demo2',
+                            match_date: new Date(Date.now() + 172800000).toISOString(),
+                            status: 'scheduled',
+                            league: { name: 'Premier League', country: 'Inglaterra' },
+                            home_team: { name: 'Manchester City', short_name: 'MCI' },
+                            away_team: { name: 'Liverpool', short_name: 'LIV' },
+                            match_markets: [{
+                                id: 'market2',
+                                odds: [
+                                    { id: 'odd4', selection_name: 'Local', selection_key: 'home', odd_value: 1.95 },
+                                    { id: 'odd5', selection_name: 'Empate', selection_key: 'draw', odd_value: 3.40 },
+                                    { id: 'odd6', selection_name: 'Visitante', selection_key: 'away', odd_value: 3.10 }
+                                ]
+                            }]
+                        }
+                    ];
+                }
+                
+                renderMatches();
+                
+            } catch (error) {
+                console.error('Error cargando datos demo:', error);
+            }
+        }
+
+        // =====================================================
+        // RENDERIZAR PARTIDOS
+        // =====================================================
+        function renderMatches() {
+            const list = document.getElementById('matchesList');
+            if (!list) return;
+            
+            if (matches.length === 0) {
+                list.innerHTML = '<p style="color:var(--text-secondary); text-align:center; padding:40px;">No hay partidos disponibles</p>';
+                return;
+            }
+
+            list.innerHTML = matches.map(match => {
+                const market = match.match_markets?.[0];
+                const odds = market?.odds || [];
+                
+                const homeOdd = odds.find(o => o.selection_key === 'home') || { id: 'home', odd_value: 2.10 };
+                const drawOdd = odds.find(o => o.selection_key === 'draw') || { id: 'draw', odd_value: 3.20 };
+                const awayOdd = odds.find(o => o.selection_key === 'away') || { id: 'away', odd_value: 2.80 };
+                
+                const date = new Date(match.match_date).toLocaleString('es-ES', {
+                    day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit'
+                });
+
+                const homeTeamName = match.home_team?.name || 'Local';
+                const awayTeamName = match.away_team?.name || 'Visitante';
+                const leagueName = match.league?.name || 'Liga';
+                const homeLogo = match.home_team?.logo_url;
+                const awayLogo = match.away_team?.logo_url;
+
+                return `
+                    <div class="match-card">
+                        <div class="match-header">
+                            <span class="league">${leagueName}</span>
+                            <span class="match-time">${date}</span>
+                        </div>
+                        <div class="match-teams">
+                            <div class="team-info">
+                                <div class="team-logo">
+                                    ${homeLogo ? `<img src="${homeLogo}" alt="${homeTeamName}">` : homeTeamName.substring(0,2)}
+                                </div>
+                                <div class="team-name">${homeTeamName}</div>
+                            </div>
+                            <div style="color:var(--green-primary); font-weight:600;">VS</div>
+                            <div class="team-info">
+                                <div class="team-logo">
+                                    ${awayLogo ? `<img src="${awayLogo}" alt="${awayTeamName}">` : awayTeamName.substring(0,2)}
+                                </div>
+                                <div class="team-name">${awayTeamName}</div>
+                            </div>
+                        </div>
+                        <div class="odds-grid">
+                            <div class="odd-box" onclick="window.selectBet('${match.id}', '${market?.id}', '${homeOdd.id}', 'home', ${homeOdd.odd_value}, '${homeTeamName}', this)">
+                                <div class="odd-label">LOCAL</div>
+                                <div class="odd-value">${homeOdd.odd_value.toFixed(2)}</div>
+                            </div>
+                            <div class="odd-box" onclick="window.selectBet('${match.id}', '${market?.id}', '${drawOdd.id}', 'draw', ${drawOdd.odd_value}, 'Empate', this)">
+                                <div class="odd-label">EMPATE</div>
+                                <div class="odd-value">${drawOdd.odd_value.toFixed(2)}</div>
+                            </div>
+                            <div class="odd-box" onclick="window.selectBet('${match.id}', '${market?.id}', '${awayOdd.id}', 'away', ${awayOdd.odd_value}, '${awayTeamName}', this)">
+                                <div class="odd-label">VISITANTE</div>
+                                <div class="odd-value">${awayOdd.odd_value.toFixed(2)}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // =====================================================
+        // SELECCIONAR APUESTA
+        // =====================================================
+        window.selectBet = function(matchId, marketId, oddsId, selectionKey, oddValue, selectionName, element) {
+            document.querySelectorAll('.odd-box').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+            
+            const match = matches.find(m => m.id === matchId);
+            if (!match) return;
+
+            currentBet = { 
+                match, 
+                matchId,
+                marketId,
+                oddsId,
+                selectionKey,
+                selectionName,
+                odd: oddValue
+            };
+            
+            const betPanel = document.getElementById('betPanel');
+            const selectedMatchName = document.getElementById('selectedMatchName');
+            const selectedSelection = document.getElementById('selectedSelection');
+            
+            if (betPanel) betPanel.style.display = 'block';
+            if (selectedMatchName) {
+                selectedMatchName.textContent = `${match.home_team?.name || 'Local'} vs ${match.away_team?.name || 'Visitante'}`;
+            }
+            if (selectedSelection) {
+                selectedSelection.textContent = `${selectionName} @ ${oddValue.toFixed(2)}`;
+            }
+            
+            calculateWin();
+        };
+
+        // =====================================================
+        // CALCULAR GANANCIA
+        // =====================================================
+        function calculateWin() {
+            const amountInput = document.getElementById('betAmount');
+            if (!amountInput) return;
+            
+            const amount = parseFloat(amountInput.value) || 0;
+            const win = amount * (currentBet?.odd || 1);
+            
+            const potentialWin = document.getElementById('potentialWin');
+            if (potentialWin) {
+                potentialWin.textContent = `Bs ${win.toFixed(2)}`;
+            }
+        }
+
+        window.calculateWin = calculateWin;
+
+        // =====================================================
+        // ABRIR CONFIRMACIÓN
+        // =====================================================
+        function openConfirmModal() {
+            if (!currentBet || !currentBet.match) {
+                showMessage('Selecciona un mercado', 'error');
+                return;
+            }
+
+            const amountInput = document.getElementById('betAmount');
+            if (!amountInput) return;
+            
+            const amount = parseFloat(amountInput.value);
+            if (!amount || amount < 1) {
+                showMessage('Monto mínimo: Bs 1', 'error');
+                return;
+            }
+
+            if (amount > currentBalance) {
+                showMessage('Saldo insuficiente', 'error');
+                return;
+            }
+
+            const win = amount * currentBet.odd;
+            
+            const confirmBody = document.getElementById('confirmModalBody');
+            if (confirmBody) {
+                confirmBody.innerHTML = `
+                    <p><strong>${currentBet.match.home_team?.name || 'Local'} vs ${currentBet.match.away_team?.name || 'Visitante'}</strong></p>
+                    <p>Selección: ${currentBet.selectionName} @ ${currentBet.odd.toFixed(2)}</p>
+                    <p>Monto: Bs ${amount.toFixed(2)}</p>
+                    <p style="color: var(--green-primary); font-size: 18px; margin-top: 12px;">Posible ganancia: Bs ${win.toFixed(2)}</p>
+                `;
+            }
+            
+            const modal = document.getElementById('confirmModal');
+            if (modal) modal.classList.add('active');
+        }
+
+        window.openConfirmModal = openConfirmModal;
+
+        // =====================================================
+        // REALIZAR APUESTA - USA process_bet DE TU SQL
+        // =====================================================
+        async function placeBet() {
+            const amountInput = document.getElementById('betAmount');
+            if (!amountInput) return;
+            
+            const amount = parseFloat(amountInput.value);
+            const win = amount * currentBet.odd;
+            
+            const betItems = [{
+                match_id: currentBet.matchId,
+                odds_id: currentBet.oddsId,
+                selection_name: currentBet.selectionName,
+                odd_value: currentBet.odd
+            }];
+
+            const confirmBtn = document.getElementById('confirmBetBtn');
+            if (confirmBtn) {
+                confirmBtn.disabled = true;
+                confirmBtn.innerHTML = 'Procesando...';
+            }
+
+            try {
+                console.log('Procesando apuesta...', {
+                    user_id: currentUser.id,
+                    stake: amount,
+                    total_odds: currentBet.odd,
+                    potential_win: win,
+                    bet_items: betItems
+                });
+
+                const { data, error } = await supabaseClient
+                    .rpc('process_bet', {
+                        p_user_id: currentUser.id,
+                        p_stake: amount,
+                        p_total_odds: currentBet.odd,
+                        p_potential_win: win,
+                        p_bet_items: JSON.stringify(betItems)
+                    });
+
+                if (error) {
+                    console.error('Error en RPC:', error);
+                    throw error;
+                }
+
+                console.log('Respuesta process_bet:', data);
+
+                if (data && data.success) {
+                    closeModal('confirm');
+                    
+                    currentBalance = data.new_balance;
+                    
+                    const balanceDisplay = document.getElementById('balanceDisplay');
+                    if (balanceDisplay) {
+                        balanceDisplay.textContent = `Bs ${currentBalance.toFixed(2)}`;
+                    }
+                    
+                    const resultTitle = document.getElementById('resultTitle');
+                    const resultMessage = document.getElementById('resultMessage');
+                    
+                    if (resultTitle) resultTitle.textContent = '¡Apuesta realizada!';
+                    if (resultMessage) {
+                        resultMessage.innerHTML = `
+                            <p style="font-size: 48px; text-align: center;">✅</p>
+                            <p style="text-align: center;">Posible ganancia: <strong style="color:var(--green-primary);">Bs ${win.toFixed(2)}</strong></p>
+                        `;
+                    }
+                    
+                    const resultModal = document.getElementById('resultModal');
+                    if (resultModal) resultModal.classList.add('active');
+                    
+                    document.querySelectorAll('.odd-box').forEach(el => el.classList.remove('selected'));
+                    
+                    const betPanel = document.getElementById('betPanel');
+                    if (betPanel) betPanel.style.display = 'none';
+                    
+                    currentBet = null;
+                    
+                    await loadBetsHistory();
+                    
+                } else {
+                    showMessage(data?.message || 'Error al procesar la apuesta', 'error');
+                }
+                
+            } catch (error) {
+                console.error('Error al procesar apuesta:', error);
+                showMessage('Error al procesar apuesta', 'error');
+            } finally {
+                if (confirmBtn) {
+                    confirmBtn.disabled = false;
+                    confirmBtn.innerHTML = 'Confirmar';
+                }
+            }
+        }
+
+        window.placeBet = placeBet;
+
+        // =====================================================
+        // CARGAR HISTORIAL DE APUESTAS - bets
+        // =====================================================
+        async function loadBetsHistory() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('bets')
+                    .select(`
+                        id,
+                        stake,
+                        total_odds,
+                        potential_win,
+                        status,
+                        created_at
+                    `)
+                    .eq('user_id', currentUser.id)
+                    .order('created_at', { ascending: false })
+                    .limit(10);
+
+                if (error) throw error;
+
+                const container = document.getElementById('betsHistory');
+                if (!container) return;
+                
+                if (!data || data.length === 0) {
+                    container.innerHTML = '<p style="color:var(--text-secondary); text-align:center; padding:20px;">No hay apuestas aún</p>';
+                    return;
+                }
+
+                container.innerHTML = data.map(bet => {
+                    const statusClass = bet.status === 'won' ? 'status-won' : 
+                                       bet.status === 'lost' ? 'status-lost' : 'status-pending';
+                    
+                    const date = new Date(bet.created_at).toLocaleDateString('es-ES', {
+                        day: '2-digit', month: '2-digit', year: '2-digit'
+                    });
+                    
+                    return `
+                        <div class="history-item">
+                            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                                <span>${date}</span>
+                                <span class="history-status ${statusClass}">${bet.status.toUpperCase()}</span>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; font-size:13px;">
+                                <span>Bs ${bet.stake.toFixed(2)}</span>
+                                <span>@ ${bet.total_odds.toFixed(2)}</span>
+                                <span>→ Bs ${bet.potential_win.toFixed(2)}</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+            } catch (error) {
+                console.error('Error cargando historial:', error);
+                const container = document.getElementById('betsHistory');
+                if (container) {
+                    container.innerHTML = '<p style="color:var(--text-secondary); text-align:center; padding:20px;">Error cargando historial</p>';
+                }
+            }
+        }
+
+        // =====================================================
+        // SELECCIONAR DEPORTE
+        // =====================================================
+        window.selectSport = function(sportCode) {
+            currentSport = sportCode;
+            
+            document.querySelectorAll('.sport-item').forEach(el => {
+                if (el.dataset.code === sportCode) {
+                    el.classList.add('active');
+                } else {
+                    el.classList.remove('active');
+                }
+            });
+            
+            loadMatches();
+        };
+
+        // =====================================================
+        // CERRAR MODAL
+        // =====================================================
+        function closeModal(modal) {
+            const modalElement = document.getElementById(`${modal}Modal`);
+            if (modalElement) {
+                modalElement.classList.remove('active');
+            }
+        }
+
+        window.closeModal = closeModal;
+
+        // =====================================================
+        // ABRIR PERFIL - user_profiles
+        // =====================================================
+        async function openProfileModal() {
+            try {
+                const { data: profile, error } = await supabaseClient
+                    .from('user_profiles')
+                    .select('*')
+                    .eq('id', currentUser.id)
+                    .single();
+
+                if (error && error.code !== 'PGRST116') {
+                    console.error('Error cargando perfil:', error);
+                }
+
+                const profileContent = document.getElementById('profileContent');
+                if (profileContent) {
+                    profileContent.innerHTML = `
+                        <div style="margin-bottom: 20px;">
+                            <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--green-primary), var(--green-secondary)); border-radius: 40px; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-size: 32px; color: #000;">
+                                👤
+                            </div>
+                            <h4>${profile?.full_name || 'Usuario'}</h4>
+                            <p style="color: var(--text-secondary);">${currentUser.email || 'Sin email'}</p>
+                        </div>
+                        <div style="background: var(--bg-secondary); padding: 16px; border-radius: 8px; margin-bottom: 16px;">
+                            <p><strong>Saldo:</strong> Bs ${currentBalance.toFixed(2)}</p>
+                        </div>
+                        <button class="btn-secondary" onclick="window.closeModal('profile')" style="width: 100%;">Cerrar</button>
+                    `;
+                }
+                
+                const profileModal = document.getElementById('profileModal');
+                if (profileModal) profileModal.classList.add('active');
+                
+            } catch (error) {
+                console.error('Error en perfil:', error);
+                showMessage('Error cargando perfil', 'error');
+            }
+        }
+
+        window.openProfileModal = openProfileModal;
+    </script>
+</body>
+</html>
