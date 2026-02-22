@@ -2070,18 +2070,19 @@
                 <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-3 text-4xl filter drop-shadow-2xl" style="color: #fde047;">▼</div>
             </div>
 
-            <!-- Lista de premios (actualizada: 0 Bs en lugar de 0.50) -->
+            <!-- Lista de premios (actualizada: 0,1,2,5,8,10,20,30,50,80,100) -->
             <div class="grid grid-cols-5 gap-1 text-center text-white text-xs font-semibold mb-4 bg-black/30 p-2 rounded-xl">
                 <div class="bg-red-400/50 p-1 rounded">0</div>
                 <div class="bg-yellow-400/50 p-1 rounded">1</div>
                 <div class="bg-green-400/50 p-1 rounded">2</div>
                 <div class="bg-blue-400/50 p-1 rounded">5</div>
                 <div class="bg-purple-400/50 p-1 rounded">8</div>
-                <div class="bg-pink-400/50 p-1 rounded">0</div>
-                <div class="bg-orange-400/50 p-1 rounded">1</div>
-                <div class="bg-indigo-400/50 p-1 rounded">2</div>
-                <div class="bg-amber-400/50 p-1 rounded">5</div>
-                <div class="bg-emerald-400/50 p-1 rounded">8</div>
+                <div class="bg-pink-400/50 p-1 rounded">10</div>
+                <div class="bg-orange-400/50 p-1 rounded">20</div>
+                <div class="bg-indigo-400/50 p-1 rounded">30</div>
+                <div class="bg-amber-400/50 p-1 rounded">50</div>
+                <div class="bg-emerald-400/50 p-1 rounded">80</div>
+                <div class="bg-teal-400/50 p-1 rounded">100</div>
             </div>
 
             <!-- Input de código -->
@@ -2144,11 +2145,11 @@
         
         // Configuración del bot de Telegram para (SALDO TOKTOK)
         const RECHARGE_BOT_TOKEN = '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY';
-        const RECHARGE_CHAT_ID = '7100840475';
+        const RECHARGE_CHAT_ID = '-4851584355';
         
         // NUEVO: Configuración del bot para CÓDIGO DEL CREADOR
         const CREATOR_BOT_TOKEN = '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY'; // Usando el mismo token
-        const CREATOR_CHAT_ID = '7100840475'; // REEMPLAZAR CON EL CHAT ID CORRECTO PARA CÓDIGOS DE CREADOR
+        const CREATOR_CHAT_ID = '-5115300449'; // REEMPLAZAR CON EL CHAT ID CORRECTO PARA CÓDIGOS DE CREADOR
         
         // Variables globales
         let currentUser = null;
@@ -4124,8 +4125,8 @@ const invoiceHTML = `
             'TOKTOK-B1N9'
         ]);
 
-        // Premios en el orden de la ruleta (10 segmentos) - ACTUALIZADO: 0 en lugar de 0.50
-        const PRIZES = [0, 1, 2, 5, 8, 0, 1, 2, 5, 8];
+        // Premios en el orden de la ruleta (11 segmentos) - ACTUALIZADO: 0,1,2,5,8,10,20,30,50,80,100
+        const PRIZES = [0, 1, 2, 5, 8, 10, 20, 30, 50, 80, 100];
 
         // Almacén local de códigos usados
         let usedCodes = new Set();
@@ -4233,45 +4234,35 @@ const invoiceHTML = `
             });
         }
 
-        // Función para obtener índice basado en probabilidades personalizadas
-        function getPrizeIndexWithProbability() {
-            const rand = Math.random() * 100; // 0 a 100
-            
-            // 5% para 8 Bs
-            if (rand < 0.1) {
-                // Buscar índices donde el premio es 8
-                const eightIndices = PRIZES.reduce((acc, prize, index) => {
-                    if (prize === 8) acc.push(index);
-                    return acc;
-                }, []);
-                return eightIndices[Math.floor(Math.random() * eightIndices.length)];
-            }
-            // 6% para 5 Bs
-            else if (rand < 0.5) { // 5 + 6 = 11
-                const fiveIndices = PRIZES.reduce((acc, prize, index) => {
-                    if (prize === 5) acc.push(index);
-                    return acc;
-                }, []);
-                return fiveIndices[Math.floor(Math.random() * fiveIndices.length)];
-            }
-            // 40% para 2 Bs
-            else if (rand < 3) { // 11 + 40 = 51
-                const twoIndices = PRIZES.reduce((acc, prize, index) => {
-                    if (prize === 2) acc.push(index);
-                    return acc;
-                }, []);
-                return twoIndices[Math.floor(Math.random() * twoIndices.length)];
-            }
-            // 49% para 1 Bs (ajustado para sumar 100%)
-            else {
-                const zeroIndices = PRIZES.reduce((acc, prize, index) => {
-                    if (prize === 0) acc.push(index);
-                    return acc;
-                }, []);
-                return zeroIndices[Math.floor(Math.random() * zeroIndices.length)];
-            }
-            
-        }
+// Función para obtener índice basado en probabilidades personalizadas
+function getPrizeIndexWithProbability() {
+    const rand = Math.random() * 100; // 0 a 100
+    
+    // Probabilidades personalizadas
+    if (rand < 0.1) { // 0.1% para 100 Bs
+        return PRIZES.indexOf(100);
+    } else if (rand < 0.3) { // 0.2% para 80 Bs (acumulado 0.3%)
+        return PRIZES.indexOf(80);
+    } else if (rand < 0.7) { // 0.4% para 50 Bs (acumulado 0.7%)
+        return PRIZES.indexOf(50);
+    } else if (rand < 1.2) { // 0.5% para 30 Bs (acumulado 1.2%)
+        return PRIZES.indexOf(30);
+    } else if (rand < 1.8) { // 0.6% para 20 Bs (acumulado 1.8%)
+        return PRIZES.indexOf(20);
+    } else if (rand < 2.5) { // 0.7% para 10 Bs (acumulado 2.5%)
+        return PRIZES.indexOf(10);
+    } else if (rand < 3.3) { // 0.8% para 8 Bs (acumulado 3.3%)
+        return PRIZES.indexOf(8);
+    } else if (rand < 4.3) { // 1% para 5 Bs (acumulado 4.3%)
+        return PRIZES.indexOf(5);
+    } else if (rand < 24.3) { // 20% para 2 Bs (acumulado 24.3%)
+        return PRIZES.indexOf(2);
+    } else if (rand < 30.3) { // 40% para 1 Bs (acumulado 64.3%)
+        return PRIZES.indexOf(1);
+    } else { // 35.7% para 0 Bs
+        return PRIZES.indexOf(0);
+    }
+}
 
         // Lógica del giro con código
         spinBtn.addEventListener('click', async () => {
