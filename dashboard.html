@@ -2041,6 +2041,66 @@
         </div>
     </div>
 
+    <!-- ==================== BOTÓN Y MODAL DE LA RULETA (PROBABILIDADES AJUSTADAS) ==================== -->
+    <button id="roulette-fab" class="fixed bottom-20 right-4 md:bottom-8 md:right-8 z-50 w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-purple-600 to-indigo-800 rounded-full shadow-2xl flex items-center justify-center text-white text-2xl md:text-3xl animate-bounce hover:scale-110 transition-transform" style="box-shadow: 0 10px 25px -5px rgba(109, 40, 217, 0.5);">
+        <i class="fas fa-cog fa-spin" style="--fa-animation-duration: 3s;"></i>
+        <span class="sr-only">Ruleta de Premios</span>
+    </button>
+
+    <!-- Modal de la Ruleta -->
+    <div id="roulette-modal" class="fixed inset-0 z-50 flex items-center justify-center opacity-0 invisible transition-all duration-300" style="background-color: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px);">
+        <div class="bg-gradient-to-br from-gray-900 to-purple-900 rounded-3xl w-11/12 max-w-md p-5 shadow-2xl border border-purple-400 relative">
+            <!-- Botón cerrar -->
+            <button id="close-roulette-modal" class="absolute top-2 right-2 text-gray-300 hover:text-white text-xl z-10">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="text-center mb-4">
+                <h2 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-purple-300">✨ Ruleta TokTok ✨</h2>
+                <p class="text-xs text-purple-200">Ingresa código o compra giro por 1 Bs</p>
+            </div>
+
+            <!-- La ruleta (simulada con CSS) -->
+            <div class="relative w-48 h-48 mx-auto mb-5">
+                <div id="wheel" class="absolute inset-0 rounded-full border-8 border-yellow-400 shadow-[0_0_30px_#fbbf24] transition-transform duration-3000 ease-out" style="transform: rotate(0deg); background: conic-gradient(#f87171 0deg 36deg, #fbbf24 36deg 72deg, #4ade80 72deg 108deg, #60a5fa 108deg 144deg, #c084fc 144deg 180deg, #f472b6 180deg 216deg, #fb923c 216deg 252deg, #a78bfa 252deg 288deg, #facc15 288deg 324deg, #6ee7b7 324deg 360deg);">
+                    <!-- Marcadores de texto fijos (premios) -->
+                    <div class="absolute inset-0 flex items-center justify-center text-white font-black text-sm drop-shadow-lg">TOKTOK</div>
+                </div>
+                <!-- Marcador fijo (flecha) -->
+                <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-3 text-4xl filter drop-shadow-2xl" style="color: #fde047;">▼</div>
+            </div>
+
+            <!-- Lista de premios (actualizada: 0 Bs en lugar de 0.50) -->
+            <div class="grid grid-cols-5 gap-1 text-center text-white text-xs font-semibold mb-4 bg-black/30 p-2 rounded-xl">
+                <div class="bg-red-400/50 p-1 rounded">0</div>
+                <div class="bg-yellow-400/50 p-1 rounded">1</div>
+                <div class="bg-green-400/50 p-1 rounded">2</div>
+                <div class="bg-blue-400/50 p-1 rounded">5</div>
+                <div class="bg-purple-400/50 p-1 rounded">8</div>
+                <div class="bg-pink-400/50 p-1 rounded">0</div>
+                <div class="bg-orange-400/50 p-1 rounded">1</div>
+                <div class="bg-indigo-400/50 p-1 rounded">2</div>
+                <div class="bg-amber-400/50 p-1 rounded">5</div>
+                <div class="bg-emerald-400/50 p-1 rounded">8</div>
+            </div>
+
+            <!-- Input de código -->
+            <input type="text" id="roulette-code" placeholder="Ej: TOKTOK-8A3F" class="w-full px-4 py-3 rounded-xl bg-gray-800 text-white border border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-400 text-center uppercase" maxlength="12">
+
+            <!-- Botones de acción -->
+            <div class="flex gap-2 mt-4">
+                <button id="spin-roulette-btn" class="flex-1 bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-bold py-3 px-2 rounded-xl shadow-lg hover:scale-105 transition-transform disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1 text-sm">
+                    <i class="fas fa-spinner"></i> CÓDIGO
+                </button>
+                <button id="buy-spin-btn" class="flex-1 bg-gradient-to-r from-green-500 to-teal-500 text-white font-bold py-3 px-2 rounded-xl shadow-lg hover:scale-105 transition-transform disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1 text-sm">
+                    <i class="fas fa-shopping-cart"></i> COMPRAR 1 BS
+                </button>
+            </div>
+            <p id="roulette-message" class="text-center text-sm text-yellow-300 mt-2 min-h-[20px]"></p>
+        </div>
+    </div>
+    <!-- ==================== FIN RULETA PROBABILIDADES AJUSTADAS ==================== -->
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script>
@@ -4034,5 +4094,284 @@ const invoiceHTML = `
             updateUI();
         });
     </script>
+
+    <style>
+        #wheel {
+            transition: transform 3s cubic-bezier(0.25, 0.1, 0.15, 1);
+        }
+        .animate-bounce {
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+
+    <script>
+        // ==================== LÓGICA DE LA RULETA (PROBABILIDADES AJUSTADAS) ====================
+        // 10 códigos únicos con formato TOKTOK-XXXX (máximo 12 caracteres)
+        const VALID_CODES = new Set([
+            'TOKTOK-X8P9',
+            'TOKTOK-M3N2',
+            'TOKTOK-K7J4',
+            'TOKTOK-R5T6',
+            'TOKTOK-W2Z1',
+            'TOKTOK-Q9L0',
+            'TOKTOK-F4D5',
+            'TOKTOK-H6G7',
+            'TOKTOK-V8C3',
+            'TOKTOK-B1N9'
+        ]);
+
+        // Premios en el orden de la ruleta (10 segmentos) - ACTUALIZADO: 0 en lugar de 0.50
+        const PRIZES = [0, 1, 2, 5, 8, 0, 1, 2, 5, 8];
+
+        // Almacén local de códigos usados
+        let usedCodes = new Set();
+
+        try {
+            const stored = localStorage.getItem('toktok_used_codes');
+            if (stored) {
+                usedCodes = new Set(JSON.parse(stored));
+            }
+        } catch (e) {
+            console.warn('Error cargando códigos usados', e);
+        }
+
+        function saveUsedCodes() {
+            try {
+                localStorage.setItem('toktok_used_codes', JSON.stringify(Array.from(usedCodes)));
+            } catch (e) {
+                console.warn('Error guardando códigos usados', e);
+            }
+        }
+
+        const fab = document.getElementById('roulette-fab');
+        const modal = document.getElementById('roulette-modal');
+        const closeBtn = document.getElementById('close-roulette-modal');
+        const spinBtn = document.getElementById('spin-roulette-btn');
+        const buySpinBtn = document.getElementById('buy-spin-btn');
+        const codeInput = document.getElementById('roulette-code');
+        const wheel = document.getElementById('wheel');
+        const messageEl = document.getElementById('roulette-message');
+        let isSpinning = false;
+
+        // Abrir modal
+        fab.addEventListener('click', () => {
+            modal.classList.remove('opacity-0', 'invisible');
+            modal.classList.add('opacity-100', 'visible');
+            codeInput.value = '';
+            messageEl.textContent = '';
+            wheel.style.transform = 'rotate(0deg)';
+        });
+
+        // Cerrar modal
+        function closeModalRoulette() {
+            modal.classList.remove('opacity-100', 'visible');
+            modal.classList.add('opacity-0', 'invisible');
+        }
+        closeBtn.addEventListener('click', closeModalRoulette);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModalRoulette();
+        });
+
+        // Función para agregar premio al saldo y registrar transacción
+        async function addPrizeToBalance(prizeAmount) {
+            if (!currentUser) {
+                messageEl.textContent = '❌ Debes iniciar sesión primero';
+                return false;
+            }
+
+            try {
+                const transaction = await createTransaction(
+                    currentUser.id,
+                    prizeAmount,
+                    'deposit',
+                    `🎉 Premio de ruleta: Bs ${prizeAmount}`,
+                    { source: 'roulette' }
+                );
+
+                if (!transaction) {
+                    throw new Error('No se pudo crear la transacción');
+                }
+
+                const newBalance = (currentBalance || 0) + prizeAmount;
+                currentBalance = newBalance;
+
+                const balanceElements = document.querySelectorAll('#balance, #mobile-balance');
+                balanceElements.forEach(el => {
+                    if (el) el.textContent = formatCurrency(newBalance);
+                });
+
+                const transactions = await loadTransactions(currentUser.id);
+                renderTransactions(transactions);
+
+                messageEl.textContent = `✅ ¡Ganaste Bs ${prizeAmount}! Se añadió a tu saldo.`;
+                return true;
+            } catch (error) {
+                console.error('Error al agregar premio:', error);
+                messageEl.textContent = '❌ Error al acreditar el premio';
+                return false;
+            }
+        }
+
+        // Función para realizar el giro
+        async function performSpin(prizeIndex) {
+            const prize = PRIZES[prizeIndex];
+            const segmentAngle = 360 / PRIZES.length;
+            const spins = 5;
+            const finalRotation = 360 * spins + (360 - (prizeIndex * segmentAngle + segmentAngle / 2));
+
+            wheel.style.transform = `rotate(${finalRotation}deg)`;
+
+            return new Promise((resolve) => {
+                setTimeout(async () => {
+                    const success = await addPrizeToBalance(prize);
+                    resolve(success);
+                }, 3000);
+            });
+        }
+
+        // Función para obtener índice basado en probabilidades personalizadas
+        function getPrizeIndexWithProbability() {
+            const rand = Math.random() * 100; // 0 a 100
+            
+            // 5% para 8 Bs
+            if (rand < 0.1) {
+                // Buscar índices donde el premio es 8
+                const eightIndices = PRIZES.reduce((acc, prize, index) => {
+                    if (prize === 8) acc.push(index);
+                    return acc;
+                }, []);
+                return eightIndices[Math.floor(Math.random() * eightIndices.length)];
+            }
+            // 6% para 5 Bs
+            else if (rand < 0.5) { // 5 + 6 = 11
+                const fiveIndices = PRIZES.reduce((acc, prize, index) => {
+                    if (prize === 5) acc.push(index);
+                    return acc;
+                }, []);
+                return fiveIndices[Math.floor(Math.random() * fiveIndices.length)];
+            }
+            // 40% para 2 Bs
+            else if (rand < 0.9) { // 11 + 40 = 51
+                const twoIndices = PRIZES.reduce((acc, prize, index) => {
+                    if (prize === 2) acc.push(index);
+                    return acc;
+                }, []);
+                return twoIndices[Math.floor(Math.random() * twoIndices.length)];
+            }
+            // 49% para 1 Bs (ajustado para sumar 100%)
+            else {
+                const oneIndices = PRIZES.reduce((acc, prize, index) => {
+                    if (prize === 1) acc.push(index);
+                    return acc;
+                }, []);
+                return oneIndices[Math.floor(Math.random() * oneIndices.length)];
+            }
+        }
+
+        // Lógica del giro con código
+        spinBtn.addEventListener('click', async () => {
+            if (isSpinning) return;
+
+            const code = codeInput.value.trim().toUpperCase();
+
+            if (!code) {
+                messageEl.textContent = '⚠️ Ingresa un código';
+                return;
+            }
+
+            if (!VALID_CODES.has(code)) {
+                messageEl.textContent = '❌ Código inválido';
+                return;
+            }
+
+            if (usedCodes.has(code)) {
+                messageEl.textContent = '⛔ Este código ya fue usado';
+                return;
+            }
+
+            if (!currentUser) {
+                messageEl.textContent = '❌ No hay sesión activa';
+                return;
+            }
+
+            isSpinning = true;
+            spinBtn.disabled = true;
+            buySpinBtn.disabled = true;
+            messageEl.textContent = '🎡 Girando...';
+
+            const prizeIndex = getPrizeIndexWithProbability();
+            usedCodes.add(code);
+            saveUsedCodes();
+
+            const success = await performSpin(prizeIndex);
+
+            if (!success) {
+                usedCodes.delete(code);
+                saveUsedCodes();
+            }
+
+            spinBtn.disabled = false;
+            buySpinBtn.disabled = false;
+            isSpinning = false;
+        });
+
+        // Lógica del giro comprado por 1 Bs
+        buySpinBtn.addEventListener('click', async () => {
+            if (isSpinning) return;
+
+            if (!currentUser) {
+                messageEl.textContent = '❌ No hay sesión activa';
+                return;
+            }
+
+            if (currentBalance < 1) {
+                messageEl.textContent = '❌ Saldo insuficiente para comprar un giro (1 Bs)';
+                return;
+            }
+
+            isSpinning = true;
+            spinBtn.disabled = true;
+            buySpinBtn.disabled = true;
+            messageEl.textContent = '🎡 Comprando giro...';
+
+            // Crear transacción de compra del giro (retiro de 1 Bs)
+            const purchaseTransaction = await createTransaction(
+                currentUser.id,
+                1,
+                'withdrawal',
+                '🎰 Compra de giro en ruleta',
+                { source: 'roulette_purchase' }
+            );
+
+            if (!purchaseTransaction) {
+                messageEl.textContent = '❌ Error al procesar la compra';
+                spinBtn.disabled = false;
+                buySpinBtn.disabled = false;
+                isSpinning = false;
+                return;
+            }
+
+            // Actualizar balance local
+            currentBalance -= 1;
+            const balanceElements = document.querySelectorAll('#balance, #mobile-balance');
+            balanceElements.forEach(el => {
+                if (el) el.textContent = formatCurrency(currentBalance);
+            });
+
+            messageEl.textContent = '🎡 Girando...';
+
+            const prizeIndex = getPrizeIndexWithProbability();
+            const success = await performSpin(prizeIndex);
+
+            spinBtn.disabled = false;
+            buySpinBtn.disabled = false;
+            isSpinning = false;
+        });
+        // ==================== FIN LÓGICA DE LA RULETA PROBABILIDADES AJUSTADAS ====================
+    </script>
 </body>
-</html> 
+</html>
