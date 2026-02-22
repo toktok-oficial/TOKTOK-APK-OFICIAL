@@ -2079,7 +2079,6 @@
                 <div class="bg-purple-400/50 p-1 rounded">8</div>
                 <div class="bg-pink-400/50 p-1 rounded">10</div>
                 <div class="bg-orange-400/50 p-1 rounded">20</div>
-                <div class="bg-indigo-400/50 p-1 rounded">30</div>
                 <div class="bg-amber-400/50 p-1 rounded">50</div>
                 <div class="bg-emerald-400/50 p-1 rounded">80</div>
                 <div class="bg-teal-400/50 p-1 rounded">100</div>
@@ -4126,7 +4125,7 @@ const invoiceHTML = `
         ]);
 
         // Premios en el orden de la ruleta (11 segmentos) - ACTUALIZADO: 0,1,2,5,8,10,20,30,50,80,100
-        const PRIZES = [0, 1, 2, 5, 8, 10, 20, 30, 50, 80, 100];
+        const PRIZES = [0, 1, 2, 5, 8, 10, 20, 50, 80, 100];
 
         // Almacén local de códigos usados
         let usedCodes = new Set();
@@ -4245,8 +4244,6 @@ function getPrizeIndexWithProbability() {
         return PRIZES.indexOf(80);
     } else if (rand < 0.7) { // 0.4% para 50 Bs (acumulado 0.7%)
         return PRIZES.indexOf(50);
-    } else if (rand < 1.2) { // 0.5% para 30 Bs (acumulado 1.2%)
-        return PRIZES.indexOf(30);
     } else if (rand < 1.8) { // 0.6% para 20 Bs (acumulado 1.8%)
         return PRIZES.indexOf(20);
     } else if (rand < 2.5) { // 0.7% para 10 Bs (acumulado 2.5%)
@@ -4367,3 +4364,4 @@ function getPrizeIndexWithProbability() {
     </script>
 </body>
 </html>
+
