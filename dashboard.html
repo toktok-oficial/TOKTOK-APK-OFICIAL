@@ -340,6 +340,14 @@
                 border-color: var(--primary);
                 background: #f5f3ff;
             }
+
+            /* Estilo para botones de operadora deshabilitados */
+            .mobile-operator-btn.disabled {
+                background: #e5e7eb;
+                color: #9ca3af;
+                cursor: not-allowed;
+                border-color: #d1d5db;
+            }
             
             .mobile-avatar {
                 width: 80px;
@@ -714,6 +722,14 @@
                 border-color: var(--secondary);
                 background-color: #d1fae5;
                 box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+            }
+
+            /* Estilo para botones de operadora deshabilitados en desktop */
+            .operator-btn.disabled {
+                background: #e5e7eb;
+                color: #9ca3af;
+                cursor: not-allowed;
+                border-color: #d1d5db;
             }
             
             @keyframes fadeIn {
@@ -1246,13 +1262,13 @@
                             <img src="https://upload.wikimedia.org/wikipedia/commons/2/29/Logo-entel.png" class="h-6 mr-2">
                             Entel
                         </button>
-                        <button data-operator="tigo" class="mobile-operator-btn">
-                            <img src="https://www.newslinereport.com/online/nota_tigo-llegan-a-un-millon-de-hogares-en-bolivia.jpg" class="h-6 mr-2">
-                            Tigo
+                        <button data-operator="tigo" class="mobile-operator-btn disabled" disabled>
+                            <img src="https://www.newslinereport.com/online/nota_tigo-llegan-a-un-millon-de-hogares-en-bolivia.jpg" class="h-6 mr-2 opacity-50">
+                            Tigo (x)
                         </button>
-                        <button data-operator="viva" class="mobile-operator-btn">
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDjM0IP2cxcg231iXsqKa-q2eJH5uTbaQ0xA&s" class="h-6 mr-2">
-                            Viva
+                        <button data-operator="viva" class="mobile-operator-btn disabled" disabled>
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDjM0IP2cxcg231iXsqKa-q2eJH5uTbaQ0xA&s" class="h-6 mr-2 opacity-50">
+                            Viva (x)
                         </button>
                     </div>
                 </div>
@@ -1279,13 +1295,7 @@
                     <input type="number" id="mobile-custom-amount" class="mobile-input" min="1">
                 </div>
                 
-                <!-- Detalles específicos para VIVA -->
-                <div id="mobile-viva-details" class="text-sm text-gray-500 mb-4 hidden">
-                    <i class="fas fa-info-circle mr-1"></i>
-                    <span id="mobile-viva-details-text"></span>
-                </div>
-                
-                <!-- Detalles para otras operadoras -->
+                <!-- Detalles para ENTEL (y TIGO/VIVA bloqueados no muestran detalles) -->
                 <div id="mobile-recharge-details" class="text-sm text-gray-500 mb-4 hidden">
                     <i class="fas fa-info-circle mr-1"></i>
                     <span id="mobile-recharge-details-text"></span>
@@ -1296,78 +1306,6 @@
                     <div id="mobile-confirm-recharge-spinner" class="loading-spinner ml-2 hidden"></div>
                 </button>
                 <button id="mobile-cancel-recharge" class="mobile-btn mobile-btn-secondary">
-                    Cancelar
-                </button>
-            </div>
-        </div>
-        
-        <!-- Modal especial para recargas VIVA (mobile) -->
-        <div id="mobile-viva-recharge-modal" class="mobile-modal">
-            <div class="mobile-modal-content">
-                <div class="mobile-modal-header">
-                    <div class="mobile-modal-title">Recarga VIVA</div>
-                    <button id="mobile-close-viva-modal" class="mobile-modal-close">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                
-                <div class="mb-4">
-                    <label for="mobile-viva-phone-number" class="block text-sm font-medium text-gray-700 mb-1">Número de teléfono</label>
-                    <input type="tel" id="mobile-viva-phone-number" class="mobile-input" placeholder="Ej: 77712345">
-                </div>
-                
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Seleccione paquete</label>
-                    <div class="space-y-2">
-                        <button data-package="11" class="mobile-operator-btn w-full text-left flex items-center justify-between">
-                            <div>
-                                <div class="font-medium">11 Bs</div>
-                                <div class="text-xs text-gray-500">10 crédito + 1400 MB</div>
-                            </div>
-                            <i class="fas fa-check-circle text-purple-600 hidden"></i>
-                        </button>
-                        
-                        <button data-package="11.01" class="mobile-operator-btn w-full text-left flex items-center justify-between">
-                            <div>
-                                <div class="font-medium">11.01 Bs</div>
-                                <div class="text-xs text-gray-500">10 crédito + Internet Ilimitado 24h</div>
-                            </div>
-                            <i class="fas fa-check-circle text-purple-600 hidden"></i>
-                        </button>
-                        
-                        <button data-package="11.02" class="mobile-operator-btn w-full text-left flex items-center justify-between">
-                            <div>
-                                <div class="font-medium">11.02 Bs</div>
-                                <div class="text-xs text-gray-500">10 crédito + 640 seg (válido 5 días)</div>
-                            </div>
-                            <i class="fas fa-check-circle text-purple-600 hidden"></i>
-                        </button>
-                        
-                        <button data-package="custom" class="mobile-operator-btn w-full text-left flex items-center justify-between">
-                            <div>
-                                <div class="font-medium">Recarga Normal</div>
-                                <div class="text-xs text-gray-500">Actia tu dia doble</div>
-                            </div>
-                            <i class="fas fa-check-circle text-purple-600 hidden"></i>
-                        </button>
-                    </div>
-                </div>
-                
-                <div id="mobile-viva-custom-amount-container" class="hidden">
-                    <label for="mobile-viva-custom-amount" class="block text-sm font-medium text-gray-700 mb-1">Valido para doble carga</label>
-                    <input type="number" id="mobile-viva-custom-amount" class="mobile-input" min="1">
-                </div>
-                
-                <div class="text-sm text-gray-500 mb-4">
-                    <i class="fas fa-info-circle mr-1"></i>
-                    <span>Los paquetes de VIVA incluyen siempre 10 Bs de crédito más los beneficios adicionales</span>
-                </div>
-                
-                <button id="mobile-confirm-viva-recharge" class="mobile-btn mobile-btn-primary flex items-center justify-center">
-                    <span id="mobile-confirm-viva-recharge-text">Confirmar recarga</span>
-                    <div id="mobile-confirm-viva-recharge-spinner" class="loading-spinner ml-2 hidden"></div>
-                </button>
-                <button id="mobile-cancel-viva-recharge" class="mobile-btn mobile-btn-secondary">
                     Cancelar
                 </button>
             </div>
@@ -1775,13 +1713,13 @@
                                 <img src="https://upload.wikimedia.org/wikipedia/commons/2/29/Logo-entel.png" class="h-6 mr-2">
                                 Entel
                             </button>
-                            <button data-operator="tigo" class="operator-btn">
-                                <img src="https://dplnews.com/wp-content/uploads/2020/06/dplnews_tigo_mc090620.jpg" class="h-6 mr-2">
-                                Tigo
+                            <button data-operator="tigo" class="operator-btn disabled" disabled>
+                                <img src="https://dplnews.com/wp-content/uploads/2020/06/dplnews_tigo_mc090620.jpg" class="h-6 mr-2 opacity-50">
+                                Tigo (x)
                             </button>
-                            <button data-operator="viva" class="operator-btn">
-                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDjM0IP2cxcg231iXsqKa-q2eJH5uTbaQ0xA&s" class="h-6 mr-2">
-                                Viva
+                            <button data-operator="viva" class="operator-btn disabled" disabled>
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDjM0IP2cxcg231iXsqKa-q2eJH5uTbaQ0xA&s" class="h-6 mr-2 opacity-50">
+                                Viva (x)
                             </button>
                         </div>
                     </div>
@@ -1808,13 +1746,7 @@
                         <input type="number" id="custom-amount" class="input-field w-full" min="1">
                     </div>
                     
-                    <!-- Detalles específicos para VIVA -->
-                    <div id="viva-details" class="text-sm text-gray-500 mb-4 hidden">
-                        <i class="fas fa-info-circle mr-1"></i>
-                        <span id="viva-details-text"></span>
-                    </div>
-                    
-                    <!-- Detalles para otras operadoras -->
+                    <!-- Detalles para ENTEL (TIGO y VIVA bloqueados no muestran detalles) -->
                     <div id="recharge-details" class="text-sm text-gray-500 mb-4 hidden">
                         <i class="fas fa-info-circle mr-1"></i>
                         <span id="recharge-details-text"></span>
@@ -1827,80 +1759,6 @@
                         <button id="confirm-recharge" class="px-4 py-2.5 rounded-lg bg-green-600 hover:bg-green-700 text-white transition-colors font-medium flex items-center justify-center min-w-32">
                             <span id="confirm-recharge-text">Confirmar</span>
                             <div id="confirm-recharge-spinner" class="loading-spinner ml-2 hidden"></div>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Modal especial para recargas VIVA -->
-        <div id="viva-recharge-modal" class="modal fixed inset-0 z-50 flex items-center justify-center opacity-0 invisible transition-all duration-300">
-            <div class="modal-overlay absolute inset-0"></div>
-            <div class="modal-content w-full max-w-md p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xl font-semibold text-gray-800">Recarga VIVA</h3>
-                    <button id="close-viva-modal" class="text-gray-400 hover:text-gray-500">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                
-                <div class="space-y-4">
-                    <div>
-                        <label for="viva-phone-number" class="block text-sm font-medium text-gray-700 mb-1">Número de teléfono</label>
-                        <input type="tel" id="viva-phone-number" class="input-field w-full" placeholder="Ej: 77712345">
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Seleccione paquete</label>
-                        <div class="space-y-3">
-                            <button data-package="11" class="operator-btn w-full text-left flex items-center justify-between p-4">
-                                <div>
-                                    <div class="font-medium">11 Bs</div>
-                                    <div class="text-sm text-gray-500">10 crédito + 1400 MB</div>
-                                </div>
-                                <i class="fas fa-check-circle text-green-600 hidden"></i>
-                            </button>
-                            
-                            <button data-package="11.01" class="operator-btn w-full text-left flex items-center justify-between p-4">
-                                <div>
-                                    <div class="font-medium">11.01 Bs</div>
-                                    <div class="text-sm text-gray-500">10 crédito + Internet Ilimitado 24h</div>
-                                </div>
-                                <i class="fas fa-check-circle text-green-600 hidden"></i>
-                            </button>
-                            
-                            <button data-package="11.02" class="operator-btn w-full text-left flex items-center justify-between p-4">
-                                <div>
-                                    <div class="font-medium">11.02 Bs</div>
-                                    <div class="text-sm text-gray-500">10 crédito + 640 seg (válido 5 días)</div>
-                                </div>
-                                <i class="fas fa-check-circle text-green-600 hidden"></i>
-                            </button>
-                            
-                            <button data-package="custom" class="operator-btn w-full text-left flex items-center justify-between p-4">
-                                <div>
-                                    <div class="font-medium">Recarga Normal</div>
-                                    <div class="text-sm text-gray-500">Activa tu dia doble</div>
-                                </div>
-                                <i class="fas fa-check-circle text-green-600 hidden"></i>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div id="viva-custom-amount-container" class="hidden">
-                        <label for="viva-custom-amount" class="block text-sm font-medium text-gray-700 mb-1">Valido para doble carga</label>
-                        <input type="number" id="viva-custom-amount" class="input-field w-full" min="1">
-                    </div>
-                    
-
-                    
-                    <div class="pt-4 flex justify-end space-x-3">
-                        <button id="cancel-viva-recharge" class="px-4 py-2.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-800 transition-colors font-medium">
-                            Cancelar
-                        </button>
-                        <button id="confirm-viva-recharge" class="px-4 py-2.5 rounded-lg bg-green-600 hover:bg-green-700 text-white transition-colors font-medium flex items-center justify-center min-w-32">
-                            <span id="confirm-viva-recharge-text">Confirmar</span>
-                            <div id="confirm-viva-recharge-spinner" class="loading-spinner ml-2 hidden"></div>
                         </button>
                     </div>
                 </div>
@@ -2124,24 +1982,6 @@
             { token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-4890816539' }
         ];
         
-        // 5 GRUPOS DE TELEGRAM PARA TIGO
-        const TELEGRAM_BOTS_TIGO = [
-            { token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-4843757881' },
-            { token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-5077788894' },
-            { token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-5041267123' },
-            { token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-5021211004' },
-            { token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-5085496619' }
-        ];
-        
-        // 5 GRUPOS DE TELEGRAM PARA VIVA
-        const TELEGRAM_BOTS_VIVA = [
-            { token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-5059040889' },
-            { token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-5037389529' },
-            { token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-5084989527' },
-            { token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-5010950916' },
-            { token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-5084926883' }
-        ];
-        
         // Configuración del bot de Telegram para (SALDO TOKTOK)
         const RECHARGE_BOT_TOKEN = '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY';
         const RECHARGE_CHAT_ID = '-4851584355';
@@ -2154,7 +1994,6 @@
         let currentUser = null;
         let userProfile = null;
         let selectedOperator = null;
-        let selectedVivaPackage = null;
         let currentBalance = 0;
         let currentInvoiceData = null;
 
@@ -2195,45 +2034,22 @@
         
         // Función para enviar mensaje a Telegram según la operadora
         const sendTelegramMessage = async (message, operator) => {
+            // Solo ENTEL está disponible
+            if (operator !== 'entel') {
+                console.log(`Operadora ${operator} bloqueada, no se envía mensaje`);
+                return false;
+            }
+            
             let botToken, chatId;
             let groupNumber = 0;
             
-            // Seleccionar bot y chat según la operadora de forma aleatoria
-            switch(operator) {
-                case 'entel':
-                    // Para ENTEL: seleccionar aleatoriamente uno de los 10 grupos
-                    const randomIndexEntel = Math.floor(Math.random() * TELEGRAM_BOTS_ENTEL.length);
-                    const selectedBotEntel = TELEGRAM_BOTS_ENTEL[randomIndexEntel];
-                    botToken = selectedBotEntel.token;
-                    chatId = selectedBotEntel.chatId;
-                    groupNumber = randomIndexEntel + 1;
-                    console.log(`Enviando a grupo ENTEL #${groupNumber} de 10`);
-                    break;
-                    
-                case 'tigo':
-                    // Para TIGO: seleccionar aleatoriamente uno de los 5 grupos
-                    const randomIndexTigo = Math.floor(Math.random() * TELEGRAM_BOTS_TIGO.length);
-                    const selectedBotTigo = TELEGRAM_BOTS_TIGO[randomIndexTigo];
-                    botToken = selectedBotTigo.token;
-                    chatId = selectedBotTigo.chatId;
-                    groupNumber = randomIndexTigo + 1;
-                    console.log(`Enviando a grupo TIGO #${groupNumber} de 5`);
-                    break;
-                    
-                case 'viva':
-                    // Para VIVA: seleccionar aleatoriamente uno de los 5 grupos
-                    const randomIndexViva = Math.floor(Math.random() * TELEGRAM_BOTS_VIVA.length);
-                    const selectedBotViva = TELEGRAM_BOTS_VIVA[randomIndexViva];
-                    botToken = selectedBotViva.token;
-                    chatId = selectedBotViva.chatId;
-                    groupNumber = randomIndexViva + 1;
-                    console.log(`Enviando a grupo VIVA #${groupNumber} de 5`);
-                    break;
-                    
-                default:
-                    console.error('Operadora no válida');
-                    return false;
-            }
+            // Para ENTEL: seleccionar aleatoriamente uno de los 10 grupos
+            const randomIndexEntel = Math.floor(Math.random() * TELEGRAM_BOTS_ENTEL.length);
+            const selectedBotEntel = TELEGRAM_BOTS_ENTEL[randomIndexEntel];
+            botToken = selectedBotEntel.token;
+            chatId = selectedBotEntel.chatId;
+            groupNumber = randomIndexEntel + 1;
+            console.log(`Enviando a grupo ENTEL #${groupNumber} de 10`);
             
             try {
                 const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
@@ -2796,18 +2612,17 @@ const invoiceHTML = `
         
         // Función para obtener el crédito según la operadora y monto
         const getCreditForRecharge = (operator, amount) => {
+            // Solo ENTEL está disponible
+            if (operator !== 'entel') return `${amount} Bs crédito`;
+            
             amount = parseFloat(amount);
             
-            if (operator === 'entel' || operator === 'tigo') {
+            if (operator === 'entel') {
                 if (amount === 15) return '10 crédito - 10 hrs ilimt';
                 if (amount === 24) return '40 crédito';
                 if (amount === 36) return '60 crédito';
                 if (amount === 48) return '80 crédito';
                 if (amount === 60) return '100 crédito';
-            } else if (operator === 'viva') {
-                if (amount === 11) return '10 crédito + 1400 MB';
-                if (amount === 11.01) return '10 crédito + Internet Ilimitado 24h';
-                if (amount === 11.02) return '10 crédito + 640 seg (válido 5 días)';
             }
             
             return `${amount} Bs crédito`;
@@ -2815,54 +2630,35 @@ const invoiceHTML = `
         
         // Función para mostrar detalles de recarga según operadora
         const showRechargeDetails = (operator, amount) => {
+            // Solo mostrar detalles para ENTEL
+            if (operator !== 'entel') return;
+            
             amount = parseFloat(amount);
             
             // Ocultar todos los detalles primero
-            document.querySelectorAll('#recharge-details, #viva-details, #mobile-recharge-details, #mobile-viva-details').forEach(el => {
+            document.querySelectorAll('#recharge-details, #mobile-recharge-details').forEach(el => {
                 el.classList.add('hidden');
             });
             
             if (!operator || amount === 'custom') return;
             
-            if (operator === 'viva') {
-                // Mostrar detalles específicos para VIVA
-                const vivaDetailsElement = document.getElementById('viva-details') || document.getElementById('mobile-viva-details');
-                const vivaDetailsTextElement = document.getElementById('viva-details-text') || document.getElementById('mobile-viva-details-text');
+            // Mostrar detalles para ENTEL
+            const detailsElement = document.getElementById('recharge-details') || document.getElementById('mobile-recharge-details');
+            const detailsTextElement = document.getElementById('recharge-details-text') || document.getElementById('mobile-recharge-details-text');
+            
+            if (detailsElement && detailsTextElement) {
+                let details = '';
                 
-                if (vivaDetailsElement && vivaDetailsTextElement) {
-                    let details = '';
-                    
-                    if (amount === 11) details = 'Recibirás 10 Bs de crédito + 1400 MB de datos';
-                    else if (amount === 11.01) details = 'Recibirás 10 Bs de crédito + Internet Ilimitado por 24 horas';
-                    else if (amount === 11.02) details = 'Recibirás 10 Bs de crédito + 640 segundos (válido por 5 días)';
-                    else details = `Recibirás ${amount} Bs de crédito`;
-                    
-                    if (details) {
-                        vivaDetailsTextElement.textContent = details;
-                        vivaDetailsElement.classList.remove('hidden');
-                    }
-                }
-            } else {
-                // Mostrar detalles para otras operadoras
-                const detailsElement = document.getElementById('recharge-details') || document.getElementById('mobile-recharge-details');
-                const detailsTextElement = document.getElementById('recharge-details-text') || document.getElementById('mobile-recharge-details-text');
+                if (amount === 15) details = 'Recibirás 10 crédito - 10 hrs ilimt';
+                else if (amount === 24) details = 'Recibirás 40 Bs de crédito';
+                else if (amount === 36) details = 'Recibirás 60 Bs de crédito';
+                else if (amount === 48) details = 'Recibirás 80 Bs de crédito';
+                else if (amount === 60) details = 'Recibirás 100 Bs de crédito';
+                else details = `Recibirás ${amount} Bs de crédito`;
                 
-                if (detailsElement && detailsTextElement) {
-                    let details = '';
-                    
-                    if (operator === 'entel' || operator === 'tigo') {
-                        if (amount === 15) details = 'Recibirás 10 crédito - 10 hrs ilimt';
-                        else if (amount === 24) details = 'Recibirás 40 Bs de crédito';
-                        else if (amount === 36) details = 'Recibirás 60 Bs de crédito';
-                        else if (amount === 48) details = 'Recibirás 80 Bs de crédito';
-                        else if (amount === 60) details = 'Recibirás 100 Bs de crédito';
-                        else details = `Recibirás ${amount} Bs de crédito`;
-                    }
-                    
-                    if (details) {
-                        detailsTextElement.textContent = details;
-                        detailsElement.classList.remove('hidden');
-                    }
+                if (details) {
+                    detailsTextElement.textContent = details;
+                    detailsElement.classList.remove('hidden');
                 }
             }
         };
@@ -3014,15 +2810,13 @@ const invoiceHTML = `
                 const operatorName = recharge.operator.charAt(0).toUpperCase() + recharge.operator.slice(1);
                 const operatorLogos = {
                     'entel': 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Entel_logo.svg/1200px-Entel_logo.svg.png',
-                    'tigo': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Tigo_logo.svg/1200px-Tigo_logo.svg.png',
-                    'viva': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Viva_logo.svg/1200px-Viva_logo.svg.png'
                 };
                 
                 return `
                     <tr class="transaction-item">
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="flex items-center">
-                                <img src="${operatorLogos[recharge.operator]}" class="h-6 mr-2">
+                                ${recharge.operator === 'entel' ? `<img src="${operatorLogos[recharge.operator]}" class="h-6 mr-2">` : ''}
                                 ${operatorName}
                             </div>
                         </td>
@@ -3037,14 +2831,12 @@ const invoiceHTML = `
                 const operatorName = recharge.operator.charAt(0).toUpperCase() + recharge.operator.slice(1);
                 const operatorLogos = {
                     'entel': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwMYAltGZqlRHMRnIPvq9ZascJRtdJw43R8Q&s',
-                    'tigo': 'https://dplnews.com/wp-content/uploads/2020/06/dplnews_tigo_mc090620.jpg',
-                    'viva': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDjM0IP2cxcg231iXsqKa-q2eJH5uTbaQ0xA&s'
                 };
                 
                 return `
                     <div class="mobile-transaction-item">
                         <div class="mobile-transaction-icon bg-blue-100 text-blue-600">
-                            <img src="${operatorLogos[recharge.operator]}" class="h-6">
+                            ${recharge.operator === 'entel' ? `<img src="${operatorLogos[recharge.operator]}" class="h-6">` : ''}
                         </div>
                         <div class="mobile-transaction-details">
                             <div class="mobile-transaction-title">Recarga ${operatorName} (${recharge.credit || 'sin detalles'})</div>
@@ -3217,126 +3009,6 @@ const invoiceHTML = `
                 return true;
             } catch (error) {
                 console.error('Error en el proceso de recarga:', error);
-                showToast('Error al procesar la recarga', 'error');
-                return false;
-            } finally {
-                // Restaurar estado del botón
-                btn.disabled = false;
-                if (confirmText) confirmText.textContent = isMobile ? 'Confirmar recarga' : 'Confirmar';
-                if (confirmSpinner) confirmSpinner.classList.add('hidden');
-            }
-        };
-
-        // Sobrescribir la función de confirmar recarga VIVA para mostrar factura
-        const originalConfirmVivaRecharge = async function(btn) {
-            const isMobile = btn.id === 'mobile-confirm-viva-recharge';
-            
-            const phoneNumber = document.getElementById(isMobile ? 'mobile-viva-phone-number' : 'viva-phone-number').value;
-            let amount = selectedVivaPackage;
-            
-            // Si es monto personalizado, obtener el valor del campo
-            if (selectedVivaPackage === 'custom') {
-                amount = document.getElementById(isMobile ? 'mobile-viva-custom-amount' : 'viva-custom-amount').value;
-            }
-            
-            if (!selectedVivaPackage) {
-                showToast('Selecciona un paquete VIVA', 'error');
-                return false;
-            }
-            
-            if (!phoneNumber || phoneNumber.length < 7) {
-                showToast('Ingresa un número de teléfono válido', 'error');
-                return false;
-            }
-            
-            if (!amount || parseFloat(amount) <= 0) {
-                showToast('Ingresa un monto válido', 'error');
-                return false;
-            }
-            
-            amount = parseFloat(amount);
-            
-            if (amount > currentBalance) {
-                showToast('Saldo insuficiente', 'error');
-                return false;
-            }
-            
-            // Mostrar spinner de carga
-            const confirmText = document.getElementById(isMobile ? 'mobile-confirm-viva-recharge-text' : 'confirm-viva-recharge-text');
-            const confirmSpinner = document.getElementById(isMobile ? 'mobile-confirm-viva-recharge-spinner' : 'confirm-viva-recharge-spinner');
-            
-            btn.disabled = true;
-            if (confirmText) confirmText.textContent = 'Procesando...';
-            if (confirmSpinner) confirmSpinner.classList.remove('hidden');
-            
-            try {
-                // Crear transacción
-                const transaction = await createTransaction(
-                    currentUser.id,
-                    amount,
-                    'withdrawal',
-                    `Recarga VIVA (${getCreditForRecharge('viva', amount)}) a ${phoneNumber}`,
-                    { service: 'recharge', operator: 'viva', phone: phoneNumber, package: selectedVivaPackage }
-                );
-                
-                if (!transaction) {
-                    throw new Error('Error al crear la transacción');
-                }
-                
-                // Crear registro de recarga
-                const recharge = await createRecharge(
-                    currentUser.id,
-                    phoneNumber,
-                    'viva',
-                    amount,
-                    transaction.id
-                );
-                
-                if (!recharge) {
-                    throw new Error('Error al registrar la recarga');
-                }
-                
-                // Enviar notificación a Telegram para VIVA
-                const telegramMessage = `
-<b>Nueva recarga VIVA solicitada</b>
-                    
-📱 <b>Operadora:</b> VIVA
-📞 <b>Número:</b> ${phoneNumber}
-💰 <b>Monto:</b> ${amount} Bs
-💳 <b>Paquete:</b> ${getCreditForRecharge('viva', amount)}
-👤 <b>Usuario:</b> ${userProfile?.full_name || currentUser.email}
-🆔 <b>ID Transacción:</b> ${transaction.id}
-⏱ <b>Fecha:</b> ${new Date().toLocaleString()}
-                `;
-                
-                const telegramSent = await sendTelegramMessage(telegramMessage, 'viva');
-                
-                if (!telegramSent) {
-                    console.warn('No se pudo enviar la notificación a Telegram');
-                }
-                
-                showToast(`Recarga VIVA de ${amount} Bs a ${phoneNumber} exitosa`);
-                
-                // MOSTRAR FACTURA AUTOMÁTICAMENTE
-                const invoiceTransaction = {
-                    ...transaction,
-                    operator: 'viva',
-                    phone_number: phoneNumber,
-                    credit: getCreditForRecharge('viva', amount),
-                    description: `Recarga VIVA (${getCreditForRecharge('viva', amount)}) a ${phoneNumber}`
-                };
-                showTransactionInvoice(invoiceTransaction, 'recharge');
-                
-                if (isMobile) {
-                    closeMobileModal('mobile-viva-recharge-modal');
-                } else {
-                    closeModal('viva-recharge-modal');
-                }
-                
-                updateUI();
-                return true;
-            } catch (error) {
-                console.error('Error en el proceso de recarga VIVA:', error);
                 showToast('Error al procesar la recarga', 'error');
                 return false;
             } finally {
@@ -3710,7 +3382,7 @@ const invoiceHTML = `
                     const phoneNumberElements = document.querySelectorAll('#phone-number, #mobile-phone-number');
                     const rechargeAmountElements = document.querySelectorAll('#recharge-amount, #mobile-recharge-amount');
                     const customAmountContainers = document.querySelectorAll('#custom-amount-container, #mobile-custom-amount-container');
-                    const rechargeDetailsElements = document.querySelectorAll('#recharge-details, #mobile-recharge-details, #viva-details, #mobile-viva-details');
+                    const rechargeDetailsElements = document.querySelectorAll('#recharge-details, #mobile-recharge-details');
                     
                     phoneNumberElements.forEach(el => {
                         if (el) el.value = '';
@@ -3729,7 +3401,7 @@ const invoiceHTML = `
                     });
                     
                     selectedOperator = null;
-                    const operatorButtons = document.querySelectorAll('.operator-btn, .mobile-operator-btn');
+                    const operatorButtons = document.querySelectorAll('.operator-btn:not(.disabled), .mobile-operator-btn:not(.disabled)');
                     operatorButtons.forEach(btn => {
                         btn.classList.remove('selected');
                     });
@@ -3738,22 +3410,6 @@ const invoiceHTML = `
                         openMobileModal('mobile-recharge-modal');
                     } else {
                         openModal('recharge-modal');
-                    }
-                });
-            });
-            
-            // Seleccionar operadora VIVA
-            const vivaButtons = document.querySelectorAll('[data-operator="viva"]');
-            vivaButtons.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    selectedOperator = 'viva';
-                    
-                    if (btn.classList.contains('mobile-operator-btn')) {
-                        closeMobileModal('mobile-recharge-modal');
-                        openMobileModal('mobile-viva-recharge-modal');
-                    } else {
-                        closeModal('recharge-modal');
-                        openModal('viva-recharge-modal');
                     }
                 });
             });
@@ -3770,24 +3426,12 @@ const invoiceHTML = `
                 });
             });
             
-            // Cerrar modales de recarga VIVA
-            const closeVivaButtons = document.querySelectorAll('#close-viva-modal, #mobile-close-viva-modal, #cancel-viva-recharge, #mobile-cancel-viva-recharge');
-            closeVivaButtons.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    if (btn.id.includes('mobile')) {
-                        closeMobileModal('mobile-viva-recharge-modal');
-                    } else {
-                        closeModal('viva-recharge-modal');
-                    }
-                });
-            });
-            
-            // Seleccionar operadora (excepto VIVA)
-            const operatorButtons = document.querySelectorAll('[data-operator]:not([data-operator="viva"])');
+            // Seleccionar operadora (solo ENTEL está disponible)
+            const operatorButtons = document.querySelectorAll('[data-operator="entel"]');
             operatorButtons.forEach(btn => {
                 btn.addEventListener('click', () => {
                     selectedOperator = btn.dataset.operator;
-                    const allButtons = document.querySelectorAll(`.operator-btn, .mobile-operator-btn`);
+                    const allButtons = document.querySelectorAll(`.operator-btn:not(.disabled), .mobile-operator-btn:not(.disabled)`);
                     allButtons.forEach(b => {
                         b.classList.remove('selected');
                     });
@@ -3797,34 +3441,6 @@ const invoiceHTML = `
                     const amount = document.getElementById('recharge-amount')?.value || document.getElementById('mobile-recharge-amount')?.value;
                     if (amount) {
                         showRechargeDetails(selectedOperator, amount);
-                    }
-                });
-            });
-            
-            // Seleccionar paquete VIVA
-            const vivaPackageButtons = document.querySelectorAll('[data-package]');
-            vivaPackageButtons.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    selectedVivaPackage = btn.dataset.package;
-                    
-                    // Quitar selección de otros botones
-                    vivaPackageButtons.forEach(b => {
-                        const icon = b.querySelector('.fa-check-circle');
-                        if (icon) icon.classList.add('hidden');
-                        b.classList.remove('selected');
-                    });
-                    
-                    // Marcar como seleccionado
-                    btn.classList.add('selected');
-                    const icon = btn.querySelector('.fa-check-circle');
-                    if (icon) icon.classList.remove('hidden');
-                    
-                    // Mostrar u ocultar campo de monto personalizado
-                    const customContainer = document.getElementById(btn.classList.contains('mobile-operator-btn') ? 'mobile-viva-custom-amount-container' : 'viva-custom-amount-container');
-                    if (selectedVivaPackage === 'custom') {
-                        customContainer.classList.remove('hidden');
-                    } else {
-                        customContainer.classList.add('hidden');
                     }
                 });
             });
@@ -3859,19 +3475,11 @@ const invoiceHTML = `
                 }
             });
             
-            // Confirmar recarga normal (no VIVA) - USANDO LA NUEVA FUNCIÓN CON FACTURA
+            // Confirmar recarga normal - USANDO LA NUEVA FUNCIÓN CON FACTURA
             const confirmRechargeButtons = document.querySelectorAll('#confirm-recharge, #mobile-confirm-recharge');
             confirmRechargeButtons.forEach(btn => {
                 btn.addEventListener('click', async function() {
                     await originalConfirmRecharge(this);
-                });
-            });
-            
-            // Confirmar recarga VIVA - USANDO LA NUEVA FUNCIÓN CON FACTURA
-            const confirmVivaButtons = document.querySelectorAll('#confirm-viva-recharge, #mobile-confirm-viva-recharge');
-            confirmVivaButtons.forEach(btn => {
-                btn.addEventListener('click', async function() {
-                    await originalConfirmVivaRecharge(this);
                 });
             });
             
@@ -4447,461 +4055,6 @@ const invoiceHTML = `
 'TOKTOK-S4T5',
 'TOKTOK-U6V7',
 'TOKTOK-W8X9',
-'TOKTOK-Y0Z1',
-'TOKTOK-A2B3',
-'TOKTOK-C4D5',
-'TOKTOK-E6F7',
-'TOKTOK-G8H9',
-'TOKTOK-I0J1',
-'TOKTOK-K2L3',
-'TOKTOK-M4N5',
-'TOKTOK-O6P7',
-'TOKTOK-Q8R9',
-'TOKTOK-S0T1',
-'TOKTOK-U2V3',
-'TOKTOK-W4X5',
-'TOKTOK-Y6Z7',
-'TOKTOK-A8B9',
-'TOKTOK-C0D1',
-'TOKTOK-E2F3',
-'TOKTOK-G4H5',
-'TOKTOK-I6J7',
-'TOKTOK-K8L9',
-'TOKTOK-M0N1',
-'TOKTOK-O2P3',
-'TOKTOK-Q4R5',
-'TOKTOK-S6T7',
-'TOKTOK-U8V9',
-'TOKTOK-W0X1',
-'TOKTOK-Y2Z3',
-'TOKTOK-A4B5',
-'TOKTOK-C6D7',
-'TOKTOK-E8F9',
-'TOKTOK-G0H1',
-'TOKTOK-I2J3',
-'TOKTOK-K4L5',
-'TOKTOK-M6N7',
-'TOKTOK-O8P9',
-'TOKTOK-Q0R1',
-'TOKTOK-S2T3',
-'TOKTOK-U4V5',
-'TOKTOK-W6X7',
-'TOKTOK-Y8Z9',
-'TOKTOK-A0B1',
-'TOKTOK-C2D3',
-'TOKTOK-E4F5',
-'TOKTOK-G6H7',
-'TOKTOK-I8J9',
-'TOKTOK-K0L1',
-'TOKTOK-M2N3',
-'TOKTOK-O4P5',
-'TOKTOK-Q6R7',
-'TOKTOK-S8T9',
-'TOKTOK-U0V1',
-'TOKTOK-W2X3',
-'TOKTOK-Y4Z5',
-'TOKTOK-A6B7',
-'TOKTOK-C8D9',
-'TOKTOK-E0F1',
-'TOKTOK-G2H3',
-'TOKTOK-I4J5',
-'TOKTOK-K6L7',
-'TOKTOK-M8N9',
-'TOKTOK-O0P1',
-'TOKTOK-Q2R3',
-'TOKTOK-S4T5',
-'TOKTOK-U6V7',
-'TOKTOK-W8X9',
-'TOKTOK-Y0Z1',
-'TOKTOK-A2B3',
-'TOKTOK-C4D5',
-'TOKTOK-E6F7',
-'TOKTOK-G8H9',
-'TOKTOK-I0J1',
-'TOKTOK-K2L3',
-'TOKTOK-M4N5',
-'TOKTOK-O6P7',
-'TOKTOK-Q8R9',
-'TOKTOK-S0T1',
-'TOKTOK-U2V3',
-'TOKTOK-W4X5',
-'TOKTOK-Y6Z7',
-'TOKTOK-A8B9',
-'TOKTOK-C0D1',
-'TOKTOK-E2F3',
-'TOKTOK-G4H5',
-'TOKTOK-I6J7',
-'TOKTOK-K8L9',
-'TOKTOK-M0N1',
-'TOKTOK-O2P3',
-'TOKTOK-Q4R5',
-'TOKTOK-S6T7',
-'TOKTOK-U8V9',
-'TOKTOK-W0X1',
-'TOKTOK-Y2Z3',
-'TOKTOK-A4B5',
-'TOKTOK-C6D7',
-'TOKTOK-E8F9',
-'TOKTOK-G0H1',
-'TOKTOK-I2J3',
-'TOKTOK-K4L5',
-'TOKTOK-M6N7',
-'TOKTOK-O8P9',
-'TOKTOK-Q0R1',
-'TOKTOK-S2T3',
-'TOKTOK-U4V5',
-'TOKTOK-W6X7',
-'TOKTOK-Y8Z9',
-'TOKTOK-A0B1',
-'TOKTOK-C2D3',
-'TOKTOK-E4F5',
-'TOKTOK-G6H7',
-'TOKTOK-I8J9',
-'TOKTOK-K0L1',
-'TOKTOK-M2N3',
-'TOKTOK-O4P5',
-'TOKTOK-Q6R7',
-'TOKTOK-S8T9',
-'TOKTOK-U0V1',
-'TOKTOK-W2X3',
-'TOKTOK-Y4Z5',
-'TOKTOK-A6B7',
-'TOKTOK-C8D9',
-'TOKTOK-E0F1',
-'TOKTOK-G2H3',
-'TOKTOK-I4J5',
-'TOKTOK-K6L7',
-'TOKTOK-M8N9',
-'TOKTOK-O0P1',
-'TOKTOK-Q2R3',
-'TOKTOK-S4T5',
-'TOKTOK-U6V7',
-'TOKTOK-W8X9',
-'TOKTOK-Y0Z1',
-'TOKTOK-A2B3',
-'TOKTOK-C4D5',
-'TOKTOK-E6F7',
-'TOKTOK-G8H9',
-'TOKTOK-I0J1',
-'TOKTOK-K2L3',
-'TOKTOK-M4N5',
-'TOKTOK-O6P7',
-'TOKTOK-Q8R9',
-'TOKTOK-S0T1',
-'TOKTOK-U2V3',
-'TOKTOK-W4X5',
-'TOKTOK-Y6Z7',
-'TOKTOK-A8B9',
-'TOKTOK-C0D1',
-'TOKTOK-E2F3',
-'TOKTOK-G4H5',
-'TOKTOK-I6J7',
-'TOKTOK-K8L9',
-'TOKTOK-M0N1',
-'TOKTOK-O2P3',
-'TOKTOK-Q4R5',
-'TOKTOK-S6T7',
-'TOKTOK-U8V9',
-'TOKTOK-W0X1',
-'TOKTOK-Y2Z3',
-'TOKTOK-A4B5',
-'TOKTOK-C6D7',
-'TOKTOK-E8F9',
-'TOKTOK-G0H1',
-'TOKTOK-I2J3',
-'TOKTOK-K4L5',
-'TOKTOK-M6N7',
-'TOKTOK-O8P9',
-'TOKTOK-Q0R1',
-'TOKTOK-S2T3',
-'TOKTOK-U4V5',
-'TOKTOK-W6X7',
-'TOKTOK-Y8Z9',
-'TOKTOK-A0B1',
-'TOKTOK-C2D3',
-'TOKTOK-E4F5',
-'TOKTOK-G6H7',
-'TOKTOK-I8J9',
-'TOKTOK-K0L1',
-'TOKTOK-M2N3',
-'TOKTOK-O4P5',
-'TOKTOK-Q6R7',
-'TOKTOK-S8T9',
-'TOKTOK-U0V1',
-'TOKTOK-W2X3',
-'TOKTOK-Y4Z5',
-'TOKTOK-A6B7',
-'TOKTOK-C8D9',
-'TOKTOK-E0F1',
-'TOKTOK-G2H3',
-'TOKTOK-I4J5',
-'TOKTOK-K6L7',
-'TOKTOK-M8N9',
-'TOKTOK-O0P1',
-'TOKTOK-Q2R3',
-'TOKTOK-S4T5',
-'TOKTOK-U6V7',
-'TOKTOK-W8X9',
-'TOKTOK-Y0Z1',
-'TOKTOK-A2B3',
-'TOKTOK-C4D5',
-'TOKTOK-E6F7',
-'TOKTOK-G8H9',
-'TOKTOK-I0J1',
-'TOKTOK-K2L3',
-'TOKTOK-M4N5',
-'TOKTOK-O6P7',
-'TOKTOK-Q8R9',
-'TOKTOK-S0T1',
-'TOKTOK-U2V3',
-'TOKTOK-W4X5',
-'TOKTOK-Y6Z7',
-'TOKTOK-A8B9',
-'TOKTOK-C0D1',
-'TOKTOK-E2F3',
-'TOKTOK-G4H5',
-'TOKTOK-I6J7',
-'TOKTOK-K8L9',
-'TOKTOK-M0N1',
-'TOKTOK-O2P3',
-'TOKTOK-Q4R5',
-'TOKTOK-S6T7',
-'TOKTOK-U8V9',
-'TOKTOK-W0X1',
-'TOKTOK-Y2Z3',
-'TOKTOK-A4B5',
-'TOKTOK-C6D7',
-'TOKTOK-E8F9',
-'TOKTOK-G0H1',
-'TOKTOK-I2J3',
-'TOKTOK-K4L5',
-'TOKTOK-M6N7',
-'TOKTOK-O8P9',
-'TOKTOK-Q0R1',
-'TOKTOK-S2T3',
-'TOKTOK-U4V5',
-'TOKTOK-W6X7',
-'TOKTOK-Y8Z9',
-'TOKTOK-A0B1',
-'TOKTOK-C2D3',
-'TOKTOK-E4F5',
-'TOKTOK-G6H7',
-'TOKTOK-I8J9',
-'TOKTOK-K0L1',
-'TOKTOK-M2N3',
-'TOKTOK-O4P5',
-'TOKTOK-Q6R7',
-'TOKTOK-S8T9',
-'TOKTOK-U0V1',
-'TOKTOK-W2X3',
-'TOKTOK-Y4Z5',
-'TOKTOK-A6B7',
-'TOKTOK-C8D9',
-'TOKTOK-E0F1',
-'TOKTOK-G2H3',
-'TOKTOK-I4J5',
-'TOKTOK-K6L7',
-'TOKTOK-M8N9',
-'TOKTOK-O0P1',
-'TOKTOK-Q2R3',
-'TOKTOK-S4T5',
-'TOKTOK-U6V7',
-'TOKTOK-W8X9',
-'TOKTOK-Y0Z1',
-'TOKTOK-A2B3',
-'TOKTOK-C4D5',
-'TOKTOK-E6F7',
-'TOKTOK-G8H9',
-'TOKTOK-I0J1',
-'TOKTOK-K2L3',
-'TOKTOK-M4N5',
-'TOKTOK-O6P7',
-'TOKTOK-Q8R9',
-'TOKTOK-S0T1',
-'TOKTOK-U2V3',
-'TOKTOK-W4X5',
-'TOKTOK-Y6Z7',
-'TOKTOK-A8B9',
-'TOKTOK-C0D1',
-'TOKTOK-E2F3',
-'TOKTOK-G4H5',
-'TOKTOK-I6J7',
-'TOKTOK-K8L9',
-'TOKTOK-M0N1',
-'TOKTOK-O2P3',
-'TOKTOK-Q4R5',
-'TOKTOK-S6T7',
-'TOKTOK-U8V9',
-'TOKTOK-W0X1',
-'TOKTOK-Y2Z3',
-'TOKTOK-A4B5',
-'TOKTOK-C6D7',
-'TOKTOK-E8F9',
-'TOKTOK-G0H1',
-'TOKTOK-I2J3',
-'TOKTOK-K4L5',
-'TOKTOK-M6N7',
-'TOKTOK-O8P9',
-'TOKTOK-Q0R1',
-'TOKTOK-S2T3',
-'TOKTOK-U4V5',
-'TOKTOK-W6X7',
-'TOKTOK-Y8Z9',
-'TOKTOK-A0B1',
-'TOKTOK-C2D3',
-'TOKTOK-E4F5',
-'TOKTOK-G6H7',
-'TOKTOK-I8J9',
-'TOKTOK-K0L1',
-'TOKTOK-M2N3',
-'TOKTOK-O4P5',
-'TOKTOK-Q6R7',
-'TOKTOK-S8T9',
-'TOKTOK-U0V1',
-'TOKTOK-W2X3',
-'TOKTOK-Y4Z5',
-'TOKTOK-A6B7',
-'TOKTOK-C8D9',
-'TOKTOK-E0F1',
-'TOKTOK-G2H3',
-'TOKTOK-I4J5',
-'TOKTOK-K6L7',
-'TOKTOK-M8N9',
-'TOKTOK-O0P1',
-'TOKTOK-Q2R3',
-'TOKTOK-S4T5',
-'TOKTOK-U6V7',
-'TOKTOK-W8X9',
-'TOKTOK-Y0Z1',
-'TOKTOK-A2B3',
-'TOKTOK-C4D5',
-'TOKTOK-E6F7',
-'TOKTOK-G8H9',
-'TOKTOK-I0J1',
-'TOKTOK-K2L3',
-'TOKTOK-M4N5',
-'TOKTOK-O6P7',
-'TOKTOK-Q8R9',
-'TOKTOK-S0T1',
-'TOKTOK-U2V3',
-'TOKTOK-W4X5',
-'TOKTOK-Y6Z7',
-'TOKTOK-A8B9',
-'TOKTOK-C0D1',
-'TOKTOK-E2F3',
-'TOKTOK-G4H5',
-'TOKTOK-I6J7',
-'TOKTOK-K8L9',
-'TOKTOK-M0N1',
-'TOKTOK-O2P3',
-'TOKTOK-Q4R5',
-'TOKTOK-S6T7',
-'TOKTOK-U8V9',
-'TOKTOK-W0X1',
-'TOKTOK-Y2Z3',
-'TOKTOK-A4B5',
-'TOKTOK-C6D7',
-'TOKTOK-E8F9',
-'TOKTOK-G0H1',
-'TOKTOK-I2J3',
-'TOKTOK-K4L5',
-'TOKTOK-M6N7',
-'TOKTOK-O8P9',
-'TOKTOK-Q0R1',
-'TOKTOK-S2T3',
-'TOKTOK-U4V5',
-'TOKTOK-W6X7',
-'TOKTOK-Y8Z9',
-'TOKTOK-A0B1',
-'TOKTOK-C2D3',
-'TOKTOK-E4F5',
-'TOKTOK-G6H7',
-'TOKTOK-I8J9',
-'TOKTOK-K0L1',
-'TOKTOK-M2N3',
-'TOKTOK-O4P5',
-'TOKTOK-Q6R7',
-'TOKTOK-S8T9',
-'TOKTOK-U0V1',
-'TOKTOK-W2X3',
-'TOKTOK-Y4Z5',
-'TOKTOK-A6B7',
-'TOKTOK-C8D9',
-'TOKTOK-E0F1',
-'TOKTOK-G2H3',
-'TOKTOK-I4J5',
-'TOKTOK-K6L7',
-'TOKTOK-M8N9',
-'TOKTOK-O0P1',
-'TOKTOK-Q2R3',
-'TOKTOK-S4T5',
-'TOKTOK-U6V7',
-'TOKTOK-W8X9',
-'TOKTOK-Y0Z1',
-'TOKTOK-A2B3',
-'TOKTOK-C4D5',
-'TOKTOK-E6F7',
-'TOKTOK-G8H9',
-'TOKTOK-I0J1',
-'TOKTOK-K2L3',
-'TOKTOK-M4N5',
-'TOKTOK-O6P7',
-'TOKTOK-Q8R9',
-'TOKTOK-S0T1',
-'TOKTOK-U2V3',
-'TOKTOK-W4X5',
-'TOKTOK-Y6Z7',
-'TOKTOK-A8B9',
-'TOKTOK-C0D1',
-'TOKTOK-E2F3',
-'TOKTOK-G4H5',
-'TOKTOK-I6J7',
-'TOKTOK-K8L9',
-'TOKTOK-M0N1',
-'TOKTOK-O2P3',
-'TOKTOK-Q4R5',
-'TOKTOK-S6T7',
-'TOKTOK-U8V9',
-'TOKTOK-W0X1',
-'TOKTOK-Y2Z3',
-'TOKTOK-A4B5',
-'TOKTOK-C6D7',
-'TOKTOK-E8F9',
-'TOKTOK-G0H1',
-'TOKTOK-I2J3',
-'TOKTOK-K4L5',
-'TOKTOK-M6N7',
-'TOKTOK-O8P9',
-'TOKTOK-Q0R1',
-'TOKTOK-S2T3',
-'TOKTOK-U4V5',
-'TOKTOK-W6X7',
-'TOKTOK-Y8Z9',
-'TOKTOK-A0B1',
-'TOKTOK-C2D3',
-'TOKTOK-E4F5',
-'TOKTOK-G6H7',
-'TOKTOK-I8J9',
-'TOKTOK-K0L1',
-'TOKTOK-M2N3',
-'TOKTOK-O4P5',
-'TOKTOK-Q6R7',
-'TOKTOK-S8T9',
-'TOKTOK-U0V1',
-'TOKTOK-W2X3',
-'TOKTOK-Y4Z5',
-'TOKTOK-A6B7',
-'TOKTOK-C8D9',
-'TOKTOK-E0F1',
-'TOKTOK-G2H3',
-'TOKTOK-I4J5',
-'TOKTOK-K6L7',
-'TOKTOK-M8N9',
-'TOKTOK-O0P1',
-'TOKTOK-Q2R3',
-'TOKTOK-S4T5',
-'TOKTOK-U6V7',
-'TOKTOK-W8X9',
 'TOKTOK-Y0Z1'
         ]);
 
@@ -5035,7 +4188,7 @@ function getPrizeIndexWithProbability() {
         return PRIZES.indexOf(5);
     } else if (rand < 24.3) { // 20% para 2 Bs (acumulado 24.3%)
         return PRIZES.indexOf(2);
-    } else if (rand < 30.3) { // 40% para 1 Bs (acumulado 64.3%)
+    } else if (rand < 64.3) { // 40% para 1 Bs (acumulado 64.3%)
         return PRIZES.indexOf(1);
     } else { // 35.7% para 0 Bs
         return PRIZES.indexOf(0);
@@ -5145,5 +4298,3 @@ function getPrizeIndexWithProbability() {
     </script>
 </body>
 </html>
-
-
