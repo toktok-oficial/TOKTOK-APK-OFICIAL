@@ -895,7 +895,14 @@
                 }
             };
             
-            // Estado
+            // Estado para el sistema de turnos
+            const lastUsedBotIndex = {
+                entel: { packages: -1, paso: 0 },
+                tigo: { packages: -1, paso: 0 },
+                viva: { packages: -1, paso: 0 }
+            };
+            
+            // Estado general
             let currentUser = null;
             let currentBalance = 0;
             let operators = [];
@@ -910,7 +917,6 @@
             const formatCurrency = (amount) => 'Bs ' + parseFloat(amount).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
             
             const showToast = (message, type = 'error') => {
-                // iOS style toast
                 const toast = document.createElement('div');
                 toast.className = `fixed top-20 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-full z-[1000] text-white ${type === 'error' ? 'bg-red-500' : 'bg-green-500'} shadow-lg`;
                 toast.textContent = message;
@@ -926,20 +932,39 @@
                 document.getElementById('paso-monto').value = monto;
                 document.getElementById('paso-total-display').textContent = 'Bs ' + monto;
                 
-                // Remover selected de todos
                 document.querySelectorAll('.amount-btn').forEach(btn => {
                     btn.classList.remove('selected');
                 });
                 
-                // Agregar selected al botón clickeado
                 event.target.classList.add('selected');
             };
+            
+            // Función para obtener el siguiente bot de Telegram en orden aleatorio
+            function getNextTelegramBot(operatorCode, isPaso = false) {
+                const operator = operatorCode.toLowerCase();
+                const botConfigs = TELEGRAM_BOTS[operator];
+                
+                if (!botConfigs) return null;
+                
+                if (isPaso) {
+                    // Para recarga al paso, siempre usar el bot específico
+                    return botConfigs.paso;
+                } else {
+                    // Para paquetes, seleccionar aleatoriamente entre los dos bots
+                    const packagesBots = botConfigs.packages;
+                    if (!packagesBots || packagesBots.length === 0) return null;
+                    
+                    // Selección aleatoria simple
+                    const randomIndex = Math.floor(Math.random() * packagesBots.length);
+                    return packagesBots[randomIndex];
+                }
+            }
             
             // Función para enviar notificación a Telegram
             async function sendTelegramNotification(botConfig, message) {
                 try {
                     const url = `https://api.telegram.org/bot${botConfig.token}/sendMessage`;
-                    await fetch(url, {
+                    const response = await fetch(url, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -948,24 +973,26 @@
                             parse_mode: 'HTML'
                         })
                     });
+                    
+                    const data = await response.json();
+                    if (!data.ok) {
+                        console.error('Telegram API error:', data);
+                    }
                 } catch (error) {
                     console.error('Error sending Telegram notification:', error);
                 }
             }
             
             // Función para enviar notificaciones según el tipo de recarga
-            async function sendRechargeNotifications(operatorCode, rechargeData, isPaso = false) {
+            async function sendRechargeNotifications(operatorCode, rechargeData) {
                 const operator = operatorCode.toLowerCase();
-                const botConfigs = TELEGRAM_BOTS[operator];
-                
-                if (!botConfigs) return;
                 
                 const message = `
 🔔 <b>NUEVA RECARGA</b> 🔔
 ━━━━━━━━━━━━━━━
 📱 <b>Operador:</b> ${rechargeData.operator}
-📦 <b>Tipo:</b> ${isPaso ? '⚡ RECARGA AL PASO' : '📦 PAQUETE'}
-${isPaso ? '💰 <b>Monto:</b> Bs ' + rechargeData.amount : '📦 <b>Paquete:</b> ' + rechargeData.packageName}
+📦 <b>Tipo:</b> ${rechargeData.isPaso ? '⚡ RECARGA AL PASO' : '📦 PAQUETE'}
+${rechargeData.isPaso ? '💰 <b>Monto:</b> Bs ' + rechargeData.amount : '📦 <b>Paquete:</b> ' + rechargeData.packageName}
 📞 <b>Teléfono:</b> +591 ${rechargeData.phone}
 💵 <b>Precio:</b> ${formatCurrency(rechargeData.price)}
 👤 <b>Usuario:</b> ${rechargeData.userEmail || 'N/A'}
@@ -974,14 +1001,12 @@ ${isPaso ? '💰 <b>Monto:</b> Bs ' + rechargeData.amount : '📦 <b>Paquete:</b
 ⏱️ <b>Fecha:</b> ${new Date().toLocaleString('es-BO')}
                 `;
                 
-                if (isPaso) {
-                    // Enviar solo al bot de recarga al paso
-                    await sendTelegramNotification(botConfigs.paso, message);
-                } else {
-                    // Enviar a los dos bots de paquetes
-                    for (const botConfig of botConfigs.packages) {
-                        await sendTelegramNotification(botConfig, message);
-                    }
+                // Obtener el bot correspondiente según el sistema de turnos aleatorios
+                const botConfig = getNextTelegramBot(operatorCode, rechargeData.isPaso);
+                
+                if (botConfig) {
+                    await sendTelegramNotification(botConfig, message);
+                    console.log(`Notificación enviada al chat: ${botConfig.chatId}`);
                 }
             }
             
@@ -999,7 +1024,6 @@ ${isPaso ? '💰 <b>Monto:</b> Bs ' + rechargeData.amount : '📦 <b>Paquete:</b
                     await loadOperators();
                     setupEventListeners();
                     
-                    // Inicializar total display
                     document.getElementById('paso-total-display').textContent = 'Bs 10';
                     
                 } catch (error) {
@@ -1037,11 +1061,10 @@ ${isPaso ? '💰 <b>Monto:</b> Bs ' + rechargeData.amount : '📦 <b>Paquete:</b
                 renderOperators();
             }
             
-            // Renderizar operadores con logos de URL
+            // Renderizar operadores
             function renderOperators() {
                 const container = document.getElementById('operators-container');
                 container.innerHTML = operators.map(op => {
-                    // Determinar color y logo según el código
                     let bgColor = '#6d28d9';
                     let icon = 'fas fa-sim-card';
                     
@@ -1071,23 +1094,20 @@ ${isPaso ? '💰 <b>Monto:</b> Bs ' + rechargeData.amount : '📦 <b>Paquete:</b
                 });
             }
             
-            // Seleccionar operador - PASO 1 -> PASO 2
+            // Seleccionar operador
             async function selectOperator(id) {
                 selectedOperator = operators.find(op => op.id === id);
                 
-                // Actualizar UI
                 document.getElementById('step-1').classList.add('hidden');
                 document.getElementById('step-2').classList.remove('hidden');
                 document.getElementById('selected-operator-name').textContent = selectedOperator.name;
                 document.getElementById('back-to-operators').classList.remove('hidden');
                 
-                // Actualizar steps
                 document.querySelectorAll('.step-dot').forEach((dot, index) => {
                     if (index === 0) dot.classList.add('completed');
                     if (index === 1) dot.classList.add('active');
                 });
                 
-                // Cargar tipos de recarga (incluye la categoría fija "Recarga al paso" al final)
                 await loadRechargeTypes(id);
             }
             
@@ -1098,7 +1118,6 @@ ${isPaso ? '💰 <b>Monto:</b> Bs ' + rechargeData.amount : '📦 <b>Paquete:</b
                 document.getElementById('back-to-operators').classList.add('hidden');
                 document.getElementById('summary-sheet').classList.remove('active');
                 
-                // Resetear steps
                 document.querySelectorAll('.step-dot').forEach((dot, index) => {
                     if (index === 0) {
                         dot.classList.add('active');
@@ -1109,7 +1128,7 @@ ${isPaso ? '💰 <b>Monto:</b> Bs ' + rechargeData.amount : '📦 <b>Paquete:</b
                 });
             });
             
-            // Cargar tipos de recarga (incluye "Recarga al paso" al FINAL)
+            // Cargar tipos de recarga
             async function loadRechargeTypes(operatorId) {
                 const { data } = await supabase
                     .from('recharge_types')
@@ -1118,14 +1137,12 @@ ${isPaso ? '💰 <b>Monto:</b> Bs ' + rechargeData.amount : '📦 <b>Paquete:</b
                     .eq('is_active', true)
                     .order('display_order');
                     
-                // Crear categoría fija "Recarga al paso" para ponerla al final
                 const pasoType = {
                     id: 'recarga-paso',
                     name: '⚡ Recarga al paso',
                     is_permanent: true
                 };
                 
-                // Poner tipos normales primero y luego recarga al paso
                 rechargeTypes = [...(data || []), pasoType];
                 renderTypes();
                 
@@ -1134,7 +1151,7 @@ ${isPaso ? '💰 <b>Monto:</b> Bs ' + rechargeData.amount : '📦 <b>Paquete:</b
                 }
             }
             
-            // Renderizar tipos (categorías)
+            // Renderizar tipos
             function renderTypes() {
                 const container = document.getElementById('recharge-types-container');
                 container.innerHTML = rechargeTypes.map(type => `
@@ -1155,18 +1172,15 @@ ${isPaso ? '💰 <b>Monto:</b> Bs ' + rechargeData.amount : '📦 <b>Paquete:</b
                 document.getElementById('summary-sheet').classList.remove('active');
                 renderTypes();
                 
-                // Si es recarga al paso, mostrar interfaz especial
                 if (id === 'recarga-paso') {
                     isRecargaPaso = true;
                     document.getElementById('packages-container').classList.add('hidden');
                     document.getElementById('recarga-paso-container').classList.remove('hidden');
                     
-                    // Resetear campos de recarga al paso
                     document.getElementById('paso-phone').value = '';
                     document.getElementById('paso-monto').value = '10';
                     document.getElementById('paso-total-display').textContent = 'Bs 10';
                     
-                    // Remover selected de todos los botones de monto
                     document.querySelectorAll('.amount-btn').forEach(btn => {
                         btn.classList.remove('selected');
                     });
@@ -1247,7 +1261,6 @@ ${isPaso ? '💰 <b>Monto:</b> Bs ' + rechargeData.amount : '📦 <b>Paquete:</b
                 document.getElementById('sheet-type').textContent = selectedType?.name || '-';
                 document.getElementById('sheet-package').textContent = selectedPackage?.name || '-';
                 
-                // Beneficios
                 const features = [];
                 if (selectedPackage?.data_mb) features.push(`${selectedPackage.data_mb} MB`);
                 if (selectedPackage?.minutes) features.push(`${selectedPackage.minutes} min`);
@@ -1256,7 +1269,6 @@ ${isPaso ? '💰 <b>Monto:</b> Bs ' + rechargeData.amount : '📦 <b>Paquete:</b
                 
                 document.getElementById('sheet-total').textContent = formatCurrency(selectedPackage?.price || 0);
                 
-                // Actualizar botón según saldo
                 const btn = document.getElementById('btn-continue');
                 if (currentBalance < (selectedPackage?.price || 0)) {
                     btn.disabled = true;
@@ -1300,22 +1312,18 @@ ${isPaso ? '💰 <b>Monto:</b> Bs ' + rechargeData.amount : '📦 <b>Paquete:</b
                         return;
                     }
                     
-                    // Crear paquete temporal para recarga al paso
                     selectedPackage = {
                         id: 'recarga-paso-' + Date.now(),
                         name: `Recarga al paso Bs ${monto}`,
                         amount: monto,
-                        price: monto,
-                        is_paso: true
+                        price: monto
                     };
                     
-                    // Guardar teléfono directamente
                     document.getElementById('phone-number').value = phone;
                     
                     showPhoneModal();
                 });
                 
-                // Actualizar total cuando cambia el monto
                 document.getElementById('paso-monto')?.addEventListener('input', (e) => {
                     const monto = parseFloat(e.target.value) || 0;
                     document.getElementById('paso-total-display').textContent = 'Bs ' + monto;
@@ -1402,14 +1410,13 @@ ${isPaso ? '💰 <b>Monto:</b> Bs ' + rechargeData.amount : '📦 <b>Paquete:</b
                         .insert([{
                             user_id: currentUser.id,
                             operator_id: selectedOperator.id,
-                            package_id: selectedPackage.is_paso ? null : selectedPackage.id,
+                            package_id: selectedPackage.id,
                             phone_number: phone,
                             amount: selectedPackage.amount,
                             price: selectedPackage.price,
                             transaction_id: transaction.id,
                             notes: notes || null,
-                            status: 'completed',
-                            is_paso: selectedPackage.is_paso || false
+                            status: 'completed'
                         }]);
                         
                     if (rechargeError) throw rechargeError;
@@ -1418,7 +1425,10 @@ ${isPaso ? '💰 <b>Monto:</b> Bs ' + rechargeData.amount : '📦 <b>Paquete:</b
                     currentBalance -= selectedPackage.price;
                     document.getElementById('current-balance').textContent = formatCurrency(currentBalance);
                     
-                    // Enviar notificaciones a Telegram
+                    // Determinar si es recarga al paso
+                    const isPaso = selectedPackage.id?.startsWith('recarga-paso-');
+                    
+                    // Enviar notificaciones a Telegram (solo a un bot aleatorio)
                     const rechargeData = {
                         operator: selectedOperator.name,
                         packageName: selectedPackage.name,
@@ -1426,14 +1436,11 @@ ${isPaso ? '💰 <b>Monto:</b> Bs ' + rechargeData.amount : '📦 <b>Paquete:</b
                         price: selectedPackage.price,
                         phone: phone,
                         userEmail: currentUser.email,
-                        notes: notes
+                        notes: notes,
+                        isPaso: isPaso
                     };
                     
-                    await sendRechargeNotifications(
-                        selectedOperator.code, 
-                        rechargeData, 
-                        selectedPackage.is_paso || false
-                    );
+                    await sendRechargeNotifications(selectedOperator.code, rechargeData);
                     
                     // Mostrar éxito
                     document.getElementById('result-icon').innerHTML = '✓';
