@@ -467,6 +467,76 @@
             color: white;
             font-size: 28px;
         }
+
+        /* Barra de progreso para registros múltiples */
+        .progress-bar-container {
+            width: 100%;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #0066FF 0%, #00AAFF 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .registration-queue {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #e2e8f0;
+            display: none;
+        }
+
+        .registration-queue.active {
+            display: block;
+        }
+
+        .queue-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .queue-item:last-child {
+            border-bottom: none;
+        }
+
+        .queue-status {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .queue-status.pending {
+            background: #f59e0b;
+        }
+
+        .queue-status.processing {
+            background: #3b82f6;
+            animation: pulse 1s infinite;
+        }
+
+        .queue-status.completed {
+            background: #10b981;
+        }
+
+        .queue-status.error {
+            background: #ef4444;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
@@ -707,8 +777,18 @@
                     </div>
                 </div>
                 
-                <!-- Formulario de Registro - CORREGIDO -->
+                <!-- Formulario de Registro - OPTIMIZADO PARA MÚLTIPLES REGISTROS -->
                 <div id="signup-form-container" class="hidden">
+                    <!-- Cola de registro -->
+                    <div id="registration-queue" class="registration-queue">
+                        <h4 class="font-semibold text-sm mb-2">Registros en cola:</h4>
+                        <div id="queue-items" class="space-y-2"></div>
+                        <div class="progress-bar-container mt-3">
+                            <div id="queue-progress" class="progress-bar-fill"></div>
+                        </div>
+                        <p id="queue-status-text" class="text-xs text-gray-500 mt-2">0/0 registros completados</p>
+                    </div>
+
                     <form id="signup-form" class="space-y-5">
                         <div>
                             <label for="signup-name" class="block text-sm font-medium text-gray-700 mb-1">Nombre completo *</label>
@@ -732,10 +812,33 @@
                             <input type="password" id="signup-password" required 
                                    class="input-field w-full rounded-lg py-3 px-4 text-gray-800 focus:outline-none pr-10">
                             <i class="password-toggle fas fa-eye" id="toggle-signup-password"></i>
-                            <p class="text-xs text-gray-500 mt-1">Mínimo 8 caracteres con números y letras</p>
+                            <p class="text-xs text-gray-500 mt-1">Mínimo 6 caracteres</p>
                         </div>
+                        
+                        <!-- Opción para registros múltiples -->
+                        <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" id="multiple-registrations" class="rounded border-gray-300">
+                                <span class="text-sm font-medium text-gray-700">Habilitar modo de registros múltiples</span>
+                            </label>
+                            <p class="text-xs text-gray-500 mt-1 ml-6">
+                                Activa esta opción para registrar varios usuarios en secuencia
+                            </p>
+                        </div>
+
+                        <!-- Contenedor para registros múltiples (inicialmente oculto) -->
+                        <div id="multiple-registration-container" class="hidden space-y-4 border-t pt-4">
+                            <h4 class="font-semibold text-sm">Registros en lote:</h4>
+                            <div id="batch-registrations" class="space-y-3 max-h-60 overflow-y-auto pr-2">
+                                <!-- Se agregarán dinámicamente los campos de registro -->
+                            </div>
+                            <button type="button" id="add-batch-registration" class="text-blue-500 text-sm hover:underline">
+                                <i class="fas fa-plus mr-1"></i> Agregar otro registro
+                            </button>
+                        </div>
+
                         <button type="submit" class="btn-primary w-full text-white py-3 px-4 rounded-lg font-medium">
-                            Crear Cuenta
+                            Crear Cuenta(s)
                         </button>
                     </form>
                     
@@ -759,6 +862,13 @@
         const supabaseUrl = 'https://aleadadisazocjovibeh.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFsZWFkYWRpc2F6b2Nqb3ZpYmVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk0NDE5NjMsImV4cCI6MjA3NTAxNzk2M30.z82tP0C-UiiNuzP_jqrQf4LBusFqrDi1WYbdnuTh47E';
         window.supabase = supabase.createClient(supabaseUrl, supabaseKey);
+        
+        // Variables globales para manejo de cola
+        let registrationQueue = [];
+        let isProcessing = false;
+        let currentBatchIndex = 0;
+        const MAX_CONCURRENT = 1; // Procesar 1 por vez para evitar rate limit
+        const DELAY_BETWEEN_REQUESTS = 2000; // 2 segundos entre registros
         
         // Verificar sesión al cargar la página
         async function checkSession() {
@@ -984,147 +1094,320 @@
                 }
             });
             
-            // ===== FORMULARIO DE REGISTRO CORREGIDO =====
-            document.getElementById('signup-form').addEventListener('submit', async function(e) {
-                e.preventDefault();
+            // ===== SISTEMA DE REGISTROS MÚLTIPLES OPTIMIZADO =====
+            const multipleCheckbox = document.getElementById('multiple-registrations');
+            const multipleContainer = document.getElementById('multiple-registration-container');
+            const batchRegistrations = document.getElementById('batch-registrations');
+            const addBatchBtn = document.getElementById('add-batch-registration');
+            
+            // Mostrar/ocultar contenedor de registros múltiples
+            multipleCheckbox.addEventListener('change', function() {
+                if (this.checked) {
+                    multipleContainer.classList.remove('hidden');
+                    // Agregar primer registro por defecto
+                    if (batchRegistrations.children.length === 0) {
+                        addBatchRegistrationField();
+                    }
+                } else {
+                    multipleContainer.classList.add('hidden');
+                    // Limpiar campos de batch
+                    batchRegistrations.innerHTML = '';
+                }
+            });
+            
+            // Agregar campo de registro
+            function addBatchRegistrationField() {
+                const index = batchRegistrations.children.length;
+                const fieldHtml = `
+                    <div class="batch-item p-3 bg-gray-50 rounded-lg relative" data-index="${index}">
+                        <button type="button" class="remove-batch absolute top-2 right-2 text-red-500 hover:text-red-700">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <input type="text" placeholder="Nombre" class="batch-name text-sm w-full p-2 border rounded" required>
+                            </div>
+                            <div>
+                                <input type="email" placeholder="Email" class="batch-email text-sm w-full p-2 border rounded" required>
+                            </div>
+                            <div>
+                                <input type="tel" placeholder="Teléfono" class="batch-phone text-sm w-full p-2 border rounded" pattern="[0-9]{8}" required>
+                            </div>
+                            <div>
+                                <input type="password" placeholder="Contraseña" class="batch-password text-sm w-full p-2 border rounded" required>
+                            </div>
+                        </div>
+                    </div>
+                `;
                 
-                const name = document.getElementById('signup-name').value.trim();
-                const email = document.getElementById('signup-email').value.trim();
-                const phone = document.getElementById('signup-phone').value.trim();
-                const password = document.getElementById('signup-password').value;
+                const temp = document.createElement('div');
+                temp.innerHTML = fieldHtml;
+                const field = temp.firstElementChild;
+                batchRegistrations.appendChild(field);
                 
-                // Validaciones básicas
-                if (!name || !email || !phone || !password) {
-                    showToast('warning', 'Campos incompletos', 'Por favor, completa todos los campos.');
-                    return;
+                // Evento para eliminar
+                field.querySelector('.remove-batch').addEventListener('click', function() {
+                    field.remove();
+                    updateBatchIndices();
+                });
+            }
+            
+            // Actualizar índices después de eliminar
+            function updateBatchIndices() {
+                Array.from(batchRegistrations.children).forEach((child, idx) => {
+                    child.dataset.index = idx;
+                });
+            }
+            
+            addBatchBtn.addEventListener('click', function() {
+                if (batchRegistrations.children.length < 10) { // Límite de 10 registros por lote
+                    addBatchRegistrationField();
+                } else {
+                    showToast('warning', 'Límite alcanzado', 'Máximo 10 registros por lote');
+                }
+            });
+            
+            // Función principal para procesar la cola de registros
+            async function processRegistrationQueue() {
+                if (isProcessing || registrationQueue.length === 0) return;
+                
+                isProcessing = true;
+                const queueContainer = document.getElementById('registration-queue');
+                const queueItems = document.getElementById('queue-items');
+                const progressBar = document.getElementById('queue-progress');
+                const queueStatusText = document.getElementById('queue-status-text');
+                
+                queueContainer.classList.add('active');
+                
+                let completed = 0;
+                const total = registrationQueue.length;
+                
+                // Mostrar items en cola
+                queueItems.innerHTML = '';
+                registrationQueue.forEach((item, index) => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'queue-item';
+                    itemDiv.id = `queue-item-${index}`;
+                    itemDiv.innerHTML = `
+                        <div class="queue-status pending" id="status-${index}"></div>
+                        <div class="flex-1 text-sm truncate">${item.email}</div>
+                        <div class="text-xs text-gray-500" id="message-${index}">Esperando...</div>
+                    `;
+                    queueItems.appendChild(itemDiv);
+                });
+                
+                // Procesar cada registro en la cola
+                for (let i = 0; i < registrationQueue.length; i++) {
+                    const item = registrationQueue[i];
+                    const statusDiv = document.getElementById(`status-${i}`);
+                    const messageDiv = document.getElementById(`message-${i}`);
+                    
+                    // Actualizar estado a procesando
+                    statusDiv.className = 'queue-status processing';
+                    messageDiv.textContent = 'Procesando...';
+                    
+                    try {
+                        // Registrar en Supabase
+                        const result = await registerSingleUser(item);
+                        
+                        if (result.success) {
+                            statusDiv.className = 'queue-status completed';
+                            messageDiv.textContent = '✓ Completado';
+                            completed++;
+                        } else {
+                            statusDiv.className = 'queue-status error';
+                            messageDiv.textContent = `✗ Error: ${result.error}`;
+                        }
+                        
+                        // Actualizar progreso
+                        const progress = (completed / total) * 100;
+                        progressBar.style.width = `${progress}%`;
+                        queueStatusText.textContent = `${completed}/${total} registros completados`;
+                        
+                        // Esperar entre registros para evitar rate limit
+                        if (i < registrationQueue.length - 1) {
+                            await new Promise(resolve => setTimeout(resolve, DELAY_BETWEEN_REQUESTS));
+                        }
+                        
+                    } catch (error) {
+                        console.error('Error procesando registro:', error);
+                        statusDiv.className = 'queue-status error';
+                        messageDiv.textContent = '✗ Error inesperado';
+                    }
                 }
                 
-                if (password.length < 6) {
-                    showToast('warning', 'Contraseña débil', 'La contraseña debe tener al menos 6 caracteres.');
-                    return;
+                // Finalizar procesamiento
+                isProcessing = false;
+                registrationQueue = [];
+                
+                // Mostrar mensaje de éxito
+                if (completed === total) {
+                    showToast('success', '¡Éxito!', `Todos los ${total} registros fueron creados exitosamente`);
+                    
+                    // Limpiar formulario después de 3 segundos
+                    setTimeout(() => {
+                        queueContainer.classList.remove('active');
+                        document.getElementById('signup-form').reset();
+                        multipleCheckbox.checked = false;
+                        multipleContainer.classList.add('hidden');
+                        batchRegistrations.innerHTML = '';
+                    }, 3000);
+                } else {
+                    showToast('warning', 'Completado con errores', `${completed} de ${total} registros exitosos`);
                 }
-                
-                const submitBtn = this.querySelector('button[type="submit"]');
-                const originalText = submitBtn.textContent;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Creando cuenta...';
-                submitBtn.disabled = true;
-                
+            }
+            
+            // Función para registrar un solo usuario
+            async function registerSingleUser(userData) {
                 try {
-                    // Intentar registrar en Supabase Auth
+                    // Validar datos
+                    if (!userData.name || !userData.email || !userData.phone || !userData.password) {
+                        return { success: false, error: 'Datos incompletos' };
+                    }
+                    
+                    if (userData.password.length < 6) {
+                        return { success: false, error: 'Contraseña muy corta' };
+                    }
+                    
+                    // Registrar en Supabase Auth
                     const { data: authData, error: authError } = await window.supabase.auth.signUp({
-                        email: email,
-                        password: password,
+                        email: userData.email,
+                        password: userData.password,
                         options: {
                             data: {
-                                phone: phone,
-                                full_name: name
+                                phone: userData.phone,
+                                full_name: userData.name
                             }
                         }
                     });
                     
-                    // Manejar específicamente el error de rate limit
                     if (authError) {
-                        console.error('Error de auth:', authError);
-                        
-                        // Verificar si es error de rate limit (código 429)
-                        if (authError.status === 429 || authError.message?.includes('rate_limit') || authError.message?.includes('exceeded')) {
-                            throw {
-                                type: 'rate_limit',
-                                message: 'Has excedido el límite de intentos. Por favor, espera 5 minutos antes de intentar nuevamente.'
-                            };
+                        // Manejar errores específicos
+                        if (authError.status === 429 || authError.message?.includes('rate_limit')) {
+                            return { success: false, error: 'Rate limit - espera unos minutos' };
                         }
-                        
-                        // Verificar si el usuario ya existe
                         if (authError.message?.includes('User already registered')) {
-                            showToast('warning', 'Usuario existente', 'Este correo ya está registrado. Por favor, inicia sesión.');
-                            setTimeout(() => {
-                                showLogin();
-                                document.getElementById('login-email').value = email;
-                            }, 2000);
-                            return;
+                            return { success: false, error: 'Email ya registrado' };
                         }
-                        
-                        throw authError;
+                        return { success: false, error: authError.message };
                     }
                     
-                    // Verificar si el usuario se creó correctamente
                     if (!authData.user) {
-                        throw new Error('No se pudo crear el usuario');
-                    }
-                    
-                    // Si el usuario ya existía pero no se confirmó
-                    if (authData.user && authData.user.identities && authData.user.identities.length === 0) {
-                        showToast('info', 'Cuenta pendiente', 'Este correo ya tiene una cuenta pendiente de confirmación. Revisa tu bandeja de entrada.');
-                        return;
+                        return { success: false, error: 'No se pudo crear el usuario' };
                     }
                     
                     // Guardar en user_profiles
-                    const userId = authData.user.id;
-                    
                     const { error: dbError } = await window.supabase
                         .from('user_profiles')
-                        .upsert([
-                            {
-                                id: userId,
-                                full_name: name,
-                                email: email,
-                                phone: phone,
-                                avatar_url: null,
-                                created_at: new Date().toISOString()
-                            }
-                        ], { onConflict: 'id' });
+                        .upsert([{
+                            id: authData.user.id,
+                            full_name: userData.name,
+                            email: userData.email,
+                            phone: userData.phone,
+                            created_at: new Date().toISOString()
+                        }], { onConflict: 'id' });
                     
                     if (dbError) {
                         console.error('Error guardando perfil:', dbError);
-                        // No mostrar error al usuario, ya la cuenta se creó
+                        // No fallar por esto, la cuenta ya se creó
                     }
                     
-                    showToast('success', '¡Registro exitoso!', 'Te hemos enviado un correo de confirmación. Revisa tu bandeja de entrada.');
-                    
-                    // Limpiar formulario
-                    this.reset();
-                    
-                    // Cambiar a login después de 3 segundos
-                    setTimeout(() => {
-                        showLogin();
-                        document.getElementById('login-email').value = email;
-                        showToast('info', 'Listo', 'Ahora puedes iniciar sesión con tus credenciales');
-                    }, 3000);
+                    return { success: true };
                     
                 } catch (error) {
                     console.error('Error en registro:', error);
+                    return { success: false, error: error.message };
+                }
+            }
+            
+            // Manejador del formulario de registro
+            document.getElementById('signup-form').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const isMultiple = document.getElementById('multiple-registrations').checked;
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const originalText = submitBtn.textContent;
+                
+                if (isMultiple) {
+                    // Modo múltiple - recolectar todos los registros
+                    const batchItems = document.querySelectorAll('.batch-item');
                     
-                    // Mensajes de error personalizados
-                    if (error.type === 'rate_limit') {
-                        showToast('warning', '⏳ Demasiados intentos', error.message);
+                    if (batchItems.length === 0) {
+                        showToast('warning', 'Sin registros', 'Agrega al menos un registro para procesar');
+                        return;
+                    }
+                    
+                    // Recolectar datos
+                    const registrations = [];
+                    let hasErrors = false;
+                    
+                    batchItems.forEach(item => {
+                        const name = item.querySelector('.batch-name')?.value.trim();
+                        const email = item.querySelector('.batch-email')?.value.trim();
+                        const phone = item.querySelector('.batch-phone')?.value.trim();
+                        const password = item.querySelector('.batch-password')?.value;
                         
-                        // Deshabilitar el botón por 5 minutos
-                        submitBtn.disabled = true;
-                        let secondsLeft = 300; // 5 minutos en segundos
+                        if (!name || !email || !phone || !password) {
+                            hasErrors = true;
+                            return;
+                        }
                         
-                        const countdownInterval = setInterval(() => {
-                            secondsLeft -= 1;
-                            if (secondsLeft <= 0) {
-                                clearInterval(countdownInterval);
-                                submitBtn.disabled = false;
-                                submitBtn.innerHTML = originalText;
-                            } else {
-                                const minutes = Math.floor(secondsLeft / 60);
-                                const secs = secondsLeft % 60;
-                                submitBtn.innerHTML = `<i class="fas fa-hourglass-half mr-2"></i> Espera ${minutes}:${secs.toString().padStart(2,'0')}`;
-                            }
-                        }, 1000);
+                        registrations.push({ name, email, phone, password });
+                    });
+                    
+                    if (hasErrors) {
+                        showToast('warning', 'Campos incompletos', 'Completa todos los campos de los registros');
+                        return;
+                    }
+                    
+                    // Agregar a la cola
+                    registrationQueue = registrations;
+                    
+                    // Iniciar procesamiento
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Procesando cola...';
+                    submitBtn.disabled = true;
+                    
+                    await processRegistrationQueue();
+                    
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    
+                } else {
+                    // Modo simple - un solo registro
+                    const name = document.getElementById('signup-name').value.trim();
+                    const email = document.getElementById('signup-email').value.trim();
+                    const phone = document.getElementById('signup-phone').value.trim();
+                    const password = document.getElementById('signup-password').value;
+                    
+                    if (!name || !email || !phone || !password) {
+                        showToast('warning', 'Campos incompletos', 'Por favor, completa todos los campos.');
+                        return;
+                    }
+                    
+                    if (password.length < 6) {
+                        showToast('warning', 'Contraseña débil', 'La contraseña debe tener al menos 6 caracteres.');
+                        return;
+                    }
+                    
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Creando cuenta...';
+                    submitBtn.disabled = true;
+                    
+                    const result = await registerSingleUser({ name, email, phone, password });
+                    
+                    if (result.success) {
+                        showToast('success', '¡Registro exitoso!', 'Te hemos enviado un correo de confirmación');
                         
-                    } else if (error.message?.includes('weak_password')) {
-                        showToast('error', 'Contraseña débil', 'La contraseña debe ser más segura. Incluye números y letras.');
-                        submitBtn.disabled = false;
-                        submitBtn.innerHTML = originalText;
-                    } else if (error.message?.includes('email address invalid')) {
-                        showToast('error', 'Email inválido', 'Por favor, ingresa un correo electrónico válido.');
-                        submitBtn.disabled = false;
-                        submitBtn.innerHTML = originalText;
+                        // Limpiar formulario
+                        this.reset();
+                        
+                        // Cambiar a login después de 3 segundos
+                        setTimeout(() => {
+                            showLogin();
+                            document.getElementById('login-email').value = email;
+                        }, 3000);
+                        
                     } else {
-                        showToast('error', 'Error', error.message || 'Error al crear la cuenta. Intenta nuevamente.');
+                        showToast('error', 'Error', result.error || 'Error al crear la cuenta');
                         submitBtn.disabled = false;
                         submitBtn.innerHTML = originalText;
                     }
