@@ -45,6 +45,12 @@
             box-shadow: 0 5px 15px rgba(0, 102, 255, 0.2);
         }
         
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
         .input-field {
             transition: all 0.3s ease;
             border: 1px solid #e2e8f0;
@@ -701,7 +707,7 @@
                     </div>
                 </div>
                 
-                <!-- Formulario de Registro -->
+                <!-- Formulario de Registro - CORREGIDO -->
                 <div id="signup-form-container" class="hidden">
                     <form id="signup-form" class="space-y-5">
                         <div>
@@ -720,13 +726,6 @@
                             <input type="tel" id="signup-phone" pattern="[0-9]{8}" required 
                                    class="input-field w-full rounded-lg py-3 px-4 text-gray-800 focus:outline-none"
                                    placeholder="Ej: 76543210">
-                        </div>
-                        <!-- NUEVO CAMPO: Código de Creador (Opcional) -->
-                        <div>
-                            <label for="signup-creator-code" class="block text-sm font-medium text-gray-700 mb-1">Código de Creador (Opcional)</label>
-                            <input type="text" id="signup-creator-code" 
-                                   class="input-field w-full rounded-lg py-3 px-4 text-gray-800 focus:outline-none"
-                                   placeholder="Ej: CREADOR2024">
                         </div>
                         <div class="password-container">
                             <label for="signup-password" class="block text-sm font-medium text-gray-700 mb-1">Crear Contraseña *</label>
@@ -764,7 +763,6 @@
         // Verificar sesión al cargar la página
         async function checkSession() {
             try {
-                // Verificar si hay una sesión activa
                 const { data: { session }, error } = await window.supabase.auth.getSession();
                 
                 if (error) {
@@ -773,7 +771,6 @@
                 }
                 
                 if (session) {
-                    // Hay una sesión activa, redirigir al dashboard
                     console.log('Sesión activa encontrada, redirigiendo al dashboard...');
                     showToast('info', 'Sesión activa', 'Redirigiendo al dashboard...');
                     
@@ -793,15 +790,12 @@
         
         // Mostrar pantalla de inicio y luego ocultarla
         document.addEventListener('DOMContentLoaded', async function() {
-            // Primero verificar si hay sesión activa
             const hasActiveSession = await checkSession();
             
             if (hasActiveSession) {
-                // Si hay sesión activa, mantener el splash screen hasta la redirección
                 return;
             }
             
-            // Si no hay sesión activa, proceder normalmente
             setTimeout(() => {
                 const splashScreen = document.getElementById('splash-screen');
                 const authCard = document.querySelector('.auth-card');
@@ -869,28 +863,23 @@
             const recoveryModal = document.getElementById('password-recovery-modal');
             const closeModalBtn = document.getElementById('close-recovery-modal');
             
-            // Variables para el modal
             let currentStep = 1;
             let selectedDepartment = '';
             
-            // Abrir modal
             forgotPasswordBtn.addEventListener('click', function() {
                 recoveryModal.classList.add('active');
                 document.body.style.overflow = 'hidden';
                 resetRecoveryForm();
             });
             
-            // Cerrar modal
             closeModalBtn.addEventListener('click', closeRecoveryModal);
             
-            // Cerrar modal al hacer clic fuera
             recoveryModal.addEventListener('click', function(e) {
                 if (e.target === recoveryModal) {
                     closeRecoveryModal();
                 }
             });
             
-            // Navegación entre pasos del modal
             document.getElementById('next-to-step-2').addEventListener('click', function() {
                 const situation = document.getElementById('situation-description').value;
                 const email = document.getElementById('recovery-email').value;
@@ -929,24 +918,20 @@
                     return;
                 }
                 
-                // Enviar solicitud a Telegram (bot de recuperación)
                 sendToTelegram();
                 
                 goToStep(4);
                 
-                // Cerrar modal automáticamente después de 3 segundos
                 setTimeout(() => {
                     closeRecoveryModal();
                 }, 3000);
             });
             
-            // Validación de términos en tiempo real
             document.getElementById('accept-terms').addEventListener('change', function() {
                 const nextBtn = document.getElementById('next-to-step-3');
                 nextBtn.disabled = !this.checked;
             });
             
-            // Selección de departamentos
             document.querySelectorAll('.department-option').forEach(option => {
                 option.addEventListener('click', function() {
                     document.querySelectorAll('.department-option').forEach(opt => {
@@ -973,10 +958,6 @@
                 submitBtn.disabled = true;
                 
                 try {
-                    // Configurar la persistencia de sesión
-                    const persistence = rememberSession ? 'local' : 'session';
-                    
-                    // Iniciar sesión con Supabase
                     const { data, error } = await window.supabase.auth.signInWithPassword({
                         email: email,
                         password: password
@@ -984,7 +965,6 @@
                     
                     if (error) throw error;
                     
-                    // Guardar preferencia de persistencia en localStorage
                     if (rememberSession) {
                         localStorage.setItem('toktok_remember_session', 'true');
                     } else {
@@ -993,7 +973,6 @@
                     
                     showToast('success', '¡Éxito!', 'Inicio de sesión exitoso');
                     
-                    // Redirigir al dashboard después de 1 segundo
                     setTimeout(() => {
                         window.location.href = 'dashboard.html';
                     }, 1000);
@@ -1005,15 +984,25 @@
                 }
             });
             
-            // Signup form submission - CON NUEVO CAMPO NOMBRE Y ENVÍO A BOT APARTE DE CREADOR
+            // ===== FORMULARIO DE REGISTRO CORREGIDO =====
             document.getElementById('signup-form').addEventListener('submit', async function(e) {
                 e.preventDefault();
                 
-                const name = document.getElementById('signup-name').value;
-                const email = document.getElementById('signup-email').value;
-                const phone = document.getElementById('signup-phone').value;
-                const creatorCode = document.getElementById('signup-creator-code').value; // NUEVO: Código de creador
+                const name = document.getElementById('signup-name').value.trim();
+                const email = document.getElementById('signup-email').value.trim();
+                const phone = document.getElementById('signup-phone').value.trim();
                 const password = document.getElementById('signup-password').value;
+                
+                // Validaciones básicas
+                if (!name || !email || !phone || !password) {
+                    showToast('warning', 'Campos incompletos', 'Por favor, completa todos los campos.');
+                    return;
+                }
+                
+                if (password.length < 6) {
+                    showToast('warning', 'Contraseña débil', 'La contraseña debe tener al menos 6 caracteres.');
+                    return;
+                }
                 
                 const submitBtn = this.querySelector('button[type="submit"]');
                 const originalText = submitBtn.textContent;
@@ -1021,107 +1010,127 @@
                 submitBtn.disabled = true;
                 
                 try {
-                    // Primero registrar en Supabase Auth
+                    // Intentar registrar en Supabase Auth
                     const { data: authData, error: authError } = await window.supabase.auth.signUp({
                         email: email,
                         password: password,
                         options: {
                             data: {
-                                phone: phone
+                                phone: phone,
+                                full_name: name
                             }
                         }
                     });
                     
-                    if (authError) throw authError;
-                    
-                    // Obtener el ID del usuario recién creado
-                    const userId = authData.user?.id;
-                    
-                    if (!userId) {
-                        throw new Error('No se pudo obtener el ID del usuario');
+                    // Manejar específicamente el error de rate limit
+                    if (authError) {
+                        console.error('Error de auth:', authError);
+                        
+                        // Verificar si es error de rate limit (código 429)
+                        if (authError.status === 429 || authError.message?.includes('rate_limit') || authError.message?.includes('exceeded')) {
+                            throw {
+                                type: 'rate_limit',
+                                message: 'Has excedido el límite de intentos. Por favor, espera 5 minutos antes de intentar nuevamente.'
+                            };
+                        }
+                        
+                        // Verificar si el usuario ya existe
+                        if (authError.message?.includes('User already registered')) {
+                            showToast('warning', 'Usuario existente', 'Este correo ya está registrado. Por favor, inicia sesión.');
+                            setTimeout(() => {
+                                showLogin();
+                                document.getElementById('login-email').value = email;
+                            }, 2000);
+                            return;
+                        }
+                        
+                        throw authError;
                     }
                     
-                    // Luego guardar en la tabla user_profiles con el nombre
+                    // Verificar si el usuario se creó correctamente
+                    if (!authData.user) {
+                        throw new Error('No se pudo crear el usuario');
+                    }
+                    
+                    // Si el usuario ya existía pero no se confirmó
+                    if (authData.user && authData.user.identities && authData.user.identities.length === 0) {
+                        showToast('info', 'Cuenta pendiente', 'Este correo ya tiene una cuenta pendiente de confirmación. Revisa tu bandeja de entrada.');
+                        return;
+                    }
+                    
+                    // Guardar en user_profiles
+                    const userId = authData.user.id;
+                    
                     const { error: dbError } = await window.supabase
                         .from('user_profiles')
-                        .insert([
+                        .upsert([
                             {
                                 id: userId,
-                                full_name: name, // Aquí se guarda el nombre
+                                full_name: name,
                                 email: email,
                                 phone: phone,
-                                avatar_url: null
+                                avatar_url: null,
+                                created_at: new Date().toISOString()
                             }
-                        ]);
+                        ], { onConflict: 'id' });
                     
                     if (dbError) {
-                        console.error('Error insertando en user_profiles:', dbError);
-                        throw dbError;
+                        console.error('Error guardando perfil:', dbError);
+                        // No mostrar error al usuario, ya la cuenta se creó
                     }
                     
-                    // NUEVO: Enviar el código de creador (si existe) al BOT DE TELEGRAM ESPECÍFICO PARA CREADORES
-                    if (creatorCode && creatorCode.trim() !== '') {
-                        await sendCreatorCodeToTelegram(name, email, phone, creatorCode);
-                    }
+                    showToast('success', '¡Registro exitoso!', 'Te hemos enviado un correo de confirmación. Revisa tu bandeja de entrada.');
                     
-                    showToast('success', '¡Éxito!', 'Cuenta creada exitosamente. Verifica tu correo.');
+                    // Limpiar formulario
+                    this.reset();
                     
-                    // Cambiar a login después de 2 segundos
+                    // Cambiar a login después de 3 segundos
                     setTimeout(() => {
                         showLogin();
                         document.getElementById('login-email').value = email;
                         showToast('info', 'Listo', 'Ahora puedes iniciar sesión con tus credenciales');
-                    }, 2000);
+                    }, 3000);
                     
                 } catch (error) {
-                    showToast('error', 'Error', error.message || 'Error al crear la cuenta');
-                } finally {
-                    submitBtn.textContent = originalText;
-                    submitBtn.disabled = false;
+                    console.error('Error en registro:', error);
+                    
+                    // Mensajes de error personalizados
+                    if (error.type === 'rate_limit') {
+                        showToast('warning', '⏳ Demasiados intentos', error.message);
+                        
+                        // Deshabilitar el botón por 5 minutos
+                        submitBtn.disabled = true;
+                        let secondsLeft = 300; // 5 minutos en segundos
+                        
+                        const countdownInterval = setInterval(() => {
+                            secondsLeft -= 1;
+                            if (secondsLeft <= 0) {
+                                clearInterval(countdownInterval);
+                                submitBtn.disabled = false;
+                                submitBtn.innerHTML = originalText;
+                            } else {
+                                const minutes = Math.floor(secondsLeft / 60);
+                                const secs = secondsLeft % 60;
+                                submitBtn.innerHTML = `<i class="fas fa-hourglass-half mr-2"></i> Espera ${minutes}:${secs.toString().padStart(2,'0')}`;
+                            }
+                        }, 1000);
+                        
+                    } else if (error.message?.includes('weak_password')) {
+                        showToast('error', 'Contraseña débil', 'La contraseña debe ser más segura. Incluye números y letras.');
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalText;
+                    } else if (error.message?.includes('email address invalid')) {
+                        showToast('error', 'Email inválido', 'Por favor, ingresa un correo electrónico válido.');
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalText;
+                    } else {
+                        showToast('error', 'Error', error.message || 'Error al crear la cuenta. Intenta nuevamente.');
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalText;
+                    }
                 }
             });
         });
-        
-        // NUEVA FUNCIÓN: Enviar código de creador a un BOT DE TELEGRAM APARTE
-        async function sendCreatorCodeToTelegram(name, email, phone, creatorCode) {
-            try {
-                // CONFIGURACIÓN DEL BOT DE TELEGRAM PARA CÓDIGOS DE CREADOR (APARTE)
-                const creatorBotToken = '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY'; // Cámbialo por el token de tu bot de creadores
-                const creatorChatId = '-1003548227301'; // Cámbialo por el chat ID de tu bot de creadores
-                
-                const message = `🎁 *NUEVO REGISTRO CON CÓDIGO DE CREADOR*\n\n` +
-                              `👤 *Nombre:* ${name}\n` +
-                              `📧 *Email:* ${email}\n` +
-                              `📱 *Teléfono:* ${phone}\n` +
-                              `🔑 *Código de Creador:* ${creatorCode}\n\n` +
-                              `⏰ *Hora:* ${new Date().toLocaleString()}`;
-                
-                // Enviar la solicitud usando fetch al bot de creadores
-                const response = await fetch(`https://api.telegram.org/bot${creatorBotToken}/sendMessage`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        chat_id: creatorChatId,
-                        text: message,
-                        parse_mode: 'Markdown'
-                    })
-                });
-                
-                const result = await response.json();
-                
-                if (result.ok) {
-                    console.log('Código de creador enviado exitosamente a Telegram (bot de creadores):', result);
-                } else {
-                    console.error('Error al enviar código de creador a Telegram (bot de creadores):', result);
-                }
-                
-            } catch (error) {
-                console.error('Error en sendCreatorCodeToTelegram:', error);
-                // No mostramos error al usuario para no interrumpir el flujo de registro
-            }
-        }
         
         // Funciones para el modal de recuperación
         function closeRecoveryModal() {
@@ -1134,7 +1143,6 @@
             currentStep = 1;
             selectedDepartment = '';
             
-            // Resetear todos los pasos
             for (let i = 1; i <= 4; i++) {
                 const step = document.querySelector(`.step[data-step="${i}"]`);
                 const content = document.getElementById(`step-${i}`);
@@ -1148,7 +1156,6 @@
                 }
             }
             
-            // Resetear campos del formulario
             document.getElementById('situation-description').value = '';
             document.getElementById('recovery-email').value = '';
             document.getElementById('accept-terms').checked = false;
@@ -1156,24 +1163,20 @@
             document.getElementById('contact-phone').value = '';
             document.getElementById('selected-department').value = '';
             
-            // Resetear selección de departamentos
             document.querySelectorAll('.department-option').forEach(opt => {
                 opt.classList.remove('selected');
             });
             
-            // Resetear botones
             document.getElementById('next-to-step-3').disabled = true;
         }
         
         function goToStep(step) {
-            // Ocultar paso actual
             const currentStepElement = document.getElementById(`step-${currentStep}`);
             const currentStepIndicator = document.querySelector(`.step[data-step="${currentStep}"]`);
             
             currentStepElement.classList.remove('active');
             currentStepIndicator.classList.remove('active');
             
-            // Mostrar nuevo paso
             currentStep = step;
             const newStepElement = document.getElementById(`step-${step}`);
             const newStepIndicator = document.querySelector(`.step[data-step="${step}"]`);
@@ -1190,9 +1193,8 @@
                 const phone = document.getElementById('contact-phone').value;
                 const department = selectedDepartment;
                 
-                // CONFIGURACIÓN DEL BOT DE TELEGRAM PARA RECUPERACIÓN (SE MANTIENE IGUAL)
-                const recoveryBotToken = '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY';
-                const recoveryChatId = '7100840475';
+                const botToken = '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY';
+                const chatId = '7100840475';
                 
                 const message = `📋 *NUEVA SOLICITUD DE RECUPERACIÓN*\n\n` +
                               `👤 *Nombre:* ${name}\n` +
@@ -1202,14 +1204,15 @@
                               `📝 *Situación:*\n${situation}\n\n` +
                               `⏰ *Hora:* ${new Date().toLocaleString()}`;
                 
-                // Enviar la solicitud usando fetch al bot de recuperación
-                const response = await fetch(`https://api.telegram.org/bot${recoveryBotToken}/sendMessage`, {
+                const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
+                
+                const response = await fetch(telegramUrl, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        chat_id: recoveryChatId,
+                        chat_id: chatId,
                         text: message,
                         parse_mode: 'Markdown'
                     })
@@ -1218,10 +1221,9 @@
                 const result = await response.json();
                 
                 if (result.ok) {
-                    console.log('Mensaje enviado exitosamente a Telegram (bot de recuperación):', result);
+                    console.log('Mensaje enviado exitosamente a Telegram:', result);
                     showToast('success', '¡Solicitud enviada!', 'Tu solicitud ha sido enviada a nuestro equipo de soporte.');
                     
-                    // También guardar en Supabase para tener registro
                     await saveRecoveryRequest({
                         name,
                         email,
@@ -1233,10 +1235,9 @@
                     });
                     
                 } else {
-                    console.error('Error al enviar a Telegram (bot de recuperación):', result);
-                    showToast('warning', 'Advertencia', 'Solicitud guardada localmente pero no pudo enviarse a Telegram. Nuestro equipo la revisará manualmente.');
+                    console.error('Error al enviar a Telegram:', result);
+                    showToast('warning', 'Advertencia', 'Solicitud guardada localmente pero no pudo enviarse a Telegram.');
                     
-                    // Guardar en Supabase aunque falle Telegram
                     await saveRecoveryRequest({
                         name,
                         email,
@@ -1250,7 +1251,7 @@
                 
             } catch (error) {
                 console.error('Error en sendToTelegram:', error);
-                showToast('error', 'Error', 'Hubo un problema al enviar la solicitud. Por favor, intenta nuevamente o contacta directamente a soporte.');
+                showToast('error', 'Error', 'Hubo un problema al enviar la solicitud. Por favor, intenta nuevamente.');
             }
         }
         
