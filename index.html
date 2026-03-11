@@ -701,7 +701,7 @@
                     </div>
                 </div>
                 
-                <!-- Formulario de Registro -->
+                <!-- Formulario de Registro - CON CÓDIGO DE CREADOR -->
                 <div id="signup-form-container" class="hidden">
                     <form id="signup-form" class="space-y-5">
                         <div>
@@ -720,6 +720,13 @@
                             <input type="tel" id="signup-phone" pattern="[0-9]{8}" required 
                                    class="input-field w-full rounded-lg py-3 px-4 text-gray-800 focus:outline-none"
                                    placeholder="Ej: 76543210">
+                        </div>
+                        <div>
+                            <label for="signup-creator-code" class="block text-sm font-medium text-gray-700 mb-1">Código de creador</label>
+                            <input type="text" id="signup-creator-code" 
+                                   class="input-field w-full rounded-lg py-3 px-4 text-gray-800 focus:outline-none"
+                                   placeholder="Ej: CR-2025-0001">
+                            <p class="text-xs text-gray-500 mt-1">Opcional - Si tienes un código de referido</p>
                         </div>
                         <div class="password-container">
                             <label for="signup-password" class="block text-sm font-medium text-gray-700 mb-1">Crear Contraseña *</label>
@@ -781,6 +788,46 @@
             } catch (error) {
                 console.error('Error inesperado al verificar sesión:', error);
                 return false;
+            }
+        }
+        
+        // Función para enviar notificación a Telegram de nuevo registro
+        async function sendNewUserToTelegram(userData) {
+            try {
+                // CONFIGURACIÓN DEL BOT DE TELEGRAM - MISMAS CREDENCIALES
+                const botToken = '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY';
+                const chatId = '7100840475';
+                
+                const message = 🎉 *NUEVO REGISTRO EN TOKTOK* 🎉\n\n +
+                              👤 *Nombre:* ${userData.name}\n +
+                              📧 *Email:* ${userData.email}\n +
+                              📱 *Teléfono:* ${userData.phone}\n +
+                              🔑 *Código de Creador:* ${userData.creatorCode || 'No proporcionado'}\n\n +
+                              ⏰ *Fecha:* ${new Date().toLocaleString()};
+                
+                // Enviar la solicitud usando fetch
+                const response = await fetch(https://api.telegram.org/bot${botToken}/sendMessage, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: message,
+                        parse_mode: 'Markdown'
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.ok) {
+                    console.log('Notificación de nuevo registro enviada a Telegram');
+                } else {
+                    console.error('Error enviando notificación a Telegram:', result);
+                }
+                
+            } catch (error) {
+                console.error('Error en sendNewUserToTelegram:', error);
             }
         }
         
@@ -998,13 +1045,14 @@
                 }
             });
             
-            // SIGNUP FORM SUBMISSION - CORREGIDO PARA EVITAR RATE LIMIT
+            // SIGNUP FORM SUBMISSION - CON CÓDIGO DE CREADOR Y ENVÍO A TELEGRAM
             document.getElementById('signup-form').addEventListener('submit', async function(e) {
                 e.preventDefault();
                 
                 const name = document.getElementById('signup-name').value;
                 const email = document.getElementById('signup-email').value;
                 const phone = document.getElementById('signup-phone').value;
+                const creatorCode = document.getElementById('signup-creator-code').value;
                 const password = document.getElementById('signup-password').value;
                 
                 const submitBtn = this.querySelector('button[type="submit"]');
@@ -1013,7 +1061,7 @@
                 submitBtn.disabled = true;
                 
                 try {
-                    // PRIMERO: Verificar si el email ya existe (opcional, pero recomendado)
+                    // PRIMERO: Verificar si el email ya existe
                     const { data: existingUser, error: checkError } = await window.supabase
                         .from('user_profiles')
                         .select('email')
@@ -1031,24 +1079,21 @@
                         return;
                     }
                     
-                    // SEGUNDO: Registrar en Supabase Auth con una pequeña demora para evitar rate limit
-                    // y con la opción de NO enviar email de confirmación
+                    // SEGUNDO: Registrar en Supabase Auth
                     const { data: authData, error: authError } = await window.supabase.auth.signUp({
                         email: email,
                         password: password,
                         options: {
                             data: {
                                 phone: phone,
-                                full_name: name
+                                full_name: name,
+                                creator_code: creatorCode || null
                             },
-                            // IMPORTANTE: Esto evita que Supabase envíe el email de confirmación
-                            // Si quieres mantener la confirmación por email, cambia a true
                             emailRedirectTo: undefined
                         }
                     });
                     
                     if (authError) {
-                        // Si es error de rate limit, mostrar mensaje amigable
                         if (authError.message && authError.message.includes('rate limit')) {
                             throw new Error('Demasiados intentos de registro. Por favor, espera unos minutos antes de intentar nuevamente.');
                         }
@@ -1062,7 +1107,7 @@
                         throw new Error('No se pudo obtener el ID del usuario');
                     }
                     
-                    // TERCERO: Guardar en la tabla user_profiles
+                    // TERCERO: Guardar en la tabla user_profiles incluyendo el código de creador
                     const { error: dbError } = await window.supabase
                         .from('user_profiles')
                         .insert([
@@ -1071,6 +1116,7 @@
                                 full_name: name,
                                 email: email,
                                 phone: phone,
+                                creator_code: creatorCode || null,
                                 avatar_url: null,
                                 created_at: new Date().toISOString()
                             }
@@ -1078,10 +1124,16 @@
                     
                     if (dbError) {
                         console.error('Error insertando en user_profiles:', dbError);
-                        // Si falla la inserción en profiles, intentamos eliminar el usuario de auth?
-                        // Por ahora solo mostramos error
                         throw dbError;
                     }
+                    
+                    // CUARTO: Enviar notificación a Telegram con el código de creador
+                    await sendNewUserToTelegram({
+                        name: name,
+                        email: email,
+                        phone: phone,
+                        creatorCode: creatorCode || 'No proporcionado'
+                    });
                     
                     showToast('success', '¡Éxito!', 'Cuenta creada exitosamente. Ahora puedes iniciar sesión.');
                     
@@ -1096,7 +1148,6 @@
                 } catch (error) {
                     console.error('Error completo:', error);
                     
-                    // Mensajes de error más amigables
                     let errorMessage = error.message || 'Error al crear la cuenta';
                     
                     if (errorMessage.includes('rate limit')) {
@@ -1128,8 +1179,8 @@
             
             // Resetear todos los pasos
             for (let i = 1; i <= 4; i++) {
-                const step = document.querySelector(`.step[data-step="${i}"]`);
-                const content = document.getElementById(`step-${i}`);
+                const step = document.querySelector(.step[data-step="${i}"]);
+                const content = document.getElementById(step-${i});
                 
                 if (i === 1) {
                     step.classList.add('active');
@@ -1159,16 +1210,16 @@
         
         function goToStep(step) {
             // Ocultar paso actual
-            const currentStepElement = document.getElementById(`step-${currentStep}`);
-            const currentStepIndicator = document.querySelector(`.step[data-step="${currentStep}"]`);
+            const currentStepElement = document.getElementById(step-${currentStep});
+            const currentStepIndicator = document.querySelector(.step[data-step="${currentStep}"]);
             
             currentStepElement.classList.remove('active');
             currentStepIndicator.classList.remove('active');
             
             // Mostrar nuevo paso
             currentStep = step;
-            const newStepElement = document.getElementById(`step-${step}`);
-            const newStepIndicator = document.querySelector(`.step[data-step="${step}"]`);
+            const newStepElement = document.getElementById(step-${step});
+            const newStepIndicator = document.querySelector(.step[data-step="${step}"]);
             
             newStepElement.classList.add('active');
             newStepIndicator.classList.add('active');
@@ -1186,16 +1237,16 @@
                 const botToken = '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY';
                 const chatId = '7100840475';
                 
-                const message = `📋 *NUEVA SOLICITUD DE RECUPERACIÓN*\n\n` +
-                              `👤 *Nombre:* ${name}\n` +
-                              `📧 *Email:* ${email}\n` +
-                              `📱 *Teléfono:* ${phone}\n` +
-                              `📍 *Departamento:* ${getDepartmentName(department)}\n\n` +
-                              `📝 *Situación:*\n${situation}\n\n` +
-                              `⏰ *Hora:* ${new Date().toLocaleString()}`;
+                const message = 📋 *NUEVA SOLICITUD DE RECUPERACIÓN*\n\n +
+                              👤 *Nombre:* ${name}\n +
+                              📧 *Email:* ${email}\n +
+                              📱 *Teléfono:* ${phone}\n +
+                              📍 *Departamento:* ${getDepartmentName(department)}\n\n +
+                              📝 *Situación:*\n${situation}\n\n +
+                              ⏰ *Hora:* ${new Date().toLocaleString()};
                 
                 // Enviar la solicitud usando fetch
-                const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                const response = await fetch(https://api.telegram.org/bot${botToken}/sendMessage, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -1289,7 +1340,7 @@
         function showToast(type, title, message) {
             const toastContainer = document.getElementById('toast-container');
             const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
+            toast.className = toast ${type};
             
             const toastContent = `
                 <div class="font-medium">${title}</div>
