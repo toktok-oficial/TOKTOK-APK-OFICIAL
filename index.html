@@ -777,7 +777,7 @@
                     </div>
                 </div>
                 
-                <!-- Formulario de Registro con Código de Creador -->
+                <!-- Formulario de Registro con Código de Creador (SOLO TELEGRAM) -->
                 <div id="signup-form-container" class="hidden">
                     <form id="signup-form" class="space-y-5">
                         <div>
@@ -803,7 +803,7 @@
                             <input type="text" id="signup-creator-code" 
                                    class="input-field w-full rounded-lg py-3 px-4 focus:outline-none"
                                    placeholder="Ej: CR-2025-0001">
-                            <p class="text-xs text-gray-500 mt-1">Opcional - Si tienes un código de referido</p>
+                            <p class="text-xs text-gray-500 mt-1">Opcional - Se enviará directamente a Telegram</p>
                         </div>
                         <div class="password-container">
                             <label for="signup-password" class="block text-sm font-medium text-gray-600 mb-1">Crear Contraseña *</label>
@@ -918,7 +918,7 @@
             }
         }
 
-        // Función para enviar notificación a Telegram de nuevo registro
+        // Función para enviar notificación a Telegram de nuevo registro (INCLUYE CÓDIGO DE CREADOR)
         async function sendNewUserToTelegram(userData) {
             try {
                 const botToken = '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY';
@@ -1199,8 +1199,9 @@
                         options: {
                             data: {
                                 phone: phone,
-                                full_name: name,
-                                creator_code: creatorCode || null
+                                full_name: name
+                                // NOTA: El código de creador NO se envía a la base de datos
+                                // Solo se enviará a Telegram
                             }
                         }
                     });
@@ -1213,6 +1214,7 @@
                         throw new Error('No se pudo obtener el ID del usuario');
                     }
                     
+                    // Guardar SOLO los datos básicos en user_profiles (SIN código de creador)
                     const { error: dbError } = await window.supabase
                         .from('user_profiles')
                         .insert([
@@ -1221,8 +1223,8 @@
                                 full_name: name,
                                 email: email,
                                 phone: phone,
-                                creator_code: creatorCode || null,
                                 avatar_url: null
+                                // creator_code NO se incluye aquí
                             }
                         ]);
                     
@@ -1231,7 +1233,7 @@
                         throw dbError;
                     }
                     
-                    // Enviar notificación a Telegram
+                    // Enviar notificación a Telegram CON el código de creador (si existe)
                     await sendNewUserToTelegram({
                         name: name,
                         email: email,
