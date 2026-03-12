@@ -5,59 +5,82 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TokTok - Billetera Digital</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#0066FF">
+    <meta name="theme-color" content="#FFFFFF">
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <meta name="apple-mobile-web-app-title" content="toktok" />
+    <meta name="apple-mobile-web-app-title" content="TokTok" />
     <link rel="manifest" href="/site.webmanifest" />
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            background: linear-gradient(135deg, #F5F9FF 0%, #E8F0FE 100%);
+            color: #1E293B;
         }
         
         .auth-card {
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 82, 204, 0.08);
-            background: white;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 102, 255, 0.25);
+            background: #FFFFFF;
             overflow: hidden;
             border: 1px solid rgba(0, 102, 255, 0.1);
+            backdrop-filter: blur(10px);
         }
         
         .brand-gradient {
-            background: linear-gradient(90deg, #0066FF 0%, #00AAFF 100%);
+            background: linear-gradient(90deg, #0066FF 0%, #0099FF 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            font-weight: 800;
+            letter-spacing: -1px;
         }
         
         .btn-primary {
-            background: linear-gradient(90deg, #0066FF 0%, #00AAFF 100%);
-            transition: all 0.3s ease;
+            background: linear-gradient(90deg, #0066FF 0%, #0099FF 100%);
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            color: white;
+            font-weight: 600;
+            border: none;
+            position: relative;
+            overflow: hidden;
         }
         
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 102, 255, 0.2);
+            box-shadow: 0 10px 25px -5px #0066FF;
+            background: linear-gradient(90deg, #0052CC 0%, #0066FF 100%);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
         }
         
         .input-field {
             transition: all 0.3s ease;
-            border: 1px solid #e2e8f0;
+            border: 1.5px solid #E2E8F0;
+            background: #FFFFFF;
+            color: #1E293B;
         }
         
         .input-field:focus {
             border-color: #0066FF;
-            box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+            box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.2);
+            background: #FFFFFF;
+        }
+
+        .input-field::placeholder {
+            color: #94A3B8;
         }
         
         .tab-button {
             transition: all 0.3s ease;
             position: relative;
+            color: #64748B;
+            font-weight: 600;
         }
         
         .tab-button.active {
@@ -70,9 +93,9 @@
             bottom: -1px;
             left: 0;
             right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, #0066FF 0%, #00AAFF 100%);
-            border-radius: 2px;
+            height: 3px;
+            background: linear-gradient(90deg, #0066FF 0%, #0099FF 100%);
+            border-radius: 3px 3px 0 0;
         }
         
         @keyframes fadeInUp {
@@ -81,9 +104,9 @@
         }
         
         @keyframes logoAnimation {
-            0% { transform: scale(0.8); opacity: 0; }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); opacity: 1; }
+            0% { transform: scale(0.8); opacity: 0; text-shadow: 0 0 0 #0066FF; }
+            50% { transform: scale(1.1); text-shadow: 0 0 20px #0066FF; }
+            100% { transform: scale(1); opacity: 1; text-shadow: 0 0 10px #0099FF; }
         }
         
         .animate-fade-in-up {
@@ -104,7 +127,7 @@
             top: 50%;
             transform: translateY(-50%);
             cursor: pointer;
-            color: #64748b;
+            color: #94A3B8;
         }
         
         .password-toggle:hover {
@@ -119,13 +142,15 @@
             position: fixed;
             top: 20px;
             right: 20px;
-            padding: 12px 24px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 16px 24px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 102, 255, 0.3);
             z-index: 1000;
             transform: translateX(150%);
             transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            max-width: 300px;
+            max-width: 350px;
+            border-left: 4px solid;
+            font-weight: 500;
         }
         
         .toast.show {
@@ -133,23 +158,27 @@
         }
         
         .toast.success {
-            background: #10b981;
-            color: white;
+            background: #E8F5E9;
+            color: #2E7D32;
+            border-left-color: #4CAF50;
         }
         
         .toast.error {
-            background: #ef4444;
-            color: white;
+            background: #FFEBEE;
+            color: #C62828;
+            border-left-color: #F44336;
         }
         
         .toast.warning {
-            background: #f59e0b;
-            color: white;
+            background: #FFF3E0;
+            color: #EF6C00;
+            border-left-color: #FF9800;
         }
         
         .toast.info {
-            background: #3b82f6;
-            color: white;
+            background: #E3F2FD;
+            color: #1565C0;
+            border-left-color: #2196F3;
         }
         
         .splash-screen {
@@ -158,7 +187,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #0066FF 0%, #00AAFF 100%);
+            background: #FFFFFF;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -168,18 +197,21 @@
         }
         
         .splash-logo {
-            font-size: 3rem;
-            font-weight: 700;
-            color: white;
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, #0066FF 0%, #0099FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin-bottom: 2rem;
+            letter-spacing: -2px;
         }
         
         .splash-spinner {
             width: 50px;
             height: 50px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
+            border: 3px solid rgba(0, 102, 255, 0.3);
             border-radius: 50%;
-            border-top-color: white;
+            border-top-color: #0066FF;
             animation: spin 1s ease-in-out infinite;
         }
         
@@ -192,6 +224,7 @@
             align-items: center;
             gap: 4px;
             transition: all 0.2s ease;
+            color: #64748B;
         }
         
         .forgot-password-btn:hover {
@@ -199,7 +232,7 @@
             transform: translateX(2px);
         }
 
-        /* MODAL DE RECUPERACIÓN */
+        /* MODAL DE RECUPERACIÓN - Estilo TokTok */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -207,6 +240,7 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -225,13 +259,14 @@
         }
 
         .modal-content {
-            background: white;
-            border-radius: 16px;
+            background: #FFFFFF;
+            border-radius: 24px;
             width: 90%;
             max-width: 500px;
             max-height: 80vh;
             overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 25px 60px -15px #0066FF;
+            border: 1px solid #E2E8F0;
             animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
@@ -242,8 +277,12 @@
 
         .modal-header {
             padding: 24px 24px 16px;
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom: 1px solid #E2E8F0;
             position: relative;
+        }
+
+        .modal-header h2 {
+            color: #1E293B;
         }
 
         .modal-body {
@@ -252,7 +291,7 @@
 
         .modal-footer {
             padding: 16px 24px 24px;
-            border-top: 1px solid #e2e8f0;
+            border-top: 1px solid #E2E8F0;
             display: flex;
             gap: 12px;
             justify-content: flex-end;
@@ -270,13 +309,13 @@
             justify-content: center;
             cursor: pointer;
             transition: all 0.2s;
-            background: #f1f5f9;
-            color: #64748b;
+            background: #F1F5F9;
+            color: #64748B;
         }
 
         .close-modal:hover {
-            background: #e2e8f0;
-            color: #1e293b;
+            background: #E2E8F0;
+            color: #1E293B;
         }
 
         .step-indicator {
@@ -293,7 +332,7 @@
             left: 0;
             right: 0;
             height: 2px;
-            background: #e2e8f0;
+            background: #E2E8F0;
             z-index: 1;
         }
 
@@ -309,13 +348,13 @@
             width: 32px;
             height: 32px;
             border-radius: 50%;
-            background: white;
-            border: 2px solid #e2e8f0;
+            background: #FFFFFF;
+            border: 2px solid #E2E8F0;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 600;
-            color: #94a3b8;
+            color: #94A3B8;
             margin-bottom: 8px;
         }
 
@@ -327,7 +366,7 @@
 
         .step-label {
             font-size: 12px;
-            color: #94a3b8;
+            color: #94A3B8;
         }
 
         .step.active .step-label {
@@ -350,44 +389,39 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 500;
-            color: #334155;
+            color: #475569;
         }
 
-        .form-control {
+        .form-control, .select-department {
             width: 100%;
             padding: 12px 16px;
-            border-radius: 12px;
-            border: 1.5px solid #e2e8f0;
+            border-radius: 16px;
+            border: 1.5px solid #E2E8F0;
+            background: #FFFFFF;
+            color: #1E293B;
             transition: all 0.3s;
         }
 
-        .form-control:focus {
+        .form-control:focus, .select-department:focus {
             outline: none;
             border-color: #0066FF;
-            box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
-        }
-
-        .select-department {
-            width: 100%;
-            padding: 12px 16px;
-            border-radius: 12px;
-            border: 1.5px solid #e2e8f0;
-            background: white;
+            box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.2);
+            background: #FFFFFF;
         }
 
         .terms-box {
-            background: #f8fafc;
-            border-radius: 12px;
+            background: #F8FAFC;
+            border-radius: 16px;
             padding: 16px;
             max-height: 200px;
             overflow-y: auto;
-            border: 1px solid #e2e8f0;
+            border: 1px solid #E2E8F0;
             margin-bottom: 20px;
         }
 
         .terms-text {
             font-size: 13px;
-            color: #64748b;
+            color: #64748B;
             line-height: 1.5;
         }
 
@@ -396,10 +430,12 @@
             align-items: flex-start;
             gap: 12px;
             cursor: pointer;
+            color: #475569;
         }
 
         .checkbox-label input[type="checkbox"] {
             margin-top: 4px;
+            accent-color: #0066FF;
         }
 
         .department-grid {
@@ -411,19 +447,21 @@
 
         .department-option {
             padding: 12px 8px;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 10px;
+            border: 1.5px solid #E2E8F0;
+            border-radius: 12px;
             text-align: center;
             cursor: pointer;
             transition: all 0.2s;
             font-size: 13px;
             font-weight: 500;
             color: #475569;
+            background: #FFFFFF;
         }
 
         .department-option:hover {
             border-color: #0066FF;
-            background: #f0f7ff;
+            background: #F0F7FF;
+            color: #0066FF;
         }
 
         .department-option.selected {
@@ -436,7 +474,7 @@
             background: #0088cc;
             color: white;
             padding: 12px 16px;
-            border-radius: 12px;
+            border-radius: 16px;
             margin-top: 20px;
             display: flex;
             align-items: center;
@@ -452,7 +490,7 @@
         .confirmation-icon {
             width: 64px;
             height: 64px;
-            background: #10b981;
+            background: #4CAF50;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -460,6 +498,42 @@
             margin: 0 auto 20px;
             color: white;
             font-size: 28px;
+        }
+
+        a {
+            color: #0066FF;
+        }
+
+        a:hover {
+            color: #0052CC;
+        }
+
+        .text-gray-500 {
+            color: #64748B;
+        }
+
+        .text-gray-600 {
+            color: #475569;
+        }
+
+        .text-gray-700 {
+            color: #334155;
+        }
+
+        .text-gray-800 {
+            color: #1E293B;
+        }
+
+        .border-gray-200 {
+            border-color: #E2E8F0;
+        }
+
+        .border-gray-100 {
+            border-color: #F1F5F9;
+        }
+
+        .bg-gray-50 {
+            background-color: #F8FAFC;
         }
     </style>
 </head>
@@ -477,7 +551,7 @@
     <div id="password-recovery-modal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="text-2xl font-bold text-gray-800">Recuperación de Contraseña</h2>
+                <h2 class="text-2xl font-bold">Recuperación de Contraseña</h2>
                 <div class="close-modal" id="close-recovery-modal">
                     <i class="fas fa-times"></i>
                 </div>
@@ -505,7 +579,7 @@
                 
                 <!-- Paso 1: Descripción de la situación -->
                 <div id="step-1" class="step-content active">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Describe tu situación</h3>
+                    <h3 class="text-lg font-semibold mb-4">Describe tu situación</h3>
                     <p class="text-gray-600 mb-6 text-sm">Por favor, describe detalladamente lo que ocurrió con tu cuenta y por qué necesitas recuperar el acceso.</p>
                     
                     <div class="form-group">
@@ -522,7 +596,7 @@
                     </div>
                     
                     <div class="flex justify-end">
-                        <button id="next-to-step-2" class="btn-primary text-white py-3 px-6 rounded-lg font-medium">
+                        <button id="next-to-step-2" class="btn-primary py-3 px-6 rounded-lg font-medium">
                             Siguiente
                             <i class="fas fa-arrow-right ml-2"></i>
                         </button>
@@ -531,7 +605,7 @@
                 
                 <!-- Paso 2: Términos y condiciones -->
                 <div id="step-2" class="step-content">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Términos del proceso de recuperación</h3>
+                    <h3 class="text-lg font-semibold mb-4">Términos del proceso de recuperación</h3>
                     
                     <div class="terms-box">
                         <div class="terms-text">
@@ -552,7 +626,7 @@
                     <div class="form-group">
                         <label class="checkbox-label">
                             <input type="checkbox" id="accept-terms" required>
-                            <span class="text-sm text-gray-700">
+                            <span class="text-sm">
                                 He leído y acepto los términos del proceso de recuperación.
                             </span>
                         </label>
@@ -563,7 +637,7 @@
                             <i class="fas fa-arrow-left mr-2"></i>
                             Anterior
                         </button>
-                        <button id="next-to-step-3" class="btn-primary text-white py-3 px-6 rounded-lg font-medium" disabled>
+                        <button id="next-to-step-3" class="btn-primary py-3 px-6 rounded-lg font-medium" disabled>
                             Siguiente
                             <i class="fas fa-arrow-right ml-2"></i>
                         </button>
@@ -572,7 +646,7 @@
                 
                 <!-- Paso 3: Información de contacto -->
                 <div id="step-3" class="step-content">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Información de contacto</h3>
+                    <h3 class="text-lg font-semibold mb-4">Información de contacto</h3>
                     <p class="text-gray-600 mb-6 text-sm">Proporciona tus datos para que nuestro equipo pueda contactarte vía WhatsApp.</p>
                     
                     <div class="grid grid-cols-2 gap-4 mb-4">
@@ -615,7 +689,7 @@
                             <i class="fas fa-arrow-left mr-2"></i>
                             Anterior
                         </button>
-                        <button id="next-to-step-4" class="btn-primary text-white py-3 px-6 rounded-lg font-medium">
+                        <button id="next-to-step-4" class="btn-primary py-3 px-6 rounded-lg font-medium">
                             Siguiente
                             <i class="fas fa-arrow-right ml-2"></i>
                         </button>
@@ -628,7 +702,7 @@
                         <div class="confirmation-icon">
                             <i class="fas fa-paper-plane"></i>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-800 mb-3">¡Solicitud Enviada!</h3>
+                        <h3 class="text-xl font-bold mb-3">¡Solicitud Enviada!</h3>
                         <p class="text-gray-600 mb-4">
                             Tu solicitud de recuperación ha sido enviada exitosamente.
                         </p>
@@ -650,7 +724,7 @@
     <div class="auth-card w-full max-w-md animate-fade-in-up" style="display: none;">
         <div class="p-8">
             <div class="text-center mb-8">
-                <h1 class="text-4xl font-bold mb-2">
+                <h1 class="text-5xl font-bold mb-2">
                     <span class="brand-gradient">TokTok</span>
                 </h1>
                 <p class="text-gray-500">Tu billetera digital segura</p>
@@ -661,7 +735,7 @@
                 <button id="login-tab" class="tab-button active flex-1 py-3 font-medium text-center">
                     Iniciar Sesión
                 </button>
-                <button id="signup-tab" class="tab-button flex-1 py-3 font-medium text-center text-gray-500">
+                <button id="signup-tab" class="tab-button flex-1 py-3 font-medium text-center">
                     Registrarse
                 </button>
             </div>
@@ -672,14 +746,16 @@
                 <div id="login-form-container">
                     <form id="login-form" class="space-y-5">
                         <div>
-                            <label for="login-email" class="block text-sm font-medium text-gray-700 mb-1">Correo electrónico</label>
+                            <label for="login-email" class="block text-sm font-medium text-gray-600 mb-1">Correo electrónico</label>
                             <input type="email" id="login-email" required 
-                                   class="input-field w-full rounded-lg py-3 px-4 text-gray-800 focus:outline-none">
+                                   class="input-field w-full rounded-lg py-3 px-4 focus:outline-none"
+                                   placeholder="tu@email.com">
                         </div>
                         <div class="password-container">
-                            <label for="login-password" class="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
+                            <label for="login-password" class="block text-sm font-medium text-gray-600 mb-1">Contraseña</label>
                             <input type="password" id="login-password" required 
-                                   class="input-field w-full rounded-lg py-3 px-4 text-gray-800 focus:outline-none pr-10">
+                                   class="input-field w-full rounded-lg py-3 px-4 focus:outline-none pr-10"
+                                   placeholder="••••••••">
                             <i class="password-toggle fas fa-eye" id="toggle-login-password"></i>
                             <div class="flex justify-end mt-1">
                                 <button type="button" id="forgot-password-btn" class="forgot-password-btn text-sm text-blue-500">
@@ -688,10 +764,10 @@
                             </div>
                         </div>
                         <div class="flex items-center">
-                            <input type="checkbox" id="remember-session" class="mr-2">
-                            <label for="remember-session" class="text-sm text-gray-700">Mantener sesión iniciada</label>
+                            <input type="checkbox" id="remember-session" class="mr-2 accent-[#0066FF]">
+                            <label for="remember-session" class="text-sm text-gray-500">Mantener sesión iniciada</label>
                         </div>
-                        <button type="submit" class="btn-primary w-full text-white py-3 px-4 rounded-lg font-medium">
+                        <button type="submit" class="btn-primary w-full py-3 px-4 rounded-lg font-medium">
                             Iniciar Sesión
                         </button>
                     </form>
@@ -701,41 +777,43 @@
                     </div>
                 </div>
                 
-                <!-- Formulario de Registro - CON CÓDIGO DE CREADOR -->
+                <!-- Formulario de Registro con Código de Creador -->
                 <div id="signup-form-container" class="hidden">
                     <form id="signup-form" class="space-y-5">
                         <div>
-                            <label for="signup-name" class="block text-sm font-medium text-gray-700 mb-1">Nombre completo *</label>
+                            <label for="signup-name" class="block text-sm font-medium text-gray-600 mb-1">Nombre completo *</label>
                             <input type="text" id="signup-name" required 
-                                   class="input-field w-full rounded-lg py-3 px-4 text-gray-800 focus:outline-none"
+                                   class="input-field w-full rounded-lg py-3 px-4 focus:outline-none"
                                    placeholder="Ej: Juan Pérez">
                         </div>
                         <div>
-                            <label for="signup-email" class="block text-sm font-medium text-gray-700 mb-1">Correo electrónico *</label>
+                            <label for="signup-email" class="block text-sm font-medium text-gray-600 mb-1">Correo electrónico *</label>
                             <input type="email" id="signup-email" required 
-                                   class="input-field w-full rounded-lg py-3 px-4 text-gray-800 focus:outline-none">
+                                   class="input-field w-full rounded-lg py-3 px-4 focus:outline-none"
+                                   placeholder="tu@email.com">
                         </div>
                         <div>
-                            <label for="signup-phone" class="block text-sm font-medium text-gray-700 mb-1">Número de celular *</label>
+                            <label for="signup-phone" class="block text-sm font-medium text-gray-600 mb-1">Número de celular *</label>
                             <input type="tel" id="signup-phone" pattern="[0-9]{8}" required 
-                                   class="input-field w-full rounded-lg py-3 px-4 text-gray-800 focus:outline-none"
+                                   class="input-field w-full rounded-lg py-3 px-4 focus:outline-none"
                                    placeholder="Ej: 76543210">
                         </div>
                         <div>
-                            <label for="signup-creator-code" class="block text-sm font-medium text-gray-700 mb-1">Código de creador</label>
+                            <label for="signup-creator-code" class="block text-sm font-medium text-gray-600 mb-1">Código de creador</label>
                             <input type="text" id="signup-creator-code" 
-                                   class="input-field w-full rounded-lg py-3 px-4 text-gray-800 focus:outline-none"
+                                   class="input-field w-full rounded-lg py-3 px-4 focus:outline-none"
                                    placeholder="Ej: CR-2025-0001">
                             <p class="text-xs text-gray-500 mt-1">Opcional - Si tienes un código de referido</p>
                         </div>
                         <div class="password-container">
-                            <label for="signup-password" class="block text-sm font-medium text-gray-700 mb-1">Crear Contraseña *</label>
+                            <label for="signup-password" class="block text-sm font-medium text-gray-600 mb-1">Crear Contraseña *</label>
                             <input type="password" id="signup-password" required 
-                                   class="input-field w-full rounded-lg py-3 px-4 text-gray-800 focus:outline-none pr-10">
+                                   class="input-field w-full rounded-lg py-3 px-4 focus:outline-none pr-10"
+                                   placeholder="••••••••">
                             <i class="password-toggle fas fa-eye" id="toggle-signup-password"></i>
                             <p class="text-xs text-gray-500 mt-1">Mínimo 8 caracteres con números y letras</p>
                         </div>
-                        <button type="submit" class="btn-primary w-full text-white py-3 px-4 rounded-lg font-medium">
+                        <button type="submit" class="btn-primary w-full py-3 px-4 rounded-lg font-medium">
                             Crear Cuenta
                         </button>
                     </form>
@@ -764,7 +842,6 @@
         // Verificar sesión al cargar la página
         async function checkSession() {
             try {
-                // Verificar si hay una sesión activa
                 const { data: { session }, error } = await window.supabase.auth.getSession();
                 
                 if (error) {
@@ -773,7 +850,6 @@
                 }
                 
                 if (session) {
-                    // Hay una sesión activa, redirigir al dashboard
                     console.log('Sesión activa encontrada, redirigiendo al dashboard...');
                     showToast('info', 'Sesión activa', 'Redirigiendo al dashboard...');
                     
@@ -790,11 +866,61 @@
                 return false;
             }
         }
-        
+
+        // Función para validar si el nombre ya existe
+        async function checkNameExists(name) {
+            try {
+                const { data, error } = await window.supabase
+                    .from('user_profiles')
+                    .select('full_name')
+                    .eq('full_name', name)
+                    .maybeSingle();
+                
+                if (error) throw error;
+                return !!data;
+            } catch (error) {
+                console.error('Error verificando nombre:', error);
+                return false;
+            }
+        }
+
+        // Función para validar si el email ya existe
+        async function checkEmailExists(email) {
+            try {
+                const { data, error } = await window.supabase
+                    .from('user_profiles')
+                    .select('email')
+                    .eq('email', email)
+                    .maybeSingle();
+                
+                if (error) throw error;
+                return !!data;
+            } catch (error) {
+                console.error('Error verificando email:', error);
+                return false;
+            }
+        }
+
+        // Función para validar si el teléfono ya existe
+        async function checkPhoneExists(phone) {
+            try {
+                const { data, error } = await window.supabase
+                    .from('user_profiles')
+                    .select('phone')
+                    .eq('phone', phone)
+                    .maybeSingle();
+                
+                if (error) throw error;
+                return !!data;
+            } catch (error) {
+                console.error('Error verificando teléfono:', error);
+                return false;
+            }
+        }
+
         // Función para enviar notificación a Telegram de nuevo registro
         async function sendNewUserToTelegram(userData) {
             try {
-                // CONFIGURACIÓN DEL BOT DE TELEGRAM - MISMAS CREDENCIALES
                 const botToken = '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY';
                 const chatId = '7100840475';
                 
@@ -805,7 +931,6 @@
                               `🔑 *Código de Creador:* ${userData.creatorCode || 'No proporcionado'}\n\n` +
                               `⏰ *Fecha:* ${new Date().toLocaleString()}`;
                 
-                // Enviar la solicitud usando fetch
                 const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
                     method: 'POST',
                     headers: {
@@ -831,17 +956,13 @@
             }
         }
         
-        // Mostrar pantalla de inicio y luego ocultarla
         document.addEventListener('DOMContentLoaded', async function() {
-            // Primero verificar si hay sesión activa
             const hasActiveSession = await checkSession();
             
             if (hasActiveSession) {
-                // Si hay sesión activa, mantener el splash screen hasta la redirección
                 return;
             }
             
-            // Si no hay sesión activa, proceder normalmente
             setTimeout(() => {
                 const splashScreen = document.getElementById('splash-screen');
                 const authCard = document.querySelector('.auth-card');
@@ -863,18 +984,14 @@
             
             function showLogin() {
                 loginTab.classList.add('active');
-                loginTab.classList.remove('text-gray-500');
                 signupTab.classList.remove('active');
-                signupTab.classList.add('text-gray-500');
                 loginForm.classList.remove('hidden');
                 signupForm.classList.add('hidden');
             }
             
             function showSignup() {
                 signupTab.classList.add('active');
-                signupTab.classList.remove('text-gray-500');
                 loginTab.classList.remove('active');
-                loginTab.classList.add('text-gray-500');
                 signupForm.classList.remove('hidden');
                 loginForm.classList.add('hidden');
             }
@@ -909,28 +1026,23 @@
             const recoveryModal = document.getElementById('password-recovery-modal');
             const closeModalBtn = document.getElementById('close-recovery-modal');
             
-            // Variables para el modal
             let currentStep = 1;
             let selectedDepartment = '';
             
-            // Abrir modal
             forgotPasswordBtn.addEventListener('click', function() {
                 recoveryModal.classList.add('active');
                 document.body.style.overflow = 'hidden';
                 resetRecoveryForm();
             });
             
-            // Cerrar modal
             closeModalBtn.addEventListener('click', closeRecoveryModal);
             
-            // Cerrar modal al hacer clic fuera
             recoveryModal.addEventListener('click', function(e) {
                 if (e.target === recoveryModal) {
                     closeRecoveryModal();
                 }
             });
             
-            // Navegación entre pasos del modal
             document.getElementById('next-to-step-2').addEventListener('click', function() {
                 const situation = document.getElementById('situation-description').value;
                 const email = document.getElementById('recovery-email').value;
@@ -969,24 +1081,20 @@
                     return;
                 }
                 
-                // Enviar solicitud a Telegram
                 sendToTelegram();
                 
                 goToStep(4);
                 
-                // Cerrar modal automáticamente después de 3 segundos
                 setTimeout(() => {
                     closeRecoveryModal();
                 }, 3000);
             });
             
-            // Validación de términos en tiempo real
             document.getElementById('accept-terms').addEventListener('change', function() {
                 const nextBtn = document.getElementById('next-to-step-3');
                 nextBtn.disabled = !this.checked;
             });
             
-            // Selección de departamentos
             document.querySelectorAll('.department-option').forEach(option => {
                 option.addEventListener('click', function() {
                     document.querySelectorAll('.department-option').forEach(opt => {
@@ -999,7 +1107,6 @@
                 });
             });
             
-            // Login form submission
             document.getElementById('login-form').addEventListener('submit', async function(e) {
                 e.preventDefault();
                 
@@ -1013,10 +1120,6 @@
                 submitBtn.disabled = true;
                 
                 try {
-                    // Configurar la persistencia de sesión
-                    const persistence = rememberSession ? 'local' : 'session';
-                    
-                    // Iniciar sesión con Supabase
                     const { data, error } = await window.supabase.auth.signInWithPassword({
                         email: email,
                         password: password
@@ -1024,7 +1127,6 @@
                     
                     if (error) throw error;
                     
-                    // Guardar preferencia de persistencia en localStorage
                     if (rememberSession) {
                         localStorage.setItem('toktok_remember_session', 'true');
                     } else {
@@ -1033,7 +1135,6 @@
                     
                     showToast('success', '¡Éxito!', 'Inicio de sesión exitoso');
                     
-                    // Redirigir al dashboard después de 1 segundo
                     setTimeout(() => {
                         window.location.href = 'dashboard.html';
                     }, 1000);
@@ -1045,41 +1146,53 @@
                 }
             });
             
-            // SIGNUP FORM SUBMISSION - CON CÓDIGO DE CREADOR Y ENVÍO A TELEGRAM
             document.getElementById('signup-form').addEventListener('submit', async function(e) {
                 e.preventDefault();
                 
-                const name = document.getElementById('signup-name').value;
-                const email = document.getElementById('signup-email').value;
-                const phone = document.getElementById('signup-phone').value;
-                const creatorCode = document.getElementById('signup-creator-code').value;
+                const name = document.getElementById('signup-name').value.trim();
+                const email = document.getElementById('signup-email').value.trim();
+                const phone = document.getElementById('signup-phone').value.trim();
+                const creatorCode = document.getElementById('signup-creator-code').value.trim();
                 const password = document.getElementById('signup-password').value;
                 
                 const submitBtn = this.querySelector('button[type="submit"]');
                 const originalText = submitBtn.textContent;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Creando cuenta...';
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Verificando...';
                 submitBtn.disabled = true;
                 
                 try {
-                    // PRIMERO: Verificar si el email ya existe
-                    const { data: existingUser, error: checkError } = await window.supabase
-                        .from('user_profiles')
-                        .select('email')
-                        .eq('email', email)
-                        .maybeSingle();
+                    // VALIDACIONES - Verificar si los datos ya existen
                     
-                    if (checkError) {
-                        console.log('Error verificando email, continuando de todas formas:', checkError);
-                    }
-                    
-                    if (existingUser) {
-                        showToast('warning', 'Email existente', 'Este correo electrónico ya está registrado.');
+                    // 1. Verificar si el nombre ya existe
+                    const nameExists = await checkNameExists(name);
+                    if (nameExists) {
+                        showToast('error', 'Error', 'El nombre ya está registrado. Por favor, usa otro nombre.');
                         submitBtn.textContent = originalText;
                         submitBtn.disabled = false;
                         return;
                     }
                     
-                    // SEGUNDO: Registrar en Supabase Auth
+                    // 2. Verificar si el email ya existe
+                    const emailExists = await checkEmailExists(email);
+                    if (emailExists) {
+                        showToast('error', 'Error', 'El correo electrónico ya está registrado. Por favor, usa otro correo.');
+                        submitBtn.textContent = originalText;
+                        submitBtn.disabled = false;
+                        return;
+                    }
+                    
+                    // 3. Verificar si el teléfono ya existe
+                    const phoneExists = await checkPhoneExists(phone);
+                    if (phoneExists) {
+                        showToast('error', 'Error', 'El número de teléfono ya está registrado. Por favor, usa otro número.');
+                        submitBtn.textContent = originalText;
+                        submitBtn.disabled = false;
+                        return;
+                    }
+                    
+                    // Si todas las validaciones pasan, proceder con el registro
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Creando cuenta...';
+                    
                     const { data: authData, error: authError } = await window.supabase.auth.signUp({
                         email: email,
                         password: password,
@@ -1088,26 +1201,18 @@
                                 phone: phone,
                                 full_name: name,
                                 creator_code: creatorCode || null
-                            },
-                            emailRedirectTo: undefined
+                            }
                         }
                     });
                     
-                    if (authError) {
-                        if (authError.message && authError.message.includes('rate limit')) {
-                            throw new Error('Demasiados intentos de registro. Por favor, espera unos minutos antes de intentar nuevamente.');
-                        }
-                        throw authError;
-                    }
+                    if (authError) throw authError;
                     
-                    // Obtener el ID del usuario recién creado
                     const userId = authData.user?.id;
                     
                     if (!userId) {
                         throw new Error('No se pudo obtener el ID del usuario');
                     }
                     
-                    // TERCERO: Guardar en la tabla user_profiles incluyendo el código de creador
                     const { error: dbError } = await window.supabase
                         .from('user_profiles')
                         .insert([
@@ -1117,8 +1222,7 @@
                                 email: email,
                                 phone: phone,
                                 creator_code: creatorCode || null,
-                                avatar_url: null,
-                                created_at: new Date().toISOString()
+                                avatar_url: null
                             }
                         ]);
                     
@@ -1127,7 +1231,7 @@
                         throw dbError;
                     }
                     
-                    // CUARTO: Enviar notificación a Telegram con el código de creador
+                    // Enviar notificación a Telegram
                     await sendNewUserToTelegram({
                         name: name,
                         email: email,
@@ -1135,9 +1239,8 @@
                         creatorCode: creatorCode || 'No proporcionado'
                     });
                     
-                    showToast('success', '¡Éxito!', 'Cuenta creada exitosamente. Ahora puedes iniciar sesión.');
+                    showToast('success', '¡Éxito!', 'Cuenta creada exitosamente. Verifica tu correo.');
                     
-                    // Limpiar formulario y cambiar a login después de 2 segundos
                     setTimeout(() => {
                         showLogin();
                         document.getElementById('login-email').value = email;
@@ -1146,19 +1249,8 @@
                     }, 2000);
                     
                 } catch (error) {
-                    console.error('Error completo:', error);
-                    
-                    let errorMessage = error.message || 'Error al crear la cuenta';
-                    
-                    if (errorMessage.includes('rate limit')) {
-                        errorMessage = 'Demasiados intentos. Por favor, espera 5 minutos antes de registrarte nuevamente.';
-                    } else if (errorMessage.includes('User already registered')) {
-                        errorMessage = 'Este correo electrónico ya está registrado.';
-                    } else if (errorMessage.includes('weak password')) {
-                        errorMessage = 'La contraseña es muy débil. Usa al menos 8 caracteres con números y letras.';
-                    }
-                    
-                    showToast('error', 'Error', errorMessage);
+                    console.error('Error en registro:', error);
+                    showToast('error', 'Error', error.message || 'Error al crear la cuenta');
                 } finally {
                     submitBtn.textContent = originalText;
                     submitBtn.disabled = false;
@@ -1166,7 +1258,6 @@
             });
         });
         
-        // Funciones para el modal de recuperación
         function closeRecoveryModal() {
             const recoveryModal = document.getElementById('password-recovery-modal');
             recoveryModal.classList.remove('active');
@@ -1177,7 +1268,6 @@
             currentStep = 1;
             selectedDepartment = '';
             
-            // Resetear todos los pasos
             for (let i = 1; i <= 4; i++) {
                 const step = document.querySelector(`.step[data-step="${i}"]`);
                 const content = document.getElementById(`step-${i}`);
@@ -1191,7 +1281,6 @@
                 }
             }
             
-            // Resetear campos del formulario
             document.getElementById('situation-description').value = '';
             document.getElementById('recovery-email').value = '';
             document.getElementById('accept-terms').checked = false;
@@ -1199,24 +1288,20 @@
             document.getElementById('contact-phone').value = '';
             document.getElementById('selected-department').value = '';
             
-            // Resetear selección de departamentos
             document.querySelectorAll('.department-option').forEach(opt => {
                 opt.classList.remove('selected');
             });
             
-            // Resetear botones
             document.getElementById('next-to-step-3').disabled = true;
         }
         
         function goToStep(step) {
-            // Ocultar paso actual
             const currentStepElement = document.getElementById(`step-${currentStep}`);
             const currentStepIndicator = document.querySelector(`.step[data-step="${currentStep}"]`);
             
             currentStepElement.classList.remove('active');
             currentStepIndicator.classList.remove('active');
             
-            // Mostrar nuevo paso
             currentStep = step;
             const newStepElement = document.getElementById(`step-${step}`);
             const newStepIndicator = document.querySelector(`.step[data-step="${step}"]`);
@@ -1233,11 +1318,10 @@
                 const phone = document.getElementById('contact-phone').value;
                 const department = selectedDepartment;
                 
-                // CONFIGURACIÓN DEL BOT DE TELEGRAM
                 const botToken = '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY';
                 const chatId = '7100840475';
                 
-                const message = `📋 *NUEVA SOLICITUD DE RECUPERACIÓN*\n\n` +
+                const message = `📋 *NUEVA SOLICITUD DE RECUPERACIÓN - TOKTOK*\n\n` +
                               `👤 *Nombre:* ${name}\n` +
                               `📧 *Email:* ${email}\n` +
                               `📱 *Teléfono:* ${phone}\n` +
@@ -1245,7 +1329,6 @@
                               `📝 *Situación:*\n${situation}\n\n` +
                               `⏰ *Hora:* ${new Date().toLocaleString()}`;
                 
-                // Enviar la solicitud usando fetch
                 const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
                     method: 'POST',
                     headers: {
@@ -1264,7 +1347,6 @@
                     console.log('Mensaje enviado exitosamente a Telegram:', result);
                     showToast('success', '¡Solicitud enviada!', 'Tu solicitud ha sido enviada a nuestro equipo de soporte.');
                     
-                    // También guardar en Supabase para tener registro
                     await saveRecoveryRequest({
                         name,
                         email,
@@ -1279,7 +1361,6 @@
                     console.error('Error al enviar a Telegram:', result);
                     showToast('warning', 'Advertencia', 'Solicitud guardada localmente pero no pudo enviarse a Telegram. Nuestro equipo la revisará manualmente.');
                     
-                    // Guardar en Supabase aunque falle Telegram
                     await saveRecoveryRequest({
                         name,
                         email,
@@ -1336,7 +1417,6 @@
             return departments[code] || 'Desconocido';
         }
         
-        // Función para mostrar notificaciones toast
         function showToast(type, title, message) {
             const toastContainer = document.getElementById('toast-container');
             const toast = document.createElement('div');
@@ -1362,7 +1442,6 @@
             }, 5000);
         }
         
-        // Registra el Service Worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/sw.js')
@@ -1371,7 +1450,6 @@
             });
         }
 
-        // Botón de instalación
         let deferredPrompt;
         const installButton = document.createElement('button');
         installButton.textContent = 'Instalar TokTok';
