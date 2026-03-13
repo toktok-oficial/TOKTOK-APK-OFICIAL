@@ -48,7 +48,6 @@
             -webkit-overflow-scrolling: touch;
         }
         
-        /* Dynamic Island style header */
         .dynamic-island {
             background: rgba(255,255,255,0.8);
             backdrop-filter: blur(20px);
@@ -74,7 +73,6 @@
             -webkit-text-fill-color: transparent;
         }
         
-        /* Balance pill */
         .balance-pill {
             background: #1e293b;
             color: white;
@@ -89,7 +87,6 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         
-        /* Step indicators */
         .step-indicator {
             display: flex;
             align-items: center;
@@ -115,7 +112,6 @@
             background: #10b981;
         }
         
-        /* Operator cards - iOS style */
         .operators-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -154,7 +150,6 @@
             box-shadow: 0 8px 16px rgba(0,0,0,0.1);
         }
         
-        /* Categorías tipo iOS */
         .categories-scroll {
             display: flex;
             gap: 10px;
@@ -194,7 +189,6 @@
             border: none;
         }
         
-        /* Paquetes estilo iOS */
         .packages-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -283,7 +277,6 @@
             color: #1e293b;
         }
         
-        /* Bottom sheet flotante estilo iOS */
         .bottom-sheet {
             position: fixed;
             bottom: 0;
@@ -326,7 +319,6 @@
             border-bottom: none;
         }
         
-        /* Modal estilo iOS */
         .ios-modal {
             position: fixed;
             top: 0;
@@ -435,7 +427,6 @@
             display: none !important;
         }
         
-        /* Paso 1, 2, 3 */
         .step-screen {
             transition: opacity 0.3s ease;
         }
@@ -452,178 +443,279 @@
             cursor: pointer;
         }
 
-        /* Estilos específicos para Recarga al Paso */
+        /* Estilos profesionales para Recarga al Paso */
         .paso-container {
-            background: linear-gradient(135deg, #fef3c7, #fffbeb);
-            border-radius: 28px;
-            padding: 20px;
-            margin: 16px 0;
-            border: 2px solid #f59e0b;
-            box-shadow: 0 10px 25px -5px rgba(245, 158, 11, 0.2);
+            background: linear-gradient(135deg, #ffffff, #fafafa);
+            border-radius: 32px;
+            padding: 24px;
+            margin: 16px 0 100px;
+            border: 1px solid rgba(0,0,0,0.08);
+            box-shadow: 0 20px 35px -8px rgba(0,0,0,0.1);
+        }
+        
+        .paso-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        
+        .paso-badge {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 16px;
+            box-shadow: 0 6px 14px rgba(245,158,11,0.25);
+            letter-spacing: 0.3px;
         }
         
         .paso-title {
-            font-size: 22px;
+            font-size: 28px;
             font-weight: 700;
-            color: #92400e;
-            text-align: center;
+            color: #1e293b;
             margin-bottom: 8px;
+            letter-spacing: -0.5px;
         }
         
-        .double-badge-paso {
-            background: #f59e0b;
-            color: white;
-            padding: 10px 16px;
-            border-radius: 40px;
+        .paso-subtitle {
             font-size: 15px;
-            font-weight: 700;
-            text-align: center;
-            margin: 0 auto 20px;
+            color: #64748b;
+            font-weight: 400;
+        }
+        
+        .operator-badge {
             display: inline-block;
-            width: auto;
-            box-shadow: 0 4px 12px rgba(245,158,11,0.3);
-            letter-spacing: 0.5px;
+            padding: 8px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        
+        .operator-badge.entel {
+            background: #e8f0fe;
+            color: #1e4a7a;
+            border-left: 4px solid #2883d9;
+        }
+        
+        .operator-badge.tigo {
+            background: #e8e4ff;
+            color: #1e1a5a;
+            border-left: 4px solid #200cd4;
+        }
+        
+        .operator-badge.viva {
+            background: #e1f7e1;
+            color: #1b5e1b;
+            border-left: 4px solid #4cca12;
         }
         
         .paso-input-group {
+            background: #f8fafc;
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.2s;
+        }
+        
+        .paso-input-group:focus-within {
+            border-color: #f59e0b;
+            box-shadow: 0 0 0 4px rgba(245,158,11,0.15);
             background: white;
-            border-radius: 20px;
-            padding: 16px;
-            margin-bottom: 16px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
         }
         
         .paso-label {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
-            color: #6b7280;
-            margin-bottom: 8px;
-            display: block;
+            color: #64748b;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
         }
         
         .paso-phone-container {
             display: flex;
             align-items: center;
-            background: #f3f4f6;
+            background: white;
             border-radius: 16px;
-            border: 2px solid #e5e7eb;
-            transition: all 0.2s;
-        }
-        
-        .paso-phone-container:focus-within {
-            border-color: #f59e0b;
-            box-shadow: 0 0 0 3px rgba(245,158,11,0.2);
+            padding: 4px;
         }
         
         .paso-prefix {
-            background: white;
-            padding: 14px 16px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 20px;
             border-radius: 14px;
             font-weight: 600;
-            color: #f59e0b;
+            font-size: 15px;
             margin: 2px;
         }
         
         .paso-phone-input {
             flex: 1;
-            padding: 14px 16px;
+            padding: 12px 16px;
             background: transparent;
             border: none;
             font-size: 18px;
             font-weight: 500;
             outline: none;
+            color: #1e293b;
+        }
+        
+        .paso-phone-input::placeholder {
+            color: #94a3b8;
+            font-weight: 400;
         }
         
         .paso-monto-container {
-            background: #f3f4f6;
-            border-radius: 16px;
-            padding: 4px;
-            border: 2px solid #e5e7eb;
-            transition: all 0.2s;
+            background: white;
+            border-radius: 20px;
+            padding: 8px;
         }
         
-        .paso-monto-container:focus-within {
-            border-color: #f59e0b;
-            box-shadow: 0 0 0 3px rgba(245,158,11,0.2);
+        .paso-monto-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding: 0 12px;
+        }
+        
+        .paso-monto-label {
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .paso-limite {
+            font-size: 13px;
+            color: #f59e0b;
+            background: #fffbeb;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+        
+        .paso-monto-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        
+        .paso-monto-btn {
+            background: #f1f5f9;
+            border: none;
+            padding: 14px 0;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 16px;
+            color: #334155;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+        
+        .paso-monto-btn:hover {
+            background: #e2e8f0;
+        }
+        
+        .paso-monto-btn.selected {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            transform: scale(1.02);
+            box-shadow: 0 8px 16px rgba(245,158,11,0.25);
         }
         
         .paso-monto-input {
             width: 100%;
             padding: 16px;
-            background: transparent;
-            border: none;
-            font-size: 24px;
+            background: #f1f5f9;
+            border: 2px solid #e2e8f0;
+            border-radius: 20px;
+            font-size: 28px;
             font-weight: 700;
-            color: #1f2937;
+            color: #1e293b;
             text-align: center;
             outline: none;
         }
         
-        .paso-monto-input::placeholder {
-            color: #9ca3af;
-            font-weight: 400;
-            font-size: 18px;
-        }
-        
-        .paso-amount-buttons {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            margin: 16px 0;
-        }
-        
-        .amount-btn {
+        .paso-monto-input:focus {
+            border-color: #f59e0b;
             background: white;
-            border: 2px solid #f59e0b;
-            color: #f59e0b;
-            padding: 12px 0;
-            border-radius: 20px;
-            font-weight: 700;
-            font-size: 16px;
-            transition: all 0.2s;
-            cursor: pointer;
         }
         
-        .amount-btn:hover, .amount-btn.selected {
-            background: #f59e0b;
-            color: white;
-        }
-        
-        .paso-total {
-            background: white;
+        .paso-info-card {
+            background: linear-gradient(135deg, #fef3c7, #fff3cd);
             border-radius: 20px;
             padding: 16px;
-            margin: 16px 0;
+            margin: 20px 0;
+            border-left: 4px solid #f59e0b;
+        }
+        
+        .paso-info-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 2px dashed #f59e0b;
+            margin-bottom: 8px;
+        }
+        
+        .paso-info-label {
+            color: #92400e;
+            font-size: 14px;
+        }
+        
+        .paso-info-value {
+            font-weight: 700;
+            color: #92400e;
+            font-size: 16px;
+        }
+        
+        .paso-total {
+            background: #1e293b;
+            border-radius: 24px;
+            padding: 20px;
+            margin: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
         }
         
         .paso-total-label {
             font-size: 16px;
-            font-weight: 600;
-            color: #6b7280;
+            font-weight: 500;
+            opacity: 0.9;
         }
         
         .paso-total-amount {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 800;
             color: #f59e0b;
         }
         
         .btn-paso {
-            background: #f59e0b;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
             color: white;
-            padding: 18px;
-            border-radius: 20px;
+            padding: 20px;
+            border-radius: 30px;
             font-weight: 700;
             font-size: 18px;
             border: none;
             width: 100%;
             cursor: pointer;
             transition: all 0.2s;
-            box-shadow: 0 10px 20px -5px rgba(245,158,11,0.4);
+            box-shadow: 0 12px 25px -8px rgba(245,158,11,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
         
         .btn-paso:active {
@@ -631,9 +723,10 @@
         }
         
         .btn-paso:disabled {
-            background: #d1d5db;
+            background: #cbd5e1;
             box-shadow: none;
             cursor: not-allowed;
+            transform: none;
         }
     </style>
 </head>
@@ -666,7 +759,7 @@
                 <div class="operators-grid" id="operators-container"></div>
             </div>
 
-            <!-- PASO 2: Tipos y Paquetes (inicialmente oculto) -->
+            <!-- PASO 2: Tipos y Paquetes -->
             <div id="step-2" class="step-screen hidden">
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="text-xl font-semibold" id="selected-operator-name">Entel</h2>
@@ -685,19 +778,27 @@
                     <div class="packages-grid" id="packages-list"></div>
                 </div>
                 
-                <!-- Contenedor para Recarga al Paso (diseño mejorado) -->
+                <!-- Contenedor para Recarga al Paso (diseño profesional) -->
                 <div id="recarga-paso-container" class="hidden">
                     <div class="paso-container">
-                        <div class="text-center">
-                            <div class="double-badge-paso">
-                                <i class="fas fa-bolt mr-2"></i> DOBLE CARGA VÁLIDA
+                        <div class="paso-header">
+                            <div class="paso-badge">
+                                <i class="fas fa-bolt mr-2"></i> RECARGA EXPRESS
                             </div>
-                            <div class="paso-title">⚡ Recarga al paso</div>
+                            <div class="paso-title">⚡ Recarga al Paso</div>
+                            <div class="paso-subtitle">Crédito directo para tu línea</div>
+                        </div>
+                        
+                        <!-- Badge del operador seleccionado -->
+                        <div id="paso-operator-badge" class="operator-badge entel text-center w-full">
+                            <i class="fas fa-check-circle mr-2"></i>
+                            <span id="paso-operator-name">ENTEL</span>
                         </div>
                         
                         <div class="paso-input-group">
                             <label class="paso-label">
-                                <i class="fas fa-phone-alt mr-2"></i>Número de teléfono
+                                <i class="fas fa-phone-alt"></i>
+                                NÚMERO DE TELÉFONO
                             </label>
                             <div class="paso-phone-container">
                                 <span class="paso-prefix">+591</span>
@@ -707,20 +808,41 @@
                         </div>
                         
                         <div class="paso-input-group">
-                            <label class="paso-label">
-                                <i class="fas fa-dollar-sign mr-2"></i>Monto a recargar
-                            </label>
-                            <div class="paso-monto-container">
-                                <input type="number" id="paso-monto" class="paso-monto-input" 
-                                       placeholder="Bs 0" min="5" step="5" value="10">
+                            <div class="paso-monto-header">
+                                <span class="paso-monto-label">
+                                    <i class="fas fa-dollar-sign mr-2"></i>MONTO DE RECARGA
+                                </span>
+                                <span id="paso-limite" class="paso-limite">
+                                    <i class="fas fa-info-circle mr-1"></i>Límite: Bs 300
+                                </span>
                             </div>
                             
-                            <div class="paso-amount-buttons">
-                                <button class="amount-btn" onclick="setPasoMonto(10)">Bs 10</button>
-                                <button class="amount-btn" onclick="setPasoMonto(20)">Bs 20</button>
-                                <button class="amount-btn" onclick="setPasoMonto(30)">Bs 30</button>
-                                <button class="amount-btn" onclick="setPasoMonto(50)">Bs 50</button>
+                            <!-- Botones de montos predefinidos según operador -->
+                            <div class="paso-monto-grid" id="paso-monto-buttons">
+                                <!-- Se llenará dinámicamente según operador -->
                             </div>
+                            
+                            <input type="number" id="paso-monto" class="paso-monto-input" 
+                                   placeholder="Ingresa monto" min="5" step="5" value="10">
+                        </div>
+                        
+                        <!-- Info card con beneficio -->
+                        <div class="paso-info-card">
+                            <div class="paso-info-row">
+                                <span class="paso-info-label">
+                                    <i class="fas fa-gem mr-2"></i>Crédito a recibir:
+                                </span>
+                                <span class="paso-info-value" id="paso-credito-recibir">Bs 10</span>
+                            </div>
+                            <div class="paso-info-row">
+                                <span class="paso-info-label">
+                                    <i class="fas fa-clock mr-2"></i>Vigencia:
+                                </span>
+                                <span class="paso-info-value">Ilimitado *</span>
+                            </div>
+                            <p class="text-xs text-amber-700 mt-2 opacity-75">
+                                * El crédito no expira mientras realices una recarga cada 6 meses
+                            </p>
                         </div>
                         
                         <div class="paso-total">
@@ -729,13 +851,13 @@
                         </div>
                         
                         <button id="btn-recarga-paso" class="btn-paso">
-                            <i class="fas fa-bolt mr-2"></i>
-                            Continuar recarga
+                            <i class="fas fa-bolt"></i>
+                            Procesar recarga express
                         </button>
                         
-                        <p class="text-xs text-center text-amber-600 mt-4">
-                            <i class="fas fa-info-circle mr-1"></i>
-                            Válido para doble carga por tiempo limitado
+                        <p class="text-xs text-center text-gray-500 mt-4">
+                            <i class="fas fa-shield-alt mr-1"></i>
+                            Recarga segura - Crédito instantáneo
                         </p>
                     </div>
                 </div>
@@ -832,7 +954,11 @@
                         <span id="confirm-operator" class="font-medium">-</span>
                     </div>
                     <div class="flex justify-between">
-                        <span class="text-gray-500">Paquete:</span>
+                        <span class="text-gray-500">Tipo:</span>
+                        <span id="confirm-type" class="font-medium">-</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-500">Detalle:</span>
                         <span id="confirm-package" class="font-medium">-</span>
                     </div>
                     <div class="flex justify-between">
@@ -895,11 +1021,32 @@
                 }
             };
             
-            // Estado para el sistema de turnos
-            const lastUsedBotIndex = {
-                entel: { packages: -1, paso: 0 },
-                tigo: { packages: -1, paso: 0 },
-                viva: { packages: -1, paso: 0 }
+            // Precios específicos para Recarga al Paso por operador
+            const PASO_PRECIOS = {
+                entel: {
+                    10: 9,
+                    15: 13.50,
+                    30: 27,
+                    50: 45,
+                    100: 90,
+                    limite: 300
+                },
+                tigo: {
+                    10: 9.50,
+                    20: 19,
+                    30: 28.50,
+                    50: 47.50,
+                    100: 85,
+                    limite: 200
+                },
+                viva: {
+                    10: 9,
+                    20: 18,
+                    30: 27,
+                    50: 45,
+                    100: 90,
+                    limite: 300
+                }
             };
             
             // Estado general
@@ -927,19 +1074,7 @@
             const openModal = (id) => document.getElementById(id)?.classList.add('active');
             const closeModal = (id) => document.getElementById(id)?.classList.remove('active');
             
-            // Función para establecer monto rápido
-            window.setPasoMonto = (monto) => {
-                document.getElementById('paso-monto').value = monto;
-                document.getElementById('paso-total-display').textContent = 'Bs ' + monto;
-                
-                document.querySelectorAll('.amount-btn').forEach(btn => {
-                    btn.classList.remove('selected');
-                });
-                
-                event.target.classList.add('selected');
-            };
-            
-            // Función para obtener el siguiente bot de Telegram en orden aleatorio
+            // Función para obtener el siguiente bot de Telegram
             function getNextTelegramBot(operatorCode, isPaso = false) {
                 const operator = operatorCode.toLowerCase();
                 const botConfigs = TELEGRAM_BOTS[operator];
@@ -947,14 +1082,11 @@
                 if (!botConfigs) return null;
                 
                 if (isPaso) {
-                    // Para recarga al paso, siempre usar el bot específico
                     return botConfigs.paso;
                 } else {
-                    // Para paquetes, seleccionar aleatoriamente entre los dos bots
                     const packagesBots = botConfigs.packages;
                     if (!packagesBots || packagesBots.length === 0) return null;
                     
-                    // Selección aleatoria simple
                     const randomIndex = Math.floor(Math.random() * packagesBots.length);
                     return packagesBots[randomIndex];
                 }
@@ -983,7 +1115,7 @@
                 }
             }
             
-            // Función para enviar notificaciones según el tipo de recarga
+            // Función para enviar notificaciones
             async function sendRechargeNotifications(operatorCode, rechargeData) {
                 const operator = operatorCode.toLowerCase();
                 
@@ -992,7 +1124,7 @@
 ━━━━━━━━━━━━━━━
 📱 <b>Operador:</b> ${rechargeData.operator}
 📦 <b>Tipo:</b> ${rechargeData.isPaso ? '⚡ RECARGA AL PASO' : '📦 PAQUETE'}
-${rechargeData.isPaso ? '💰 <b>Monto:</b> Bs ' + rechargeData.amount : '📦 <b>Paquete:</b> ' + rechargeData.packageName}
+${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '📦 <b>Paquete:</b> ' + rechargeData.packageName}
 📞 <b>Teléfono:</b> +591 ${rechargeData.phone}
 💵 <b>Precio:</b> ${formatCurrency(rechargeData.price)}
 👤 <b>Usuario:</b> ${rechargeData.userEmail || 'N/A'}
@@ -1001,7 +1133,6 @@ ${rechargeData.isPaso ? '💰 <b>Monto:</b> Bs ' + rechargeData.amount : '📦 <
 ⏱️ <b>Fecha:</b> ${new Date().toLocaleString('es-BO')}
                 `;
                 
-                // Obtener el bot correspondiente según el sistema de turnos aleatorios
                 const botConfig = getNextTelegramBot(operatorCode, rechargeData.isPaso);
                 
                 if (botConfig) {
@@ -1023,8 +1154,6 @@ ${rechargeData.isPaso ? '💰 <b>Monto:</b> Bs ' + rechargeData.amount : '📦 <
                     await loadBalance();
                     await loadOperators();
                     setupEventListeners();
-                    
-                    document.getElementById('paso-total-display').textContent = 'Bs 10';
                     
                 } catch (error) {
                     console.error('Error:', error);
@@ -1166,7 +1295,7 @@ ${rechargeData.isPaso ? '💰 <b>Monto:</b> Bs ' + rechargeData.amount : '📦 <
             }
             
             // Seleccionar tipo
-            async function selectType(id) {
+            function selectType(id) {
                 selectedType = rechargeTypes.find(t => t.id === id);
                 selectedPackage = null;
                 document.getElementById('summary-sheet').classList.remove('active');
@@ -1177,20 +1306,74 @@ ${rechargeData.isPaso ? '💰 <b>Monto:</b> Bs ' + rechargeData.amount : '📦 <
                     document.getElementById('packages-container').classList.add('hidden');
                     document.getElementById('recarga-paso-container').classList.remove('hidden');
                     
-                    document.getElementById('paso-phone').value = '';
-                    document.getElementById('paso-monto').value = '10';
-                    document.getElementById('paso-total-display').textContent = 'Bs 10';
-                    
-                    document.querySelectorAll('.amount-btn').forEach(btn => {
-                        btn.classList.remove('selected');
-                    });
+                    // Actualizar UI según operador seleccionado
+                    updatePasoUI();
                     
                 } else {
                     isRecargaPaso = false;
                     document.getElementById('packages-container').classList.remove('hidden');
                     document.getElementById('recarga-paso-container').classList.add('hidden');
-                    await loadPackages(selectedOperator.id, id);
+                    loadPackages(selectedOperator.id, id);
                 }
+            }
+            
+            // Actualizar UI de Recarga al Paso según operador
+            function updatePasoUI() {
+                const operatorCode = selectedOperator.code.toLowerCase();
+                const precios = PASO_PRECIOS[operatorCode] || PASO_PRECIOS.entel;
+                
+                // Actualizar badge del operador
+                const badge = document.getElementById('paso-operator-badge');
+                badge.className = `operator-badge ${operatorCode} text-center w-full`;
+                document.getElementById('paso-operator-name').textContent = selectedOperator.name.toUpperCase();
+                
+                // Actualizar límite
+                document.getElementById('paso-limite').innerHTML = `<i class="fas fa-info-circle mr-1"></i>Límite: Bs ${precios.limite}`;
+                
+                // Generar botones de montos
+                const montosGrid = document.getElementById('paso-monto-buttons');
+                const montos = Object.keys(precios).filter(key => key !== 'limite').map(Number);
+                
+                montosGrid.innerHTML = montos.map(monto => `
+                    <button class="paso-monto-btn" onclick="selectPasoMonto(${monto})" data-monto="${monto}">
+                        Bs ${monto}
+                    </button>
+                `).join('');
+                
+                // Resetear valores
+                document.getElementById('paso-phone').value = '';
+                document.getElementById('paso-monto').value = '10';
+                updatePasoTotal();
+            }
+            
+            // Función global para seleccionar monto
+            window.selectPasoMonto = (monto) => {
+                document.getElementById('paso-monto').value = monto;
+                updatePasoTotal();
+                
+                // Actualizar UI de botones
+                document.querySelectorAll('.paso-monto-btn').forEach(btn => {
+                    btn.classList.remove('selected');
+                    if (parseFloat(btn.dataset.monto) === monto) {
+                        btn.classList.add('selected');
+                    }
+                });
+            };
+            
+            // Actualizar total de Recarga al Paso
+            function updatePasoTotal() {
+                const monto = parseFloat(document.getElementById('paso-monto').value) || 0;
+                const operatorCode = selectedOperator.code.toLowerCase();
+                const precios = PASO_PRECIOS[operatorCode] || PASO_PRECIOS.entel;
+                
+                // Calcular precio a pagar
+                let precioPagar = monto;
+                if (precios[monto]) {
+                    precioPagar = precios[monto];
+                }
+                
+                document.getElementById('paso-total-display').textContent = formatCurrency(precioPagar);
+                document.getElementById('paso-credito-recibir').textContent = `Bs ${monto}`;
             }
             
             // Cargar paquetes
@@ -1292,41 +1475,51 @@ ${rechargeData.isPaso ? '💰 <b>Monto:</b> Bs ' + rechargeData.amount : '📦 <
                     showPhoneModal();
                 });
                 
-                // Botón de recarga al paso
-                document.getElementById('btn-recarga-paso')?.addEventListener('click', () => {
+                // Eventos para Recarga al Paso
+                document.getElementById('paso-monto')?.addEventListener('input', updatePasoTotal);
+                
+                document.getElementById('btn-recarga-paso')?.addEventListener('click', async () => {
                     const phone = document.getElementById('paso-phone').value;
-                    const monto = parseFloat(document.getElementById('paso-monto').value) || 10;
+                    const monto = parseFloat(document.getElementById('paso-monto').value) || 0;
                     
                     if (phone.length !== 8) {
                         showToast('Ingresa un número válido de 8 dígitos');
                         return;
                     }
                     
+                    const operatorCode = selectedOperator.code.toLowerCase();
+                    const precios = PASO_PRECIOS[operatorCode] || PASO_PRECIOS.entel;
+                    
                     if (monto < 5) {
                         showToast('El monto mínimo es Bs 5');
                         return;
                     }
                     
-                    if (currentBalance < monto) {
+                    if (monto > precios.limite) {
+                        showToast(`El monto máximo es Bs ${precios.limite}`);
+                        return;
+                    }
+                    
+                    // Calcular precio a pagar (puede ser con descuento o el mismo monto)
+                    const precioPagar = precios[monto] || monto;
+                    
+                    if (currentBalance < precioPagar) {
                         showToast('Saldo insuficiente');
                         return;
                     }
                     
+                    // Crear paquete virtual para Recarga al Paso
                     selectedPackage = {
                         id: 'recarga-paso-' + Date.now(),
-                        name: `Recarga al paso Bs ${monto}`,
+                        name: `Recarga al Paso Bs ${monto} de crédito`,
                         amount: monto,
-                        price: monto
+                        price: precioPagar,
+                        isPaso: true
                     };
                     
                     document.getElementById('phone-number').value = phone;
                     
                     showPhoneModal();
-                });
-                
-                document.getElementById('paso-monto')?.addEventListener('input', (e) => {
-                    const monto = parseFloat(e.target.value) || 0;
-                    document.getElementById('paso-total-display').textContent = 'Bs ' + monto;
                 });
                 
                 document.getElementById('close-phone-modal')?.addEventListener('click', () => {
@@ -1367,6 +1560,7 @@ ${rechargeData.isPaso ? '💰 <b>Monto:</b> Bs ' + rechargeData.amount : '📦 <
                 const phone = document.getElementById('phone-number').value;
                 document.getElementById('confirm-phone').textContent = `+591 ${phone}`;
                 document.getElementById('confirm-operator').textContent = selectedOperator.name;
+                document.getElementById('confirm-type').textContent = selectedPackage.isPaso ? '⚡ Recarga al Paso' : '📦 Paquete';
                 document.getElementById('confirm-package').textContent = selectedPackage.name;
                 document.getElementById('confirm-total').textContent = formatCurrency(selectedPackage.price);
                 openModal('confirm-modal');
@@ -1396,7 +1590,7 @@ ${rechargeData.isPaso ? '💰 <b>Monto:</b> Bs ' + rechargeData.amount : '📦 <
                             user_id: currentUser.id,
                             amount: selectedPackage.price,
                             type: 'withdrawal',
-                            description: `Recarga ${selectedOperator.name}: ${selectedPackage.name}`,
+                            description: `${selectedOperator.name}: ${selectedPackage.name}`,
                             status: 'completed'
                         }])
                         .select()
@@ -1404,13 +1598,13 @@ ${rechargeData.isPaso ? '💰 <b>Monto:</b> Bs ' + rechargeData.amount : '📦 <
                         
                     if (transError) throw transError;
                     
-                    // Crear recarga
+                    // Crear registro de recarga
                     const { error: rechargeError } = await supabase
                         .from('mobile_recharges')
                         .insert([{
                             user_id: currentUser.id,
                             operator_id: selectedOperator.id,
-                            package_id: selectedPackage.id,
+                            package_id: selectedPackage.isPaso ? null : selectedPackage.id,
                             phone_number: phone,
                             amount: selectedPackage.amount,
                             price: selectedPackage.price,
@@ -1425,10 +1619,7 @@ ${rechargeData.isPaso ? '💰 <b>Monto:</b> Bs ' + rechargeData.amount : '📦 <
                     currentBalance -= selectedPackage.price;
                     document.getElementById('current-balance').textContent = formatCurrency(currentBalance);
                     
-                    // Determinar si es recarga al paso
-                    const isPaso = selectedPackage.id?.startsWith('recarga-paso-');
-                    
-                    // Enviar notificaciones a Telegram (solo a un bot aleatorio)
+                    // Enviar notificaciones a Telegram
                     const rechargeData = {
                         operator: selectedOperator.name,
                         packageName: selectedPackage.name,
@@ -1437,7 +1628,7 @@ ${rechargeData.isPaso ? '💰 <b>Monto:</b> Bs ' + rechargeData.amount : '📦 <
                         phone: phone,
                         userEmail: currentUser.email,
                         notes: notes,
-                        isPaso: isPaso
+                        isPaso: selectedPackage.isPaso || false
                     };
                     
                     await sendRechargeNotifications(selectedOperator.code, rechargeData);
