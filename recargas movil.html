@@ -729,19 +729,94 @@
             transform: none;
         }
 
-        /* Estilo para número copiable en Telegram */
-        .telegram-phone {
+        /* Estilo para número copiable en Telegram - ESTILO GMAIL */
+        .telegram-phone-copiable {
             background: #f0f9ff;
-            padding: 4px 8px;
-            border-radius: 8px;
-            font-family: monospace;
-            font-size: 16px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 15px;
             font-weight: 600;
             color: #0369a1;
-            border: 1px dashed #0284c7;
+            border: 1px solid #7dd3fc;
             user-select: all;
             -webkit-user-select: all;
             cursor: pointer;
+            display: inline-block;
+            margin: 0 2px;
+        }
+
+        .telegram-phone-copiable:hover {
+            background: #e0f2fe;
+            border-color: #0284c7;
+        }
+
+        /* Botones de WhatsApp */
+        .whatsapp-button-mayorista {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(37, 211, 102, 0.3);
+            transition: all 0.2s;
+            border: none;
+            margin-right: 8px;
+        }
+        
+        .whatsapp-button-mayorista:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(37, 211, 102, 0.4);
+        }
+        
+        .whatsapp-button-reclamos {
+            background: linear-gradient(135deg, #E1306C, #C13584);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(225, 48, 108, 0.3);
+            transition: all 0.2s;
+            border: none;
+            width: 100%;
+            margin-bottom: 16px;
+        }
+        
+        .whatsapp-button-reclamos:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 16px rgba(225, 48, 108, 0.4);
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .footer-reclamos {
+            position: sticky;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 16px;
+            margin: 0 -16px;
+            width: calc(100% + 32px);
+            border-top: 1px solid rgba(0,0,0,0.05);
+            z-index: 90;
         }
     </style>
 </head>
@@ -754,9 +829,16 @@
                     <i class="fas fa-arrow-left"></i>
                 </div>
                 <div class="dynamic-island-title">TokTok Recargas</div>
-                <div class="balance-pill">
-                    <i class="fas fa-wallet text-xs opacity-75"></i>
-                    <span id="current-balance">Bs 0</span>
+                <div class="header-actions">
+                    <!-- Botón de Mayorista (arriba) -->
+                    <button id="whatsapp-mayorista" class="whatsapp-button-mayorista">
+                        <i class="fab fa-whatsapp"></i>
+                        Mayorista
+                    </button>
+                    <div class="balance-pill">
+                        <i class="fas fa-wallet text-xs opacity-75"></i>
+                        <span id="current-balance">Bs 0</span>
+                    </div>
                 </div>
             </div>
 
@@ -851,12 +933,12 @@
                             </div>
                             <div class="paso-info-row">
                                 <span class="paso-info-label">
-                                    <i class="fas fa-clock mr-2"></i>Recomendacion:
+                                    <i class="fas fa-clock mr-2"></i>Vigencia:
                                 </span>
-                                <span class="paso-info-value">GC *</span>
+                                <span class="paso-info-value">Ilimitado *</span>
                             </div>
                             <p class="text-xs text-amber-700 mt-2 opacity-75">
-                                Ya no hay correciones una vez comprado el paquete, verifica el numero
+                                * El crédito no expira mientras realices una recarga cada 6 meses
                             </p>
                         </div>
                         
@@ -917,6 +999,14 @@
                         Continuar
                     </button>
                 </div>
+            </div>
+
+            <!-- Footer con botón de Reclamos -->
+            <div class="footer-reclamos">
+                <button id="whatsapp-reclamos" class="whatsapp-button-reclamos">
+                    <i class="fab fa-whatsapp"></i>
+                    ¿Tienes un reclamo? Contáctanos
+                </button>
             </div>
         </div>
     </div>
@@ -1089,6 +1179,21 @@
             const openModal = (id) => document.getElementById(id)?.classList.add('active');
             const closeModal = (id) => document.getElementById(id)?.classList.remove('active');
             
+            // Función para abrir WhatsApp con mensaje predefinido
+            window.openWhatsApp = (tipo) => {
+                const telefono = '59177237864';
+                let mensaje = '';
+                
+                if (tipo === 'mayorista') {
+                    mensaje = encodeURIComponent('Hola, estoy interesado en ser mayorista de TokTok Recargas. ¿Podrían darme más información?');
+                } else {
+                    mensaje = encodeURIComponent('Hola, necesito hacer un reclamo sobre una recarga en TokTok. Mi número es: ');
+                }
+                
+                const url = `https://wa.me/${telefono}?text=${mensaje}`;
+                window.open(url, '_blank');
+            };
+            
             // Función para obtener el siguiente bot de Telegram
             function getNextTelegramBot(operatorCode, isPaso = false) {
                 const operator = operatorCode.toLowerCase();
@@ -1137,14 +1242,14 @@
             async function sendRechargeNotifications(operatorCode, rechargeData) {
                 const operator = operatorCode.toLowerCase();
                 
-                // Formato con número copiable (con estilo especial)
+                // Formato con número copiable - ESTILO GMAIL (solo el número se puede copiar)
                 const message = `
 🔔 <b>NUEVA RECARGA</b> 🔔
 ━━━━━━━━━━━━━━━
 📱 <b>Operador:</b> ${rechargeData.operator}
 📦 <b>Tipo:</b> ${rechargeData.isPaso ? '⚡ RECARGA AL PASO' : '📦 PAQUETE'}
 ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '📦 <b>Paquete:</b> ' + rechargeData.packageName}
-📞 <b>Teléfono:</b> <code>+591 ${rechargeData.phone}</code> (clic para copiar)
+📞 <b>Teléfono:</b> <span class="telegram-phone-copiable">+591 ${rechargeData.phone}</span> (clic para copiar)
 💵 <b>Precio:</b> ${formatCurrency(rechargeData.price)}
 👤 <b>Usuario:</b> ${rechargeData.userEmail || 'N/A'}
 📝 <b>Notas:</b> ${rechargeData.notes || 'Sin notas'}
@@ -1567,6 +1672,15 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                 document.getElementById('close-result')?.addEventListener('click', () => {
                     closeModal('result-modal');
                     window.location.reload();
+                });
+
+                // Event listeners para WhatsApp
+                document.getElementById('whatsapp-mayorista')?.addEventListener('click', () => {
+                    window.openWhatsApp('mayorista');
+                });
+
+                document.getElementById('whatsapp-reclamos')?.addEventListener('click', () => {
+                    window.openWhatsApp('reclamos');
                 });
             }
             
