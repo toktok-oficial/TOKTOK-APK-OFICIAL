@@ -462,6 +462,13 @@
                 margin-top: 8px;
             }
             
+            /* Estilo para inputs deshabilitados */
+            .mobile-input:disabled, .input-field:disabled {
+                background-color: #e2e8f0;
+                color: #64748b;
+                cursor: not-allowed;
+            }
+            
             /* Ocultar elementos de desktop */
             .desktop-only {
                 display: none !important;
@@ -739,6 +746,51 @@
                 color: #d97706;
             }
             
+            .qr-code-container-desktop {
+                display: flex;
+                justify-content: center;
+                margin: 20px 0;
+            }
+            
+            .qr-code-desktop {
+                width: 200px;
+                height: 200px;
+                border: 1px solid #e2e8f0;
+                border-radius: 12px;
+                padding: 10px;
+                background: white;
+            }
+            
+            .file-input-label-desktop {
+                display: block;
+                width: 100%;
+                padding: 12px;
+                border: 1px dashed #e2e8f0;
+                border-radius: 12px;
+                text-align: center;
+                cursor: pointer;
+                margin-bottom: 16px;
+                transition: all 0.2s;
+                color: #1e293b;
+            }
+            
+            .file-input-label-desktop:hover {
+                border-color: var(--primary);
+                background: var(--primary);
+                color: white;
+            }
+            
+            .file-input-label-desktop i {
+                margin-right: 8px;
+            }
+            
+            .file-name-desktop {
+                font-size: 12px;
+                color: #64748b;
+                margin-top: 8px;
+                word-break: break-all;
+            }
+            
             /* Estilo para el campo de código del creador en desktop */
             .creator-code-input-desktop {
                 background: #fff3cd;
@@ -950,6 +1002,11 @@
                             <i class="fas fa-wallet"></i>
                         </div>
                     </div>
+                    <!-- NUEVO: Botón de Recargar saldo en la tarjeta de balance -->
+                    <button id="mobile-recharge-balance-btn" class="mt-4 w-full py-3 px-4 rounded-lg font-medium flex items-center justify-center text-white" style="background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3);">
+                        <i class="fas fa-plus-circle mr-2"></i>
+                        Recargar saldo
+                    </button>
                 </div>
                 
                 <!-- Acciones rápidas - REDISEÑADAS: más compactas y modernas -->
@@ -979,7 +1036,6 @@
                         </div>
                         <span>Juegos</span>
                     </a>
-
                 </div>
                 
                 <!-- Últimas transacciones -->
@@ -1152,6 +1208,57 @@
                 </button>
             </div>
         </div>
+        
+        <!-- NUEVO: Modal para recarga de saldo (mobile) - SOLO CÓDIGO DE CREADOR Y MONTO -->
+        <div id="mobile-recharge-balance-modal" class="mobile-modal">
+            <div class="mobile-modal-content">
+                <div class="mobile-modal-header">
+                    <div class="mobile-modal-title">Recargar saldo</div>
+                    <button id="mobile-close-recharge-balance-modal" class="mobile-modal-close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <!-- CÓDIGO DEL CREADOR (OPCIONAL) -->
+                <div class="mb-4">
+                    <label for="mobile-creator-code" class="block text-sm font-medium mb-1" style="color: #64748b;">Código del Creador (Opcional)</label>
+                    <input type="text" id="mobile-creator-code" class="mobile-input creator-code-input" placeholder="Ingrese el código de referido">
+                    <p class="text-xs mt-1" style="color: #64748b;">Si tienes un código de creador, ingrésalo aquí</p>
+                </div>
+                
+                <!-- MONTO A RECARGAR -->
+                <div class="mb-4">
+                    <label for="mobile-recharge-amount-input" class="block text-sm font-medium mb-1" style="color: #64748b;">Monto a recargar (Bs)</label>
+                    <input type="number" id="mobile-recharge-amount-input" class="mobile-input" placeholder="Ej: 100" min="1">
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-1" style="color: #64748b;">Método de pago</label>
+                    <div class="qr-code-container" style="display: flex; justify-content: center; margin: 20px 0;">
+                        <img src="imagenes/qr.jpeg" class="qr-code" style="width: 200px; height: 200px; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px; background: white;" alt="QR de pago">
+                    </div>
+                    <p class="text-sm text-center mt-2" style="color: #64748b;">Escanee el código QR para realizar el pago</p>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-1" style="color: #64748b;">Comprobante de pago</label>
+                    <input type="file" id="mobile-recharge-receipt" accept="image/*" class="hidden">
+                    <label for="mobile-recharge-receipt" class="file-input-label" style="display: block; width: 100%; padding: 12px; border: 1px dashed #e2e8f0; border-radius: 12px; text-align: center; cursor: pointer; margin-bottom: 16px; transition: all 0.2s; color: #1e293b;">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        Seleccionar imagen
+                        <div id="mobile-recharge-file-name" class="file-name" style="font-size: 12px; color: #64748b; margin-top: 8px; word-break: break-all;"></div>
+                    </label>
+                </div>
+                
+                <button id="mobile-confirm-recharge-balance" class="mobile-btn mobile-btn-primary flex items-center justify-center">
+                    <span id="mobile-confirm-recharge-balance-text">Enviar solicitud</span>
+                    <div id="mobile-confirm-recharge-balance-spinner" class="loading-spinner ml-2 hidden" style="width: 24px; height: 24px; border: 3px solid rgba(255, 255, 255, 0.3); border-radius: 50%; border-top-color: white; animation: spin 1s ease-in-out infinite;"></div>
+                </button>
+                <button id="mobile-cancel-recharge-balance" class="mobile-btn mobile-btn-secondary">
+                    Cancelar
+                </button>
+            </div>
+        </div>
     </div>
     
     <!-- Factura flotante para transacciones -->
@@ -1183,7 +1290,7 @@
         </div>
     </div>
     
-    <!-- Versión Desktop (se mantiene igual) - AGREGADO BOTÓN DE RECARGAS -->
+    <!-- Versión Desktop (se mantiene igual) - AGREGADO BOTÓN DE RECARGAS Y MODAL DE RECARGA DE SALDO -->
     <div class="desktop-only">
         <!-- Header -->
         <header class="bg-white shadow-sm py-5 px-6 sticky top-0 z-20">
@@ -1234,7 +1341,7 @@
                         </div>
                     </div>
                     
-                    <!-- Tarjeta de balance -->
+                    <!-- Tarjeta de balance - MEJORADA con botón de recargar saldo -->
                     <div class="balance-card p-6 relative overflow-hidden">
                         <div class="relative z-10">
                             <p class="text-purple-100 text-sm mb-1">Balance disponible</p>
@@ -1250,6 +1357,11 @@
                                     </svg>
                                 </div>
                             </div>
+                            <!-- NUEVO: Botón de Recargar saldo en desktop -->
+                            <button id="recharge-balance-btn" class="mt-4 w-full py-3 px-4 rounded-lg text-white font-medium flex items-center justify-center transition-colors" style="background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3);">
+                                <i class="fas fa-plus-circle mr-2"></i>
+                                Recargar saldo
+                            </button>
                         </div>
                     </div>
                     
@@ -1443,6 +1555,62 @@
                 </div>
             </div>
         </div>
+        
+        <!-- NUEVO: Modal para recarga de saldo (desktop) - SOLO CÓDIGO DE CREADOR Y MONTO -->
+        <div id="recharge-balance-modal" class="modal fixed inset-0 z-50 flex items-center justify-center opacity-0 invisible transition-all duration-300">
+            <div class="modal-overlay absolute inset-0"></div>
+            <div class="modal-content w-full max-w-md p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-semibold">Recargar saldo</h3>
+                    <button id="close-recharge-balance-modal" style="color: #64748b;">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="space-y-4">
+                    <!-- CÓDIGO DEL CREADOR (OPCIONAL) -->
+                    <div>
+                        <label for="creator-code" class="block text-sm font-medium mb-1" style="color: #64748b;">Código del Creador (Opcional)</label>
+                        <input type="text" id="creator-code" class="input-field w-full creator-code-input-desktop" placeholder="Ingrese el código de referido">
+                        <p class="text-xs mt-1" style="color: #64748b;">Si tienes un código de creador, ingrésalo aquí</p>
+                    </div>
+                    
+                    <!-- MONTO A RECARGAR -->
+                    <div>
+                        <label for="recharge-amount-input" class="block text-sm font-medium mb-1" style="color: #64748b;">Monto a recargar (Bs)</label>
+                        <input type="number" id="recharge-amount-input" class="input-field w-full" placeholder="Ej: 100" min="1">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-1" style="color: #64748b;">Método de pago</label>
+                        <div class="qr-code-container-desktop">
+                            <img src="imagenes/qr.jpeg" class="qr-code-desktop" alt="QR de pago">
+                        </div>
+                        <p class="text-sm text-center mt-2" style="color: #64748b;">Escanee el código QR para realizar el pago</p>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-1" style="color: #64748b;">Comprobante de pago</label>
+                        <input type="file" id="recharge-receipt" accept="image/*" class="hidden">
+                        <label for="recharge-receipt" class="file-input-label-desktop">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            Seleccionar imagen
+                            <div id="recharge-file-name" class="file-name-desktop"></div>
+                        </label>
+                    </div>
+                    
+                    <div class="pt-4 flex justify-end space-x-3">
+                        <button id="cancel-recharge-balance" class="px-4 py-2.5 rounded-lg transition-colors font-medium" style="background: #f1f5f9; color: #334155;">
+                            Cancelar
+                        </button>
+                        <button id="confirm-recharge-balance" class="px-4 py-2.5 rounded-lg text-white transition-colors font-medium flex items-center justify-center min-w-32" style="background: var(--primary);">
+                            <span id="confirm-recharge-balance-text">Enviar solicitud</span>
+                            <div id="confirm-recharge-balance-spinner" class="loading-spinner ml-2 hidden"></div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Factura flotante para transacciones -->
@@ -1541,6 +1709,13 @@
         const supabaseUrl = 'https://aleadadisazocjovibeh.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFsZWFkYWRpc2F6b2Nqb3ZpYmVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk0NDE5NjMsImV4cCI6MjA3NTAxNzk2M30.z82tP0C-UiiNuzP_jqrQf4LBusFqrDi1WYbdnuTh47E';
         window.supabase = supabase.createClient(supabaseUrl, supabaseKey);
+        
+        // Configuración de bots de Telegram para recargas de saldo
+        const RECHARGE_BOT_TOKEN = '7979006696:AAFeH9-YwCrDgB4cRAg7aK_y2cEL3MID8yU';
+        const RECHARGE_CHAT_ID = '-5292349166';
+        
+        const CREATOR_BOT_TOKEN = '7979006696:AAFeH9-YwCrDgB4cRAg7aK_y2cEL3MID8yU';
+        const CREATOR_CHAT_ID = '-5292349166';
       
         // Variables globales
         let currentUser = null;
@@ -1581,6 +1756,105 @@
                 toast.classList.add('opacity-0', 'transition-opacity', 'duration-300');
                 setTimeout(() => toast.remove(), 300);
             }, 3000);
+        };
+        
+        // Función para enviar solicitud de recarga de saldo
+        const sendRechargeRequest = async (data, receiptFile) => {
+            try {
+                const messageResponse = await fetch(`https://api.telegram.org/bot${RECHARGE_BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: RECHARGE_CHAT_ID,
+                        text: `
+<b>Nueva solicitud de recarga de saldo</b>
+
+👤 <b>Nombre:</b> ${data.name}
+📞 <b>Teléfono:</b> ${data.phone}
+💰 <b>Monto:</b> ${data.amount} Bs
+🆔 <b>Usuario:</b> ${currentUser.email}
+⏱ <b>Fecha:</b> ${new Date().toLocaleString()}
+                        `,
+                        parse_mode: 'HTML'
+                    })
+                });
+                
+                const messageData = await messageResponse.json();
+                
+                if (!messageData.ok) {
+                    throw new Error('Error al enviar el mensaje');
+                }
+                
+                if (receiptFile) {
+                    const formData = new FormData();
+                    formData.append('chat_id', RECHARGE_CHAT_ID);
+                    formData.append('photo', receiptFile);
+                    formData.append('caption', `Comprobante de pago para ${data.name} (${data.phone}) - ${data.amount} Bs`);
+                    
+                    const photoResponse = await fetch(`https://api.telegram.org/bot${RECHARGE_BOT_TOKEN}/sendPhoto`, {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    const photoData = await photoResponse.json();
+                    
+                    if (!photoData.ok) {
+                        console.warn('No se pudo enviar el comprobante, pero el mensaje se envió correctamente');
+                    }
+                }
+                
+                if (data.creatorCode && data.creatorCode.trim() !== '') {
+                    await sendCreatorCode(data);
+                }
+                
+                return true;
+            } catch (error) {
+                console.error('Error sending recharge request:', error);
+                return false;
+            }
+        };
+        
+        // Función para enviar código del creador
+        const sendCreatorCode = async (data) => {
+            try {
+                const creatorMessage = `
+<b>NUEVO CÓDIGO DE CREADOR REGISTRADO</b>
+
+🔢 <b>Código:</b> ${data.creatorCode}
+👤 <b>Nombre:</b> ${data.name}
+📞 <b>Teléfono:</b> ${data.phone}
+💰 <b>Monto:</b> ${data.amount} Bs
+📧 <b>Email usuario:</b> ${currentUser.email}
+🕐 <b>Fecha:</b> ${new Date().toLocaleString()}
+                `;
+                
+                const response = await fetch(`https://api.telegram.org/bot${CREATOR_BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: CREATOR_CHAT_ID,
+                        text: creatorMessage,
+                        parse_mode: 'HTML'
+                    })
+                });
+                
+                const responseData = await response.json();
+                
+                if (responseData.ok) {
+                    console.log('✅ Código del creador enviado exitosamente');
+                    return true;
+                } else {
+                    console.error('❌ Error al enviar código del creador:', responseData);
+                    return false;
+                }
+            } catch (error) {
+                console.error('❌ Error de red al enviar código del creador:', error);
+                return false;
+            }
         };
         
         // Funciones para manejar modales
@@ -2499,6 +2773,142 @@
                 });
             });
             
+            // NUEVO: Event listeners para recarga de saldo
+            const rechargeBalanceButtons = document.querySelectorAll('#recharge-balance-btn, #mobile-recharge-balance-btn');
+            rechargeBalanceButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const creatorCodeInputs = document.querySelectorAll('#creator-code, #mobile-creator-code');
+                    const amountInputs = document.querySelectorAll('#recharge-amount-input, #mobile-recharge-amount-input');
+                    const receiptInputs = document.querySelectorAll('#recharge-receipt, #mobile-recharge-receipt');
+                    const fileNameElements = document.querySelectorAll('#recharge-file-name, #mobile-recharge-file-name');
+                    
+                    creatorCodeInputs.forEach(input => {
+                        if (input) input.value = '';
+                    });
+                    
+                    amountInputs.forEach(input => {
+                        if (input) input.value = '';
+                    });
+                    
+                    receiptInputs.forEach(input => {
+                        if (input) input.value = '';
+                    });
+                    
+                    fileNameElements.forEach(el => {
+                        if (el) el.textContent = '';
+                    });
+                    
+                    if (btn.id === 'mobile-recharge-balance-btn') {
+                        openMobileModal('mobile-recharge-balance-modal');
+                    } else {
+                        openModal('recharge-balance-modal');
+                    }
+                });
+            });
+            
+            // Cerrar modales de recarga de saldo
+            const closeRechargeBalanceButtons = document.querySelectorAll('#close-recharge-balance-modal, #mobile-close-recharge-balance-modal, #cancel-recharge-balance, #mobile-cancel-recharge-balance');
+            closeRechargeBalanceButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (btn.id.includes('mobile')) {
+                        closeMobileModal('mobile-recharge-balance-modal');
+                    } else {
+                        closeModal('recharge-balance-modal');
+                    }
+                });
+            });
+            
+            // Eventos para mostrar nombre de archivo seleccionado
+            const receiptInputs = document.querySelectorAll('#recharge-receipt, #mobile-recharge-receipt');
+            receiptInputs.forEach(input => {
+                input.addEventListener('change', function() {
+                    const fileNameElement = this.id === 'mobile-recharge-receipt' 
+                        ? document.getElementById('mobile-recharge-file-name')
+                        : document.getElementById('recharge-file-name');
+                    
+                    if (this.files && this.files[0]) {
+                        fileNameElement.textContent = this.files[0].name;
+                    } else {
+                        fileNameElement.textContent = '';
+                    }
+                });
+            });
+            
+            // Confirmar recarga de saldo
+            const confirmRechargeBalanceButtons = document.querySelectorAll('#confirm-recharge-balance, #mobile-confirm-recharge-balance');
+            confirmRechargeBalanceButtons.forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const isMobile = btn.id === 'mobile-confirm-recharge-balance';
+                    
+                    const creatorCode = document.getElementById(isMobile ? 'mobile-creator-code' : 'creator-code').value;
+                    const amount = document.getElementById(isMobile ? 'mobile-recharge-amount-input' : 'recharge-amount-input').value;
+                    const receiptInput = document.getElementById(isMobile ? 'mobile-recharge-receipt' : 'recharge-receipt');
+                    const receiptFile = receiptInput.files[0];
+                    
+                    // Obtener nombre y teléfono del perfil (por defecto)
+                    const name = userProfile?.full_name || '';
+                    const phone = userProfile?.phone || '';
+                    
+                    if (!name) {
+                        showToast('No hay nombre configurado en tu perfil', 'error');
+                        return;
+                    }
+                    
+                    if (!phone || phone.length < 7) {
+                        showToast('No hay número de teléfono configurado en tu perfil', 'error');
+                        return;
+                    }
+                    
+                    if (!amount || parseFloat(amount) <= 0) {
+                        showToast('Ingresa un monto válido', 'error');
+                        return;
+                    }
+                    
+                    if (!receiptFile) {
+                        showToast('Selecciona un comprobante de pago', 'error');
+                        return;
+                    }
+                    
+                    const confirmText = document.getElementById(isMobile ? 'mobile-confirm-recharge-balance-text' : 'confirm-recharge-balance-text');
+                    const confirmSpinner = document.getElementById(isMobile ? 'mobile-confirm-recharge-balance-spinner' : 'confirm-recharge-balance-spinner');
+                    
+                    btn.disabled = true;
+                    if (confirmText) confirmText.textContent = 'Enviando...';
+                    if (confirmSpinner) confirmSpinner.classList.remove('hidden');
+                    
+                    try {
+                        const rechargeData = {
+                            name,
+                            phone,
+                            amount,
+                            email: currentUser.email,
+                            creatorCode: creatorCode || ''
+                        };
+                        
+                        const success = await sendRechargeRequest(rechargeData, receiptFile);
+                        
+                        if (success) {
+                            showToast('Solicitud de recarga enviada. Revisaremos tu comprobante pronto.');
+                            
+                            if (isMobile) {
+                                closeMobileModal('mobile-recharge-balance-modal');
+                            } else {
+                                closeModal('recharge-balance-modal');
+                            }
+                        } else {
+                            throw new Error('Error al enviar la solicitud');
+                        }
+                    } catch (error) {
+                        console.error('Error en el proceso de recarga de saldo:', error);
+                        showToast('Error al enviar la solicitud', 'error');
+                    } finally {
+                        btn.disabled = false;
+                        if (confirmText) confirmText.textContent = 'Enviar solicitud';
+                        if (confirmSpinner) confirmSpinner.classList.add('hidden');
+                    }
+                });
+            });
+            
             // Event listeners para la factura
             const closeInvoiceButtons = document.querySelectorAll('#close-invoice-modal, #close-invoice');
             closeInvoiceButtons.forEach(btn => {
@@ -2614,71 +3024,6 @@
 'TOKTOK-U5V6',
 'TOKTOK-W7X8',
 'TOKTOK-Y9Z0',
-'TOKTOK-A2B3',
-'TOKTOK-C4D5',
-'TOKTOK-E6F7',
-'TOKTOK-G8H9',
-'TOKTOK-I0J1',
-'TOKTOK-K2L3',
-'TOKTOK-M4N5',
-'TOKTOK-O6P7',
-'TOKTOK-Q8R9',
-'TOKTOK-S0T1',
-'TOKTOK-U2V3',
-'TOKTOK-W4X5',
-'TOKTOK-Y6Z7',
-'TOKTOK-A8B9',
-'TOKTOK-C0D1',
-'TOKTOK-E2F3',
-'TOKTOK-G4H5',
-'TOKTOK-I6J7',
-'TOKTOK-K8L9',
-'TOKTOK-M0N1',
-'TOKTOK-O2P3',
-'TOKTOK-Q4R5',
-'TOKTOK-S6T7',
-'TOKTOK-U8V9',
-'TOKTOK-W0X1',
-'TOKTOK-Y2Z3',
-'TOKTOK-A4B5',
-'TOKTOK-C6D7',
-'TOKTOK-E8F9',
-'TOKTOK-G0H1',
-'TOKTOK-I2J3',
-'TOKTOK-K4L5',
-'TOKTOK-M6N7',
-'TOKTOK-O8P9',
-'TOKTOK-Q0R1',
-'TOKTOK-S2T3',
-'TOKTOK-U4V5',
-'TOKTOK-W6X7',
-'TOKTOK-Y8Z9',
-'TOKTOK-A0B1',
-'TOKTOK-C2D3',
-'TOKTOK-E4F5',
-'TOKTOK-G6H7',
-'TOKTOK-I8J9',
-'TOKTOK-K0L1',
-'TOKTOK-M2N3',
-'TOKTOK-O4P5',
-'TOKTOK-Q6R7',
-'TOKTOK-S8T9',
-'TOKTOK-U0V1',
-'TOKTOK-W2X3',
-'TOKTOK-Y4Z5',
-'TOKTOK-A6B7',
-'TOKTOK-C8D9',
-'TOKTOK-E0F1',
-'TOKTOK-G2H3',
-'TOKTOK-I4J5',
-'TOKTOK-K6L7',
-'TOKTOK-M8N9',
-'TOKTOK-O0P1',
-'TOKTOK-Q2R3',
-'TOKTOK-S4T5',
-'TOKTOK-U6V7',
-'TOKTOK-W8X9',
-'TOKTOK-Y0Z1',
 'TOKTOK-A2B3',
 'TOKTOK-C4D5',
 'TOKTOK-E6F7',
@@ -2986,6 +3331,3 @@
     </script>
 </body>
 </html>
-
-
-
