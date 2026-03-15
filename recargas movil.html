@@ -443,7 +443,7 @@
             cursor: pointer;
         }
 
-        /* Estilos profesionales para Recarga al Paso */
+        /* Estilos profesionales para Recarga al Paso - Mismo formato para todos los operadores */
         .paso-container {
             background: linear-gradient(135deg, #ffffff, #fafafa);
             border-radius: 32px;
@@ -778,7 +778,7 @@
                     <div class="packages-grid" id="packages-list"></div>
                 </div>
                 
-                <!-- Contenedor para Recarga al Paso (diseño profesional) -->
+                <!-- Contenedor para Recarga al Paso (diseño profesional - mismo formato para todos) -->
                 <div id="recarga-paso-container" class="hidden">
                     <div class="paso-container">
                         <div class="paso-header">
@@ -789,8 +789,8 @@
                             <div class="paso-subtitle">Crédito directo para tu línea</div>
                         </div>
                         
-                        <!-- Badge del operador seleccionado -->
-                        <div id="paso-operator-badge" class="operator-badge entel text-center w-full">
+                        <!-- Badge del operador seleccionado - se actualiza dinámicamente -->
+                        <div id="paso-operator-badge" class="operator-badge text-center w-full">
                             <i class="fas fa-check-circle mr-2"></i>
                             <span id="paso-operator-name">ENTEL</span>
                         </div>
@@ -1021,7 +1021,7 @@
                 }
             };
             
-            // Precios específicos para Recarga al Paso por operador
+            // Precios específicos para Recarga al Paso por operador - MISMO FORMATO PARA TODOS
             const PASO_PRECIOS = {
                 entel: {
                     10: 9,
@@ -1306,7 +1306,7 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                     document.getElementById('packages-container').classList.add('hidden');
                     document.getElementById('recarga-paso-container').classList.remove('hidden');
                     
-                    // Actualizar UI según operador seleccionado
+                    // Actualizar UI según operador seleccionado (MISMO FORMATO PARA TODOS)
                     updatePasoUI();
                     
                 } else {
@@ -1317,12 +1317,12 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                 }
             }
             
-            // Actualizar UI de Recarga al Paso según operador
+            // Actualizar UI de Recarga al Paso según operador - MISMO FORMATO PROFESIONAL PARA TODOS
             function updatePasoUI() {
                 const operatorCode = selectedOperator.code.toLowerCase();
                 const precios = PASO_PRECIOS[operatorCode] || PASO_PRECIOS.entel;
                 
-                // Actualizar badge del operador
+                // Actualizar badge del operador con el color correspondiente
                 const badge = document.getElementById('paso-operator-badge');
                 badge.className = `operator-badge ${operatorCode} text-center w-full`;
                 document.getElementById('paso-operator-name').textContent = selectedOperator.name.toUpperCase();
@@ -1330,7 +1330,7 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                 // Actualizar límite
                 document.getElementById('paso-limite').innerHTML = `<i class="fas fa-info-circle mr-1"></i>Límite: Bs ${precios.limite}`;
                 
-                // Generar botones de montos
+                // Generar botones de montos (mismos montos para todos, pero precios diferentes)
                 const montosGrid = document.getElementById('paso-monto-buttons');
                 const montos = Object.keys(precios).filter(key => key !== 'limite').map(Number);
                 
@@ -1366,7 +1366,7 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                 const operatorCode = selectedOperator.code.toLowerCase();
                 const precios = PASO_PRECIOS[operatorCode] || PASO_PRECIOS.entel;
                 
-                // Calcular precio a pagar
+                // Calcular precio a pagar (con descuento si aplica)
                 let precioPagar = monto;
                 if (precios[monto]) {
                     precioPagar = precios[monto];
