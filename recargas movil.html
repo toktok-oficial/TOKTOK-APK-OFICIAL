@@ -728,6 +728,21 @@
             cursor: not-allowed;
             transform: none;
         }
+
+        /* Estilo para número copiable en Telegram */
+        .telegram-phone {
+            background: #f0f9ff;
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 16px;
+            font-weight: 600;
+            color: #0369a1;
+            border: 1px dashed #0284c7;
+            user-select: all;
+            -webkit-user-select: all;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -1109,9 +1124,12 @@
                     const data = await response.json();
                     if (!data.ok) {
                         console.error('Telegram API error:', data);
+                        return false;
                     }
+                    return true;
                 } catch (error) {
                     console.error('Error sending Telegram notification:', error);
+                    return false;
                 }
             }
             
@@ -1119,13 +1137,14 @@
             async function sendRechargeNotifications(operatorCode, rechargeData) {
                 const operator = operatorCode.toLowerCase();
                 
+                // Formato con número copiable (con estilo especial)
                 const message = `
 🔔 <b>NUEVA RECARGA</b> 🔔
 ━━━━━━━━━━━━━━━
 📱 <b>Operador:</b> ${rechargeData.operator}
 📦 <b>Tipo:</b> ${rechargeData.isPaso ? '⚡ RECARGA AL PASO' : '📦 PAQUETE'}
 ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '📦 <b>Paquete:</b> ' + rechargeData.packageName}
-📞 <b>Teléfono:</b> +591 ${rechargeData.phone}
+📞 <b>Teléfono:</b> <code>+591 ${rechargeData.phone}</code> (clic para copiar)
 💵 <b>Precio:</b> ${formatCurrency(rechargeData.price)}
 👤 <b>Usuario:</b> ${rechargeData.userEmail || 'N/A'}
 📝 <b>Notas:</b> ${rechargeData.notes || 'Sin notas'}
@@ -1136,9 +1155,11 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                 const botConfig = getNextTelegramBot(operatorCode, rechargeData.isPaso);
                 
                 if (botConfig) {
-                    await sendTelegramNotification(botConfig, message);
-                    console.log(`Notificación enviada al chat: ${botConfig.chatId}`);
+                    const success = await sendTelegramNotification(botConfig, message);
+                    console.log(`Notificación enviada al chat: ${botConfig.chatId} - ${success ? 'Éxito' : 'Falló'}`);
+                    return success;
                 }
+                return false;
             }
             
             // Inicialización
@@ -1583,7 +1604,26 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                         throw new Error('Saldo insuficiente');
                     }
                     
-                    // Crear transacción
+                    // PRIMERO: Enviar notificación a Telegram
+                    const rechargeData = {
+                        operator: selectedOperator.name,
+                        packageName: selectedPackage.name,
+                        amount: selectedPackage.amount,
+                        price: selectedPackage.price,
+                        phone: phone,
+                        userEmail: currentUser.email,
+                        notes: notes,
+                        isPaso: selectedPackage.isPaso || false
+                    };
+                    
+                    const telegramSuccess = await sendRechargeNotifications(selectedOperator.code, rechargeData);
+                    
+                    // Si falla Telegram, cancelar todo
+                    if (!telegramSuccess) {
+                        throw new Error('Error al enviar notificación. No se procesó la recarga.');
+                    }
+                    
+                    // SOLO SI TELEGRAM FUNCIONÓ: Crear transacción
                     const { data: transaction, error: transError } = await supabase
                         .from('transactions')
                         .insert([{
@@ -1618,20 +1658,6 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                     // Actualizar saldo
                     currentBalance -= selectedPackage.price;
                     document.getElementById('current-balance').textContent = formatCurrency(currentBalance);
-                    
-                    // Enviar notificaciones a Telegram
-                    const rechargeData = {
-                        operator: selectedOperator.name,
-                        packageName: selectedPackage.name,
-                        amount: selectedPackage.amount,
-                        price: selectedPackage.price,
-                        phone: phone,
-                        userEmail: currentUser.email,
-                        notes: notes,
-                        isPaso: selectedPackage.isPaso || false
-                    };
-                    
-                    await sendRechargeNotifications(selectedOperator.code, rechargeData);
                     
                     // Mostrar éxito
                     document.getElementById('result-icon').innerHTML = '✓';
