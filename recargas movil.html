@@ -729,26 +729,20 @@
             transform: none;
         }
 
-        /* Estilo para número copiable en Telegram - ESTILO GMAIL */
-        .telegram-phone-copiable {
-            background: #f0f9ff;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: 'Courier New', monospace;
-            font-size: 15px;
-            font-weight: 600;
-            color: #0369a1;
-            border: 1px solid #7dd3fc;
+        /* Estilo GMAIL para número copiable - SOLO AZUL Y SUBRAYADO */
+        .gmail-phone {
+            color: #1a73e8;
+            text-decoration: underline;
+            text-decoration-color: #1a73e8;
+            text-underline-offset: 2px;
+            cursor: pointer;
             user-select: all;
             -webkit-user-select: all;
-            cursor: pointer;
-            display: inline-block;
-            margin: 0 2px;
+            font-weight: 500;
         }
-
-        .telegram-phone-copiable:hover {
-            background: #e0f2fe;
-            border-color: #0284c7;
+        
+        .gmail-phone:hover {
+            color: #1557b0;
         }
 
         /* Botones de WhatsApp */
@@ -1242,14 +1236,14 @@
             async function sendRechargeNotifications(operatorCode, rechargeData) {
                 const operator = operatorCode.toLowerCase();
                 
-                // Formato con número copiable - ESTILO GMAIL (solo el número se puede copiar)
+                // Formato con número estilo GMAIL - AZUL Y SUBRAYADO
                 const message = `
 🔔 <b>NUEVA RECARGA</b> 🔔
 ━━━━━━━━━━━━━━━
 📱 <b>Operador:</b> ${rechargeData.operator}
 📦 <b>Tipo:</b> ${rechargeData.isPaso ? '⚡ RECARGA AL PASO' : '📦 PAQUETE'}
 ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '📦 <b>Paquete:</b> ' + rechargeData.packageName}
-📞 <b>Teléfono:</b> <span class="telegram-phone-copiable">+591 ${rechargeData.phone}</span> (clic para copiar)
+📞 <b>Teléfono:</b> <span class="gmail-phone">+591 ${rechargeData.phone}</span>
 💵 <b>Precio:</b> ${formatCurrency(rechargeData.price)}
 👤 <b>Usuario:</b> ${rechargeData.userEmail || 'N/A'}
 📝 <b>Notas:</b> ${rechargeData.notes || 'Sin notas'}
