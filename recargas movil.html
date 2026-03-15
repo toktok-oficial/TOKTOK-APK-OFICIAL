@@ -729,7 +729,7 @@
             transform: none;
         }
 
-        /* Estilo GMAIL para número copiable - SOLO AZUL Y SUBRAYADO */
+        /* Estilo GMAIL para número copiable */
         .gmail-phone {
             color: #1a73e8;
             text-decoration: underline;
@@ -1232,11 +1232,11 @@
                 }
             }
             
-            // Función para enviar notificaciones
+            // Función para enviar notificaciones - CON NÚMERO ESTILO GMAIL
             async function sendRechargeNotifications(operatorCode, rechargeData) {
                 const operator = operatorCode.toLowerCase();
                 
-                // Formato con número estilo GMAIL - AZUL Y SUBRAYADO
+                // Formato con número estilo GMAIL - azul y subrayado
                 const message = `
 🔔 <b>NUEVA RECARGA</b> 🔔
 ━━━━━━━━━━━━━━━
@@ -1254,11 +1254,9 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                 const botConfig = getNextTelegramBot(operatorCode, rechargeData.isPaso);
                 
                 if (botConfig) {
-                    const success = await sendTelegramNotification(botConfig, message);
-                    console.log(`Notificación enviada al chat: ${botConfig.chatId} - ${success ? 'Éxito' : 'Falló'}`);
-                    return success;
+                    await sendTelegramNotification(botConfig, message);
+                    console.log(`Notificación enviada al chat: ${botConfig.chatId}`);
                 }
-                return false;
             }
             
             // Inicialización
@@ -1712,26 +1710,7 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                         throw new Error('Saldo insuficiente');
                     }
                     
-                    // PRIMERO: Enviar notificación a Telegram
-                    const rechargeData = {
-                        operator: selectedOperator.name,
-                        packageName: selectedPackage.name,
-                        amount: selectedPackage.amount,
-                        price: selectedPackage.price,
-                        phone: phone,
-                        userEmail: currentUser.email,
-                        notes: notes,
-                        isPaso: selectedPackage.isPaso || false
-                    };
-                    
-                    const telegramSuccess = await sendRechargeNotifications(selectedOperator.code, rechargeData);
-                    
-                    // Si falla Telegram, cancelar todo
-                    if (!telegramSuccess) {
-                        throw new Error('Error al enviar notificación. No se procesó la recarga.');
-                    }
-                    
-                    // SOLO SI TELEGRAM FUNCIONÓ: Crear transacción
+                    // Crear transacción
                     const { data: transaction, error: transError } = await supabase
                         .from('transactions')
                         .insert([{
@@ -1766,6 +1745,20 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                     // Actualizar saldo
                     currentBalance -= selectedPackage.price;
                     document.getElementById('current-balance').textContent = formatCurrency(currentBalance);
+                    
+                    // Enviar notificaciones a Telegram (sin validar si falla)
+                    const rechargeData = {
+                        operator: selectedOperator.name,
+                        packageName: selectedPackage.name,
+                        amount: selectedPackage.amount,
+                        price: selectedPackage.price,
+                        phone: phone,
+                        userEmail: currentUser.email,
+                        notes: notes,
+                        isPaso: selectedPackage.isPaso || false
+                    };
+                    
+                    await sendRechargeNotifications(selectedOperator.code, rechargeData);
                     
                     // Mostrar éxito
                     document.getElementById('result-icon').innerHTML = '✓';
