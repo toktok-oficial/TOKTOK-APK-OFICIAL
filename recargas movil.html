@@ -24,7 +24,6 @@
             justify-content: center;
         }
         
-        /* iPhone style container */
         .iphone-container {
             width: 100%;
             max-width: 390px;
@@ -398,6 +397,7 @@
             font-weight: 500;
             color: #6d28d9;
             box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            user-select: text;
         }
         
         .phone-number-input {
@@ -407,6 +407,8 @@
             border: none;
             font-size: 16px;
             outline: none;
+            -webkit-user-select: text;
+            user-select: text;
         }
         
         .success-animation {
@@ -443,7 +445,6 @@
             cursor: pointer;
         }
 
-        /* Estilos profesionales para Recarga al Paso */
         .paso-container {
             background: linear-gradient(135deg, #ffffff, #fafafa);
             border-radius: 32px;
@@ -556,6 +557,7 @@
             font-weight: 600;
             font-size: 15px;
             margin: 2px;
+            user-select: text;
         }
         
         .paso-phone-input {
@@ -567,6 +569,8 @@
             font-weight: 500;
             outline: none;
             color: #1e293b;
+            -webkit-user-select: text;
+            user-select: text;
         }
         
         .paso-phone-input::placeholder {
@@ -644,6 +648,8 @@
             color: #1e293b;
             text-align: center;
             outline: none;
+            -webkit-user-select: text;
+            user-select: text;
         }
         
         .paso-monto-input:focus {
@@ -733,7 +739,6 @@
 <body>
     <div class="iphone-container">
         <div class="screen">
-            <!-- Dynamic Island Header -->
             <div class="dynamic-island">
                 <div class="back-button hidden" id="back-to-operators">
                     <i class="fas fa-arrow-left"></i>
@@ -745,40 +750,34 @@
                 </div>
             </div>
 
-            <!-- Step Indicators -->
             <div class="step-indicator" id="step-indicators">
                 <div class="step-dot active" data-step="1"></div>
                 <div class="step-dot" data-step="2"></div>
                 <div class="step-dot" data-step="3"></div>
             </div>
 
-            <!-- PASO 1: Operadores -->
             <div id="step-1" class="step-screen">
                 <h2 class="text-xl font-semibold mb-2 px-1">¿Qué operador?</h2>
                 <p class="text-gray-500 text-sm mb-6 px-1">Selecciona para ver sus recargas</p>
                 <div class="operators-grid" id="operators-container"></div>
             </div>
 
-            <!-- PASO 2: Tipos y Paquetes -->
             <div id="step-2" class="step-screen hidden">
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="text-xl font-semibold" id="selected-operator-name">Entel</h2>
                     <span class="text-sm text-purple-600 bg-purple-50 px-3 py-1 rounded-full">Paso 2 de 3</span>
                 </div>
                 
-                <!-- Tipos (categorías) -->
                 <div class="mb-4">
                     <p class="text-sm font-medium text-gray-500 mb-2">Categorías</p>
                     <div class="categories-scroll" id="recharge-types-container"></div>
                 </div>
 
-                <!-- Paquetes regulares -->
                 <div id="packages-container">
                     <p class="text-sm font-medium text-gray-500 mb-2">Paquetes disponibles</p>
                     <div class="packages-grid" id="packages-list"></div>
                 </div>
                 
-                <!-- Contenedor para Recarga al Paso (diseño profesional) -->
                 <div id="recarga-paso-container" class="hidden">
                     <div class="paso-container">
                         <div class="paso-header">
@@ -789,7 +788,6 @@
                             <div class="paso-subtitle">Crédito directo para tu línea</div>
                         </div>
                         
-                        <!-- Badge del operador seleccionado -->
                         <div id="paso-operator-badge" class="operator-badge entel text-center w-full">
                             <i class="fas fa-check-circle mr-2"></i>
                             <span id="paso-operator-name">ENTEL</span>
@@ -817,16 +815,12 @@
                                 </span>
                             </div>
                             
-                            <!-- Botones de montos predefinidos según operador -->
-                            <div class="paso-monto-grid" id="paso-monto-buttons">
-                                <!-- Se llenará dinámicamente según operador -->
-                            </div>
+                            <div class="paso-monto-grid" id="paso-monto-buttons"></div>
                             
                             <input type="number" id="paso-monto" class="paso-monto-input" 
                                    placeholder="Ingresa monto" min="5" step="5" value="10">
                         </div>
                         
-                        <!-- Info card con beneficio -->
                         <div class="paso-info-card">
                             <div class="paso-info-row">
                                 <span class="paso-info-label">
@@ -862,14 +856,12 @@
                     </div>
                 </div>
                 
-                <!-- Sin resultados para paquetes -->
                 <div id="no-packages" class="hidden text-center py-12">
                     <i class="fas fa-box-open text-4xl text-gray-300 mb-3"></i>
                     <p class="text-gray-500">No hay paquetes disponibles</p>
                 </div>
             </div>
 
-            <!-- Bottom Sheet Flotante (Resumen) -->
             <div id="summary-sheet" class="bottom-sheet">
                 <div class="sheet-handle"></div>
                 <h3 class="text-lg font-semibold mb-4">Resumen de recarga</h3>
@@ -906,7 +898,6 @@
         </div>
     </div>
 
-    <!-- Modal para número de teléfono (para paquetes normales) -->
     <div id="phone-modal" class="ios-modal">
         <div class="modal-content-ios">
             <h3 class="text-xl font-semibold mb-4">Número de teléfono</h3>
@@ -940,7 +931,6 @@
         </div>
     </div>
 
-    <!-- Modal de confirmación -->
     <div id="confirm-modal" class="ios-modal">
         <div class="modal-content-ios">
             <div class="success-animation">✓</div>
@@ -978,7 +968,6 @@
         </div>
     </div>
 
-    <!-- Modal de resultado -->
     <div id="result-modal" class="ios-modal">
         <div class="modal-content-ios text-center">
             <div id="result-icon" class="success-animation">✓</div>
@@ -996,7 +985,6 @@
             
             const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
             
-            // Configuración de bots de Telegram por operador
             const TELEGRAM_BOTS = {
                 entel: {
                     packages: [
@@ -1021,7 +1009,6 @@
                 }
             };
             
-            // Precios específicos para Recarga al Paso por operador
             const PASO_PRECIOS = {
                 entel: {
                     10: 9,
@@ -1049,7 +1036,6 @@
                 }
             };
             
-            // Estado general
             let currentUser = null;
             let currentBalance = 0;
             let operators = [];
@@ -1060,7 +1046,6 @@
             let selectedPackage = null;
             let isRecargaPaso = false;
             
-            // Utilidades
             const formatCurrency = (amount) => 'Bs ' + parseFloat(amount).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
             
             const showToast = (message, type = 'error') => {
@@ -1074,7 +1059,6 @@
             const openModal = (id) => document.getElementById(id)?.classList.add('active');
             const closeModal = (id) => document.getElementById(id)?.classList.remove('active');
             
-            // Función para obtener el siguiente bot de Telegram
             function getNextTelegramBot(operatorCode, isPaso = false) {
                 const operator = operatorCode.toLowerCase();
                 const botConfigs = TELEGRAM_BOTS[operator];
@@ -1092,7 +1076,6 @@
                 }
             }
             
-            // Función para enviar notificación a Telegram
             async function sendTelegramNotification(botConfig, message) {
                 try {
                     const url = `https://api.telegram.org/bot${botConfig.token}/sendMessage`;
@@ -1115,7 +1098,6 @@
                 }
             }
             
-            // Función para enviar notificaciones
             async function sendRechargeNotifications(operatorCode, rechargeData) {
                 const operator = operatorCode.toLowerCase();
                 
@@ -1141,7 +1123,6 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                 }
             }
             
-            // Inicialización
             document.addEventListener('DOMContentLoaded', async () => {
                 try {
                     const { data: { session } } = await supabase.auth.getSession();
@@ -1160,7 +1141,6 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                 }
             });
             
-            // Cargar saldo
             async function loadBalance() {
                 const { data } = await supabase
                     .from('transactions')
@@ -1178,7 +1158,6 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                 document.getElementById('current-balance').textContent = formatCurrency(balance);
             }
             
-            // Cargar operadores
             async function loadOperators() {
                 const { data } = await supabase
                     .from('mobile_operators')
@@ -1190,7 +1169,6 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                 renderOperators();
             }
             
-            // Renderizar operadores
             function renderOperators() {
                 const container = document.getElementById('operators-container');
                 container.innerHTML = operators.map(op => {
@@ -1223,7 +1201,6 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                 });
             }
             
-            // Seleccionar operador
             async function selectOperator(id) {
                 selectedOperator = operators.find(op => op.id === id);
                 
@@ -1240,7 +1217,6 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                 await loadRechargeTypes(id);
             }
             
-            // Volver a operadores
             document.getElementById('back-to-operators')?.addEventListener('click', () => {
                 document.getElementById('step-1').classList.remove('hidden');
                 document.getElementById('step-2').classList.add('hidden');
@@ -1257,7 +1233,6 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                 });
             });
             
-            // Cargar tipos de recarga
             async function loadRechargeTypes(operatorId) {
                 const { data } = await supabase
                     .from('recharge_types')
@@ -1280,7 +1255,6 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                 }
             }
             
-            // Renderizar tipos
             function renderTypes() {
                 const container = document.getElementById('recharge-types-container');
                 container.innerHTML = rechargeTypes.map(type => `
@@ -1294,7 +1268,6 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                 });
             }
             
-            // Seleccionar tipo
             function selectType(id) {
                 selectedType = rechargeTypes.find(t => t.id === id);
                 selectedPackage = null;
@@ -1306,7 +1279,6 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                     document.getElementById('packages-container').classList.add('hidden');
                     document.getElementById('recarga-paso-container').classList.remove('hidden');
                     
-                    // Actualizar UI según operador seleccionado
                     updatePasoUI();
                     
                 } else {
@@ -1317,20 +1289,16 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                 }
             }
             
-            // Actualizar UI de Recarga al Paso según operador
             function updatePasoUI() {
                 const operatorCode = selectedOperator.code.toLowerCase();
                 const precios = PASO_PRECIOS[operatorCode] || PASO_PRECIOS.entel;
                 
-                // Actualizar badge del operador
                 const badge = document.getElementById('paso-operator-badge');
                 badge.className = `operator-badge ${operatorCode} text-center w-full`;
                 document.getElementById('paso-operator-name').textContent = selectedOperator.name.toUpperCase();
                 
-                // Actualizar límite
                 document.getElementById('paso-limite').innerHTML = `<i class="fas fa-info-circle mr-1"></i>Límite: Bs ${precios.limite}`;
                 
-                // Generar botones de montos
                 const montosGrid = document.getElementById('paso-monto-buttons');
                 const montos = Object.keys(precios).filter(key => key !== 'limite').map(Number);
                 
@@ -1340,18 +1308,15 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                     </button>
                 `).join('');
                 
-                // Resetear valores
                 document.getElementById('paso-phone').value = '';
                 document.getElementById('paso-monto').value = '10';
                 updatePasoTotal();
             }
             
-            // Función global para seleccionar monto
             window.selectPasoMonto = (monto) => {
                 document.getElementById('paso-monto').value = monto;
                 updatePasoTotal();
                 
-                // Actualizar UI de botones
                 document.querySelectorAll('.paso-monto-btn').forEach(btn => {
                     btn.classList.remove('selected');
                     if (parseFloat(btn.dataset.monto) === monto) {
@@ -1360,13 +1325,11 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                 });
             };
             
-            // Actualizar total de Recarga al Paso
             function updatePasoTotal() {
                 const monto = parseFloat(document.getElementById('paso-monto').value) || 0;
                 const operatorCode = selectedOperator.code.toLowerCase();
                 const precios = PASO_PRECIOS[operatorCode] || PASO_PRECIOS.entel;
                 
-                // Calcular precio a pagar
                 let precioPagar = monto;
                 if (precios[monto]) {
                     precioPagar = precios[monto];
@@ -1376,7 +1339,6 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                 document.getElementById('paso-credito-recibir').textContent = `Bs ${monto}`;
             }
             
-            // Cargar paquetes
             async function loadPackages(operatorId, typeId) {
                 const { data } = await supabase
                     .from('mobile_packages')
@@ -1390,7 +1352,6 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                 renderPackages();
             }
             
-            // Renderizar paquetes
             function renderPackages() {
                 const container = document.getElementById('packages-list');
                 const noPackages = document.getElementById('no-packages');
@@ -1438,7 +1399,6 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                 });
             }
             
-            // Mostrar bottom sheet de resumen
             function showSummarySheet() {
                 document.getElementById('sheet-operator').textContent = selectedOperator?.name || '-';
                 document.getElementById('sheet-type').textContent = selectedType?.name || '-';
@@ -1464,7 +1424,6 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                 document.getElementById('summary-sheet').classList.add('active');
             }
             
-            // Event listeners
             function setupEventListeners() {
                 document.getElementById('btn-continue')?.addEventListener('click', () => {
                     if (!selectedPackage) return;
@@ -1475,7 +1434,6 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                     showPhoneModal();
                 });
                 
-                // Eventos para Recarga al Paso
                 document.getElementById('paso-monto')?.addEventListener('input', updatePasoTotal);
                 
                 document.getElementById('btn-recarga-paso')?.addEventListener('click', async () => {
@@ -1500,7 +1458,6 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                         return;
                     }
                     
-                    // Calcular precio a pagar (puede ser con descuento o el mismo monto)
                     const precioPagar = precios[monto] || monto;
                     
                     if (currentBalance < precioPagar) {
@@ -1508,7 +1465,6 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                         return;
                     }
                     
-                    // Crear paquete virtual para Recarga al Paso
                     selectedPackage = {
                         id: 'recarga-paso-' + Date.now(),
                         name: `Recarga al Paso Bs ${monto} de crédito`,
@@ -1552,7 +1508,7 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
             function showPhoneModal() {
                 document.getElementById('modal-package-name').textContent = selectedPackage.name;
                 document.getElementById('recharge-notes').value = '';
-                document.getElementById('process-recharge-btn').disabled = false;
+                document.getElementById('process-recharge-btn').disabled = true;
                 openModal('phone-modal');
             }
             
@@ -1583,7 +1539,6 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                         throw new Error('Saldo insuficiente');
                     }
                     
-                    // Crear transacción
                     const { data: transaction, error: transError } = await supabase
                         .from('transactions')
                         .insert([{
@@ -1598,7 +1553,6 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                         
                     if (transError) throw transError;
                     
-                    // Crear registro de recarga
                     const { error: rechargeError } = await supabase
                         .from('mobile_recharges')
                         .insert([{
@@ -1615,11 +1569,9 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                         
                     if (rechargeError) throw rechargeError;
                     
-                    // Actualizar saldo
                     currentBalance -= selectedPackage.price;
                     document.getElementById('current-balance').textContent = formatCurrency(currentBalance);
                     
-                    // Enviar notificaciones a Telegram
                     const rechargeData = {
                         operator: selectedOperator.name,
                         packageName: selectedPackage.name,
@@ -1633,7 +1585,6 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                     
                     await sendRechargeNotifications(selectedOperator.code, rechargeData);
                     
-                    // Mostrar éxito
                     document.getElementById('result-icon').innerHTML = '✓';
                     document.getElementById('result-icon').style.background = '#10b981';
                     document.getElementById('result-title').textContent = '¡Recarga exitosa!';
