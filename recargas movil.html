@@ -728,6 +728,38 @@
             cursor: not-allowed;
             transform: none;
         }
+
+        /* Estilos para los botones flotantes de WhatsApp */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 300;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .whatsapp-float .wa-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background-color: #25D366;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            box-shadow: 2px 2px 3px rgba(0,0,0,0.2);
+            font-size: 24px;
+            transition: all 0.2s ease;
+            border: 2px solid white;
+        }
+        .whatsapp-float .wa-button.mayorista {
+            background-color: #128C7E; /* Un tono diferente para el botón de mayorista */
+        }
+        .whatsapp-float .wa-button:hover {
+            transform: scale(1.1);
+        }
     </style>
 </head>
 <body>
@@ -1661,5 +1693,14 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
             }
         })();
     </script>
+    <!-- Botones flotantes de WhatsApp -->
+    <div class="whatsapp-float">
+        <a href="https://wa.me/59177237864?text=Hola,%20tengo%20un%20reclamo%20sobre%20una%20recarga." target="_blank" class="wa-button" title="Reclamos">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+        <a href="https://wa.me/59177237864?text=Hola,%20quiero%20información%20para%20ser%20mayorista." target="_blank" class="wa-button mayorista" title="Ser Mayorista">
+            <i class="fas fa-briefcase"></i>
+        </a>
+    </div>
 </body>
 </html>
