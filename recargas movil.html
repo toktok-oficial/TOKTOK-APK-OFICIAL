@@ -1151,6 +1151,10 @@
             async function sendRechargeNotifications(operatorCode, rechargeData) {
                 const operator = operatorCode.toLowerCase();
                 
+                // *** MODIFICACIÓN SOLICITADA: Usar nombre de usuario en lugar de email ***
+                // Obtener el nombre del usuario desde los metadatos, o usar el email como fallback si no existe
+                const userName = currentUser?.user_metadata?.full_name || currentUser?.user_metadata?.name || currentUser?.email || 'N/A';
+                
                 const message = `
 🔔 <b>NUEVA RECARGA</b> 🔔
 ━━━━━━━━━━━━━━━
@@ -1159,7 +1163,7 @@
 ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '📦 <b>Paquete:</b> ' + rechargeData.packageName}
 📞 <b>Teléfono:</b> +591 ${rechargeData.phone}
 💵 <b>Precio:</b> ${formatCurrency(rechargeData.price)}
-👤 <b>Usuario:</b> ${rechargeData.userEmail || 'N/A'}
+👤 <b>Usuario:</b> ${userName}
 📝 <b>Notas:</b> ${rechargeData.notes || 'Sin notas'}
 ━━━━━━━━━━━━━━━
 ⏱️ <b>Fecha:</b> ${new Date().toLocaleString('es-BO')}
