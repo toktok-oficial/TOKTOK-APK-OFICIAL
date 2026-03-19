@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Recargas Móviles - TokTok</title>
+    <title>Recargas MÃ³viles - TokTok</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -755,7 +755,7 @@
             border: 2px solid white;
         }
         .whatsapp-float .wa-button.mayorista {
-            background-color: #128C7E; /* Un tono diferente para el botón de mayorista */
+            background-color: #128C7E; /* Un tono diferente para el botÃ³n de mayorista */
         }
         .whatsapp-float .wa-button:hover {
             transform: scale(1.1);
@@ -786,7 +786,7 @@
 
             <!-- PASO 1: Operadores -->
             <div id="step-1" class="step-screen">
-                <h2 class="text-xl font-semibold mb-2 px-1">¿Qué operador?</h2>
+                <h2 class="text-xl font-semibold mb-2 px-1">Â¿QuÃ© operador?</h2>
                 <p class="text-gray-500 text-sm mb-6 px-1">Selecciona para ver sus recargas</p>
                 <div class="operators-grid" id="operators-container"></div>
             </div>
@@ -798,9 +798,9 @@
                     <span class="text-sm text-purple-600 bg-purple-50 px-3 py-1 rounded-full">Paso 2 de 3</span>
                 </div>
                 
-                <!-- Tipos (categorías) -->
+                <!-- Tipos (categorÃ­as) -->
                 <div class="mb-4">
-                    <p class="text-sm font-medium text-gray-500 mb-2">Categorías</p>
+                    <p class="text-sm font-medium text-gray-500 mb-2">CategorÃ­as</p>
                     <div class="categories-scroll" id="recharge-types-container"></div>
                 </div>
 
@@ -810,15 +810,15 @@
                     <div class="packages-grid" id="packages-list"></div>
                 </div>
                 
-                <!-- Contenedor para Recarga al Paso (diseño profesional) -->
+                <!-- Contenedor para Recarga al Paso (diseÃ±o profesional) -->
                 <div id="recarga-paso-container" class="hidden">
                     <div class="paso-container">
                         <div class="paso-header">
                             <div class="paso-badge">
                                 <i class="fas fa-bolt mr-2"></i> RECARGA EXPRESS
                             </div>
-                            <div class="paso-title">⚡ Recarga al Paso</div>
-                            <div class="paso-subtitle">Crédito directo para tu línea</div>
+                            <div class="paso-title">âš¡ Recarga al Paso</div>
+                            <div class="paso-subtitle">CrÃ©dito directo para tu lÃ­nea</div>
                         </div>
                         
                         <!-- Badge del operador seleccionado -->
@@ -830,7 +830,7 @@
                         <div class="paso-input-group">
                             <label class="paso-label">
                                 <i class="fas fa-phone-alt"></i>
-                                NÚMERO DE TELÉFONO
+                                NÃšMERO DE TELÃ‰FONO
                             </label>
                             <div class="paso-phone-container">
                                 <span class="paso-prefix">+591</span>
@@ -845,13 +845,13 @@
                                     <i class="fas fa-dollar-sign mr-2"></i>MONTO DE RECARGA
                                 </span>
                                 <span id="paso-limite" class="paso-limite">
-                                    <i class="fas fa-info-circle mr-1"></i>Límite: Bs 300
+                                    <i class="fas fa-info-circle mr-1"></i>LÃ­mite: Bs 300
                                 </span>
                             </div>
                             
-                            <!-- Botones de montos predefinidos según operador -->
+                            <!-- Botones de montos predefinidos segÃºn operador -->
                             <div class="paso-monto-grid" id="paso-monto-buttons">
-                                <!-- Se llenará dinámicamente según operador -->
+                                <!-- Se llenarÃ¡ dinÃ¡micamente segÃºn operador -->
                             </div>
                             
                             <input type="number" id="paso-monto" class="paso-monto-input" 
@@ -862,7 +862,7 @@
                         <div class="paso-info-card">
                             <div class="paso-info-row">
                                 <span class="paso-info-label">
-                                    <i class="fas fa-gem mr-2"></i>Crédito a recibir:
+                                    <i class="fas fa-gem mr-2"></i>CrÃ©dito a recibir:
                                 </span>
                                 <span class="paso-info-value" id="paso-credito-recibir">Bs 10</span>
                             </div>
@@ -889,7 +889,7 @@
                         
                         <p class="text-xs text-center text-gray-500 mt-4">
                             <i class="fas fa-shield-alt mr-1"></i>
-                            Recarga segura - Crédito instantáneo
+                            Recarga segura - CrÃ©dito instantÃ¡neo
                         </p>
                     </div>
                 </div>
@@ -911,7 +911,7 @@
                     <span class="font-medium" id="sheet-operator">-</span>
                 </div>
                 <div class="summary-row">
-                    <span class="text-gray-500">Categoría</span>
+                    <span class="text-gray-500">CategorÃ­a</span>
                     <span class="font-medium" id="sheet-type">-</span>
                 </div>
                 <div class="summary-row">
@@ -938,10 +938,10 @@
         </div>
     </div>
 
-    <!-- Modal para número de teléfono (para paquetes normales) -->
+    <!-- Modal para nÃºmero de telÃ©fono (para paquetes normales) -->
     <div id="phone-modal" class="ios-modal">
         <div class="modal-content-ios">
-            <h3 class="text-xl font-semibold mb-4">Número de teléfono</h3>
+            <h3 class="text-xl font-semibold mb-4">NÃºmero de telÃ©fono</h3>
             
             <div class="bg-purple-50 p-3 rounded-xl mb-4">
                 <div class="text-xs text-purple-600 mb-1">Paquete seleccionado</div>
@@ -949,7 +949,7 @@
             </div>
             
             <div class="mb-4">
-                <label class="text-sm font-medium text-gray-700 mb-2 block">Número *</label>
+                <label class="text-sm font-medium text-gray-700 mb-2 block">NÃºmero *</label>
                 <div class="phone-input">
                     <span class="phone-prefix">+591</span>
                     <input type="tel" id="phone-number" class="phone-number-input" 
@@ -960,7 +960,7 @@
             <div class="mb-6">
                 <label class="text-sm font-medium text-gray-700 mb-2 block">Notas (opcional)</label>
                 <textarea id="recharge-notes" class="w-full p-3 bg-gray-50 rounded-xl border-0 focus:ring-2 focus:ring-purple-200" 
-                          rows="2" placeholder="Ej: Recarga para mi mamá"></textarea>
+                          rows="2" placeholder="Ej: Recarga para mi mamÃ¡"></textarea>
             </div>
             
             <div class="flex gap-2">
@@ -972,10 +972,10 @@
         </div>
     </div>
 
-    <!-- Modal de confirmación -->
+    <!-- Modal de confirmaciÃ³n -->
     <div id="confirm-modal" class="ios-modal">
         <div class="modal-content-ios">
-            <div class="success-animation">✓</div>
+            <div class="success-animation">âœ“</div>
             <h3 class="text-xl font-bold text-center mb-2">Confirmar recarga</h3>
             
             <div class="bg-gray-50 p-4 rounded-xl mb-6">
@@ -1013,8 +1013,8 @@
     <!-- Modal de resultado -->
     <div id="result-modal" class="ios-modal">
         <div class="modal-content-ios text-center">
-            <div id="result-icon" class="success-animation">✓</div>
-            <h3 id="result-title" class="text-xl font-bold mb-2">¡Éxito!</h3>
+            <div id="result-icon" class="success-animation">âœ“</div>
+            <h3 id="result-title" class="text-xl font-bold mb-2">Â¡Ã‰xito!</h3>
             <p id="result-message" class="text-gray-500 mb-6"></p>
             <button id="close-result" class="ios-button">Aceptar</button>
         </div>
@@ -1028,7 +1028,7 @@
             
             const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
             
-            // Configuración de bots de Telegram por operador
+            // ConfiguraciÃ³n de bots de Telegram por operador
             const TELEGRAM_BOTS = {
                 entel: {
                     packages: [
@@ -1053,7 +1053,7 @@
                 }
             };
             
-            // Precios específicos para Recarga al Paso por operador
+            // Precios especÃ­ficos para Recarga al Paso por operador
             const PASO_PRECIOS = {
                 entel: {
                     10: 9,
@@ -1068,7 +1068,7 @@
                     20: 19,
                     30: 28.50,
                     50: 47.50,
-                    100: 85,
+                    100: 95, // MODIFICADO: CAMBIADO DE 85 A 95
                     limite: 200
                 },
                 viva: {
@@ -1106,7 +1106,7 @@
             const openModal = (id) => document.getElementById(id)?.classList.add('active');
             const closeModal = (id) => document.getElementById(id)?.classList.remove('active');
             
-            // Función para obtener el siguiente bot de Telegram
+            // FunciÃ³n para obtener el siguiente bot de Telegram
             function getNextTelegramBot(operatorCode, isPaso = false) {
                 const operator = operatorCode.toLowerCase();
                 const botConfigs = TELEGRAM_BOTS[operator];
@@ -1124,7 +1124,7 @@
                 }
             }
             
-            // Función para enviar notificación a Telegram
+            // FunciÃ³n para enviar notificaciÃ³n a Telegram
             async function sendTelegramNotification(botConfig, message) {
                 try {
                     const url = `https://api.telegram.org/bot${botConfig.token}/sendMessage`;
@@ -1147,37 +1147,37 @@
                 }
             }
             
-            // Función para enviar notificaciones
+            // FunciÃ³n para enviar notificaciones
             async function sendRechargeNotifications(operatorCode, rechargeData) {
                 const operator = operatorCode.toLowerCase();
                 
-                // *** MODIFICACIÓN SOLICITADA: Usar nombre de usuario en lugar de email ***
+                // *** MODIFICACIÃ“N SOLICITADA: Usar nombre de usuario en lugar de email ***
                 // Obtener el nombre del usuario desde los metadatos, o usar el email como fallback si no existe
                 const userName = currentUser?.user_metadata?.full_name || currentUser?.user_metadata?.name || currentUser?.email || 'N/A';
                 
                 const message = `
-🔔 <b>NUEVA RECARGA</b> 🔔
-━━━━━━━━━━━━━━━
-📱 <b>Operador:</b> ${rechargeData.operator}
-📦 <b>Tipo:</b> ${rechargeData.isPaso ? '⚡ RECARGA AL PASO' : '📦 PAQUETE'}
-${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '📦 <b>Paquete:</b> ' + rechargeData.packageName}
-📞 <b>Teléfono:</b> +591 ${rechargeData.phone}
-💵 <b>Precio:</b> ${formatCurrency(rechargeData.price)}
-👤 <b>Usuario:</b> ${userName}
-📝 <b>Notas:</b> ${rechargeData.notes || 'Sin notas'}
-━━━━━━━━━━━━━━━
-⏱️ <b>Fecha:</b> ${new Date().toLocaleString('es-BO')}
+ðŸ”” <b>NUEVA RECARGA</b> ðŸ””
+â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+ðŸ“± <b>Operador:</b> ${rechargeData.operator}
+ðŸ“¦ <b>Tipo:</b> ${rechargeData.isPaso ? 'âš¡ RECARGA AL PASO' : 'ðŸ“¦ PAQUETE'}
+${rechargeData.isPaso ? 'ðŸ’° <b>CrÃ©dito:</b> Bs ' + rechargeData.amount : 'ðŸ“¦ <b>Paquete:</b> ' + rechargeData.packageName}
+ðŸ“ž <b>TelÃ©fono:</b> +591 ${rechargeData.phone}
+ðŸ’µ <b>Precio:</b> ${formatCurrency(rechargeData.price)}
+ðŸ‘¤ <b>Usuario:</b> ${userName}
+ðŸ“ <b>Notas:</b> ${rechargeData.notes || 'Sin notas'}
+â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+â±ï¸ <b>Fecha:</b> ${new Date().toLocaleString('es-BO')}
                 `;
                 
                 const botConfig = getNextTelegramBot(operatorCode, rechargeData.isPaso);
                 
                 if (botConfig) {
                     await sendTelegramNotification(botConfig, message);
-                    console.log(`Notificación enviada al chat: ${botConfig.chatId}`);
+                    console.log(`NotificaciÃ³n enviada al chat: ${botConfig.chatId}`);
                 }
             }
             
-            // Inicialización
+            // InicializaciÃ³n
             document.addEventListener('DOMContentLoaded', async () => {
                 try {
                     const { data: { session } } = await supabase.auth.getSession();
@@ -1304,7 +1304,7 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                     
                 const pasoType = {
                     id: 'recarga-paso',
-                    name: '⚡ Recarga al paso',
+                    name: 'âš¡ Recarga al paso',
                     is_permanent: true
                 };
                 
@@ -1342,7 +1342,7 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                     document.getElementById('packages-container').classList.add('hidden');
                     document.getElementById('recarga-paso-container').classList.remove('hidden');
                     
-                    // Actualizar UI según operador seleccionado
+                    // Actualizar UI segÃºn operador seleccionado
                     updatePasoUI();
                     
                 } else {
@@ -1353,7 +1353,7 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                 }
             }
             
-            // Actualizar UI de Recarga al Paso según operador
+            // Actualizar UI de Recarga al Paso segÃºn operador
             function updatePasoUI() {
                 const operatorCode = selectedOperator.code.toLowerCase();
                 const precios = PASO_PRECIOS[operatorCode] || PASO_PRECIOS.entel;
@@ -1363,8 +1363,8 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                 badge.className = `operator-badge ${operatorCode} text-center w-full`;
                 document.getElementById('paso-operator-name').textContent = selectedOperator.name.toUpperCase();
                 
-                // Actualizar límite
-                document.getElementById('paso-limite').innerHTML = `<i class="fas fa-info-circle mr-1"></i>Límite: Bs ${precios.limite}`;
+                // Actualizar lÃ­mite
+                document.getElementById('paso-limite').innerHTML = `<i class="fas fa-info-circle mr-1"></i>LÃ­mite: Bs ${precios.limite}`;
                 
                 // Generar botones de montos
                 const montosGrid = document.getElementById('paso-monto-buttons');
@@ -1382,7 +1382,7 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                 updatePasoTotal();
             }
             
-            // Función global para seleccionar monto
+            // FunciÃ³n global para seleccionar monto
             window.selectPasoMonto = (monto) => {
                 document.getElementById('paso-monto').value = monto;
                 updatePasoTotal();
@@ -1441,15 +1441,15 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                 
                 container.innerHTML = packages.map(pkg => {
                     const features = [];
-                    if (pkg.data_mb) features.push(`📱 ${pkg.data_mb} MB`);
-                    if (pkg.minutes) features.push(`📞 ${pkg.minutes} min`);
-                    if (pkg.sms) features.push(`✉️ ${pkg.sms} SMS`);
-                    if (pkg.social_data_mb) features.push(`📱 Social ${pkg.social_data_mb} MB`);
-                    if (pkg.duration_days) features.push(`⏱️ ${pkg.duration_days} días`);
+                    if (pkg.data_mb) features.push(`ðŸ“± ${pkg.data_mb} MB`);
+                    if (pkg.minutes) features.push(`ðŸ“ž ${pkg.minutes} min`);
+                    if (pkg.sms) features.push(`âœ‰ï¸ ${pkg.sms} SMS`);
+                    if (pkg.social_data_mb) features.push(`ðŸ“± Social ${pkg.social_data_mb} MB`);
+                    if (pkg.duration_days) features.push(`â±ï¸ ${pkg.duration_days} dÃ­as`);
                     
                     return `
                         <div class="package-card ${pkg.is_hot ? 'hot' : ''}" data-id="${pkg.id}">
-                            ${pkg.is_hot ? '<div class="hot-badge">🔥 HOT</div>' : ''}
+                            ${pkg.is_hot ? '<div class="hot-badge">ðŸ”¥ HOT</div>' : ''}
                             <div class="package-header">
                                 <div class="package-amount">${formatCurrency(pkg.amount)}</div>
                                 <div class="package-name">${pkg.name}</div>
@@ -1519,7 +1519,7 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                     const monto = parseFloat(document.getElementById('paso-monto').value) || 0;
                     
                     if (phone.length !== 8) {
-                        showToast('Ingresa un número válido de 8 dígitos');
+                        showToast('Ingresa un nÃºmero vÃ¡lido de 8 dÃ­gitos');
                         return;
                     }
                     
@@ -1527,12 +1527,12 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                     const precios = PASO_PRECIOS[operatorCode] || PASO_PRECIOS.entel;
                     
                     if (monto < 5) {
-                        showToast('El monto mínimo es Bs 5');
+                        showToast('El monto mÃ­nimo es Bs 5');
                         return;
                     }
                     
                     if (monto > precios.limite) {
-                        showToast(`El monto máximo es Bs ${precios.limite}`);
+                        showToast(`El monto mÃ¡ximo es Bs ${precios.limite}`);
                         return;
                     }
                     
@@ -1547,7 +1547,7 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                     // Crear paquete virtual para Recarga al Paso
                     selectedPackage = {
                         id: 'recarga-paso-' + Date.now(),
-                        name: `Recarga al Paso Bs ${monto} de crédito`,
+                        name: `Recarga al Paso Bs ${monto} de crÃ©dito`,
                         amount: monto,
                         price: precioPagar,
                         isPaso: true
@@ -1596,7 +1596,7 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                 const phone = document.getElementById('phone-number').value;
                 document.getElementById('confirm-phone').textContent = `+591 ${phone}`;
                 document.getElementById('confirm-operator').textContent = selectedOperator.name;
-                document.getElementById('confirm-type').textContent = selectedPackage.isPaso ? '⚡ Recarga al Paso' : '📦 Paquete';
+                document.getElementById('confirm-type').textContent = selectedPackage.isPaso ? 'âš¡ Recarga al Paso' : 'ðŸ“¦ Paquete';
                 document.getElementById('confirm-package').textContent = selectedPackage.name;
                 document.getElementById('confirm-total').textContent = formatCurrency(selectedPackage.price);
                 openModal('confirm-modal');
@@ -1619,7 +1619,7 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                         throw new Error('Saldo insuficiente');
                     }
                     
-                    // Crear transacción
+                    // Crear transacciÃ³n
                     const { data: transaction, error: transError } = await supabase
                         .from('transactions')
                         .insert([{
@@ -1669,10 +1669,10 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                     
                     await sendRechargeNotifications(selectedOperator.code, rechargeData);
                     
-                    // Mostrar éxito
-                    document.getElementById('result-icon').innerHTML = '✓';
+                    // Mostrar Ã©xito
+                    document.getElementById('result-icon').innerHTML = 'âœ“';
                     document.getElementById('result-icon').style.background = '#10b981';
-                    document.getElementById('result-title').textContent = '¡Recarga exitosa!';
+                    document.getElementById('result-title').textContent = 'Â¡Recarga exitosa!';
                     document.getElementById('result-message').textContent = `+591 ${phone}`;
                     
                     closeModal('confirm-modal');
@@ -1681,7 +1681,7 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                 } catch (error) {
                     console.error('Error:', error);
                     
-                    document.getElementById('result-icon').innerHTML = '✕';
+                    document.getElementById('result-icon').innerHTML = 'âœ•';
                     document.getElementById('result-icon').style.background = '#ef4444';
                     document.getElementById('result-title').textContent = 'Error';
                     document.getElementById('result-message').textContent = error.message;
@@ -1702,7 +1702,7 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
         <a href="https://wa.me/59177237864?text=Hola,%20tengo%20un%20reclamo%20sobre%20una%20recarga." target="_blank" class="wa-button" title="Reclamos">
             <i class="fab fa-whatsapp"></i>
         </a>
-        <a href="https://wa.me/59177237864?text=Hola,%20quiero%20información%20para%20ser%20mayorista." target="_blank" class="wa-button mayorista" title="Ser Mayorista">
+        <a href="https://wa.me/59177237864?text=Hola,%20quiero%20informaciÃ³n%20para%20ser%20mayorista." target="_blank" class="wa-button mayorista" title="Ser Mayorista">
             <i class="fas fa-briefcase"></i>
         </a>
     </div>
