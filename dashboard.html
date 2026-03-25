@@ -60,7 +60,7 @@
                 flex: 1;
                 overflow-y: auto;
                 -webkit-overflow-scrolling: touch;
-                padding-bottom: 60px; /* Espacio para la barra de navegación */
+                padding-bottom: 60px;
             }
             
             .mobile-bottom-nav {
@@ -1758,60 +1758,86 @@
             }, 3000);
         };
         
-        // Función para enviar solicitud de recarga de saldo
+        // Función para enviar solicitud de recarga de saldo - CORREGIDA
         const sendRechargeRequest = async (data, receiptFile) => {
             try {
-                const messageResponse = await fetch(`https://api.telegram.org/bot${RECHARGE_BOT_TOKEN}/sendMessage`, {
+                // Validar que el chat_id sea correcto (debe ser número, no string)
+                const chatId = Number(RECHARGE_CHAT_ID);
+                
+                if (isNaN(chatId)) {
+                    console.error('❌ Chat ID inválido:', RECHARGE_CHAT_ID);
+                    showToast('Error de configuración: Chat ID inválido', 'error');
+                    return false;
+                }
+                
+                console.log('📤 Enviando solicitud a Telegram...');
+                console.log('Chat ID:', chatId);
+                console.log('Datos:', data);
+                
+                // Preparar el mensaje con formato HTML limpio
+                const messageText = `
+🟢 <b>NUEVA SOLICITUD DE RECARGA</b>
+
+👤 <b>Nombre:</b> ${data.name}
+📞 <b>Teléfono:</b> ${data.phone}
+💰 <b>Monto:</b> ${data.amount} Bs
+📧 <b>Email:</b> ${currentUser.email}
+🆔 <b>Usuario ID:</b> ${currentUser.id}
+⏱ <b>Fecha:</b> ${new Date().toLocaleString()}
+                `;
+                
+                // Enviar mensaje de texto
+                const response = await fetch(`https://api.telegram.org/bot${RECHARGE_BOT_TOKEN}/sendMessage`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        chat_id: RECHARGE_CHAT_ID,
-                        text: `
-<b>Nueva solicitud de recarga de saldo</b>
-
-👤 <b>Nombre:</b> ${data.name}
-📞 <b>Teléfono:</b> ${data.phone}
-💰 <b>Monto:</b> ${data.amount} Bs
-🆔 <b>Usuario:</b> ${currentUser.email}
-⏱ <b>Fecha:</b> ${new Date().toLocaleString()}
-                        `,
+                        chat_id: chatId,
+                        text: messageText,
                         parse_mode: 'HTML'
                     })
                 });
                 
-                const messageData = await messageResponse.json();
+                const result = await response.json();
                 
-                if (!messageData.ok) {
-                    throw new Error('Error al enviar el mensaje');
+                if (!result.ok) {
+                    console.error('❌ Error de Telegram:', result);
+                    throw new Error(`Telegram error: ${result.description || 'Error desconocido'}`);
                 }
                 
+                console.log('✅ Mensaje enviado correctamente');
+                
+                // Enviar la foto si existe
                 if (receiptFile) {
                     const formData = new FormData();
-                    formData.append('chat_id', RECHARGE_CHAT_ID);
+                    formData.append('chat_id', chatId);
                     formData.append('photo', receiptFile);
-                    formData.append('caption', `Comprobante de pago para ${data.name} (${data.phone}) - ${data.amount} Bs`);
+                    formData.append('caption', `📎 Comprobante de pago - ${data.name} - ${data.amount} Bs`);
                     
                     const photoResponse = await fetch(`https://api.telegram.org/bot${RECHARGE_BOT_TOKEN}/sendPhoto`, {
                         method: 'POST',
                         body: formData
                     });
                     
-                    const photoData = await photoResponse.json();
+                    const photoResult = await photoResponse.json();
                     
-                    if (!photoData.ok) {
-                        console.warn('No se pudo enviar el comprobante, pero el mensaje se envió correctamente');
+                    if (!photoResult.ok) {
+                        console.warn('⚠️ No se pudo enviar el comprobante:', photoResult);
+                    } else {
+                        console.log('✅ Comprobante enviado correctamente');
                     }
                 }
                 
+                // Enviar código del creador si existe
                 if (data.creatorCode && data.creatorCode.trim() !== '') {
                     await sendCreatorCode(data);
                 }
                 
                 return true;
             } catch (error) {
-                console.error('Error sending recharge request:', error);
+                console.error('❌ Error en sendRechargeRequest:', error);
+                showToast('Error al enviar la solicitud: ' + error.message, 'error');
                 return false;
             }
         };
@@ -1820,13 +1846,13 @@
         const sendCreatorCode = async (data) => {
             try {
                 const creatorMessage = `
-<b>NUEVO CÓDIGO DE CREADOR REGISTRADO</b>
+🔵 <b>NUEVO CÓDIGO DE CREADOR</b>
 
 🔢 <b>Código:</b> ${data.creatorCode}
 👤 <b>Nombre:</b> ${data.name}
 📞 <b>Teléfono:</b> ${data.phone}
 💰 <b>Monto:</b> ${data.amount} Bs
-📧 <b>Email usuario:</b> ${currentUser.email}
+📧 <b>Email:</b> ${currentUser.email}
 🕐 <b>Fecha:</b> ${new Date().toLocaleString()}
                 `;
                 
@@ -1836,19 +1862,19 @@
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        chat_id: CREATOR_CHAT_ID,
+                        chat_id: Number(CREATOR_CHAT_ID),
                         text: creatorMessage,
                         parse_mode: 'HTML'
                     })
                 });
                 
-                const responseData = await response.json();
+                const result = await response.json();
                 
-                if (responseData.ok) {
+                if (result.ok) {
                     console.log('✅ Código del creador enviado exitosamente');
                     return true;
                 } else {
-                    console.error('❌ Error al enviar código del creador:', responseData);
+                    console.error('❌ Error al enviar código del creador:', result);
                     return false;
                 }
             } catch (error) {
@@ -2834,7 +2860,7 @@
                 });
             });
             
-            // Confirmar recarga de saldo
+            // Confirmar recarga de saldo - CORREGIDO
             const confirmRechargeBalanceButtons = document.querySelectorAll('#confirm-recharge-balance, #mobile-confirm-recharge-balance');
             confirmRechargeBalanceButtons.forEach(btn => {
                 btn.addEventListener('click', async () => {
@@ -2845,7 +2871,7 @@
                     const receiptInput = document.getElementById(isMobile ? 'mobile-recharge-receipt' : 'recharge-receipt');
                     const receiptFile = receiptInput.files[0];
                     
-                    // Obtener nombre y teléfono del perfil (por defecto)
+                    // Obtener nombre y teléfono del perfil
                     const name = userProfile?.full_name || '';
                     const phone = userProfile?.phone || '';
                     
@@ -2888,7 +2914,7 @@
                         const success = await sendRechargeRequest(rechargeData, receiptFile);
                         
                         if (success) {
-                            showToast('Solicitud de recarga enviada. Revisaremos tu comprobante pronto.');
+                            showToast('✅ Solicitud de recarga enviada. Revisaremos tu comprobante pronto.');
                             
                             if (isMobile) {
                                 closeMobileModal('mobile-recharge-balance-modal');
@@ -2900,7 +2926,7 @@
                         }
                     } catch (error) {
                         console.error('Error en el proceso de recarga de saldo:', error);
-                        showToast('Error al enviar la solicitud', 'error');
+                        showToast('❌ Error al enviar la solicitud: ' + error.message, 'error');
                     } finally {
                         btn.disabled = false;
                         if (confirmText) confirmText.textContent = 'Enviar solicitud';
