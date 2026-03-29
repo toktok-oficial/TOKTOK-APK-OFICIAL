@@ -755,7 +755,7 @@
             border: 2px solid white;
         }
         .whatsapp-float .wa-button.mayorista {
-            background-color: #128C7E; /* Un tono diferente para el botón de mayorista */
+            background-color: #128C7E;
         }
         .whatsapp-float .wa-button:hover {
             transform: scale(1.1);
@@ -1054,7 +1054,6 @@
             };
             
             // Precios específicos para Recarga al Paso por operador
-            // *** MODIFICACIÓN REALIZADA: Para Tigo, el monto de 100 Bs ahora cuesta 95 Bs (antes era 85) ***
             const PASO_PRECIOS = {
                 entel: {
                     10: 9,
@@ -1069,7 +1068,7 @@
                     20: 19,
                     30: 28.50,
                     50: 47.50,
-                    100: 95,   // <--- Cambiado de 85 a 95
+                    100: 95,
                     limite: 200
                 },
                 viva: {
@@ -1152,7 +1151,6 @@
             async function sendRechargeNotifications(operatorCode, rechargeData) {
                 const operator = operatorCode.toLowerCase();
                 
-                // Obtener el nombre del usuario desde los metadatos, o usar el email como fallback si no existe
                 const userName = currentUser?.user_metadata?.full_name || currentUser?.user_metadata?.name || currentUser?.email || 'N/A';
                 
                 const message = `
@@ -1342,7 +1340,6 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                     document.getElementById('packages-container').classList.add('hidden');
                     document.getElementById('recarga-paso-container').classList.remove('hidden');
                     
-                    // Actualizar UI según operador seleccionado
                     updatePasoUI();
                     
                 } else {
@@ -1358,15 +1355,12 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                 const operatorCode = selectedOperator.code.toLowerCase();
                 const precios = PASO_PRECIOS[operatorCode] || PASO_PRECIOS.entel;
                 
-                // Actualizar badge del operador
                 const badge = document.getElementById('paso-operator-badge');
                 badge.className = `operator-badge ${operatorCode} text-center w-full`;
                 document.getElementById('paso-operator-name').textContent = selectedOperator.name.toUpperCase();
                 
-                // Actualizar límite
                 document.getElementById('paso-limite').innerHTML = `<i class="fas fa-info-circle mr-1"></i>Límite: Bs ${precios.limite}`;
                 
-                // Generar botones de montos
                 const montosGrid = document.getElementById('paso-monto-buttons');
                 const montos = Object.keys(precios).filter(key => key !== 'limite').map(Number);
                 
@@ -1376,7 +1370,6 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                     </button>
                 `).join('');
                 
-                // Resetear valores
                 document.getElementById('paso-phone').value = '';
                 document.getElementById('paso-monto').value = '10';
                 updatePasoTotal();
@@ -1387,7 +1380,6 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                 document.getElementById('paso-monto').value = monto;
                 updatePasoTotal();
                 
-                // Actualizar UI de botones
                 document.querySelectorAll('.paso-monto-btn').forEach(btn => {
                     btn.classList.remove('selected');
                     if (parseFloat(btn.dataset.monto) === monto) {
@@ -1402,7 +1394,6 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                 const operatorCode = selectedOperator.code.toLowerCase();
                 const precios = PASO_PRECIOS[operatorCode] || PASO_PRECIOS.entel;
                 
-                // Calcular precio a pagar
                 let precioPagar = monto;
                 if (precios[monto]) {
                     precioPagar = precios[monto];
@@ -1511,7 +1502,6 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                     showPhoneModal();
                 });
                 
-                // Eventos para Recarga al Paso
                 document.getElementById('paso-monto')?.addEventListener('input', updatePasoTotal);
                 
                 document.getElementById('btn-recarga-paso')?.addEventListener('click', async () => {
@@ -1536,7 +1526,6 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                         return;
                     }
                     
-                    // Calcular precio a pagar (puede ser con descuento o el mismo monto)
                     const precioPagar = precios[monto] || monto;
                     
                     if (currentBalance < precioPagar) {
@@ -1544,7 +1533,6 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                         return;
                     }
                     
-                    // Crear paquete virtual para Recarga al Paso
                     selectedPackage = {
                         id: 'recarga-paso-' + Date.now(),
                         name: `Recarga al Paso Bs ${monto} de crédito`,
@@ -1619,14 +1607,16 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                         throw new Error('Saldo insuficiente');
                     }
                     
-                    // Crear transacción
+                    // Crear transacción - ahora incluimos el número de teléfono en la descripción
+                    const transactionDescription = `${selectedOperator.name}: ${selectedPackage.name} | Número: +591 ${phone}`;
+                    
                     const { data: transaction, error: transError } = await supabase
                         .from('transactions')
                         .insert([{
                             user_id: currentUser.id,
                             amount: selectedPackage.price,
                             type: 'withdrawal',
-                            description: `${selectedOperator.name}: ${selectedPackage.name}`,
+                            description: transactionDescription,
                             status: 'completed'
                         }])
                         .select()
