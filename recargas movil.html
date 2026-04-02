@@ -24,7 +24,6 @@
             justify-content: center;
         }
         
-        /* iPhone style container */
         .iphone-container {
             width: 100%;
             max-width: 390px;
@@ -443,7 +442,7 @@
             cursor: pointer;
         }
 
-        /* ESTILO NATIVO APP - RECARGA AL PASO (más pequeño, serio, nativo iOS) */
+        /* ESTILO NATIVO APP - RECARGA AL PASO */
         .paso-container-nativo {
             background: #ffffff;
             border-radius: 20px;
@@ -674,7 +673,6 @@
 <body>
     <div class="iphone-container">
         <div class="screen">
-            <!-- Dynamic Island Header -->
             <div class="dynamic-island">
                 <div class="back-button hidden" id="back-to-operators">
                     <i class="fas fa-arrow-left"></i>
@@ -686,40 +684,34 @@
                 </div>
             </div>
 
-            <!-- Step Indicators -->
             <div class="step-indicator" id="step-indicators">
                 <div class="step-dot active" data-step="1"></div>
                 <div class="step-dot" data-step="2"></div>
                 <div class="step-dot" data-step="3"></div>
             </div>
 
-            <!-- PASO 1: Operadores -->
             <div id="step-1" class="step-screen">
                 <h2 class="text-xl font-semibold mb-2 px-1">¿Qué operador?</h2>
                 <p class="text-gray-500 text-sm mb-6 px-1">Selecciona para ver sus recargas</p>
                 <div class="operators-grid" id="operators-container"></div>
             </div>
 
-            <!-- PASO 2: Tipos y Paquetes -->
             <div id="step-2" class="step-screen hidden">
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="text-xl font-semibold" id="selected-operator-name">Entel</h2>
                     <span class="text-sm text-purple-600 bg-purple-50 px-3 py-1 rounded-full">Paso 2 de 3</span>
                 </div>
                 
-                <!-- Tipos (categorías) -->
                 <div class="mb-4">
                     <p class="text-sm font-medium text-gray-500 mb-2">Categorías</p>
                     <div class="categories-scroll" id="recharge-types-container"></div>
                 </div>
 
-                <!-- Paquetes regulares -->
                 <div id="packages-container">
                     <p class="text-sm font-medium text-gray-500 mb-2">Paquetes disponibles</p>
                     <div class="packages-grid" id="packages-list"></div>
                 </div>
                 
-                <!-- Contenedor para Recarga al Paso (NUEVO DISEÑO NATIVO Y SERIO) -->
                 <div id="recarga-paso-container" class="hidden">
                     <div class="paso-container-nativo">
                         <div class="paso-header-nativo">
@@ -768,20 +760,18 @@
                         </div>
                         
                         <button id="btn-recarga-paso" class="btn-paso-nativo">
-                            <i class="fas fa-bolt"></i> Recargar ahora
+                            <i class="fas fa-bolt"></i> Comprar ahora
                         </button>
                         <p class="warning-text">Recarga segura · Crédito instantáneo</p>
                     </div>
                 </div>
                 
-                <!-- Sin resultados para paquetes -->
                 <div id="no-packages" class="hidden text-center py-12">
                     <i class="fas fa-box-open text-4xl text-gray-300 mb-3"></i>
                     <p class="text-gray-500">No hay paquetes disponibles</p>
                 </div>
             </div>
 
-            <!-- Bottom Sheet Flotante (Resumen) -->
             <div id="summary-sheet" class="bottom-sheet">
                 <div class="sheet-handle"></div>
                 <h3 class="text-lg font-semibold mb-4">Resumen de recarga</h3>
@@ -818,74 +808,29 @@
         </div>
     </div>
 
-    <!-- Modal para número de teléfono (para paquetes normales) -->
-    <div id="phone-modal" class="ios-modal">
+    <!-- Modal de confirmación DIRECTA para Recarga al Paso (solo número y paquete) -->
+    <div id="confirm-paso-modal" class="ios-modal">
         <div class="modal-content-ios">
-            <h3 class="text-xl font-semibold mb-4">Número de teléfono</h3>
-            
-            <div class="bg-purple-50 p-3 rounded-xl mb-4">
-                <div class="text-xs text-purple-600 mb-1">Paquete seleccionado</div>
-                <div class="font-semibold" id="modal-package-name">-</div>
-            </div>
-            
-            <div class="mb-4">
-                <label class="text-sm font-medium text-gray-700 mb-2 block">Número *</label>
-                <div class="phone-input">
-                    <span class="phone-prefix">+591</span>
-                    <input type="tel" id="phone-number" class="phone-number-input" 
-                           placeholder="71234567" maxlength="8" inputmode="numeric">
+            <h3 class="text-xl font-bold text-center mb-4">Confirmar recarga</h3>
+            <div class="bg-gray-50 p-4 rounded-xl mb-4">
+                <div class="text-center mb-3">
+                    <div class="text-sm text-gray-500">Número</div>
+                    <div class="text-xl font-semibold" id="confirm-paso-phone">+591</div>
+                </div>
+                <div class="border-t border-gray-200 my-3"></div>
+                <div class="text-center">
+                    <div class="text-sm text-gray-500">Paquete</div>
+                    <div class="text-lg font-bold text-purple-600" id="confirm-paso-package">Recarga al Paso Bs 10</div>
+                </div>
+                <div class="border-t border-gray-200 my-3"></div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Total a pagar</span>
+                    <span class="text-xl font-bold text-purple-600" id="confirm-paso-total">Bs 10</span>
                 </div>
             </div>
-            
-            <div class="mb-6">
-                <label class="text-sm font-medium text-gray-700 mb-2 block">Notas (opcional)</label>
-                <textarea id="recharge-notes" class="w-full p-3 bg-gray-50 rounded-xl border-0 focus:ring-2 focus:ring-purple-200" 
-                          rows="2" placeholder="Ej: Recarga para mi mamá"></textarea>
-            </div>
-            
             <div class="flex gap-2">
-                <button id="close-phone-modal" class="ios-button-secondary flex-1">Cancelar</button>
-                <button id="process-recharge-btn" class="ios-button flex-1" disabled>
-                    Procesar
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de confirmación -->
-    <div id="confirm-modal" class="ios-modal">
-        <div class="modal-content-ios">
-            <div class="success-animation">✓</div>
-            <h3 class="text-xl font-bold text-center mb-2">Confirmar recarga</h3>
-            
-            <div class="bg-gray-50 p-4 rounded-xl mb-6">
-                <div class="text-center font-semibold text-lg mb-3" id="confirm-phone">+591</div>
-                <div class="space-y-2">
-                    <div class="flex justify-between">
-                        <span class="text-gray-500">Operador:</span>
-                        <span id="confirm-operator" class="font-medium">-</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-gray-500">Tipo:</span>
-                        <span id="confirm-type" class="font-medium">-</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-gray-500">Detalle:</span>
-                        <span id="confirm-package" class="font-medium">-</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-gray-500">Total:</span>
-                        <span id="confirm-total" class="font-bold text-purple-600">-</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="flex gap-2">
-                <button id="cancel-confirm" class="ios-button-secondary flex-1">Cancelar</button>
-                <button id="confirm-recharge" class="ios-button flex-1">
-                    <span id="confirm-text">Confirmar</span>
-                    <div id="confirm-spinner" class="spinner hidden"></div>
-                </button>
+                <button id="cancel-paso-confirm" class="ios-button-secondary flex-1">Cancelar</button>
+                <button id="confirm-paso-recharge" class="ios-button flex-1">Confirmar</button>
             </div>
         </div>
     </div>
@@ -908,60 +853,18 @@
             
             const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
             
-            // Configuración de bots de Telegram por operador
             const TELEGRAM_BOTS = {
-                entel: {
-                    packages: [
-                        { token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-5097260004' },
-                        { token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-5095663519' }
-                    ],
-                    paso: { token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-5016577571' }
-                },
-                tigo: {
-                    packages: [
-                        { token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-4843757881' },
-                        { token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-5077788894' }
-                    ],
-                    paso: { token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-5041267123' }
-                },
-                viva: {
-                    packages: [
-                        { token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-5059040889' },
-                        { token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-5037389529' }
-                    ],
-                    paso: { token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-5084989527' }
-                }
+                entel: { packages: [{ token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-5097260004' },{ token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-5095663519' }], paso: { token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-5016577571' } },
+                tigo: { packages: [{ token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-4843757881' },{ token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-5077788894' }], paso: { token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-5041267123' } },
+                viva: { packages: [{ token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-5059040889' },{ token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-5037389529' }], paso: { token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-5084989527' } }
             };
             
-            // Precios específicos para Recarga al Paso por operador (TIGO 9.60)
             const PASO_PRECIOS = {
-                entel: {
-                    10: 9,
-                    15: 13.50,
-                    30: 27,
-                    50: 45,
-                    100: 90,
-                    limite: 300
-                },
-                tigo: {
-                    10: 9.60,
-                    20: 19,
-                    30: 28.50,
-                    50: 47.50,
-                    100: 95,
-                    limite: 200
-                },
-                viva: {
-                    10: 9,
-                    20: 18,
-                    30: 27,
-                    50: 45,
-                    100: 90,
-                    limite: 300
-                }
+                entel: { 10: 9, 15: 13.50, 30: 27, 50: 45, 100: 90, limite: 300 },
+                tigo: { 10: 9.60, 20: 19, 30: 28.50, 50: 47.50, 100: 95, limite: 200 },
+                viva: { 10: 9, 20: 18, 30: 27, 50: 45, 100: 90, limite: 300 }
             };
             
-            // Estado general
             let currentUser = null;
             let currentBalance = 0;
             let operators = [];
@@ -992,21 +895,17 @@
                 if (isPaso) return botConfigs.paso;
                 const packagesBots = botConfigs.packages;
                 if (!packagesBots || packagesBots.length === 0) return null;
-                const randomIndex = Math.floor(Math.random() * packagesBots.length);
-                return packagesBots[randomIndex];
+                return packagesBots[Math.floor(Math.random() * packagesBots.length)];
             }
             
             async function sendTelegramNotification(botConfig, message) {
                 try {
-                    const url = `https://api.telegram.org/bot${botConfig.token}/sendMessage`;
-                    await fetch(url, {
+                    await fetch(`https://api.telegram.org/bot${botConfig.token}/sendMessage`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ chat_id: botConfig.chatId, text: message, parse_mode: 'HTML' })
                     });
-                } catch (error) {
-                    console.error('Error sending Telegram notification:', error);
-                }
+                } catch (error) { console.error(error); }
             }
             
             async function sendRechargeNotifications(operatorCode, rechargeData) {
@@ -1037,7 +936,7 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                     await loadBalance();
                     await loadOperators();
                     setupEventListeners();
-                } catch (error) { console.error('Error:', error); }
+                } catch (error) { console.error(error); }
             });
             
             async function loadBalance() {
@@ -1202,17 +1101,69 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                     if(monto > precios.limite){ showToast(`Monto máximo Bs ${precios.limite}`); return; }
                     const precioPagar = precios[monto];
                     if(currentBalance < precioPagar){ showToast('Saldo insuficiente'); return; }
-                    selectedPackage = { id: 'recarga-paso-'+Date.now(), name: `Recarga al Paso Bs ${monto}`, amount: monto, price: precioPagar, isPaso: true };
-                    document.getElementById('phone-number').value = phone;
-                    showPhoneModal();
+                    
+                    // Guardar datos de recarga al paso
+                    window._tempPasoData = {
+                        phone: phone,
+                        monto: monto,
+                        precio: precioPagar,
+                        packageName: `Recarga al Paso Bs ${monto}`
+                    };
+                    
+                    // Mostrar modal de confirmación directa
+                    document.getElementById('confirm-paso-phone').textContent = `+591 ${phone}`;
+                    document.getElementById('confirm-paso-package').textContent = `Recarga al Paso Bs ${monto}`;
+                    document.getElementById('confirm-paso-total').textContent = formatCurrency(precioPagar);
+                    openModal('confirm-paso-modal');
                 });
                 
-                document.getElementById('close-phone-modal')?.addEventListener('click', () => closeModal('phone-modal'));
-                document.getElementById('phone-number')?.addEventListener('input', (e) => { let val = e.target.value.replace(/\D/g,'').slice(0,8); e.target.value=val; document.getElementById('process-recharge-btn').disabled = val.length !== 8; });
-                document.getElementById('process-recharge-btn')?.addEventListener('click', () => { closeModal('phone-modal'); showConfirmModal(); });
-                document.getElementById('cancel-confirm')?.addEventListener('click', () => closeModal('confirm-modal'));
-                document.getElementById('confirm-recharge')?.addEventListener('click', processRecharge);
+                document.getElementById('cancel-paso-confirm')?.addEventListener('click', () => closeModal('confirm-paso-modal'));
+                
+                document.getElementById('confirm-paso-recharge')?.addEventListener('click', async () => {
+                    closeModal('confirm-paso-modal');
+                    await processPasoRecharge();
+                });
+                
                 document.getElementById('close-result')?.addEventListener('click', () => { closeModal('result-modal'); window.location.reload(); });
+            }
+            
+            async function processPasoRecharge() {
+                try {
+                    const { phone, monto, precio, packageName } = window._tempPasoData;
+                    const notes = '';
+                    
+                    selectedPackage = {
+                        id: 'recarga-paso-' + Date.now(),
+                        name: packageName,
+                        amount: monto,
+                        price: precio,
+                        isPaso: true
+                    };
+                    
+                    const transactionDescription = `${selectedOperator.name}: ${packageName} | Número: +591 ${phone}`;
+                    const { data: transaction, error: transError } = await supabase.from('transactions').insert([{ user_id: currentUser.id, amount: precio, type: 'withdrawal', description: transactionDescription, status: 'completed' }]).select().single();
+                    if(transError) throw transError;
+                    
+                    const { error: rechargeError } = await supabase.from('mobile_recharges').insert([{ user_id: currentUser.id, operator_id: selectedOperator.id, package_id: null, phone_number: phone, amount: monto, price: precio, transaction_id: transaction.id, notes: notes || null, status: 'completed' }]);
+                    if(rechargeError) throw rechargeError;
+                    
+                    currentBalance -= precio;
+                    document.getElementById('current-balance').textContent = formatCurrency(currentBalance);
+                    
+                    await sendRechargeNotifications(selectedOperator.code, { operator: selectedOperator.name, packageName: packageName, amount: monto, price: precio, phone, notes, isPaso: true });
+                    
+                    document.getElementById('result-icon').innerHTML = '✓';
+                    document.getElementById('result-icon').style.background = '#10b981';
+                    document.getElementById('result-title').textContent = '¡Recarga exitosa!';
+                    document.getElementById('result-message').textContent = `+591 ${phone}`;
+                    openModal('result-modal');
+                } catch (error) {
+                    document.getElementById('result-icon').innerHTML = '✕';
+                    document.getElementById('result-icon').style.background = '#ef4444';
+                    document.getElementById('result-title').textContent = 'Error';
+                    document.getElementById('result-message').textContent = error.message;
+                    openModal('result-modal');
+                }
             }
             
             function showPhoneModal() {
@@ -1220,42 +1171,6 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                 document.getElementById('recharge-notes').value = '';
                 document.getElementById('process-recharge-btn').disabled = true;
                 openModal('phone-modal');
-            }
-            
-            function showConfirmModal() {
-                const phone = document.getElementById('phone-number').value;
-                document.getElementById('confirm-phone').textContent = `+591 ${phone}`;
-                document.getElementById('confirm-operator').textContent = selectedOperator.name;
-                document.getElementById('confirm-type').textContent = selectedPackage.isPaso ? '⚡ Recarga al Paso' : '📦 Paquete';
-                document.getElementById('confirm-package').textContent = selectedPackage.name;
-                document.getElementById('confirm-total').textContent = formatCurrency(selectedPackage.price);
-                openModal('confirm-modal');
-            }
-            
-            async function processRecharge() {
-                const btn = document.getElementById('confirm-recharge');
-                const text = document.getElementById('confirm-text');
-                btn.disabled = true; text.textContent = 'Procesando...';
-                try {
-                    const phone = document.getElementById('phone-number').value;
-                    const notes = document.getElementById('recharge-notes').value;
-                    if(currentBalance < selectedPackage.price) throw new Error('Saldo insuficiente');
-                    const transactionDescription = `${selectedOperator.name}: ${selectedPackage.name} | Número: +591 ${phone}`;
-                    const { data: transaction, error: transError } = await supabase.from('transactions').insert([{ user_id: currentUser.id, amount: selectedPackage.price, type: 'withdrawal', description: transactionDescription, status: 'completed' }]).select().single();
-                    if(transError) throw transError;
-                    const { error: rechargeError } = await supabase.from('mobile_recharges').insert([{ user_id: currentUser.id, operator_id: selectedOperator.id, package_id: selectedPackage.isPaso ? null : selectedPackage.id, phone_number: phone, amount: selectedPackage.amount, price: selectedPackage.price, transaction_id: transaction.id, notes: notes || null, status: 'completed' }]);
-                    if(rechargeError) throw rechargeError;
-                    currentBalance -= selectedPackage.price;
-                    document.getElementById('current-balance').textContent = formatCurrency(currentBalance);
-                    await sendRechargeNotifications(selectedOperator.code, { operator: selectedOperator.name, packageName: selectedPackage.name, amount: selectedPackage.amount, price: selectedPackage.price, phone, notes, isPaso: selectedPackage.isPaso });
-                    document.getElementById('result-icon').innerHTML = '✓'; document.getElementById('result-icon').style.background = '#10b981';
-                    document.getElementById('result-title').textContent = '¡Recarga exitosa!'; document.getElementById('result-message').textContent = `+591 ${phone}`;
-                    closeModal('confirm-modal'); openModal('result-modal');
-                } catch (error) {
-                    document.getElementById('result-icon').innerHTML = '✕'; document.getElementById('result-icon').style.background = '#ef4444';
-                    document.getElementById('result-title').textContent = 'Error'; document.getElementById('result-message').textContent = error.message;
-                    closeModal('confirm-modal'); openModal('result-modal');
-                } finally { btn.disabled = false; text.textContent = 'Confirmar'; }
             }
         })();
     </script>
