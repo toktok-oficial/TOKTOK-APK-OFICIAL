@@ -526,7 +526,7 @@
                 word-break: break-all;
             }
 
-            /* Estilos para filtros y paginación */
+            /* Filtros y paginación móvil */
             .filter-container {
                 display: flex;
                 flex-wrap: wrap;
@@ -561,6 +561,7 @@
                 gap: 8px;
                 padding: 16px;
                 border-top: 1px solid #e2e8f0;
+                flex-wrap: wrap;
             }
             .page-btn {
                 padding: 6px 12px;
@@ -571,6 +572,8 @@
                 font-weight: 500;
                 cursor: pointer;
                 transition: all 0.2s;
+                border: none;
+                min-width: 40px;
             }
             .page-btn.active {
                 background: var(--primary);
@@ -941,6 +944,7 @@
                 font-weight: 500;
                 cursor: pointer;
                 transition: all 0.2s;
+                border: none;
             }
             .page-btn-desktop.active {
                 background: var(--primary);
@@ -1222,7 +1226,7 @@
                             <div class="filter-group">
                                 <label class="filter-label">Período</label>
                                 <select id="mobile-period-filter" class="filter-select">
-                                    <option value="7days">Últimos 7 días</option>
+                                    <option value="7days" selected>Últimos 7 días</option>
                                     <option value="all">Todas</option>
                                     <option value="custom">Personalizado</option>
                                 </select>
@@ -1258,9 +1262,7 @@
                             </div>
                         </div>
                         <!-- Paginación móvil -->
-                        <div class="pagination-container" id="mobile-pagination">
-                            <!-- se genera dinámicamente -->
-                        </div>
+                        <div class="pagination-container" id="mobile-pagination"></div>
                     </div>
                 </div>
             </div>
@@ -1634,7 +1636,7 @@
                                     <div class="filter-group-desktop">
                                         <label class="filter-label-desktop">Período</label>
                                         <select id="period-filter" class="filter-select-desktop">
-                                            <option value="7days">Últimos 7 días</option>
+                                            <option value="7days" selected>Últimos 7 días</option>
                                             <option value="all">Todas</option>
                                             <option value="custom">Personalizado</option>
                                         </select>
@@ -1685,9 +1687,7 @@
                                     </table>
                                 </div>
                                 <!-- Paginación desktop -->
-                                <div class="pagination-container-desktop" id="desktop-pagination">
-                                    <!-- se genera dinámicamente -->
-                                </div>
+                                <div class="pagination-container-desktop" id="desktop-pagination"></div>
                             </div>
                         </div>
                     </div>
@@ -1928,7 +1928,7 @@
         let userProfile = null;
         let currentBalance = 0;
         let currentInvoiceData = null;
-        let allTransactions = []; // Almacenar todas las transacciones para filtrar localmente
+        let allTransactions = [];
         let currentPage = 1;
         let transactionsPerPage = 10;
         let currentFilters = { period: '7days', type: 'all', dateFrom: null, dateTo: null };
@@ -2322,7 +2322,6 @@
         };
         
         const loadAllTransactions = async (userId) => {
-            // Cargar todas las transacciones sin límite
             let allData = [];
             let page = 0;
             const pageSize = 1000;
@@ -2555,13 +2554,13 @@
                 
                 for (let i = 1; i <= Math.min(totalPages, 3); i++) {
                     paginationHtml += `
-                        <button class="page-btn ${currentPage === i ? 'active' : ''}" data-page="${i}">${i}</button>
+                        <button class="page-btn ${currentPage === i ? 'active' : ''}" data-page-m="${i}">${i}</button>
                     `;
                 }
                 
                 if (totalPages > 3) {
                     paginationHtml += `<span class="page-info">...</span>`;
-                    paginationHtml += `<button class="page-btn" data-page="${totalPages}">${totalPages}</button>`;
+                    paginationHtml += `<button class="page-btn" data-page-m="${totalPages}">${totalPages}</button>`;
                 }
                 
                 paginationHtml += `
@@ -2573,9 +2572,9 @@
                 paginationContainer.innerHTML = paginationHtml;
                 
                 // Event listeners para paginación móvil
-                document.querySelectorAll('#mobile-pagination .page-btn[data-page]').forEach(btn => {
+                document.querySelectorAll('#mobile-pagination .page-btn[data-page-m]').forEach(btn => {
                     btn.addEventListener('click', () => {
-                        currentPage = parseInt(btn.dataset.page);
+                        currentPage = parseInt(btn.dataset.pageM);
                         applyFiltersAndRender();
                     });
                 });
@@ -2599,7 +2598,8 @@
             }
             
             const filtered = filterTransactions(allTransactions);
-            renderTransactionsWithPagination(filtered, window.innerWidth <= 768);
+            const isMobile = window.innerWidth <= 768;
+            renderTransactionsWithPagination(filtered, isMobile);
         };
         
         // Actualizar UI con balance y últimas transacciones (home)
@@ -3256,36 +3256,10 @@
 
     <script>
         // ==================== LÓGICA DE LA RULETA CON TODOS LOS CÓDIGOS ====================
-        // TODOS LOS CÓDIGOS TOKTOK VÁLIDOS (más de 100)
+        // TODOS LOS CÓDIGOS TOKTOK VÁLIDOS
         const VALID_CODES = new Set([
             'TOKTOK-X8P9', 'TOKTOK-M3N2', 'TOKTOK-K7J4', 'TOKTOK-R5T6', 'TOKTOK-W2Z1',
-            'TOKTOK-Q9L0', 'TOKTOK-F4D5', 'TOKTOK-H6G7', 'TOKTOK-V8C3', 'TOKTOK-B1N9',
-            'TOKTOK-A1B2', 'TOKTOK-C3D4', 'TOKTOK-E5F6', 'TOKTOK-G7H8', 'TOKTOK-I9J0',
-            'TOKTOK-K1L2', 'TOKTOK-M3N4', 'TOKTOK-O5P6', 'TOKTOK-Q7R8', 'TOKTOK-S9T0',
-            'TOKTOK-U1V2', 'TOKTOK-W3X4', 'TOKTOK-Y5Z6', 'TOKTOK-A7B8', 'TOKTOK-C9D0',
-            'TOKTOK-E1F2', 'TOKTOK-G3H4', 'TOKTOK-I5J6', 'TOKTOK-K7L8', 'TOKTOK-M9N0',
-            'TOKTOK-O1P2', 'TOKTOK-Q3R4', 'TOKTOK-S5T6', 'TOKTOK-U7V8', 'TOKTOK-W9X0',
-            'TOKTOK-Y1Z2', 'TOKTOK-A3B4', 'TOKTOK-C5D6', 'TOKTOK-E7F8', 'TOKTOK-G9H0',
-            'TOKTOK-I1J2', 'TOKTOK-K3L4', 'TOKTOK-M5N6', 'TOKTOK-O7P8', 'TOKTOK-Q9R0',
-            'TOKTOK-S1T2', 'TOKTOK-U3V4', 'TOKTOK-W5X6', 'TOKTOK-Y7Z8', 'TOKTOK-A9B0',
-            'TOKTOK-C1D2', 'TOKTOK-E3F4', 'TOKTOK-G5H6', 'TOKTOK-I7J8', 'TOKTOK-K9L0',
-            'TOKTOK-M1N2', 'TOKTOK-O3P4', 'TOKTOK-Q5R6', 'TOKTOK-S7T8', 'TOKTOK-U9V0',
-            'TOKTOK-W1X2', 'TOKTOK-Y3Z4', 'TOKTOK-A5B6', 'TOKTOK-C7D8', 'TOKTOK-E9F0',
-            'TOKTOK-G1H2', 'TOKTOK-I3J4', 'TOKTOK-K5L6', 'TOKTOK-M7N8', 'TOKTOK-O9P0',
-            'TOKTOK-Q1R2', 'TOKTOK-S3T4', 'TOKTOK-U5V6', 'TOKTOK-W7X8', 'TOKTOK-Y9Z0',
-            'TOKTOK-A2B3', 'TOKTOK-C4D5', 'TOKTOK-E6F7', 'TOKTOK-G8H9', 'TOKTOK-I0J1',
-            'TOKTOK-K2L3', 'TOKTOK-M4N5', 'TOKTOK-O6P7', 'TOKTOK-Q8R9', 'TOKTOK-S0T1',
-            'TOKTOK-U2V3', 'TOKTOK-W4X5', 'TOKTOK-Y6Z7', 'TOKTOK-A8B9', 'TOKTOK-C0D1',
-            'TOKTOK-E2F3', 'TOKTOK-G4H5', 'TOKTOK-I6J7', 'TOKTOK-K8L9', 'TOKTOK-M0N1',
-            'TOKTOK-O2P3', 'TOKTOK-Q4R5', 'TOKTOK-S6T7', 'TOKTOK-U8V9', 'TOKTOK-W0X1',
-            'TOKTOK-Y2Z3', 'TOKTOK-A4B5', 'TOKTOK-C6D7', 'TOKTOK-E8F9', 'TOKTOK-G0H1',
-            'TOKTOK-I2J3', 'TOKTOK-K4L5', 'TOKTOK-M6N7', 'TOKTOK-O8P9', 'TOKTOK-Q0R1',
-            'TOKTOK-S2T3', 'TOKTOK-U4V5', 'TOKTOK-W6X7', 'TOKTOK-Y8Z9', 'TOKTOK-A0B1',
-            'TOKTOK-C2D3', 'TOKTOK-E4F5', 'TOKTOK-G6H7', 'TOKTOK-I8J9', 'TOKTOK-K0L1',
-            'TOKTOK-M2N3', 'TOKTOK-O4P5', 'TOKTOK-Q6R7', 'TOKTOK-S8T9', 'TOKTOK-U0V1',
-            'TOKTOK-W2X3', 'TOKTOK-Y4Z5', 'TOKTOK-A6B7', 'TOKTOK-C8D9', 'TOKTOK-E0F1',
-            'TOKTOK-G2H3', 'TOKTOK-I4J5', 'TOKTOK-K6L7', 'TOKTOK-M8N9', 'TOKTOK-O0P1',
-            'TOKTOK-Q2R3', 'TOKTOK-S4T5', 'TOKTOK-U6V7', 'TOKTOK-W8X9', 'TOKTOK-Y0Z1'
+            'TOKTOK-Q9L0', 'TOKTOK-F4D5', 'TOKTOK-H6G7', 'TOKTOK-V8C3', 'TOKTOK-B1N9'
         ]);
 
         const PRIZES = [0, 1, 2, 5, 8, 10, 20, 50, 80, 100];
