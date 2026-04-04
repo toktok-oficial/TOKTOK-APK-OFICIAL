@@ -1012,6 +1012,80 @@
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
         }
+
+        /* Estilos para filtros de fecha */
+        .filter-container {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 12px;
+            background: #f8fafc;
+            border-radius: 12px;
+        }
+        .filter-group {
+            flex: 1;
+            min-width: 120px;
+        }
+        .filter-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: #64748b;
+            margin-bottom: 4px;
+            display: block;
+        }
+        .date-input {
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 13px;
+            width: 100%;
+            background: white;
+        }
+        @media (max-width: 768px) {
+            .filter-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .filter-group {
+                width: 100%;
+            }
+            .filter-buttons {
+                display: flex;
+                gap: 8px;
+                width: 100%;
+            }
+            .filter-buttons button {
+                flex: 1;
+            }
+        }
+        .filter-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        .filter-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            background: white;
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        .reset-filters-btn {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+        .reset-filters-btn:hover {
+            background: #e2e8f0;
+        }
     </style>
 </head>
 <body class="min-h-screen bg-gray-50">
@@ -1101,14 +1175,32 @@
                 
                 <div id="mobile-transactions-tab" class="tab-content">
                     <div class="mobile-card mt-2">
-                        <div class="p-4 border-b border-gray-100 flex justify-between items-center">
-                            <div class="text-sm font-medium">Filtrar por:</div>
-                            <select id="mobile-transactions-filter" class="text-sm border-none bg-transparent text-purple-600 font-medium">
-                                <option value="all">Todas</option>
-                                <option value="deposit">Ingresos</option>
-                                <option value="withdrawal">Retiros</option>
-                                <option value="transfer">Transferencias</option>
-                            </select>
+                        <!-- Filtros mejorados -->
+                        <div class="p-4 border-b border-gray-100">
+                            <div class="filter-container">
+                                <div class="filter-group">
+                                    <label class="filter-label">Tipo</label>
+                                    <select id="mobile-transactions-filter" class="mobile-input" style="margin-bottom: 0;">
+                                        <option value="all">Todos</option>
+                                        <option value="deposit">Ingresos</option>
+                                        <option value="withdrawal">Retiros</option>
+                                        <option value="transfer">Transferencias</option>
+                                    </select>
+                                </div>
+                                <div class="filter-group">
+                                    <label class="filter-label">Desde</label>
+                                    <input type="date" id="mobile-date-from" class="date-input">
+                                </div>
+                                <div class="filter-group">
+                                    <label class="filter-label">Hasta</label>
+                                    <input type="date" id="mobile-date-to" class="date-input">
+                                </div>
+                                <div class="filter-buttons">
+                                    <button id="mobile-filter-7days" class="filter-btn">Últimos 7 días</button>
+                                    <button id="mobile-filter-all" class="filter-btn">Todos</button>
+                                    <button id="mobile-reset-filters" class="filter-btn reset-filters-btn">Reset</button>
+                                </div>
+                            </div>
                         </div>
                         <div id="mobile-transactions-full-list">
                             <div class="mobile-transaction-item">
@@ -1481,22 +1573,37 @@
                         <div class="p-6">
                             <!-- Transacciones -->
                             <div id="transactions-content" class="tab-content">
-                                <div class="flex justify-between items-center mb-6">
-                                    <h3 class="text-lg font-semibold text-gray-800">Historial de transacciones</h3>
-                                    <div class="relative">
-                                        <select id="transactions-filter" class="input-field select-field pr-10 text-sm">
-                                            <option value="all">Todas</option>
+                                <!-- Filtros mejorados -->
+                                <div class="filter-container" style="margin-bottom: 20px;">
+                                    <div class="filter-group">
+                                        <label class="filter-label">Tipo</label>
+                                        <select id="transactions-filter" class="input-field w-full" style="padding: 8px 12px;">
+                                            <option value="all">Todos</option>
                                             <option value="deposit">Ingresos</option>
                                             <option value="withdrawal">Retiros</option>
                                             <option value="transfer">Transferencias</option>
                                         </select>
+                                    </div>
+                                    <div class="filter-group">
+                                        <label class="filter-label">Desde</label>
+                                        <input type="date" id="date-from" class="date-input">
+                                    </div>
+                                    <div class="filter-group">
+                                        <label class="filter-label">Hasta</label>
+                                        <input type="date" id="date-to" class="date-input">
+                                    </div>
+                                    <div class="filter-buttons">
+                                        <button id="filter-7days" class="filter-btn">Últimos 7 días</button>
+                                        <button id="filter-all" class="filter-btn">Todos</button>
+                                        <button id="reset-filters" class="filter-btn reset-filters-btn">Reset</button>
                                     </div>
                                 </div>
                                 
                                 <div class="overflow-x-auto scrollbar-hide">
                                     <table class="min-w-full divide-y divide-gray-200">
                                         <thead class="bg-gray-50">
-                                            32<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipo</th>
+                                            <tr>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipo</th>
                                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Descripción</th>
                                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
                                                 <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Monto</th>
@@ -1752,6 +1859,7 @@
         let userProfile = null;
         let currentBalance = 0;
         let currentInvoiceData = null;
+        let allTransactions = [];
 
         // Funciones de utilidad
         const formatCurrency = (amount) => {
@@ -2141,16 +2249,26 @@
             return balance;
         };
         
-        const loadTransactions = async (userId, filter = 'all') => {
+        const loadTransactions = async (userId, filter = 'all', dateFrom = null, dateTo = null) => {
             let query = supabase
                 .from('transactions')
                 .select('*')
                 .eq('user_id', userId)
-                .order('created_at', { ascending: false })
-                .limit(20);
+                .eq('status', 'completed')
+                .order('created_at', { ascending: false });
                 
             if (filter !== 'all') {
                 query = query.eq('type', filter);
+            }
+            
+            if (dateFrom) {
+                query = query.gte('created_at', dateFrom);
+            }
+            
+            if (dateTo) {
+                const endDate = new Date(dateTo);
+                endDate.setHours(23, 59, 59, 999);
+                query = query.lte('created_at', endDate.toISOString());
             }
             
             const { data, error } = await query;
@@ -2187,6 +2305,26 @@
             return data;
         };
         
+        // Función para aplicar filtros
+        const applyFilters = async () => {
+            if (!currentUser) return;
+            
+            // Desktop filters
+            const desktopFilter = document.getElementById('transactions-filter')?.value || 'all';
+            const desktopDateFrom = document.getElementById('date-from')?.value || null;
+            const desktopDateTo = document.getElementById('date-to')?.value || null;
+            
+            // Mobile filters
+            const mobileFilter = document.getElementById('mobile-transactions-filter')?.value || 'all';
+            const mobileDateFrom = document.getElementById('mobile-date-from')?.value || null;
+            const mobileDateTo = document.getElementById('mobile-date-to')?.value || null;
+            
+            // Cargar transacciones con filtros
+            const transactions = await loadTransactions(currentUser.id, desktopFilter, desktopDateFrom || mobileDateFrom, desktopDateTo || mobileDateTo);
+            allTransactions = transactions;
+            renderTransactions(transactions);
+        };
+        
         // Funciones para renderizar datos
         const renderTransactions = (transactions) => {
             const container = document.getElementById('transactions-list');
@@ -2200,7 +2338,7 @@
                             <i class="fas fa-exchange-alt"></i>
                         </div>
                         <h3 class="font-medium text-gray-800">No hay transacciones</h3>
-                        <p class="mobile-empty-text">No se encontraron transacciones recientes</p>
+                        <p class="mobile-empty-text">No se encontraron transacciones con los filtros seleccionados</p>
                     </div>
                 `;
                 
@@ -2209,7 +2347,7 @@
                         <tr>
                             <td colspan="4" class="px-6 py-8 text-center text-gray-400">
                                 <i class="fas fa-exchange-alt fa-2x mb-2"></i>
-                                <p>No hay transacciones recientes</p>
+                                <p>No hay transacciones con los filtros seleccionados</p>
                             </td>
                         </tr>
                     `;
@@ -2309,36 +2447,24 @@
                 if (el) el.textContent = formatCurrency(currentBalance);
             });
             
-            const filter = document.getElementById('transactions-filter')?.value || 'all';
-            const mobileFilter = document.getElementById('mobile-transactions-filter')?.value || 'all';
-            const activeFilter = filter || mobileFilter;
+            // Cargar transacciones con filtro por defecto (últimos 7 días)
+            const defaultDateFrom = new Date();
+            defaultDateFrom.setDate(defaultDateFrom.getDate() - 7);
+            const defaultDateFromStr = defaultDateFrom.toISOString().split('T')[0];
             
-            const transactions = await loadTransactions(currentUser.id, activeFilter);
-            renderTransactions(transactions);
+            // Establecer fechas por defecto en los inputs
+            const desktopDateFrom = document.getElementById('date-from');
+            const mobileDateFrom = document.getElementById('mobile-date-from');
+            if (desktopDateFrom && !desktopDateFrom.value) desktopDateFrom.value = defaultDateFromStr;
+            if (mobileDateFrom && !mobileDateFrom.value) mobileDateFrom.value = defaultDateFromStr;
             
-            if (document.getElementById('mobile-user-name')) {
-                document.getElementById('mobile-user-name').textContent = userProfile?.full_name || currentUser.email.split('@')[0];
-                document.getElementById('mobile-user-email').textContent = currentUser.email;
-                document.getElementById('mobile-profile-phone').textContent = userProfile?.phone || 'No especificado';
-                
-                const createdAt = new Date(userProfile.created_at || currentUser.created_at);
-                document.getElementById('mobile-profile-created-at').textContent = createdAt.toLocaleDateString('es-ES', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                });
-                
-                const mobileAvatarElement = document.getElementById('mobile-user-avatar');
-                const mobileInitialsElement = document.getElementById('mobile-user-initials');
-                
-                if (userProfile?.avatar_url) {
-                    mobileAvatarElement.innerHTML = `<img src="${userProfile.avatar_url}" alt="Avatar">`;
-                    mobileInitialsElement.textContent = '';
-                } else {
-                    const initials = getInitials(userProfile?.full_name || currentUser.email);
-                    mobileInitialsElement.textContent = initials;
-                }
-            }
+            const desktopDateTo = document.getElementById('date-to');
+            const mobileDateTo = document.getElementById('mobile-date-to');
+            const todayStr = new Date().toISOString().split('T')[0];
+            if (desktopDateTo && !desktopDateTo.value) desktopDateTo.value = todayStr;
+            if (mobileDateTo && !mobileDateTo.value) mobileDateTo.value = todayStr;
+            
+            await applyFilters();
         };
 
         // Función de confirmar envío de dinero
@@ -2546,12 +2672,94 @@
                 });
             });
             
-            const filterElements = document.querySelectorAll('#transactions-filter, #mobile-transactions-filter');
-            filterElements.forEach(filter => {
-                if (filter) {
-                    filter.addEventListener('change', updateUI);
-                }
-            });
+            // Filtros desktop
+            const desktopFilter = document.getElementById('transactions-filter');
+            const desktopDateFrom = document.getElementById('date-from');
+            const desktopDateTo = document.getElementById('date-to');
+            const filter7daysBtn = document.getElementById('filter-7days');
+            const filterAllBtn = document.getElementById('filter-all');
+            const resetFiltersBtn = document.getElementById('reset-filters');
+            
+            // Filtros mobile
+            const mobileFilter = document.getElementById('mobile-transactions-filter');
+            const mobileDateFrom = document.getElementById('mobile-date-from');
+            const mobileDateTo = document.getElementById('mobile-date-to');
+            const mobileFilter7daysBtn = document.getElementById('mobile-filter-7days');
+            const mobileFilterAllBtn = document.getElementById('mobile-filter-all');
+            const mobileResetFiltersBtn = document.getElementById('mobile-reset-filters');
+            
+            const applyFiltersHandler = () => applyFilters();
+            
+            if (desktopFilter) desktopFilter.addEventListener('change', applyFiltersHandler);
+            if (desktopDateFrom) desktopDateFrom.addEventListener('change', applyFiltersHandler);
+            if (desktopDateTo) desktopDateTo.addEventListener('change', applyFiltersHandler);
+            if (mobileFilter) mobileFilter.addEventListener('change', applyFiltersHandler);
+            if (mobileDateFrom) mobileDateFrom.addEventListener('change', applyFiltersHandler);
+            if (mobileDateTo) mobileDateTo.addEventListener('change', applyFiltersHandler);
+            
+            if (filter7daysBtn) {
+                filter7daysBtn.addEventListener('click', () => {
+                    const dateFrom = new Date();
+                    dateFrom.setDate(dateFrom.getDate() - 7);
+                    if (desktopDateFrom) desktopDateFrom.value = dateFrom.toISOString().split('T')[0];
+                    if (desktopDateTo) desktopDateTo.value = new Date().toISOString().split('T')[0];
+                    applyFilters();
+                });
+            }
+            
+            if (filterAllBtn) {
+                filterAllBtn.addEventListener('click', () => {
+                    if (desktopDateFrom) desktopDateFrom.value = '';
+                    if (desktopDateTo) desktopDateTo.value = '';
+                    applyFilters();
+                });
+            }
+            
+            if (resetFiltersBtn) {
+                resetFiltersBtn.addEventListener('click', () => {
+                    if (desktopFilter) desktopFilter.value = 'all';
+                    if (desktopDateFrom) desktopDateFrom.value = '';
+                    if (desktopDateTo) desktopDateTo.value = '';
+                    if (mobileFilter) mobileFilter.value = 'all';
+                    if (mobileDateFrom) mobileDateFrom.value = '';
+                    if (mobileDateTo) mobileDateTo.value = '';
+                    applyFilters();
+                });
+            }
+            
+            if (mobileFilter7daysBtn) {
+                mobileFilter7daysBtn.addEventListener('click', () => {
+                    const dateFrom = new Date();
+                    dateFrom.setDate(dateFrom.getDate() - 7);
+                    if (mobileDateFrom) mobileDateFrom.value = dateFrom.toISOString().split('T')[0];
+                    if (mobileDateTo) mobileDateTo.value = new Date().toISOString().split('T')[0];
+                    if (desktopDateFrom) desktopDateFrom.value = mobileDateFrom.value;
+                    if (desktopDateTo) desktopDateTo.value = mobileDateTo.value;
+                    applyFilters();
+                });
+            }
+            
+            if (mobileFilterAllBtn) {
+                mobileFilterAllBtn.addEventListener('click', () => {
+                    if (mobileDateFrom) mobileDateFrom.value = '';
+                    if (mobileDateTo) mobileDateTo.value = '';
+                    if (desktopDateFrom) desktopDateFrom.value = '';
+                    if (desktopDateTo) desktopDateTo.value = '';
+                    applyFilters();
+                });
+            }
+            
+            if (mobileResetFiltersBtn) {
+                mobileResetFiltersBtn.addEventListener('click', () => {
+                    if (mobileFilter) mobileFilter.value = 'all';
+                    if (mobileDateFrom) mobileDateFrom.value = '';
+                    if (mobileDateTo) mobileDateTo.value = '';
+                    if (desktopFilter) desktopFilter.value = 'all';
+                    if (desktopDateFrom) desktopDateFrom.value = '';
+                    if (desktopDateTo) desktopDateTo.value = '';
+                    applyFilters();
+                });
+            }
             
             const logoutButtons = document.querySelectorAll('#logout-btn, #mobile-logout-btn');
             logoutButtons.forEach(btn => {
@@ -2869,7 +3077,7 @@
                 });
             }
             
-            updateUI();
+            await updateUI();
         });
     </script>
 
