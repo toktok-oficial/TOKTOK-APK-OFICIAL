@@ -564,6 +564,23 @@
             border-color: #007aff;
         }
         
+        .monto-custom-input {
+            background: #f2f2f7;
+            border: 0.5px solid #e5e5ea;
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 16px;
+            font-weight: 500;
+            width: 100%;
+            outline: none;
+            margin-bottom: 8px;
+        }
+        
+        .monto-custom-input:focus {
+            border-color: #007aff;
+            background: white;
+        }
+        
         .info-card-nativo {
             background: #f2f2f7;
             border-radius: 12px;
@@ -716,7 +733,7 @@
                     <div class="paso-container-nativo">
                         <div class="paso-header-nativo">
                             <div class="paso-title-nativo">Recarga saldo</div>
-                            <div class="paso-subtitle-nativo">Crédito inmediato</div>
+                            <div class="paso-subtitle-nativo">Crédito inmediato · Descuento automático</div>
                         </div>
                         
                         <div id="paso-operator-badge" class="operator-badge-nativo">
@@ -737,26 +754,28 @@
                         
                         <div class="input-group-nativo">
                             <div class="input-label-nativo">
-                                <i class="fas fa-dollar-sign" style="font-size: 12px;"></i> Monto (Bs)
+                                <i class="fas fa-dollar-sign" style="font-size: 12px;"></i> Monto a recargar (Bs)
                             </div>
                             <div class="monto-grid-nativo" id="paso-monto-buttons"></div>
+                            <input type="number" id="paso-custom-monto" class="monto-custom-input" 
+                                   placeholder="Ingresa otro monto (mínimo Bs 5)" min="5" step="1" inputmode="numeric">
                         </div>
                         
                         <div class="info-card-nativo">
                             <div class="info-row-nativo">
                                 <span>Crédito a recibir</span>
-                                <strong id="paso-credito-recibir">Bs 10</strong>
+                                <strong id="paso-credito-recibir">Bs 0</strong>
                             </div>
                             <div class="info-row-nativo">
-                                <span>Sin comisiones</span>
-                                <strong>✓</strong>
+                                <span>Descuento aplicado</span>
+                                <strong id="paso-descuento-info">0%</strong>
                             </div>
                             <p class="text-xs text-gray-500 mt-2">Verifica el número, no hay cambios después de comprar</p>
                         </div>
                         
                         <div class="total-bar-nativo">
                             <span class="total-label-nativo">Total a pagar</span>
-                            <span class="total-amount-nativo" id="paso-total-display">Bs 10</span>
+                            <span class="total-amount-nativo" id="paso-total-display">Bs 0</span>
                         </div>
                         
                         <button id="btn-recarga-paso" class="btn-paso-nativo">
@@ -808,7 +827,7 @@
         </div>
     </div>
 
-    <!-- Modal para número de teléfono (para paquetes normales) - ORIGINAL SIN MODIFICAR -->
+    <!-- Modal para número de teléfono (para paquetes normales) -->
     <div id="phone-modal" class="ios-modal">
         <div class="modal-content-ios">
             <h3 class="text-xl font-semibold mb-4">Número de teléfono</h3>
@@ -842,7 +861,7 @@
         </div>
     </div>
 
-    <!-- Modal de confirmación SOLO PARA RECARGA AL PASO -->
+    <!-- Modal de confirmación para RECARGA AL PASO -->
     <div id="confirm-paso-modal" class="ios-modal">
         <div class="modal-content-ios">
             <h3 class="text-xl font-bold text-center mb-4">Confirmar recarga</h3>
@@ -853,13 +872,17 @@
                 </div>
                 <div class="border-t border-gray-200 my-3"></div>
                 <div class="text-center">
-                    <div class="text-sm text-gray-500">Paquete</div>
-                    <div class="text-lg font-bold text-purple-600" id="confirm-paso-package">Recarga al Paso Bs 10</div>
+                    <div class="text-sm text-gray-500">Recarga</div>
+                    <div class="text-lg font-bold text-purple-600" id="confirm-paso-package">Bs 0</div>
                 </div>
                 <div class="border-t border-gray-200 my-3"></div>
                 <div class="flex justify-between">
+                    <span class="text-gray-500">Descuento aplicado</span>
+                    <span id="confirm-paso-descuento" class="font-medium text-green-600">0%</span>
+                </div>
+                <div class="flex justify-between mt-2">
                     <span class="text-gray-500">Total a pagar</span>
-                    <span class="text-xl font-bold text-purple-600" id="confirm-paso-total">Bs 10</span>
+                    <span class="text-xl font-bold text-purple-600" id="confirm-paso-total">Bs 0</span>
                 </div>
             </div>
             <div class="flex gap-2">
@@ -869,7 +892,7 @@
         </div>
     </div>
 
-    <!-- Modal de confirmación normal (para paquetes) - ORIGINAL -->
+    <!-- Modal de confirmación normal (para paquetes) -->
     <div id="confirm-modal" class="ios-modal">
         <div class="modal-content-ios">
             <div class="success-animation">✓</div>
@@ -931,11 +954,24 @@
                 viva: { packages: [{ token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-5059040889' },{ token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-5037389529' }], paso: { token: '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY', chatId: '-5084989527' } }
             };
             
-            const PASO_PRECIOS = {
-                entel: { 10: 9, 15: 13.50, 30: 27, 50: 45, 100: 90, limite: 300 },
-                tigo: { 10: 9.60, 20: 19, 30: 28.50, 50: 47.50, 100: 95, limite: 200 },
-                viva: { 10: 9, 20: 18, 30: 27, 50: 45, 100: 90, limite: 300 }
-            };
+            // Función para obtener el precio con descuento según el operador
+            function getPrecioConDescuento(operatorCode, monto) {
+                if (operatorCode === 'entel' || operatorCode === 'viva') {
+                    // 10% de descuento
+                    return monto * 0.9;
+                } else if (operatorCode === 'tigo') {
+                    // 5% de descuento
+                    return monto * 0.95;
+                }
+                return monto;
+            }
+            
+            // Función para obtener el porcentaje de descuento
+            function getDescuentoPorcentaje(operatorCode) {
+                if (operatorCode === 'entel' || operatorCode === 'viva') return 10;
+                if (operatorCode === 'tigo') return 5;
+                return 0;
+            }
             
             let currentUser = null;
             let currentBalance = 0;
@@ -1089,30 +1125,62 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
             
             function updatePasoUI() {
                 const operatorCode = selectedOperator.code.toLowerCase();
-                const precios = PASO_PRECIOS[operatorCode] || PASO_PRECIOS.entel;
+                const descuento = getDescuentoPorcentaje(operatorCode);
                 document.getElementById('paso-operator-name').textContent = selectedOperator.name.toUpperCase();
-                const montos = Object.keys(precios).filter(key => key !== 'limite').map(Number);
+                document.getElementById('paso-descuento-info').textContent = `${descuento}%`;
+                
+                // Montos predefinidos
+                const montos = [10, 20, 30, 50];
                 const montosGrid = document.getElementById('paso-monto-buttons');
                 montosGrid.innerHTML = montos.map(monto => `<button class="monto-btn-nativo" data-monto="${monto}">Bs ${monto}</button>`).join('');
+                
                 document.getElementById('paso-monto-buttons').querySelectorAll('.monto-btn-nativo').forEach(btn => {
                     btn.addEventListener('click', (e) => {
                         const montoVal = parseInt(btn.dataset.monto);
                         document.getElementById('paso-monto-buttons').querySelectorAll('.monto-btn-nativo').forEach(b => b.classList.remove('selected'));
                         btn.classList.add('selected');
+                        document.getElementById('paso-custom-monto').value = '';
                         updatePasoTotalWithAmount(montoVal);
                     });
                 });
-                const firstMonto = montos[0];
-                if(firstMonto) updatePasoTotalWithAmount(firstMonto);
+                
+                // Input personalizado
+                const customInput = document.getElementById('paso-custom-monto');
+                customInput.addEventListener('input', (e) => {
+                    let val = parseInt(e.target.value);
+                    if (!isNaN(val) && val > 0) {
+                        document.getElementById('paso-monto-buttons').querySelectorAll('.monto-btn-nativo').forEach(b => b.classList.remove('selected'));
+                        updatePasoTotalWithAmount(val);
+                    } else {
+                        document.getElementById('paso-total-display').textContent = 'Bs 0';
+                        document.getElementById('paso-credito-recibir').textContent = 'Bs 0';
+                        window._selectedPasoMonto = null;
+                        window._selectedPasoPrecio = null;
+                    }
+                });
+                
                 document.getElementById('paso-phone').value = '';
+                updatePasoTotalWithAmount(10);
             }
             
             function updatePasoTotalWithAmount(monto) {
+                if (monto < 5) {
+                    showToast('El monto mínimo es Bs 5');
+                    document.getElementById('paso-total-display').textContent = 'Bs 0';
+                    document.getElementById('paso-credito-recibir').textContent = 'Bs 0';
+                    window._selectedPasoMonto = null;
+                    window._selectedPasoPrecio = null;
+                    return;
+                }
+                
                 const operatorCode = selectedOperator.code.toLowerCase();
-                const precios = PASO_PRECIOS[operatorCode] || PASO_PRECIOS.entel;
-                let precioPagar = precios[monto] !== undefined ? precios[monto] : monto;
+                const precioPagar = getPrecioConDescuento(operatorCode, monto);
+                const descuento = getDescuentoPorcentaje(operatorCode);
+                
                 document.getElementById('paso-total-display').textContent = formatCurrency(precioPagar);
                 document.getElementById('paso-credito-recibir').textContent = `Bs ${monto}`;
+                document.getElementById('paso-descuento-info').textContent = `${descuento}%`;
+                
                 window._selectedPasoMonto = monto;
                 window._selectedPasoPrecio = precioPagar;
             }
@@ -1157,7 +1225,7 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
             }
             
             function setupEventListeners() {
-                // FLUJO NORMAL PARA PAQUETES (SIN MODIFICAR - ORIGINAL)
+                // FLUJO NORMAL PARA PAQUETES
                 document.getElementById('btn-continue')?.addEventListener('click', () => {
                     if(!selectedPackage) return;
                     if(currentBalance < selectedPackage.price){ showToast('Saldo insuficiente'); return; }
@@ -1181,27 +1249,29 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                 document.getElementById('confirm-recharge')?.addEventListener('click', processRecharge);
                 document.getElementById('close-result')?.addEventListener('click', () => { closeModal('result-modal'); window.location.reload(); });
                 
-                // FLUJO PARA RECARGA AL PASO (CON MODAL DIRECTO)
+                // FLUJO PARA RECARGA AL PASO
                 document.getElementById('btn-recarga-paso')?.addEventListener('click', async () => {
                     const phone = document.getElementById('paso-phone').value;
                     if(phone.length !== 8){ showToast('Ingresa un número válido de 8 dígitos'); return; }
                     const monto = window._selectedPasoMonto;
-                    if(!monto || monto<5){ showToast('Selecciona un monto válido'); return; }
-                    const operatorCode = selectedOperator.code.toLowerCase();
-                    const precios = PASO_PRECIOS[operatorCode] || PASO_PRECIOS.entel;
-                    if(monto > precios.limite){ showToast(`Monto máximo Bs ${precios.limite}`); return; }
-                    const precioPagar = precios[monto];
+                    if(!monto || monto < 5){ showToast('Selecciona o ingresa un monto válido (mínimo Bs 5)'); return; }
+                    const precioPagar = window._selectedPasoPrecio;
                     if(currentBalance < precioPagar){ showToast('Saldo insuficiente'); return; }
+                    
+                    const operatorCode = selectedOperator.code.toLowerCase();
+                    const descuento = getDescuentoPorcentaje(operatorCode);
                     
                     window._tempPasoData = {
                         phone: phone,
                         monto: monto,
                         precio: precioPagar,
-                        packageName: `Recarga al Paso Bs ${monto}`
+                        packageName: `Recarga al Paso Bs ${monto}`,
+                        descuento: descuento
                     };
                     
                     document.getElementById('confirm-paso-phone').textContent = `+591 ${phone}`;
-                    document.getElementById('confirm-paso-package').textContent = `Recarga al Paso Bs ${monto}`;
+                    document.getElementById('confirm-paso-package').textContent = `Bs ${monto} (recibe Bs ${monto})`;
+                    document.getElementById('confirm-paso-descuento').textContent = `${descuento}%`;
                     document.getElementById('confirm-paso-total').textContent = formatCurrency(precioPagar);
                     openModal('confirm-paso-modal');
                 });
@@ -1213,7 +1283,7 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                 });
             }
             
-            // Función original para paquetes normales (NO TOCADA)
+            // Función original para paquetes normales
             async function processRecharge() {
                 const btn = document.getElementById('confirm-recharge');
                 const text = document.getElementById('confirm-text');
@@ -1240,13 +1310,13 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                 } finally { btn.disabled = false; text.textContent = 'Confirmar'; }
             }
             
-            // Función NUEVA solo para Recarga al Paso
+            // Función para Recarga al Paso con monto personalizado y descuento automático
             async function processPasoRecharge() {
                 try {
-                    const { phone, monto, precio, packageName } = window._tempPasoData;
-                    const notes = '';
+                    const { phone, monto, precio, packageName, descuento } = window._tempPasoData;
+                    const notes = `Recarga al paso - Monto: Bs ${monto} (${descuento}% descuento)`;
                     
-                    const transactionDescription = `${selectedOperator.name}: ${packageName} | Número: +591 ${phone}`;
+                    const transactionDescription = `${selectedOperator.name}: ${packageName} (descuento ${descuento}%) | Número: +591 ${phone}`;
                     const { data: transaction, error: transError } = await supabase.from('transactions').insert([{ user_id: currentUser.id, amount: precio, type: 'withdrawal', description: transactionDescription, status: 'completed' }]).select().single();
                     if(transError) throw transError;
                     
@@ -1261,7 +1331,7 @@ ${rechargeData.isPaso ? '💰 <b>Crédito:</b> Bs ' + rechargeData.amount : '�
                     document.getElementById('result-icon').innerHTML = '✓';
                     document.getElementById('result-icon').style.background = '#10b981';
                     document.getElementById('result-title').textContent = '¡Recarga exitosa!';
-                    document.getElementById('result-message').textContent = `+591 ${phone}`;
+                    document.getElementById('result-message').textContent = `+591 ${phone} - Recarga Bs ${monto} (Pagaste Bs ${precio.toFixed(2)})`;
                     openModal('result-modal');
                 } catch (error) {
                     document.getElementById('result-icon').innerHTML = '✕';
