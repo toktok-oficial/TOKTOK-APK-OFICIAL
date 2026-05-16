@@ -943,106 +943,42 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         (function() {
-            // =============================================
-            // CONFIGURACIÓN - NO MODIFICAR MANUALMENTE
-            // =============================================
             const SUPABASE_URL = 'https://aleadadisazocjovibeh.supabase.co';
             const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFsZWFkYWRpc2F6b2Nqb3ZpYmVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk0NDE5NjMsImV4cCI6MjA3NTAxNzk2M30.z82tP0C-UiiNuzP_jqrQf4LBusFqrDi1WYbdnuTh47E';
             
             const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
             
-            // =============================================
-            // CONFIGURACIÓN DE BOTS DE TELEGRAM
-            // =============================================
             const TELEGRAM_BOTS = {
-                entel: { 
-                    packages: [
-                        { token: '8794091027:AAG36PsetBQY3oqGQzGw39rZhbOaBAaE41A', chatId: '-1003945260589' },
-                        { token: '8794091027:AAG36PsetBQY3oqGQzGw39rZhbOaBAaE41A', chatId: '-1003821266965' }
-                    ], 
-                    paso: { token: '8794091027:AAG36PsetBQY3oqGQzGw39rZhbOaBAaE41A', chatId: '-1003777784383' } 
-                },
-                tigo: { 
-                    packages: [
-                        { token: '8794091027:AAG36PsetBQY3oqGQzGw39rZhbOaBAaE41A', chatId: '-1003895996189' },
-                        { token: '8794091027:AAG36PsetBQY3oqGQzGw39rZhbOaBAaE41A', chatId: '-1003713277631' }
-                    ], 
-                    paso: { token: '8794091027:AAG36PsetBQY3oqGQzGw39rZhbOaBAaE41A', chatId: '-1003916080020' } 
-                },
-                viva: { 
-                    packages: [
-                        { token: '8794091027:AAG36PsetBQY3oqGQzGw39rZhbOaBAaE41A', chatId: '-1003760488575' },
-                        { token: '8794091027:AAG36PsetBQY3oqGQzGw39rZhbOaBAaE41A', chatId: '-1003331710456' }
-                    ], 
-                    paso: { token: '8794091027:AAG36PsetBQY3oqGQzGw39rZhbOaBAaE41A', chatId: '-1003982922759' } 
-                }
+                entel: { packages: [{ token: '8794091027:AAG36PsetBQY3oqGQzGw39rZhbOaBAaE41A', chatId: '-1003945260589' },{ token: '8794091027:AAG36PsetBQY3oqGQzGw39rZhbOaBAaE41A', chatId: '-1003821266965' }], paso: { token: '8794091027:AAG36PsetBQY3oqGQzGw39rZhbOaBAaE41A', chatId: '-1003777784383' } },
+                tigo: { packages: [{ token: '8794091027:AAG36PsetBQY3oqGQzGw39rZhbOaBAaE41A', chatId: '-1003895996189' },{ token: '8794091027:AAG36PsetBQY3oqGQzGw39rZhbOaBAaE41A', chatId: '-1003713277631' }], paso: { token: '8794091027:AAG36PsetBQY3oqGQzGw39rZhbOaBAaE41A', chatId: '-1003916080020' } },
+                viva: { packages: [{ token: '8794091027:AAG36PsetBQY3oqGQzGw39rZhbOaBAaE41A', chatId: '-1003760488575' },{ token: '8794091027:AAG36PsetBQY3oqGQzGw39rZhbOaBAaE41A', chatId: '-1003331710456' }], paso: { token: '8794091027:AAG36PsetBQY3oqGQzGw39rZhbOaBAaE41A', chatId: '-1003982922759' } }
             };
             
-            // =============================================
-            // FUNCIONES DE DESCUENTO - ¡CRÍTICAS!
-            // =============================================
-            
-            /**
-             * Calcula el precio con descuento según el operador
-             * @param {string} operatorCode - Código del operador (entel, tigo, viva)
-             * @param {number} monto - Monto base de recarga
-             * @returns {number} - Precio final con descuento aplicado
-             */
+            // Función para obtener el precio con descuento según el operador
+            // ENTE Y VIVA: 10% descuento, TIGO: 5% descuento
             function getPrecioConDescuento(operatorCode, monto) {
-                // Asegurar que el código sea minúsculas y sin espacios
-                const code = String(operatorCode).toLowerCase().trim();
-                const montoNum = parseFloat(monto);
-                
-                // Validación
-                if (isNaN(montoNum) || montoNum <= 0) {
-                    console.error('❌ MONTO INVÁLIDO:', monto);
-                    return montoNum;
+                if (operatorCode === 'entel' || operatorCode === 'viva') {
+                    // 10% de descuento: paga el 90% del monto
+                    return monto * 0.9;
+                } else if (operatorCode === 'tigo') {
+                    // 5% de descuento: paga el 95% del monto
+                    return monto * 0.95;
                 }
-                
-                let precioFinal;
-                
-                // APLICAR DESCUENTO SEGÚN OPERADOR
-                if (code === 'entel') {
-                    // Entel: 10% de descuento
-                    precioFinal = montoNum * 0.9;
-                    console.log(`✅ ENTEL: Monto=${montoNum}, Descuento=10%, Precio=${precioFinal.toFixed(2)}`);
-                } else if (code === 'viva') {
-                    // Viva: 10% de descuento
-                    precioFinal = montoNum * 0.9;
-                    console.log(`✅ VIVA: Monto=${montoNum}, Descuento=10%, Precio=${precioFinal.toFixed(2)}`);
-                } else if (code === 'tigo') {
-                    // Tigo: 5% de descuento
-                    precioFinal = montoNum * 0.95;
-                    console.log(`✅ TIGO: Monto=${montoNum}, Descuento=5%, Precio=${precioFinal.toFixed(2)}`);
-                } else {
-                    // Sin descuento
-                    precioFinal = montoNum;
-                    console.log(`⚠️ OPERADOR DESCONOCIDO (${code}): Sin descuento, Precio=${precioFinal.toFixed(2)}`);
-                }
-                
-                // Redondear a 2 decimales
-                return Math.round(precioFinal * 100) / 100;
+                return monto;
             }
             
-            /**
-             * Obtiene el porcentaje de descuento para un operador
-             * @param {string} operatorCode - Código del operador
-             * @returns {number} - Porcentaje de descuento (0-100)
-             */
+            // Función para obtener el porcentaje de descuento
             function getDescuentoPorcentaje(operatorCode) {
-                const code = String(operatorCode).toLowerCase().trim();
-                
-                if (code === 'entel') return 10;
-                if (code === 'viva') return 10;
-                if (code === 'tigo') return 5;
-                
-                console.warn(`⚠️ OPERADOR NO RECONOCIDO PARA DESCUENTO: ${code}`);
+                if (operatorCode === 'entel' || operatorCode === 'viva') return 10;
+                if (operatorCode === 'tigo') return 5;
                 return 0;
             }
             
-            // =============================================
-            // VARIABLES GLOBALES
-            // =============================================
+            // Función para calcular el crédito a recibir (es el monto ingresado por el usuario)
+            function getCreditoRecibir(monto) {
+                return monto;
+            }
+            
             let currentUser = null;
             let currentBalance = 0;
             let operators = [];
@@ -1053,400 +989,140 @@
             let selectedPackage = null;
             let isRecargaPaso = false;
             
-            // Datos temporales para recarga al paso
-            let pasoDataActual = {
-                phone: '',
-                montoCredito: 0,
-                precioPagar: 0,
-                descuento: 0,
-                packageName: ''
-            };
-            
-            // =============================================
-            // FUNCIONES UTILITARIAS
-            // =============================================
-            
-            const formatCurrency = (amount) => {
-                const num = parseFloat(amount);
-                if (isNaN(num)) return 'Bs 0.00';
-                return 'Bs ' + num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-            };
+            const formatCurrency = (amount) => 'Bs ' + parseFloat(amount).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
             
             const showToast = (message, type = 'error') => {
                 const toast = document.createElement('div');
                 toast.className = `fixed top-20 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-full z-[1000] text-white ${type === 'error' ? 'bg-red-500' : 'bg-green-500'} shadow-lg`;
                 toast.textContent = message;
                 document.body.appendChild(toast);
-                setTimeout(() => toast.remove(), 2500);
+                setTimeout(() => toast.remove(), 2000);
             };
             
-            const openModal = (id) => {
-                const modal = document.getElementById(id);
-                if (modal) modal.classList.add('active');
-            };
-            
-            const closeModal = (id) => {
-                const modal = document.getElementById(id);
-                if (modal) modal.classList.remove('active');
-            };
-            
-            // =============================================
-            // SISTEMA DE NOTIFICACIONES TELEGRAM
-            // =============================================
+            const openModal = (id) => document.getElementById(id)?.classList.add('active');
+            const closeModal = (id) => document.getElementById(id)?.classList.remove('active');
             
             function getNextTelegramBot(operatorCode, isPaso = false) {
-                const operator = String(operatorCode).toLowerCase().trim();
+                const operator = operatorCode.toLowerCase();
                 const botConfigs = TELEGRAM_BOTS[operator];
-                
-                if (!botConfigs) {
-                    console.error(`❌ No hay configuración de bots para: ${operator}`);
-                    return null;
-                }
-                
-                if (isPaso) {
-                    // Para recarga al paso, retornar el bot específico
-                    console.log(`📤 Usando bot PASO para ${operator}:`, botConfigs.paso);
-                    return botConfigs.paso;
-                }
-                
-                // Para paquetes, seleccionar aleatoriamente entre los disponibles
+                if (!botConfigs) return null;
+                if (isPaso) return botConfigs.paso;
                 const packagesBots = botConfigs.packages;
-                if (!packagesBots || packagesBots.length === 0) {
-                    console.error(`❌ No hay bots de paquetes para: ${operator}`);
-                    return null;
-                }
-                
-                const seleccionado = packagesBots[Math.floor(Math.random() * packagesBots.length)];
-                console.log(`📤 Bot seleccionado para ${operator} (paquete):`, seleccionado);
-                return seleccionado;
+                if (!packagesBots || packagesBots.length === 0) return null;
+                return packagesBots[Math.floor(Math.random() * packagesBots.length)];
             }
             
             async function sendTelegramNotification(botConfig, message) {
-                if (!botConfig || !botConfig.token || !botConfig.chatId) {
-                    console.error('❌ Configuración de bot inválida:', botConfig);
-                    return false;
-                }
-                
                 try {
-                    console.log('📤 Enviando a Telegram...');
-                    console.log('Token:', botConfig.token.substring(0, 10) + '...');
-                    console.log('ChatId:', botConfig.chatId);
-                    
-                    const response = await fetch(`https://api.telegram.org/bot${botConfig.token}/sendMessage`, {
+                    await fetch(`https://api.telegram.org/bot${botConfig.token}/sendMessage`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            chat_id: botConfig.chatId,
-                            text: message,
-                            parse_mode: 'HTML'
-                        })
+                        body: JSON.stringify({ chat_id: botConfig.chatId, text: message, parse_mode: 'HTML' })
                     });
-                    
-                    const data = await response.json();
-                    
-                    if (!data.ok) {
-                        console.error('❌ Error de Telegram:', data);
-                        return false;
-                    }
-                    
-                    console.log('✅ Notificación enviada exitosamente');
-                    return true;
-                } catch (error) {
-                    console.error('❌ Error enviando a Telegram:', error);
-                    return false;
-                }
+                } catch (error) { console.error(error); }
             }
             
             async function sendRechargeNotifications(operatorCode, rechargeData) {
-                const operator = String(operatorCode).toLowerCase().trim();
-                const userName = currentUser?.user_metadata?.full_name || 
-                                currentUser?.user_metadata?.name || 
-                                currentUser?.email || 'N/A';
-                
-                // Construir mensaje detallado
-                let message = `🔔 <b>NUEVA RECARGA</b> 🔔\n`;
-                message += `───────────────────\n`;
-                message += `📱 <b>Operador:</b> ${rechargeData.operator}\n`;
-                message += `📦 <b>Tipo:</b> ${rechargeData.isPaso ? '⚡ RECARGA AL PASO' : '📦 PAQUETE'}\n`;
-                
-                if (rechargeData.isPaso) {
-                    // Datos específicos para recarga al paso
-                    message += `💰 <b>Crédito a recargar:</b> Bs ${rechargeData.amount}\n`;
-                    message += `💵 <b>Precio pagado:</b> ${formatCurrency(rechargeData.price)}\n`;
-                    message += `🏷️ <b>Descuento aplicado:</b> ${rechargeData.descuento || 0}%\n`;
-                } else {
-                    // Datos para paquete normal
-                    message += `📦 <b>Paquete:</b> ${rechargeData.packageName}\n`;
-                    message += `💵 <b>Precio:</b> ${formatCurrency(rechargeData.price)}\n`;
-                }
-                
-                message += `📞 <b>Teléfono:</b> +591 ${rechargeData.phone}\n`;
-                message += `👤 <b>Usuario:</b> ${userName}\n`;
-                message += `📝 <b>Notas:</b> ${rechargeData.notes || 'Sin notas'}\n`;
-                message += `───────────────────\n`;
-                message += `⏱️ <b>Fecha:</b> ${new Date().toLocaleString('es-BO', { timeZone: 'America/La_Paz' })}`;
-                
-                // Obtener el bot correcto
-                const botConfig = getNextTelegramBot(operator, rechargeData.isPaso);
-                
-                if (!botConfig) {
-                    console.error('❌ No se pudo obtener configuración del bot');
-                    return false;
-                }
-                
-                // Enviar la notificación
-                const enviado = await sendTelegramNotification(botConfig, message);
-                
-                if (enviado) {
-                    console.log('✅ Notificación de recarga enviada correctamente');
-                } else {
-                    console.error('❌ Falló el envío de la notificación');
-                }
-                
-                return enviado;
+                const operator = operatorCode.toLowerCase();
+                const userName = currentUser?.user_metadata?.full_name || currentUser?.user_metadata?.name || currentUser?.email || 'N/A';
+                const message = `
+🔔 <b>NUEVA RECARGA</b> 🔔
+───────────────────
+📱 <b>Operador:</b> ${rechargeData.operator}
+📦 <b>Tipo:</b> ${rechargeData.isPaso ? '⚡ RECARGA AL PASO' : '📦 PAQUETE'}
+${rechargeData.isPaso ? '💰 <b>Crédito a recibir:</b> Bs ' + rechargeData.amount : '📦 <b>Paquete:</b> ' + rechargeData.packageName}
+📞 <b>Teléfono:</b> +591 ${rechargeData.phone}
+💵 <b>Monto pagado:</b> ${formatCurrency(rechargeData.price)}
+💰 <b>Crédito que recibe:</b> Bs ${rechargeData.amount}
+👤 <b>Usuario:</b> ${userName}
+📝 <b>Notas:</b> ${rechargeData.notes || 'Sin notas'}
+───────────────────
+⏱️ <b>Fecha:</b> ${new Date().toLocaleString('es-BO')}
+                `;
+                const botConfig = getNextTelegramBot(operatorCode, rechargeData.isPaso);
+                if (botConfig) await sendTelegramNotification(botConfig, message);
             }
-            
-            // =============================================
-            // INICIALIZACIÓN
-            // =============================================
             
             document.addEventListener('DOMContentLoaded', async () => {
                 try {
-                    // Verificar sesión
                     const { data: { session } } = await supabase.auth.getSession();
-                    if (!session) { 
-                        console.log('🔒 No hay sesión, redirigiendo...');
-                        window.location.href = 'index.html'; 
-                        return; 
-                    }
-                    
+                    if (!session) { window.location.href = 'index.html'; return; }
                     currentUser = session.user;
-                    console.log('👤 Usuario autenticado:', currentUser.email);
-                    
-                    // Cargar datos iniciales
                     await loadBalance();
                     await loadOperators();
                     setupEventListeners();
-                    
-                    console.log('✅ Sistema inicializado correctamente');
-                } catch (error) { 
-                    console.error('❌ Error en inicialización:', error); 
-                }
+                } catch (error) { console.error(error); }
             });
             
-            // =============================================
-            // GESTIÓN DE SALDO
-            // =============================================
-            
             async function loadBalance() {
-                try {
-                    const { data, error } = await supabase
-                        .from('transactions')
-                        .select('amount, type')
-                        .eq('user_id', currentUser.id)
-                        .eq('status', 'completed');
-                    
-                    if (error) throw error;
-                    
-                    let balance = 0;
-                    data?.forEach(t => { 
-                        if (t.type === 'deposit') {
-                            balance += parseFloat(t.amount);
-                        } else if (t.type === 'withdrawal') {
-                            balance -= parseFloat(t.amount);
-                        }
-                    });
-                    
-                    currentBalance = balance;
-                    document.getElementById('current-balance').textContent = formatCurrency(balance);
-                    console.log(`💰 Saldo cargado: ${formatCurrency(balance)}`);
-                } catch (error) {
-                    console.error('❌ Error cargando saldo:', error);
-                }
+                const { data } = await supabase.from('transactions').select('amount, type').eq('user_id', currentUser.id).eq('status', 'completed');
+                let balance = 0;
+                data?.forEach(t => { if (t.type === 'deposit') balance += t.amount; else balance -= t.amount; });
+                currentBalance = balance;
+                document.getElementById('current-balance').textContent = formatCurrency(balance);
             }
             
-            // =============================================
-            // GESTIÓN DE OPERADORES
-            // =============================================
-            
             async function loadOperators() {
-                try {
-                    const { data, error } = await supabase
-                        .from('mobile_operators')
-                        .select('*')
-                        .eq('is_active', true)
-                        .order('display_order');
-                    
-                    if (error) throw error;
-                    
-                    operators = data || [];
-                    renderOperators();
-                    console.log(`📱 ${operators.length} operadores cargados`);
-                } catch (error) {
-                    console.error('❌ Error cargando operadores:', error);
-                }
+                const { data } = await supabase.from('mobile_operators').select('*').eq('is_active', true).order('display_order');
+                operators = data || [];
+                renderOperators();
             }
             
             function renderOperators() {
                 const container = document.getElementById('operators-container');
-                
                 container.innerHTML = operators.map(op => {
-                    let bgColor = '#6d28d9';
-                    let icon = 'fas fa-sim-card';
-                    
-                    const code = String(op.code || '').toLowerCase();
-                    if (code === 'entel') { 
-                        bgColor = '#2883d9'; 
-                        icon = 'fas fa-signal'; 
-                    } else if (code === 'tigo') { 
-                        bgColor = '#200cd4'; 
-                        icon = 'fas fa-signal'; 
-                    } else if (code === 'viva') { 
-                        bgColor = '#4cca12'; 
-                        icon = 'fas fa-signal'; 
-                    }
-                    
-                    return `
-                        <div class="operator-card" data-id="${op.id}" data-code="${op.code}">
-                            <div class="operator-logo" style="background: ${bgColor};">
-                                <i class="${icon}"></i>
-                            </div>
-                            <div class="font-semibold">${op.name}</div>
-                        </div>`;
+                    let bgColor = '#6d28d9', icon = 'fas fa-sim-card';
+                    if (op.code?.toLowerCase() === 'entel') { bgColor = '#2883d9'; icon = 'fas fa-signal'; }
+                    else if (op.code?.toLowerCase() === 'tigo') { bgColor = '#200cd4'; icon = 'fas fa-signal'; }
+                    else if (op.code?.toLowerCase() === 'viva') { bgColor = '#4cca12'; icon = 'fas fa-signal'; }
+                    return `<div class="operator-card" data-id="${op.id}" data-code="${op.code}"><div class="operator-logo" style="background: ${bgColor};"><i class="${icon}"></i></div><div class="font-semibold">${op.name}</div></div>`;
                 }).join('');
-                
-                // Agregar event listeners
-                document.querySelectorAll('.operator-card').forEach(card => {
-                    card.addEventListener('click', () => selectOperator(card.dataset.id));
-                });
+                document.querySelectorAll('.operator-card').forEach(card => card.addEventListener('click', () => selectOperator(card.dataset.id)));
             }
             
             async function selectOperator(id) {
                 selectedOperator = operators.find(op => op.id === id);
-                
-                if (!selectedOperator) {
-                    console.error('❌ Operador no encontrado');
-                    return;
-                }
-                
-                console.log(`📱 Operador seleccionado: ${selectedOperator.name} (${selectedOperator.code})`);
-                
-                // Cambiar pantallas
                 document.getElementById('step-1').classList.add('hidden');
                 document.getElementById('step-2').classList.remove('hidden');
                 document.getElementById('selected-operator-name').textContent = selectedOperator.name;
                 document.getElementById('back-to-operators').classList.remove('hidden');
-                
-                // Actualizar indicadores de paso
-                document.querySelectorAll('.step-dot').forEach((dot, index) => { 
-                    if(index === 0) dot.classList.add('completed'); 
-                    if(index === 1) dot.classList.add('active'); 
-                });
-                
-                // Cargar tipos de recarga
+                document.querySelectorAll('.step-dot').forEach((dot, index) => { if(index===0) dot.classList.add('completed'); if(index===1) dot.classList.add('active'); });
                 await loadRechargeTypes(id);
             }
             
-            // =============================================
-            // NAVEGACIÓN
-            // =============================================
-            
             document.getElementById('back-to-operators')?.addEventListener('click', () => {
-                console.log('⬅️ Volviendo a selección de operador');
-                
                 document.getElementById('step-1').classList.remove('hidden');
                 document.getElementById('step-2').classList.add('hidden');
                 document.getElementById('back-to-operators').classList.add('hidden');
                 document.getElementById('summary-sheet').classList.remove('active');
-                
-                document.querySelectorAll('.step-dot').forEach((dot, index) => { 
-                    if(index === 0) { 
-                        dot.classList.add('active'); 
-                        dot.classList.remove('completed'); 
-                    } else {
-                        dot.classList.remove('active', 'completed'); 
-                    }
-                });
+                document.querySelectorAll('.step-dot').forEach((dot, index) => { if(index===0){ dot.classList.add('active'); dot.classList.remove('completed'); } else dot.classList.remove('active','completed'); });
             });
             
-            // =============================================
-            // TIPOS DE RECARGA
-            // =============================================
-            
             async function loadRechargeTypes(operatorId) {
-                try {
-                    const { data, error } = await supabase
-                        .from('recharge_types')
-                        .select('*')
-                        .eq('operator_id', operatorId)
-                        .eq('is_active', true)
-                        .order('display_order');
-                    
-                    if (error) throw error;
-                    
-                    // Agregar tipo "Recarga al paso"
-                    const pasoType = { 
-                        id: 'recarga-paso', 
-                        name: '⚡ Recarga al paso', 
-                        is_permanent: true 
-                    };
-                    
-                    rechargeTypes = [...(data || []), pasoType];
-                    renderTypes();
-                    
-                    // Seleccionar primer tipo por defecto
-                    if (rechargeTypes.length > 0) {
-                        selectType(rechargeTypes[0].id);
-                    }
-                } catch (error) {
-                    console.error('❌ Error cargando tipos:', error);
-                }
+                const { data } = await supabase.from('recharge_types').select('*').eq('operator_id', operatorId).eq('is_active', true).order('display_order');
+                const pasoType = { id: 'recarga-paso', name: '⚡ Recarga al paso', is_permanent: true };
+                rechargeTypes = [...(data || []), pasoType];
+                renderTypes();
+                if (rechargeTypes.length) selectType(rechargeTypes[0].id);
             }
             
             function renderTypes() {
                 const container = document.getElementById('recharge-types-container');
-                
-                container.innerHTML = rechargeTypes.map(type => {
-                    const isPaso = type.id === 'recarga-paso';
-                    const isActive = selectedType?.id === type.id;
-                    
-                    return `
-                        <div class="category-chip ${isPaso ? 'paso' : ''} ${isActive ? 'active' : ''}" 
-                             data-id="${type.id}">
-                            ${type.name}
-                        </div>`;
-                }).join('');
-                
-                // Agregar event listeners
-                document.querySelectorAll('.category-chip').forEach(chip => {
-                    chip.addEventListener('click', () => selectType(chip.dataset.id));
-                });
+                container.innerHTML = rechargeTypes.map(type => `<div class="category-chip ${type.id === 'recarga-paso' ? 'paso' : ''} ${selectedType?.id === type.id ? 'active' : ''}" data-id="${type.id}">${type.name}</div>`).join('');
+                document.querySelectorAll('.category-chip').forEach(chip => chip.addEventListener('click', () => selectType(chip.dataset.id)));
             }
             
             function selectType(id) {
                 selectedType = rechargeTypes.find(t => t.id === id);
-                
-                if (!selectedType) {
-                    console.error('❌ Tipo no encontrado:', id);
-                    return;
-                }
-                
-                console.log(`📋 Tipo seleccionado: ${selectedType.name}`);
-                
                 selectedPackage = null;
                 document.getElementById('summary-sheet').classList.remove('active');
-                
-                // Actualizar UI según tipo
                 renderTypes();
-                
                 if (id === 'recarga-paso') {
-                    // Modo recarga al paso
                     isRecargaPaso = true;
                     document.getElementById('packages-container').classList.add('hidden');
                     document.getElementById('recarga-paso-container').classList.remove('hidden');
-                    initializePasoUI();
+                    updatePasoUI();
                 } else {
-                    // Modo paquetes normales
                     isRecargaPaso = false;
                     document.getElementById('packages-container').classList.remove('hidden');
                     document.getElementById('recarga-paso-container').classList.add('hidden');
@@ -1454,152 +1130,79 @@
                 }
             }
             
-            // =============================================
-            // UI DE RECARGA AL PASO
-            // =============================================
-            
-            function initializePasoUI() {
-                const operatorCode = String(selectedOperator.code).toLowerCase();
+            function updatePasoUI() {
+                const operatorCode = selectedOperator.code.toLowerCase();
                 const descuento = getDescuentoPorcentaje(operatorCode);
-                
-                console.log(`⚡ Inicializando Recarga al Paso - Operador: ${operatorCode}, Descuento: ${descuento}%`);
-                
-                // Actualizar UI
                 document.getElementById('paso-operator-name').textContent = selectedOperator.name.toUpperCase();
                 document.getElementById('paso-descuento-info').textContent = `${descuento}%`;
                 
-                // Crear botones de montos predefinidos
+                // Montos predefinidos
                 const montos = [10, 20, 30, 50];
                 const montosGrid = document.getElementById('paso-monto-buttons');
-                montosGrid.innerHTML = montos.map(monto => 
-                    `<button class="monto-btn-nativo" data-monto="${monto}">Bs ${monto}</button>`
-                ).join('');
+                montosGrid.innerHTML = montos.map(monto => `<button class="monto-btn-nativo" data-monto="${monto}">Bs ${monto}</button>`).join('');
                 
-                // Event listeners para botones de monto
-                montosGrid.querySelectorAll('.monto-btn-nativo').forEach(btn => {
-                    btn.addEventListener('click', () => {
+                document.getElementById('paso-monto-buttons').querySelectorAll('.monto-btn-nativo').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
                         const montoVal = parseInt(btn.dataset.monto);
-                        
-                        // Marcar como seleccionado
-                        montosGrid.querySelectorAll('.monto-btn-nativo').forEach(b => 
-                            b.classList.remove('selected')
-                        );
+                        document.getElementById('paso-monto-buttons').querySelectorAll('.monto-btn-nativo').forEach(b => b.classList.remove('selected'));
                         btn.classList.add('selected');
-                        
-                        // Limpiar input personalizado
                         document.getElementById('paso-custom-monto').value = '';
-                        
-                        // Actualizar totales
-                        updatePasoTotal(montoVal);
+                        updatePasoTotalWithAmount(montoVal);
                     });
                 });
                 
-                // Event listener para input personalizado
+                // Input personalizado
                 const customInput = document.getElementById('paso-custom-monto');
                 customInput.addEventListener('input', (e) => {
                     let val = parseInt(e.target.value);
-                    
                     if (!isNaN(val) && val > 0) {
-                        // Desmarcar botones predefinidos
-                        montosGrid.querySelectorAll('.monto-btn-nativo').forEach(b => 
-                            b.classList.remove('selected')
-                        );
-                        updatePasoTotal(val);
+                        document.getElementById('paso-monto-buttons').querySelectorAll('.monto-btn-nativo').forEach(b => b.classList.remove('selected'));
+                        updatePasoTotalWithAmount(val);
                     } else {
-                        clearPasoTotal();
+                        document.getElementById('paso-total-display').textContent = 'Bs 0';
+                        document.getElementById('paso-credito-recibir').textContent = 'Bs 0';
+                        window._selectedPasoMonto = null;
+                        window._selectedPasoPrecio = null;
                     }
                 });
                 
-                // Limpiar campos
                 document.getElementById('paso-phone').value = '';
-                
-                // Seleccionar Bs 10 por defecto
-                const defaultBtn = montosGrid.querySelector('[data-monto="10"]');
-                if (defaultBtn) {
-                    defaultBtn.classList.add('selected');
-                    updatePasoTotal(10);
-                }
+                updatePasoTotalWithAmount(10);
             }
             
-            function updatePasoTotal(montoCredito) {
-                // Validar monto mínimo
-                if (montoCredito < 5) {
+            function updatePasoTotalWithAmount(monto) {
+                if (monto < 5) {
                     showToast('El monto mínimo es Bs 5');
-                    clearPasoTotal();
+                    document.getElementById('paso-total-display').textContent = 'Bs 0';
+                    document.getElementById('paso-credito-recibir').textContent = 'Bs 0';
+                    window._selectedPasoMonto = null;
+                    window._selectedPasoPrecio = null;
                     return;
                 }
                 
-                const operatorCode = String(selectedOperator.code).toLowerCase();
+                const operatorCode = selectedOperator.code.toLowerCase();
+                const precioPagar = getPrecioConDescuento(operatorCode, monto);
                 const descuento = getDescuentoPorcentaje(operatorCode);
-                const precioPagar = getPrecioConDescuento(operatorCode, montoCredito);
                 
-                console.log(`💰 Actualizando totales - Crédito: Bs ${montoCredito}, Descuento: ${descuento}%, Pagar: Bs ${precioPagar.toFixed(2)}`);
-                
-                // Actualizar UI
                 document.getElementById('paso-total-display').textContent = formatCurrency(precioPagar);
-                document.getElementById('paso-credito-recibir').textContent = `Bs ${montoCredito}`;
+                document.getElementById('paso-credito-recibir').textContent = `Bs ${monto}`;
                 document.getElementById('paso-descuento-info').textContent = `${descuento}%`;
                 
-                // Guardar datos actuales
-                pasoDataActual = {
-                    phone: document.getElementById('paso-phone').value,
-                    montoCredito: montoCredito,
-                    precioPagar: precioPagar,
-                    descuento: descuento,
-                    packageName: `Recarga al Paso Bs ${montoCredito}`
-                };
+                window._selectedPasoMonto = monto;
+                window._selectedPasoPrecio = precioPagar;
             }
-            
-            function clearPasoTotal() {
-                document.getElementById('paso-total-display').textContent = 'Bs 0';
-                document.getElementById('paso-credito-recibir').textContent = 'Bs 0';
-                document.getElementById('paso-descuento-info').textContent = '0%';
-                
-                pasoDataActual = {
-                    phone: '',
-                    montoCredito: 0,
-                    precioPagar: 0,
-                    descuento: 0,
-                    packageName: ''
-                };
-            }
-            
-            // =============================================
-            // PAQUETES NORMALES
-            // =============================================
             
             async function loadPackages(operatorId, typeId) {
-                try {
-                    const { data, error } = await supabase
-                        .from('mobile_packages')
-                        .select('*')
-                        .eq('operator_id', operatorId)
-                        .eq('recharge_type_id', typeId)
-                        .eq('is_active', true)
-                        .order('amount');
-                    
-                    if (error) throw error;
-                    
-                    packages = data || [];
-                    renderPackages();
-                    console.log(`📦 ${packages.length} paquetes cargados`);
-                } catch (error) {
-                    console.error('❌ Error cargando paquetes:', error);
-                }
+                const { data } = await supabase.from('mobile_packages').select('*').eq('operator_id', operatorId).eq('recharge_type_id', typeId).eq('is_active', true).order('amount');
+                packages = data || [];
+                renderPackages();
             }
             
             function renderPackages() {
                 const container = document.getElementById('packages-list');
                 const noPackages = document.getElementById('no-packages');
-                
-                if (!packages.length) { 
-                    container.innerHTML = ''; 
-                    noPackages?.classList.remove('hidden'); 
-                    return; 
-                }
-                
+                if (!packages.length) { container.innerHTML = ''; noPackages?.classList.remove('hidden'); return; }
                 noPackages?.classList.add('hidden');
-                
                 container.innerHTML = packages.map(pkg => {
                     const features = [];
                     if(pkg.data_mb) features.push(`📱 ${pkg.data_mb} MB`);
@@ -1607,86 +1210,40 @@
                     if(pkg.sms) features.push(`✉️ ${pkg.sms} SMS`);
                     if(pkg.social_data_mb) features.push(`📱 Social ${pkg.social_data_mb} MB`);
                     if(pkg.duration_days) features.push(`⏱️ ${pkg.duration_days} días`);
-                    
-                    return `
-                        <div class="package-card ${pkg.is_hot ? 'hot' : ''}" data-id="${pkg.id}">
-                            ${pkg.is_hot ? '<div class="hot-badge">🔥 HOT</div>' : ''}
-                            <div class="package-header">
-                                <div class="package-amount">${formatCurrency(pkg.amount)}</div>
-                                <div class="package-name">${pkg.name}</div>
-                            </div>
-                            <div class="package-body">
-                                ${features.map(f => `
-                                    <div class="package-feature">
-                                        <i class="fas fa-check-circle"></i> ${f}
-                                    </div>
-                                `).join('')}
-                                <div class="package-price">${formatCurrency(pkg.price)}</div>
-                            </div>
-                        </div>`;
+                    return `<div class="package-card ${pkg.is_hot ? 'hot' : ''}" data-id="${pkg.id}">${pkg.is_hot ? '<div class="hot-badge">🔥 HOT</div>' : ''}<div class="package-header"><div class="package-amount">${formatCurrency(pkg.amount)}</div><div class="package-name">${pkg.name}</div></div><div class="package-body">${features.map(f => `<div class="package-feature"><i class="fas fa-check-circle"></i> ${f}</div>`).join('')}<div class="package-price">${formatCurrency(pkg.price)}</div></div></div>`;
                 }).join('');
-                
-                // Event listeners
-                document.querySelectorAll('.package-card').forEach(card => {
-                    card.addEventListener('click', () => { 
-                        selectedPackage = packages.find(p => p.id === card.dataset.id); 
-                        if (selectedPackage) {
-                            showSummarySheet(); 
-                        }
-                    });
-                });
+                document.querySelectorAll('.package-card').forEach(card => card.addEventListener('click', () => { selectedPackage = packages.find(p => p.id === card.dataset.id); showSummarySheet(); }));
             }
             
             function showSummarySheet() {
                 document.getElementById('sheet-operator').textContent = selectedOperator?.name || '-';
                 document.getElementById('sheet-type').textContent = selectedType?.name || '-';
                 document.getElementById('sheet-package').textContent = selectedPackage?.name || '-';
-                
                 const features = [];
                 if(selectedPackage?.data_mb) features.push(`${selectedPackage.data_mb} MB`);
                 if(selectedPackage?.minutes) features.push(`${selectedPackage.minutes} min`);
                 if(selectedPackage?.sms) features.push(`${selectedPackage.sms} SMS`);
                 document.getElementById('sheet-features').textContent = features.join(' + ') || 'Sin beneficios';
-                
-                const total = selectedPackage?.price || 0;
-                document.getElementById('sheet-total').textContent = formatCurrency(total);
-                
+                document.getElementById('sheet-total').textContent = formatCurrency(selectedPackage?.price || 0);
                 const btn = document.getElementById('btn-continue');
-                if(currentBalance < total) { 
-                    btn.disabled = true; 
-                    btn.innerHTML = '<i class="fas fa-exclamation-circle mr-2"></i> Saldo insuficiente'; 
-                } else { 
-                    btn.disabled = false; 
-                    btn.innerHTML = '<i class="fas fa-arrow-right mr-2"></i> Continuar'; 
-                }
-                
+                if(currentBalance < (selectedPackage?.price || 0)){ btn.disabled=true; btn.innerHTML='<i class="fas fa-exclamation-circle mr-2"></i> Saldo insuficiente'; }
+                else { btn.disabled=false; btn.innerHTML='<i class="fas fa-arrow-right mr-2"></i> Continuar'; }
                 document.getElementById('summary-sheet').classList.add('active');
             }
             
-            // =============================================
-            // EVENT LISTENERS PRINCIPALES
-            // =============================================
-            
             function setupEventListeners() {
-                console.log('🔧 Configurando event listeners...');
-                
-                // FLUJO PAQUETES NORMALES
+                // FLUJO NORMAL PARA PAQUETES
                 document.getElementById('btn-continue')?.addEventListener('click', () => {
                     if(!selectedPackage) return;
-                    if(currentBalance < selectedPackage.price) {
-                        showToast('Saldo insuficiente');
-                        return;
-                    }
+                    if(currentBalance < selectedPackage.price){ showToast('Saldo insuficiente'); return; }
                     showPhoneModal();
                 });
                 
-                document.getElementById('close-phone-modal')?.addEventListener('click', () => {
-                    closeModal('phone-modal');
-                });
+                document.getElementById('close-phone-modal')?.addEventListener('click', () => closeModal('phone-modal'));
                 
                 document.getElementById('phone-number')?.addEventListener('input', (e) => {
-                    let val = e.target.value.replace(/\D/g, '').slice(0, 8);
-                    e.target.value = val;
+                    let val = e.target.value.replace(/\D/g,'').slice(0,8);
+                    e.target.value=val;
                     document.getElementById('process-recharge-btn').disabled = val.length !== 8;
                 });
                 
@@ -1695,318 +1252,124 @@
                     showConfirmModal();
                 });
                 
-                document.getElementById('cancel-confirm')?.addEventListener('click', () => {
-                    closeModal('confirm-modal');
-                });
-                
+                document.getElementById('cancel-confirm')?.addEventListener('click', () => closeModal('confirm-modal'));
                 document.getElementById('confirm-recharge')?.addEventListener('click', processRecharge);
+                document.getElementById('close-result')?.addEventListener('click', () => { closeModal('result-modal'); window.location.reload(); });
                 
-                document.getElementById('close-result')?.addEventListener('click', () => { 
-                    closeModal('result-modal'); 
-                    window.location.reload(); 
+                // FLUJO PARA RECARGA AL PASO
+                document.getElementById('btn-recarga-paso')?.addEventListener('click', async () => {
+                    const phone = document.getElementById('paso-phone').value;
+                    if(phone.length !== 8){ showToast('Ingresa un número válido de 8 dígitos'); return; }
+                    const monto = window._selectedPasoMonto;
+                    if(!monto || monto < 5){ showToast('Selecciona o ingresa un monto válido (mínimo Bs 5)'); return; }
+                    const precioPagar = window._selectedPasoPrecio;
+                    
+                    // Validar saldo antes de mostrar confirmación
+                    if(currentBalance < precioPagar){ 
+                        showToast(`Saldo insuficiente. Necesitas ${formatCurrency(precioPagar)} y tienes ${formatCurrency(currentBalance)}`); 
+                        return; 
+                    }
+                    
+                    const operatorCode = selectedOperator.code.toLowerCase();
+                    const descuento = getDescuentoPorcentaje(operatorCode);
+                    
+                    window._tempPasoData = {
+                        phone: phone,
+                        monto: monto,
+                        precio: precioPagar,
+                        packageName: `Recarga al Paso Bs ${monto}`,
+                        descuento: descuento,
+                        creditoRecibir: monto
+                    };
+                    
+                    document.getElementById('confirm-paso-phone').textContent = `+591 ${phone}`;
+                    document.getElementById('confirm-paso-package').textContent = `Bs ${monto} (recibe Bs ${monto})`;
+                    document.getElementById('confirm-paso-descuento').textContent = `${descuento}%`;
+                    document.getElementById('confirm-paso-total').textContent = formatCurrency(precioPagar);
+                    openModal('confirm-paso-modal');
                 });
                 
-                // FLUJO RECARGA AL PASO
-                document.getElementById('btn-recarga-paso')?.addEventListener('click', () => {
-                    handlePasoRecharge();
-                });
-                
-                document.getElementById('cancel-paso-confirm')?.addEventListener('click', () => {
-                    closeModal('confirm-paso-modal');
-                });
-                
+                document.getElementById('cancel-paso-confirm')?.addEventListener('click', () => closeModal('confirm-paso-modal'));
                 document.getElementById('confirm-paso-recharge')?.addEventListener('click', async () => {
                     closeModal('confirm-paso-modal');
                     await processPasoRecharge();
                 });
-                
-                console.log('✅ Event listeners configurados');
             }
             
-            // =============================================
-            // MANEJADOR DE RECARGA AL PASO
-            // =============================================
-            
-            function handlePasoRecharge() {
-                const phone = document.getElementById('paso-phone').value.replace(/\D/g, '');
-                
-                // Validar teléfono
-                if(phone.length !== 8) {
-                    showToast('Ingresa un número válido de 8 dígitos');
-                    return;
-                }
-                
-                // Validar monto
-                const montoCredito = pasoDataActual.montoCredito;
-                if(!montoCredito || montoCredito < 5) {
-                    showToast('Selecciona o ingresa un monto válido (mínimo Bs 5)');
-                    return;
-                }
-                
-                // Validar saldo
-                const precioPagar = pasoDataActual.precioPagar;
-                if(currentBalance < precioPagar) {
-                    showToast(`Saldo insuficiente. Necesitas: ${formatCurrency(precioPagar)}`);
-                    return;
-                }
-                
-                // Actualizar datos con el teléfono actual
-                pasoDataActual.phone = phone;
-                
-                console.log('📱 Preparando recarga al paso:', pasoDataActual);
-                
-                // Mostrar modal de confirmación
-                showPasoConfirmModal(pasoDataActual);
-            }
-            
-            function showPasoConfirmModal(data) {
-                document.getElementById('confirm-paso-phone').textContent = `+591 ${data.phone}`;
-                document.getElementById('confirm-paso-package').textContent = `Bs ${data.montoCredito} (recibe Bs ${data.montoCredito})`;
-                document.getElementById('confirm-paso-descuento').textContent = `${data.descuento}%`;
-                document.getElementById('confirm-paso-total').textContent = formatCurrency(data.precioPagar);
-                
-                openModal('confirm-paso-modal');
-            }
-            
-            // =============================================
-            // PROCESAMIENTO DE RECARGAS
-            // =============================================
-            
+            // Función original para paquetes normales
             async function processRecharge() {
                 const btn = document.getElementById('confirm-recharge');
                 const text = document.getElementById('confirm-text');
-                
-                btn.disabled = true;
-                text.textContent = 'Procesando...';
-                
+                btn.disabled = true; text.textContent = 'Procesando...';
                 try {
                     const phone = document.getElementById('phone-number').value;
                     const notes = document.getElementById('recharge-notes').value;
                     
-                    // Validar saldo
-                    if(currentBalance < selectedPackage.price) {
-                        throw new Error('Saldo insuficiente');
-                    }
+                    // Verificar saldo nuevamente
+                    if(currentBalance < selectedPackage.price) throw new Error(`Saldo insuficiente. Necesitas ${formatCurrency(selectedPackage.price)}`);
                     
-                    console.log('💳 Procesando recarga de paquete...');
-                    console.log('Paquete:', selectedPackage.name);
-                    console.log('Precio:', selectedPackage.price);
-                    console.log('Teléfono:', phone);
-                    
-                    // Crear transacción
                     const transactionDescription = `${selectedOperator.name}: ${selectedPackage.name} | Número: +591 ${phone}`;
-                    
-                    const { data: transaction, error: transError } = await supabase
-                        .from('transactions')
-                        .insert([{
-                            user_id: currentUser.id,
-                            amount: selectedPackage.price,
-                            type: 'withdrawal',
-                            description: transactionDescription,
-                            status: 'completed'
-                        }])
-                        .select()
-                        .single();
-                    
+                    const { data: transaction, error: transError } = await supabase.from('transactions').insert([{ user_id: currentUser.id, amount: selectedPackage.price, type: 'withdrawal', description: transactionDescription, status: 'completed' }]).select().single();
                     if(transError) throw transError;
-                    console.log('✅ Transacción creada:', transaction.id);
                     
-                    // Registrar recarga
-                    const { error: rechargeError } = await supabase
-                        .from('mobile_recharges')
-                        .insert([{
-                            user_id: currentUser.id,
-                            operator_id: selectedOperator.id,
-                            package_id: selectedPackage.id,
-                            phone_number: phone,
-                            amount: selectedPackage.amount,
-                            price: selectedPackage.price,
-                            transaction_id: transaction.id,
-                            notes: notes || null,
-                            status: 'completed'
-                        }]);
-                    
+                    const { error: rechargeError } = await supabase.from('mobile_recharges').insert([{ user_id: currentUser.id, operator_id: selectedOperator.id, package_id: selectedPackage.id, phone_number: phone, amount: selectedPackage.amount, price: selectedPackage.price, transaction_id: transaction.id, notes: notes || null, status: 'completed' }]);
                     if(rechargeError) throw rechargeError;
-                    console.log('✅ Recarga registrada');
                     
                     // Actualizar saldo local
                     currentBalance -= selectedPackage.price;
                     document.getElementById('current-balance').textContent = formatCurrency(currentBalance);
                     
-                    // Enviar notificaciones Telegram
-                    const notifData = {
-                        operator: selectedOperator.name,
-                        packageName: selectedPackage.name,
-                        amount: selectedPackage.amount,
-                        price: selectedPackage.price,
-                        phone: phone,
-                        notes: notes || '',
-                        isPaso: false
-                    };
+                    await sendRechargeNotifications(selectedOperator.code, { operator: selectedOperator.name, packageName: selectedPackage.name, amount: selectedPackage.amount, price: selectedPackage.price, phone, notes, isPaso: false });
                     
-                    await sendRechargeNotifications(selectedOperator.code, notifData);
-                    
-                    // Mostrar éxito
-                    showResult(true, '¡Recarga exitosa!', `+591 ${phone}`);
-                    
+                    document.getElementById('result-icon').innerHTML = '✓'; document.getElementById('result-icon').style.background = '#10b981';
+                    document.getElementById('result-title').textContent = '¡Recarga exitosa!'; document.getElementById('result-message').textContent = `+591 ${phone}`;
+                    closeModal('confirm-modal'); openModal('result-modal');
                 } catch (error) {
-                    console.error('❌ Error en recarga:', error);
-                    showResult(false, 'Error', error.message);
-                } finally {
-                    btn.disabled = false;
-                    text.textContent = 'Confirmar';
-                    closeModal('confirm-modal');
-                }
+                    document.getElementById('result-icon').innerHTML = '✕'; document.getElementById('result-icon').style.background = '#ef4444';
+                    document.getElementById('result-title').textContent = 'Error'; document.getElementById('result-message').textContent = error.message;
+                    closeModal('confirm-modal'); openModal('result-modal');
+                } finally { btn.disabled = false; text.textContent = 'Confirmar'; }
             }
             
+            // Función para Recarga al Paso con monto personalizado y descuento automático
             async function processPasoRecharge() {
                 try {
-                    const data = pasoDataActual;
+                    const { phone, monto, precio, packageName, descuento, creditoRecibir } = window._tempPasoData;
+                    const notes = `Recarga al paso - Monto: Bs ${monto} (${descuento}% descuento) | Paga: Bs ${precio.toFixed(2)} | Recibe: Bs ${creditoRecibir}`;
                     
-                    console.log('⚡ PROCESANDO RECARGA AL PASO');
-                    console.log('Datos completos:', data);
-                    console.log('Operador:', selectedOperator.code);
-                    console.log('Monto crédito:', data.montoCredito);
-                    console.log('Precio a pagar:', data.precioPagar);
-                    console.log('Descuento:', data.descuento + '%');
-                    console.log('Teléfono:', data.phone);
+                    // Verificar saldo nuevamente antes de procesar
+                    if(currentBalance < precio) throw new Error(`Saldo insuficiente. Necesitas ${formatCurrency(precio)} y tienes ${formatCurrency(currentBalance)}`);
                     
-                    // Validar datos
-                    if (!data.phone || data.phone.length !== 8) {
-                        throw new Error('Número de teléfono inválido');
-                    }
+                    const transactionDescription = `${selectedOperator.name}: ${packageName} (${descuento}% descuento) | Número: +591 ${phone} | Pagó: Bs ${precio.toFixed(2)}`;
+                    const { data: transaction, error: transError } = await supabase.from('transactions').insert([{ user_id: currentUser.id, amount: precio, type: 'withdrawal', description: transactionDescription, status: 'completed' }]).select().single();
+                    if(transError) throw transError;
                     
-                    if (!data.montoCredito || data.montoCredito < 5) {
-                        throw new Error('Monto de recarga inválido');
-                    }
+                    const { error: rechargeError } = await supabase.from('mobile_recharges').insert([{ user_id: currentUser.id, operator_id: selectedOperator.id, package_id: null, phone_number: phone, amount: monto, price: precio, transaction_id: transaction.id, notes: notes || null, status: 'completed' }]);
+                    if(rechargeError) throw rechargeError;
                     
-                    if (!data.precioPagar || data.precioPagar <= 0) {
-                        throw new Error('Error en el cálculo del precio');
-                    }
-                    
-                    // Validar saldo
-                    if (currentBalance < data.precioPagar) {
-                        throw new Error('Saldo insuficiente');
-                    }
-                    
-                    // Crear descripción de la transacción
-                    const transactionDescription = `${selectedOperator.name}: Recarga al Paso Bs ${data.montoCredito} (${data.descuento}% desc) | +591 ${data.phone}`;
-                    
-                    console.log('📝 Creando transacción...');
-                    
-                    // Insertar transacción en Supabase
-                    const { data: transaction, error: transError } = await supabase
-                        .from('transactions')
-                        .insert([{
-                            user_id: currentUser.id,
-                            amount: data.precioPagar,
-                            type: 'withdrawal',
-                            description: transactionDescription,
-                            status: 'completed'
-                        }])
-                        .select()
-                        .single();
-                    
-                    if (transError) {
-                        console.error('❌ Error en transacción:', transError);
-                        throw transError;
-                    }
-                    
-                    console.log('✅ Transacción creada:', transaction.id);
-                    
-                    // Registrar recarga
-                    const { error: rechargeError } = await supabase
-                        .from('mobile_recharges')
-                        .insert([{
-                            user_id: currentUser.id,
-                            operator_id: selectedOperator.id,
-                            package_id: null,
-                            phone_number: data.phone,
-                            amount: data.montoCredito,
-                            price: data.precioPagar,
-                            transaction_id: transaction.id,
-                            notes: `Recarga al paso - ${data.descuento}% descuento`,
-                            status: 'completed'
-                        }]);
-                    
-                    if (rechargeError) {
-                        console.error('❌ Error en registro de recarga:', rechargeError);
-                        throw rechargeError;
-                    }
-                    
-                    console.log('✅ Recarga registrada en base de datos');
-                    
-                    // ACTUALIZAR SALDO LOCAL - ¡CRÍTICO!
-                    currentBalance -= data.precioPagar;
+                    // Actualizar saldo local correctamente
+                    currentBalance -= precio;
                     document.getElementById('current-balance').textContent = formatCurrency(currentBalance);
-                    console.log(`💰 Saldo actualizado: ${formatCurrency(currentBalance)}`);
                     
-                    // Enviar notificaciones Telegram
-                    const notifData = {
-                        operator: selectedOperator.name,
-                        packageName: data.packageName,
-                        amount: data.montoCredito,
-                        price: data.precioPagar,
-                        descuento: data.descuento,
-                        phone: data.phone,
-                        notes: `Recarga al paso - ${data.descuento}% descuento`,
-                        isPaso: true
-                    };
+                    await sendRechargeNotifications(selectedOperator.code, { operator: selectedOperator.name, packageName: packageName, amount: monto, price: precio, phone, notes, isPaso: true });
                     
-                    console.log('📤 Enviando notificaciones Telegram...');
-                    const notifEnviada = await sendRechargeNotifications(selectedOperator.code, notifData);
-                    
-                    if (notifEnviada) {
-                        console.log('✅ Notificaciones enviadas correctamente');
-                    } else {
-                        console.warn('⚠️ Las notificaciones pueden no haberse enviado');
-                    }
-                    
-                    // Mostrar resultado exitoso
-                    const mensajeExito = `+591 ${data.phone} - Recarga Bs ${data.montoCredito} (Pagaste ${formatCurrency(data.precioPagar)})`;
-                    showResult(true, '¡Recarga exitosa!', mensajeExito);
-                    
-                    // Limpiar datos temporales
-                    pasoDataActual = {
-                        phone: '',
-                        montoCredito: 0,
-                        precioPagar: 0,
-                        descuento: 0,
-                        packageName: ''
-                    };
-                    
+                    document.getElementById('result-icon').innerHTML = '✓';
+                    document.getElementById('result-icon').style.background = '#10b981';
+                    document.getElementById('result-title').textContent = '¡Recarga exitosa!';
+                    document.getElementById('result-message').textContent = `+591 ${phone} - Recarga Bs ${monto} (Pagaste ${formatCurrency(precio)})`;
+                    openModal('result-modal');
                 } catch (error) {
-                    console.error('❌ ERROR EN RECARGA AL PASO:', error);
-                    showResult(false, 'Error', error.message);
+                    console.error('Error en processPasoRecharge:', error);
+                    document.getElementById('result-icon').innerHTML = '✕';
+                    document.getElementById('result-icon').style.background = '#ef4444';
+                    document.getElementById('result-title').textContent = 'Error';
+                    document.getElementById('result-message').textContent = error.message;
+                    openModal('result-modal');
                 }
             }
-            
-            function showResult(success, title, message) {
-                const icon = document.getElementById('result-icon');
-                const titleEl = document.getElementById('result-title');
-                const messageEl = document.getElementById('result-message');
-                
-                if (success) {
-                    icon.innerHTML = '✓';
-                    icon.style.background = '#10b981';
-                } else {
-                    icon.innerHTML = '✕';
-                    icon.style.background = '#ef4444';
-                }
-                
-                titleEl.textContent = title;
-                messageEl.textContent = message;
-                
-                openModal('result-modal');
-            }
-            
-            // =============================================
-            // MODALES DE CONFIRMACIÓN
-            // =============================================
             
             function showPhoneModal() {
                 document.getElementById('modal-package-name').textContent = selectedPackage.name;
-                document.getElementById('phone-number').value = '';
                 document.getElementById('recharge-notes').value = '';
                 document.getElementById('process-recharge-btn').disabled = true;
                 openModal('phone-modal');
@@ -2014,20 +1377,13 @@
             
             function showConfirmModal() {
                 const phone = document.getElementById('phone-number').value;
-                
                 document.getElementById('confirm-phone').textContent = `+591 ${phone}`;
                 document.getElementById('confirm-operator').textContent = selectedOperator.name;
-                document.getElementById('confirm-type').textContent = '📦 Paquete';
+                document.getElementById('confirm-type').textContent = selectedPackage.isPaso ? '⚡ Recarga al Paso' : '📦 Paquete';
                 document.getElementById('confirm-package').textContent = selectedPackage.name;
                 document.getElementById('confirm-total').textContent = formatCurrency(selectedPackage.price);
-                
                 openModal('confirm-modal');
             }
-            
-            console.log('🚀 Sistema de Recargas TokTok inicializado');
-            console.log('📱 Operadores con descuento: Entel (10%), Viva (10%), Tigo (5%)');
-            console.log('⚡ Recarga al Paso habilitada');
-            
         })();
     </script>
     <div class="whatsapp-float">
