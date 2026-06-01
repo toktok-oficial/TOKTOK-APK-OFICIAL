@@ -1142,7 +1142,7 @@ ${rechargeData.isPaso ? '💰 <b>Crédito a recibir:</b> Bs ' + rechargeData.amo
                 document.getElementById('paso-descuento-info').textContent = `${descuento}%`;
                 
                 // Montos predefinidos
-                const montos = [10, 20, 30, 50];
+                const montos = [10, 20, 30, 50, 100];
                 const montosGrid = document.getElementById('paso-monto-buttons');
                 montosGrid.innerHTML = montos.map(monto => `<button class="monto-btn-nativo" data-monto="${monto}">Bs ${monto}</button>`).join('');
                 
