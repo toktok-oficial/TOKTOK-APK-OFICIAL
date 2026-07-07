@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Tienda - TokTok</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -15,12 +15,18 @@
             --primary-dark: #5b21b6;
         }
         
+        * {
+            box-sizing: border-box;
+        }
+        
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f8fafc;
             color: #1e293b;
             -webkit-tap-highlight-color: transparent;
             padding-bottom: env(safe-area-inset-bottom);
+            margin: 0;
+            padding: 0;
         }
         
         .product-card {
@@ -31,6 +37,7 @@
             background: white;
             height: 100%;
             border: 1px solid #eef2ff;
+            cursor: pointer;
         }
         
         .product-card:hover {
@@ -123,6 +130,7 @@
             justify-content: center;
             border: none;
             font-size: 14px;
+            width: 100%;
         }
         
         .btn-primary:hover:not(:disabled) {
@@ -133,6 +141,10 @@
         .btn-primary:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+        }
+        
+        .btn-primary:disabled:hover {
+            transform: none;
         }
         
         .loading-spinner {
@@ -164,34 +176,22 @@
             box-shadow: 0 0 0 2px rgba(109, 40, 217, 0.1);
         }
         
-        @media (max-width: 768px) {
-            .mobile-header {
-                position: sticky;
-                top: 0;
-                z-index: 40;
-                background: white;
-                padding: 12px 16px;
-                border-bottom: 1px solid #f1f5f9;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-            }
-            
-            .mobile-header-title {
-                font-size: 16px;
-                font-weight: 700;
-                color: #1e293b;
-            }
-            
-            .products-container {
-                padding: 12px;
-            }
-            
-            .search-container {
-                padding: 12px 16px;
-                background: white;
-                border-bottom: 1px solid #f1f5f9;
-            }
+        .mobile-header {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            background: white;
+            padding: 12px 16px;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .mobile-header-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1e293b;
         }
         
         .balance-display {
@@ -213,6 +213,457 @@
         .balance-amount {
             font-size: 18px;
             font-weight: 700;
+        }
+        
+        .search-container {
+            padding: 12px 16px;
+            background: white;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 10px 14px;
+            padding-left: 36px;
+            border: 1px solid #e2e8f0;
+            border-radius: 40px;
+            font-size: 14px;
+            background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239ca3af'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'%3E%3C/path%3E%3C/svg%3E") no-repeat 10px center;
+            background-size: 18px;
+        }
+        
+        .search-input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(109, 40, 217, 0.1);
+        }
+        
+        .category-filters {
+            display: flex;
+            gap: 6px;
+            padding: 10px 12px;
+            overflow-x: auto;
+            background: white;
+            border-bottom: 1px solid #f1f5f9;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        
+        .category-filters::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .category-btn {
+            padding: 6px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 40px;
+            background: white;
+            color: #4b5563;
+            font-size: 12px;
+            font-weight: 500;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .category-btn:hover {
+            border-color: #6d28d9;
+            color: #6d28d9;
+        }
+        
+        .category-btn.active {
+            background: #6d28d9;
+            color: white;
+            border-color: #6d28d9;
+        }
+        
+        .products-container {
+            padding: 12px;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+            gap: 10px;
+        }
+        
+        .buy-btn {
+            background: linear-gradient(135deg, #6d28d9 0%, #5b21b6 100%);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 12px;
+            border: none;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        .buy-btn:hover:not(:disabled) {
+            transform: translateY(-1px);
+        }
+        
+        .buy-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        
+        .product-name {
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .product-description {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.2;
+            height: 2.4em;
+        }
+        
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 12px 0;
+        }
+        
+        .quantity-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .quantity-btn:hover:not(:disabled) {
+            background: #e2e8f0;
+        }
+        
+        .quantity-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .quantity-display {
+            font-size: 16px;
+            font-weight: 600;
+            min-width: 36px;
+            text-align: center;
+        }
+        
+        .product-detail-image-main {
+            width: 100%;
+            height: 200px;
+            object-fit: contain;
+            background: #f8fafc;
+            border-radius: 16px;
+            margin-bottom: 12px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .image-carousel {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 8px 0;
+            margin-bottom: 12px;
+            scrollbar-width: thin;
+        }
+        
+        .image-carousel img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 12px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        
+        .image-carousel img.active {
+            border-color: #6d28d9;
+        }
+        
+        .delivery-section {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 12px;
+            margin-bottom: 12px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .section-title {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+        }
+        
+        .time-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+        
+        .time-option {
+            padding: 8px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 13px;
+        }
+        
+        .time-option:hover {
+            border-color: var(--primary);
+        }
+        
+        .time-option.selected {
+            border-color: var(--primary);
+            background-color: #6d28d9;
+            color: white;
+        }
+        
+        .time-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 2px;
+            font-size: 12px;
+        }
+        
+        .time-value {
+            font-size: 11px;
+            color: #6b7280;
+        }
+        
+        .time-option.selected .time-value {
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .map-btn {
+            width: 100%;
+            padding: 10px 14px;
+            background: #6d28d9;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.2s;
+            margin-bottom: 12px;
+        }
+        
+        .map-btn:hover {
+            background: #5b21b6;
+            transform: translateY(-1px);
+        }
+        
+        .location-preview {
+            background: #f8fafc;
+            padding: 10px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .location-preview:hover {
+            background: #f1f5f9;
+            border-color: #c7d2fe;
+        }
+        
+        .location-preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+        
+        .location-preview-title {
+            font-weight: 600;
+            color: #374151;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 13px;
+        }
+        
+        .location-preview-change {
+            color: #6d28d9;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .location-preview-text {
+            color: #4b5563;
+            font-size: 12px;
+            line-height: 1.3;
+        }
+        
+        .location-preview-coords {
+            color: #6b7280;
+            font-size: 10px;
+            font-family: monospace;
+            margin-top: 2px;
+        }
+        
+        .gmaps-link {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            font-size: 11px;
+        }
+        
+        .gmaps-link:hover {
+            text-decoration: underline;
+            color: #1d4ed8;
+        }
+        
+        .modal-map .modal-content {
+            max-width: 95%;
+            width: 95%;
+            max-height: 85vh;
+            padding: 0;
+            overflow: hidden;
+            border-radius: 24px;
+        }
+        
+        .map-modal-header {
+            padding: 14px 16px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .map-modal-body {
+            height: 60vh;
+            position: relative;
+            background: #f1f5f9;
+        }
+        
+        #fullscreen-map {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .map-instructions {
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: 500;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #6d28d9;
+            backdrop-filter: blur(4px);
+            white-space: nowrap;
+        }
+        
+        .map-controls {
+            position: absolute;
+            bottom: 16px;
+            right: 16px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .control-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            border: none;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: #4b5563;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .control-btn:hover {
+            background: #f8fafc;
+            transform: scale(1.05);
+            color: #6d28d9;
+        }
+        
+        .map-footer {
+            padding: 14px 16px;
+            border-top: 1px solid #e2e8f0;
+            background: white;
+        }
+        
+        .map-footer-btn {
+            width: 100%;
+            padding: 12px;
+            background: #6d28d9;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+        
+        .map-footer-btn:hover:not(:disabled) {
+            background: #5b21b6;
+        }
+        
+        .map-footer-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
         }
         
         .invoice-container {
@@ -290,10 +741,6 @@
             grid-column: 1 / -1;
         }
         
-        .positive-amount {
-            color: #059669;
-        }
-        
         .negative-amount {
             color: #dc2626;
         }
@@ -308,508 +755,59 @@
             100% { transform: scale(1); }
         }
         
-        .status-badge-small {
-            padding: 1px 4px;
-            border-radius: 6px;
-            font-size: 9px;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-        
-        .status-success {
-            background-color: #d1fae5;
-            color: #059669;
-        }
-        
-        .quantity-selector {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin: 12px 0;
-        }
-        
-        .quantity-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: #f1f5f9;
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            font-weight: bold;
-            color: #475569;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .quantity-btn:hover:not(:disabled) {
-            background: #e2e8f0;
-        }
-        
-        .quantity-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        .quantity-display {
-            font-size: 16px;
-            font-weight: 600;
-            min-width: 36px;
-            text-align: center;
-        }
-        
-        .product-detail-image {
-            width: 100%;
-            height: 180px;
-            object-fit: contain;
-            background: #f8fafc;
-            border-radius: 16px;
-            margin-bottom: 12px;
-            border: 1px solid #e2e8f0;
-        }
-        
-        .search-input {
-            width: 100%;
-            padding: 10px 14px;
-            padding-left: 36px;
-            border: 1px solid #e2e8f0;
-            border-radius: 40px;
-            font-size: 14px;
-            background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239ca3af'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'%3E%3C/path%3E%3C/svg%3E") no-repeat 10px center;
-            background-size: 18px;
-        }
-        
-        .search-input:focus {
-            border-color: var(--primary);
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(109, 40, 217, 0.1);
-        }
-        
-        .time-selector {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6px;
-            margin-bottom: 12px;
-        }
-        
-        .time-option {
-            padding: 8px;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 13px;
-        }
-        
-        .time-option:hover {
-            border-color: var(--primary);
-        }
-        
-        .time-option.selected {
-            border-color: var(--primary);
-            background-color: #6d28d9;
-            color: white;
-        }
-        
-        .time-label {
-            display: block;
-            font-weight: 500;
-            margin-bottom: 2px;
-            font-size: 12px;
-        }
-        
-        .time-value {
-            font-size: 11px;
-            color: #6b7280;
-        }
-        
-        .time-option.selected .time-value {
-            color: rgba(255, 255, 255, 0.9);
-        }
-        
-        .delivery-section {
-            background: #f8fafc;
-            border-radius: 16px;
-            padding: 12px;
-            margin-bottom: 12px;
-            border: 1px solid #e2e8f0;
-        }
-        
-        .section-title {
-            font-weight: 600;
-            color: #374151;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 14px;
-        }
-        
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
-            gap: 10px;
-        }
-        
-        .buy-btn {
-            background: linear-gradient(135deg, #6d28d9 0%, #5b21b6 100%);
-            color: white;
-            padding: 6px 12px;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 12px;
-            border: none;
-            transition: all 0.2s;
-        }
-        
-        .buy-btn:hover:not(:disabled) {
-            transform: translateY(-1px);
-        }
-        
-        .buy-btn:disabled {
-            background: #9ca3af;
-            cursor: not-allowed;
-        }
-        
-        .category-filters {
-            display: flex;
-            gap: 6px;
-            padding: 10px 12px;
-            overflow-x: auto;
-            background: white;
-            border-bottom: 1px solid #f1f5f9;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-        }
-        
-        .category-filters::-webkit-scrollbar {
-            display: none;
-        }
-        
-        .category-btn {
-            padding: 6px 12px;
-            border: 1px solid #e2e8f0;
-            border-radius: 40px;
-            background: white;
-            color: #4b5563;
-            font-size: 12px;
-            font-weight: 500;
-            white-space: nowrap;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .category-btn:hover {
-            border-color: #6d28d9;
-            color: #6d28d9;
-        }
-        
-        .category-btn.active {
-            background: #6d28d9;
-            color: white;
-            border-color: #6d28d9;
-        }
-        
-        .location-preview {
-            background: #f8fafc;
-            padding: 10px;
-            border-radius: 12px;
-            margin-bottom: 12px;
-            border: 1px solid #e2e8f0;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .location-preview:hover {
-            background: #f1f5f9;
-            border-color: #c7d2fe;
-        }
-        
-        .location-preview-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 6px;
-        }
-        
-        .location-preview-title {
-            font-weight: 600;
-            color: #374151;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            font-size: 13px;
-        }
-        
-        .location-preview-change {
-            color: #6d28d9;
-            font-size: 12px;
-            font-weight: 500;
-        }
-        
-        .location-preview-text {
-            color: #4b5563;
-            font-size: 12px;
-            line-height: 1.3;
-        }
-        
-        .location-preview-coords {
-            color: #6b7280;
-            font-size: 10px;
-            font-family: monospace;
-            margin-top: 2px;
-        }
-        
-        .map-btn {
-            width: 100%;
-            padding: 10px 14px;
-            background: #6d28d9;
-            color: white;
-            border: none;
-            border-radius: 40px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            transition: all 0.2s;
-            margin-bottom: 12px;
-        }
-        
-        .map-btn:hover {
-            background: #5b21b6;
-            transform: translateY(-1px);
-        }
-        
-        .map-modal .modal-content {
-            max-width: 95%;
-            width: 95%;
-            max-height: 85vh;
-            padding: 0;
-            overflow: hidden;
-            border-radius: 24px;
-        }
-        
-        .map-modal-header {
-            padding: 14px 16px;
-            border-bottom: 1px solid #e2e8f0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: white;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-        
-        .map-modal-body {
-            height: 60vh;
-            position: relative;
-            background: #f1f5f9;
-        }
-        
-        #fullscreen-map {
-            width: 100%;
-            height: 100%;
-        }
-        
-        .map-instructions {
-            position: absolute;
-            top: 12px;
+        .toast {
+            position: fixed;
+            top: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.95);
-            padding: 8px 16px;
-            border-radius: 40px;
-            font-size: 13px;
-            font-weight: 500;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: #6d28d9;
-            backdrop-filter: blur(4px);
-        }
-        
-        .map-controls {
-            position: absolute;
-            bottom: 16px;
-            right: 16px;
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        
-        .control-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: white;
-            border: none;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            color: #4b5563;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .control-btn:hover {
-            background: #f8fafc;
-            transform: scale(1.05);
-            color: #6d28d9;
-        }
-        
-        .map-footer {
-            padding: 14px 16px;
-            border-top: 1px solid #e2e8f0;
-            background: white;
-        }
-        
-        .map-footer-btn {
-            width: 100%;
-            padding: 12px;
-            background: #6d28d9;
-            color: white;
-            border: none;
-            border-radius: 40px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            transition: all 0.2s;
-        }
-        
-        .map-footer-btn:hover {
-            background: #5b21b6;
-        }
-        
-        .map-footer-btn:disabled {
-            background: #9ca3af;
-            cursor: not-allowed;
-        }
-        
-        .current-location-marker {
-            background-color: #6d28d9;
-            border-radius: 50%;
-            border: 2px solid white;
-            box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
-            width: 14px;
-            height: 14px;
-        }
-        
-        .selected-location-marker {
-            background-color: #dc2626;
-            border-radius: 50%;
-            border: 2px solid white;
-            box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
-            width: 18px;
-            height: 18px;
-        }
-        
-        @media (max-height: 700px) {
-            .map-modal-body {
-                height: 55vh;
-            }
-        }
-        
-        @media (max-height: 600px) {
-            .map-modal-body {
-                height: 50vh;
-            }
-        }
-        
-        @media (min-width: 768px) {
-            .map-modal .modal-content {
-                max-width: 500px;
-                width: 500px;
-            }
-        }
-        
-        .gmaps-link {
-            color: #3b82f6;
-            text-decoration: none;
-            font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            gap: 3px;
-            font-size: 11px;
-        }
-        
-        .gmaps-link:hover {
-            text-decoration: underline;
-            color: #1d4ed8;
-        }
-        
-        .product-description {
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            line-height: 1.2;
-            height: 2.4em;
-        }
-        
-        .product-name {
-            display: -webkit-box;
-            -webkit-line-clamp: 1;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        
-        .products-container {
-            -webkit-overflow-scrolling: touch;
-        }
-        
-        /* Estilos para el carrusel de imágenes múltiples */
-        .image-carousel {
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            padding: 8px 0;
-            margin-bottom: 12px;
-            scrollbar-width: thin;
-        }
-        
-        .image-carousel img {
-            width: 60px;
-            height: 60px;
-            object-fit: cover;
+            padding: 12px 24px;
             border-radius: 12px;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: all 0.2s;
-            flex-shrink: 0;
+            color: white;
+            font-weight: 500;
+            font-size: 14px;
+            z-index: 9999;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            min-width: 200px;
+            text-align: center;
+            animation: slideDown 0.3s ease-out;
         }
         
-        .image-carousel img.active {
-            border-color: #6d28d9;
-            transform: scale(0.95);
+        .toast-success {
+            background: #059669;
         }
         
-        .product-detail-image-main {
-            width: 100%;
-            height: 200px;
-            object-fit: contain;
-            background: #f8fafc;
-            border-radius: 16px;
-            margin-bottom: 12px;
-            border: 1px solid #e2e8f0;
+        .toast-error {
+            background: #dc2626;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        @media (max-width: 480px) {
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+                gap: 8px;
+            }
+            
+            .product-image {
+                height: 110px;
+            }
+            
+            .modal-content {
+                padding: 16px;
+            }
         }
     </style>
 </head>
@@ -861,7 +859,7 @@
         </div>
     </div>
 
-    <!-- Modal de detalles del producto (CON MÚLTIPLES IMÁGENES) -->
+    <!-- Modal de detalles del producto -->
     <div id="product-detail-modal" class="modal">
         <div class="modal-content">
             <div class="flex justify-between items-center mb-3">
@@ -874,7 +872,7 @@
             <!-- Imagen principal del producto -->
             <img id="product-detail-image-main" class="product-detail-image-main" src="" alt="">
             
-            <!-- Carrusel de imágenes múltiples (desde images_urls separado por comas) -->
+            <!-- Carrusel de imágenes -->
             <div id="image-carousel" class="image-carousel"></div>
             
             <p id="product-detail-description" class="text-gray-600 mb-3 text-xs"></p>
@@ -912,40 +910,31 @@
                     Información de entrega
                 </div>
                 
-                <!-- Botón para abrir mapa -->
                 <button id="open-map-btn" class="map-btn">
                     <i class="fas fa-map-marked-alt"></i>
                     Seleccionar ubicación
                 </button>
                 
-                <!-- Vista previa de ubicación seleccionada -->
                 <div id="location-preview" class="location-preview hidden" onclick="openMapModal()">
                     <div class="location-preview-header">
                         <div class="location-preview-title">
                             <i class="fas fa-map-marker-alt text-purple-600"></i>
                             Ubicación
                         </div>
-                        <div class="location-preview-change">
-                            Cambiar
-                        </div>
+                        <div class="location-preview-change">Cambiar</div>
                     </div>
-                    <div id="location-preview-text" class="location-preview-text">
-                        Haz clic para seleccionar una ubicación
-                    </div>
+                    <div id="location-preview-text" class="location-preview-text"></div>
                     <div id="location-preview-coords" class="location-preview-coords"></div>
                     <div id="gmaps-link-container" class="mt-1"></div>
                 </div>
                 
-                <!-- Dirección manual (para nombre del lugar) -->
                 <div class="mb-3">
-                    <label class="block text-xs font-medium text-gray-700 mb-1">Nombre del lugar *</label>
-                    <input type="text" id="delivery-address-name" class="input-field" 
-                           placeholder="Ej: Casa, Oficina, Edificio Central" 
-                           maxlength="100">
-                    <p class="text-xs text-gray-500 mt-1">Describe el lugar donde quieres recibir el pedido</p>
+                    <label class="block text-xs font-medium text-gray-700 mb-1">Dirección de entrega *</label>
+                    <input type="text" id="delivery-address" class="input-field" 
+                           placeholder="Ej: Av. Principal #123, Zona Central" 
+                           maxlength="255">
                 </div>
                 
-                <!-- Hora de entrega -->
                 <div class="mb-3">
                     <label class="block text-xs font-medium text-gray-700 mb-1">Hora de entrega *</label>
                     <div class="time-selector">
@@ -968,7 +957,6 @@
                     </div>
                 </div>
                 
-                <!-- Notas -->
                 <div>
                     <label class="block text-xs font-medium text-gray-700 mb-1">Notas (opcional)</label>
                     <textarea id="delivery-notes" class="input-field" 
@@ -977,15 +965,15 @@
                 </div>
             </div>
             
-            <button id="buy-product-btn" class="w-full btn-primary" disabled>
+            <button id="buy-product-btn" class="btn-primary" disabled>
                 <i class="fas fa-shopping-cart mr-2"></i>
                 Comprar ahora
             </button>
         </div>
     </div>
 
-    <!-- Modal de mapa completo (VENTANA APARTE) -->
-    <div id="map-modal" class="modal map-modal">
+    <!-- Modal de mapa -->
+    <div id="map-modal" class="modal modal-map">
         <div class="modal-content">
             <div class="map-modal-header">
                 <h3 class="text-base font-semibold text-gray-800">Selecciona el punto de entrega</h3>
@@ -1067,10 +1055,9 @@
         </div>
     </div>
 
-    <!-- Factura flotante para compras -->
-    <div id="invoice-modal" class="modal fixed inset-0 z-50 flex items-center justify-center opacity-0 invisible transition-all duration-300">
-        <div class="modal-overlay absolute inset-0"></div>
-        <div class="modal-content w-full max-w-md mx-4">
+    <!-- Factura flotante -->
+    <div id="invoice-modal" class="modal">
+        <div class="modal-content">
             <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
                 <div class="flex justify-between items-center p-3 border-b border-gray-200">
                     <div class="text-base font-semibold text-gray-800">Comprobante de Compra</div>
@@ -1080,7 +1067,7 @@
                 </div>
                 
                 <div id="invoice-content" class="p-3 max-h-[60vh] overflow-y-auto">
-                    <!-- Contenido de la factura se generará dinámicamente -->
+                    <!-- Contenido de la factura se genera dinámicamente -->
                 </div>
                 
                 <div class="p-3 border-t border-gray-200 bg-gray-50">
@@ -1100,12 +1087,22 @@
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // Configuración de Supabase
+        // ============================================
+        // CONFIGURACIÓN
+        // ============================================
         const supabaseUrl = 'https://aleadadisazocjovibeh.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFsZWFkYWRpc2F6b2Nqb3ZpYmVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk0NDE5NjMsImV4cCI6MjA3NTAxNzk2M30.z82tP0C-UiiNuzP_jqrQf4LBusFqrDi1WYbdnuTh47E';
         window.supabase = supabase.createClient(supabaseUrl, supabaseKey);
-        
-        // Variables globales
+
+        // ============================================
+        // CONFIGURACIÓN DE TELEGRAM
+        // ============================================
+        const TELEGRAM_BOT_TOKEN = '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY';
+        const TELEGRAM_CHAT_ID = '-5155315945';
+
+        // ============================================
+        // VARIABLES GLOBALES
+        // ============================================
         let currentUser = null;
         let userProfile = null;
         let currentBalance = 0;
@@ -1115,39 +1112,34 @@
         let currentInvoiceData = null;
         let products = [];
         let currentCategory = 'all';
-        
+
         // Variables para el mapa
         let fullscreenMap = null;
         let currentLocationMarker = null;
-        let selectedLocationMarker = null;
-        let selectedLocation = null;
         let selectedLocationCoords = null;
         let selectedLocationName = '';
         let tempMarker = null;
-        
-        // CONFIGURACIÓN DEL BOT DE TELEGRAM
-        const TELEGRAM_BOT_TOKEN = '8794091027:AAG36PsetBQY3oqGQzGw39rZhbOaBAaE41A';
-        const TELEGRAM_CHAT_ID = '-5155315945';
-        
-        // Funciones de utilidad
+
+        // ============================================
+        // FUNCIONES DE UTILIDAD
+        // ============================================
         const formatCurrency = (amount) => {
             return 'Bs ' + parseFloat(amount).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         };
-        
+
         const showToast = (message, type = 'success') => {
+            document.querySelectorAll('.toast').forEach(el => el.remove());
+            
             const toast = document.createElement('div');
-            toast.className = `fixed top-4 right-4 px-4 py-2 rounded-md shadow-lg z-50 ${
-                type === 'success' ? 'bg-green-600' : 'bg-red-600'
-            } text-white font-medium text-sm`;
+            toast.className = `toast toast-${type}`;
             toast.textContent = message;
             document.body.appendChild(toast);
             
             setTimeout(() => {
                 toast.remove();
-            }, 3000);
+            }, 4000);
         };
-        
-        // Función para obtener array de imágenes (separadas por comas en images_urls)
+
         const getProductImages = (product) => {
             if (product.images_urls && product.images_urls.trim()) {
                 return product.images_urls.split(',').map(url => url.trim()).filter(url => url);
@@ -1157,83 +1149,102 @@
             }
             return ['https://via.placeholder.com/400x300/f1f5f9/64748b?text=Producto'];
         };
-        
-        // Función para generar enlace de Google Maps
+
         const generateGoogleMapsLink = (lat, lng, label = 'Ubicación de entrega') => {
             const encodedLabel = encodeURIComponent(label);
             return `https://www.google.com/maps?q=${lat},${lng}&label=${encodedLabel}`;
         };
-        
-        // Función para enviar mensaje a Telegram CON ENLACE A GOOGLE MAPS
+
+        // ============================================
+        // FUNCIÓN PARA ENVIAR MENSAJE A TELEGRAM (SIN TOAST)
+        // ============================================
         const sendTelegramMessage = async (message) => {
             try {
-                const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                console.log('📤 Enviando mensaje a Telegram...');
+                
+                if (!TELEGRAM_BOT_TOKEN || TELEGRAM_BOT_TOKEN.length < 10) {
+                    console.error('❌ Token de Telegram inválido');
+                    return false;
+                }
+
+                const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+
+                if (!message || message.trim().length === 0) {
+                    console.error('❌ Mensaje vacío');
+                    return false;
+                }
+
+                const payload = {
+                    chat_id: TELEGRAM_CHAT_ID,
+                    text: message,
+                    parse_mode: 'HTML',
+                    disable_web_page_preview: true
+                };
+
+                const response = await fetch(url, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({
-                        chat_id: TELEGRAM_CHAT_ID,
-                        text: message,
-                        parse_mode: 'HTML'
-                    })
+                    body: JSON.stringify(payload)
                 });
-                
+
                 const data = await response.json();
-                return data.ok;
+
+                if (!response.ok || !data.ok) {
+                    console.error('❌ Error de Telegram:', data.description || 'Error desconocido');
+                    return false;
+                }
+
+                console.log('✅ Mensaje enviado a Telegram');
+                return true;
+
             } catch (error) {
-                console.error('Error sending Telegram message:', error);
+                console.error('❌ Error enviando mensaje a Telegram:', error);
                 return false;
             }
         };
-        
-        // Funciones para manejar modales
+
+        // ============================================
+        // FUNCIONES PARA MODALES
+        // ============================================
         const openModal = (modalId) => {
             const modal = document.getElementById(modalId);
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
         };
-        
+
         const closeModal = (modalId) => {
             const modal = document.getElementById(modalId);
-            modal.classList.remove('active');
-            document.body.style.overflow = '';
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
         };
-        
-        // Función para abrir el modal de factura
-        function openInvoiceModal() {
-            const modal = document.getElementById('invoice-modal');
-            modal.classList.add('active');
-            modal.classList.remove('opacity-0', 'invisible');
-            document.body.style.overflow = 'hidden';
-        }
-        
-        // Función para cerrar el modal de factura
-        function closeInvoiceModal() {
-            const modal = document.getElementById('invoice-modal');
-            modal.classList.remove('active');
-            modal.classList.add('opacity-0', 'invisible');
-            document.body.style.overflow = '';
-        }
-        
-        // FUNCIONES PARA EL MAPA (VENTANA APARTE)
+
+        // ============================================
+        // FUNCIONES DEL MAPA
+        // ============================================
         function initFullscreenMap() {
-            if (!document.getElementById('fullscreen-map')) return;
-            
+            const mapContainer = document.getElementById('fullscreen-map');
+            if (!mapContainer) return;
+
             let center;
             if (selectedLocationCoords) {
                 center = selectedLocationCoords;
             } else {
                 center = [-16.5000, -68.1500];
             }
-            
-            fullscreenMap = L.map('fullscreen-map').setView(center, selectedLocationCoords ? 16 : 13);
-            
+
+            fullscreenMap = L.map(mapContainer).setView(center, selectedLocationCoords ? 16 : 13);
+
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '© OpenStreetMap contributors',
                 maxZoom: 19
             }).addTo(fullscreenMap);
-            
+
             if (selectedLocationCoords) {
                 L.circleMarker(selectedLocationCoords, {
                     color: '#dc2626',
@@ -1243,20 +1254,20 @@
                 }).addTo(fullscreenMap)
                 .bindTooltip('Ubicación seleccionada', {permanent: false, direction: 'top'});
             }
-            
+
             fullscreenMap.on('click', function(e) {
                 handleMapClick(e);
             });
-            
+
             setupMapControls();
             getCurrentLocationForMap();
         }
-        
+
         function handleMapClick(e) {
             if (tempMarker) {
                 fullscreenMap.removeLayer(tempMarker);
             }
-            
+
             tempMarker = L.circleMarker(e.latlng, {
                 color: '#dc2626',
                 fillColor: '#dc2626',
@@ -1264,142 +1275,138 @@
                 radius: 10
             }).addTo(fullscreenMap)
             .bindTooltip('Nueva ubicación seleccionada', {permanent: false, direction: 'top'});
-            
+
             document.getElementById('confirm-location-btn').disabled = false;
             window.tempCoords = [e.latlng.lat, e.latlng.lng];
         }
-        
+
         function setupMapControls() {
             document.getElementById('locate-me-btn').addEventListener('click', () => {
                 getCurrentLocationForMap();
             });
-            
+
             document.getElementById('zoom-in-btn').addEventListener('click', () => {
-                fullscreenMap.zoomIn();
+                if (fullscreenMap) fullscreenMap.zoomIn();
             });
-            
+
             document.getElementById('zoom-out-btn').addEventListener('click', () => {
-                fullscreenMap.zoomOut();
+                if (fullscreenMap) fullscreenMap.zoomOut();
             });
         }
-        
+
         function getCurrentLocationForMap() {
             if (!navigator.geolocation) {
-                showToast('La geolocalización no está disponible en tu dispositivo', 'error');
                 return;
             }
-            
+
             navigator.geolocation.getCurrentPosition(
                 function(position) {
                     const lat = position.coords.latitude;
                     const lng = position.coords.longitude;
-                    
-                    fullscreenMap.setView([lat, lng], 16);
-                    
-                    if (currentLocationMarker) {
-                        fullscreenMap.removeLayer(currentLocationMarker);
+
+                    if (fullscreenMap) {
+                        fullscreenMap.setView([lat, lng], 16);
+
+                        if (currentLocationMarker) {
+                            fullscreenMap.removeLayer(currentLocationMarker);
+                        }
+
+                        currentLocationMarker = L.circleMarker([lat, lng], {
+                            color: '#6d28d9',
+                            fillColor: '#6d28d9',
+                            fillOpacity: 0.7,
+                            radius: 8
+                        }).addTo(fullscreenMap)
+                        .bindTooltip('Tu ubicación actual', {permanent: false, direction: 'top'});
                     }
-                    
-                    currentLocationMarker = L.circleMarker([lat, lng], {
-                        color: '#6d28d9',
-                        fillColor: '#6d28d9',
-                        fillOpacity: 0.7,
-                        radius: 8
-                    }).addTo(fullscreenMap)
-                    .bindTooltip('Tu ubicación actual', {permanent: false, direction: 'top'});
                 },
                 function(error) {
-                    console.error('Error obteniendo ubicación:', error);
-                    showToast('No se pudo obtener tu ubicación. Selecciona manualmente en el mapa.', 'error');
+                    console.warn('Error obteniendo ubicación:', error);
                 },
                 {
                     enableHighAccuracy: true,
-                    timeout: 5000,
+                    timeout: 10000,
                     maximumAge: 0
                 }
             );
         }
-        
+
         function confirmMapLocation() {
             if (window.tempCoords) {
                 setSelectedLocation(window.tempCoords);
                 closeModal('map-modal');
-                
-                if (tempMarker) {
+
+                if (tempMarker && fullscreenMap) {
                     fullscreenMap.removeLayer(tempMarker);
                     tempMarker = null;
                 }
                 window.tempCoords = null;
-                
+
                 document.getElementById('confirm-location-btn').disabled = true;
             }
         }
-        
+
         function setSelectedLocation(coords) {
             selectedLocationCoords = coords;
             getLocationName(coords[0], coords[1]);
             updateLocationPreview();
             updateBuyButton();
         }
-        
+
         async function getLocationName(lat, lng) {
             try {
                 const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`);
                 const data = await response.json();
-                
+
                 if (data && data.display_name) {
-                    selectedLocation = data.display_name;
-                    
                     const address = data.address;
                     let shortAddress = '';
-                    
+
                     if (address.road) shortAddress += address.road;
                     if (address.house_number) shortAddress += ' ' + address.house_number;
                     if (address.suburb && !shortAddress.includes(address.suburb)) shortAddress += ', ' + address.suburb;
                     if (address.city && !shortAddress.includes(address.city)) shortAddress += ', ' + address.city;
-                    
+
                     if (!shortAddress && address.neighbourhood) shortAddress = address.neighbourhood;
                     if (!shortAddress) shortAddress = data.display_name.split(',')[0];
-                    
+
                     selectedLocationName = shortAddress.substring(0, 100);
-                    
-                    const nameField = document.getElementById('delivery-address-name');
-                    if (!nameField.value.trim()) {
-                        nameField.value = selectedLocationName;
-                        nameField.dispatchEvent(new Event('input'));
+
+                    const addressField = document.getElementById('delivery-address');
+                    if (!addressField.value.trim()) {
+                        addressField.value = selectedLocationName;
+                        addressField.dispatchEvent(new Event('input'));
                     }
                 } else {
-                    selectedLocation = `Ubicación (${lat.toFixed(6)}, ${lng.toFixed(6)})`;
-                    selectedLocationName = 'Ubicación seleccionada';
+                    selectedLocationName = `Ubicación (${lat.toFixed(6)}, ${lng.toFixed(6)})`;
                 }
-                
+
                 updateLocationPreview();
             } catch (error) {
                 console.error('Error obteniendo nombre del lugar:', error);
-                selectedLocation = `Ubicación seleccionada (${lat.toFixed(6)}, ${lng.toFixed(6)})`;
-                selectedLocationName = 'Ubicación seleccionada';
+                selectedLocationName = `Ubicación (${lat.toFixed(6)}, ${lng.toFixed(6)})`;
                 updateLocationPreview();
             }
         }
-        
+
         function updateLocationPreview() {
             const preview = document.getElementById('location-preview');
             const previewText = document.getElementById('location-preview-text');
             const previewCoords = document.getElementById('location-preview-coords');
             const gmapsContainer = document.getElementById('gmaps-link-container');
-            
+
             if (selectedLocationCoords) {
                 preview.classList.remove('hidden');
-                
-                previewText.textContent = selectedLocationName || selectedLocation || 'Ubicación seleccionada';
+
+                previewText.textContent = selectedLocationName || 'Ubicación seleccionada';
                 previewCoords.textContent = `Coordenadas: ${selectedLocationCoords[0].toFixed(6)}, ${selectedLocationCoords[1].toFixed(6)}`;
-                
+
                 const gmapsLink = generateGoogleMapsLink(
-                    selectedLocationCoords[0], 
+                    selectedLocationCoords[0],
                     selectedLocationCoords[1],
                     selectedLocationName || 'Entrega TokTok'
                 );
-                
+
                 gmapsContainer.innerHTML = `
                     <a href="${gmapsLink}" target="_blank" class="gmaps-link">
                         <i class="fas fa-external-link-alt"></i>
@@ -1411,245 +1418,48 @@
                 gmapsContainer.innerHTML = '';
             }
         }
-        
+
         function openMapModal() {
             openModal('map-modal');
-            
+
             setTimeout(() => {
                 if (!fullscreenMap) {
                     initFullscreenMap();
                 } else {
                     fullscreenMap.invalidateSize();
-                    
+
                     const center = selectedLocationCoords || [-16.5000, -68.1500];
                     fullscreenMap.setView(center, selectedLocationCoords ? 16 : 13);
                 }
-                
+
                 document.getElementById('confirm-location-btn').disabled = !window.tempCoords;
             }, 100);
         }
-        
-        // Función para generar y mostrar la factura de compra
-        function showPurchaseInvoice(purchaseData) {
-            if (!purchaseData) {
-                console.error('No purchase data provided');
-                return;
-            }
-            
-            const invoiceId = 'PUR-' + Date.now().toString().slice(-8);
-            
-            let gmapsLinkHtml = '';
-            if (purchaseData.coordinates) {
-                const coords = purchaseData.coordinates.split(',').map(c => c.trim());
-                if (coords.length === 2) {
-                    const gmapsLink = generateGoogleMapsLink(
-                        coords[0], 
-                        coords[1],
-                        purchaseData.delivery_address || 'Entrega TokTok'
-                    );
-                    gmapsLinkHtml = `<a href="${gmapsLink}" target="_blank" style="color: #3b82f6; text-decoration: none; font-size: 7px;">Abrir en Google Maps</a>`;
-                }
-            }
-            
-            const invoiceHTML = `
-            <div class="invoice-container success-animation" style="font-size: 8px; line-height: 1.1; padding: 5px;">
-                <div class="invoice-header" style="margin-bottom: 3px;">
-                    <div class="invoice-logo" style="font-size: 10px; margin-bottom: 1px;">TokTok Shop</div>
-                    <div class="invoice-title" style="font-size: 9px; margin-bottom: 1px;">COMPROBANTE DE COMPRA</div>
-                    <div class="text-xs text-green-600" style="font-size: 7px;">
-                        <i class="fas fa-check-circle mr-1"></i>Compra completada
-                    </div>
-                </div>
-                
-                <div class="invoice-details">
-                    <div class="invoice-section" style="margin-bottom: 2px;">
-                        <span class="invoice-label" style="font-size: 7px;">Fecha:</span>
-                        <span class="invoice-value" style="font-size: 7px;">${new Date().toLocaleString('es-ES')}</span>
-                    </div>
-                    
-                    <div class="invoice-section" style="margin-bottom: 2px;">
-                        <span class="invoice-label" style="font-size: 7px;">ID Compra:</span>
-                        <span class="invoice-value" style="font-size: 6px;">${invoiceId}</span>
-                    </div>
-                    
-                    <div class="invoice-section" style="margin-bottom: 2px;">
-                        <span class="invoice-label" style="font-size: 7px;">Producto:</span>
-                        <span class="invoice-value" style="font-size: 7px;">${purchaseData.product_name}</span>
-                    </div>
-                    
-                    <div class="invoice-section" style="margin-bottom: 2px;">
-                        <span class="invoice-label" style="font-size: 7px;">Cantidad:</span>
-                        <span class="invoice-value" style="font-size: 7px;">${purchaseData.quantity}</span>
-                    </div>
-                    
-                    <div class="invoice-section" style="margin-bottom: 2px;">
-                        <span class="invoice-label" style="font-size: 7px;">Precio unitario:</span>
-                        <span class="invoice-value" style="font-size: 7px;">${formatCurrency(purchaseData.unit_price)}</span>
-                    </div>
-                    
-                    <div class="invoice-section" style="margin-bottom: 2px;">
-                        <span class="invoice-label" style="font-size: 7px;">Usuario:</span>
-                        <span class="invoice-value" style="font-size: 7px;">${userProfile?.full_name || currentUser?.email || 'Usuario'}</span>
-                    </div>
-                    
-                    <div class="invoice-section" style="margin-bottom: 2px;">
-                        <span class="invoice-label" style="font-size: 7px;">Lugar de entrega:</span>
-                        <span class="invoice-value" style="font-size: 6px;">${purchaseData.delivery_address || 'No especificado'}</span>
-                    </div>
-                    
-                    <div class="invoice-section" style="margin-bottom: 2px;">
-                        <span class="invoice-label" style="font-size: 7px;">Hora entrega:</span>
-                        <span class="invoice-value" style="font-size: 6px;">${purchaseData.delivery_time || 'Por definir'}</span>
-                    </div>
-                    
-                    <div class="invoice-section" style="margin-bottom: 2px;">
-                        <span class="invoice-label" style="font-size: 7px;">Coordenadas:</span>
-                        <div style="font-size: 6px; margin-top: 2px;">
-                            <span style="display: block; margin-bottom: 2px;">${purchaseData.coordinates || 'No disponibles'}</span>
-                            ${gmapsLinkHtml}
-                        </div>
-                    </div>
-                    
-                    ${purchaseData.delivery_notes ? `
-                    <div class="invoice-section" style="margin-bottom: 2px;">
-                        <span class="invoice-label" style="font-size: 7px;">Notas:</span>
-                        <span class="invoice-value" style="font-size: 6px;">${purchaseData.delivery_notes}</span>
-                    </div>
-                    ` : ''}
-                    
-                    <div class="invoice-amount negative-amount" style="font-size: 12px; margin: 3px 0;">
-                        -${formatCurrency(purchaseData.total_price).replace('Bs', '')}
-                    </div>
-                    
-                    <div class="invoice-footer" style="font-size: 6px; margin-top: 3px;">
-                        Comprobante digital - No requiere firma - TokTok Shop
-                    </div>
-                </div>
-            </div>
-            `;
-            
-            document.getElementById('invoice-content').innerHTML = invoiceHTML;
-            
-            setTimeout(() => {
-                openInvoiceModal();
-            }, 400);
-            
-            currentInvoiceData = {
-                html: invoiceHTML,
-                id: invoiceId,
-                purchase: purchaseData
-            };
-        }
-        
-        // Función para descargar la factura como imagen
-        function downloadInvoiceAsImage() {
-            if (!currentInvoiceData) {
-                showToast('No hay datos de factura para descargar', 'error');
-                return;
-            }
-            
-            const downloadBtn = document.getElementById('download-invoice');
-            const originalText = downloadBtn.innerHTML;
-            downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i><span>Generando...</span>';
-            downloadBtn.disabled = true;
-            
-            if (typeof html2canvas === 'undefined') {
-                const script = document.createElement('script');
-                script.src = 'https://html2canvas.hertzen.com/dist/html2canvas.min.js';
-                script.onload = generateInvoiceImage;
-                script.onerror = fallbackDownload;
-                document.head.appendChild(script);
-            } else {
-                generateInvoiceImage();
-            }
-            
-            function generateInvoiceImage() {
-                const invoiceElement = document.getElementById('invoice-content');
-                if (!invoiceElement) {
-                    fallbackDownload();
-                    return;
-                }
-                
-                html2canvas(invoiceElement, {
-                    scale: 2,
-                    useCORS: true,
-                    logging: false,
-                    backgroundColor: '#ffffff'
-                }).then(canvas => {
-                    const image = canvas.toDataURL('image/png');
-                    const link = document.createElement('a');
-                    link.download = `comprobante-compra-${currentInvoiceData.id}.png`;
-                    link.href = image;
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                    
-                    downloadBtn.innerHTML = originalText;
-                    downloadBtn.disabled = false;
-                    
-                    showToast('Comprobante descargado');
-                }).catch(error => {
-                    console.error('Error al generar la imagen:', error);
-                    fallbackDownload();
-                });
-            }
-            
-            function fallbackDownload() {
-                showToast('Descargando comprobante en formato texto...');
-                
-                const invoiceText = `
-                    COMPROBANTE TOKTOK SHOP
-                    ========================
-                    ID: ${currentInvoiceData.id}
-                    Fecha: ${new Date().toLocaleString('es-ES')}
-                    Producto: ${currentInvoiceData.purchase.product_name}
-                    Cantidad: ${currentInvoiceData.purchase.quantity}
-                    Total: ${formatCurrency(currentInvoiceData.purchase.total_price)}
-                    Lugar: ${currentInvoiceData.purchase.delivery_address || 'No especificado'}
-                    Hora entrega: ${currentInvoiceData.purchase.delivery_time || 'Por definir'}
-                    Coordenadas: ${currentInvoiceData.purchase.coordinates || 'No disponibles'}
-                    ${currentInvoiceData.purchase.coordinates ? `Google Maps: ${generateGoogleMapsLink(
-                        currentInvoiceData.purchase.coordinates.split(',')[0].trim(),
-                        currentInvoiceData.purchase.coordinates.split(',')[1].trim(),
-                        currentInvoiceData.purchase.delivery_address || 'Entrega TokTok'
-                    )}` : ''}
-                `;
-                
-                const blob = new Blob([invoiceText], { type: 'text/plain' });
-                const link = document.createElement('a');
-                link.download = `comprobante-${currentInvoiceData.id}.txt`;
-                link.href = URL.createObjectURL(blob);
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                
-                downloadBtn.innerHTML = originalText;
-                downloadBtn.disabled = false;
-            }
-        }
-        
-        // Función para cargar productos CON FILTRO DE CATEGORÍA
+
+        // ============================================
+        // FUNCIONES DE PRODUCTOS
+        // ============================================
         async function loadProducts(searchTerm = '', category = 'all') {
             try {
-                let query = supabase
+                let query = window.supabase
                     .from('products')
                     .select('*')
                     .eq('is_active', true);
-                
+
                 if (searchTerm) {
                     query = query.or(`name.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%`);
                 }
-                
+
                 if (category !== 'all') {
                     query = query.eq('category', category);
                 }
-                
+
                 query = query.order('created_at', { ascending: false });
-                
+
                 const { data, error } = await query;
-                
+
                 if (error) throw error;
-                
+
                 products = data || [];
                 renderProducts(products);
             } catch (error) {
@@ -1657,37 +1467,36 @@
                 showToast('Error al cargar productos', 'error');
             }
         }
-        
-        // Función para renderizar productos
+
         function renderProducts(productsToRender) {
             const productsList = document.getElementById('products-list');
             const noProducts = document.getElementById('no-products');
-            
+
             if (!productsToRender || productsToRender.length === 0) {
                 productsList.innerHTML = '';
                 noProducts.classList.remove('hidden');
                 return;
             }
-            
+
             noProducts.classList.add('hidden');
-            
+
             productsList.innerHTML = productsToRender.map(product => {
-                const stockClass = product.stock > 10 ? 'stock-available' : 
+                const stockClass = product.stock > 10 ? 'stock-available' :
                                  product.stock > 0 ? 'stock-low' : 'stock-out';
-                const stockText = product.stock > 10 ? 'Disponible' : 
+                const stockText = product.stock > 10 ? 'Disponible' :
                                 product.stock > 0 ? `${product.stock} unidades` : 'Agotado';
-                
-                // Obtener primera imagen para la tarjeta
+
                 const images = getProductImages(product);
                 const firstImage = images[0];
-                
+
                 return `
                     <div class="product-card" data-product-id="${product.id}">
                         <div class="p-2">
                             <div class="relative mb-2">
                                 <img src="${firstImage}" 
                                      alt="${product.name}" 
-                                     class="product-image rounded-lg">
+                                     class="product-image rounded-lg"
+                                     loading="lazy">
                                 <span class="stock-badge ${stockClass} absolute top-1 right-1">
                                     ${stockText}
                                 </span>
@@ -1697,7 +1506,8 @@
                             <div class="flex justify-between items-center">
                                 <div class="product-price text-sm">${formatCurrency(product.price)}</div>
                                 <button class="buy-btn ${product.stock === 0 ? 'opacity-50 cursor-not-allowed' : ''}"
-                                        ${product.stock === 0 ? 'disabled' : ''}>
+                                        ${product.stock === 0 ? 'disabled' : ''}
+                                        data-product-id="${product.id}">
                                     ${product.stock === 0 ? 'Agotado' : 'Comprar'}
                                 </button>
                             </div>
@@ -1705,9 +1515,8 @@
                     </div>
                 `;
             }).join('');
-            
-            // Agregar event listeners
-            document.querySelectorAll('.product-card button:not([disabled])').forEach(button => {
+
+            document.querySelectorAll('.product-card .buy-btn:not([disabled])').forEach(button => {
                 button.addEventListener('click', (e) => {
                     e.stopPropagation();
                     const card = button.closest('.product-card');
@@ -1718,7 +1527,7 @@
                     }
                 });
             });
-            
+
             document.querySelectorAll('.product-card').forEach(card => {
                 card.addEventListener('click', (e) => {
                     if (!e.target.closest('button')) {
@@ -1731,61 +1540,49 @@
                 });
             });
         }
-        
-        // Función para abrir detalles del producto (CON CARRUSEL DE IMÁGENES)
+
         function openProductDetail(product) {
             currentProduct = product;
             selectedQuantity = 1;
             selectedDeliveryTime = null;
-            
-            // Resetear selección de hora
+
             document.querySelectorAll('.time-option').forEach(option => {
                 option.classList.remove('selected');
             });
-            
-            // Resetear ubicación seleccionada
+
             selectedLocationCoords = null;
-            selectedLocation = null;
             selectedLocationName = '';
             updateLocationPreview();
-            
-            // Resetear campos del formulario
-            document.getElementById('delivery-address-name').value = '';
+
+            document.getElementById('delivery-address').value = '';
             document.getElementById('delivery-notes').value = '';
-            
-            // Actualizar UI
+
             document.getElementById('product-detail-title').textContent = product.name;
             document.getElementById('product-detail-description').textContent = product.description || 'Sin descripción';
             document.getElementById('product-detail-price').textContent = formatCurrency(product.price);
-            
+
             const stockElement = document.getElementById('product-detail-stock');
             stockElement.textContent = `${product.stock} unidades`;
             stockElement.className = `text-base font-semibold ${product.stock > 0 ? 'text-green-600' : 'text-red-600'}`;
-            
-            // Configurar imágenes múltiples
+
             const images = getProductImages(product);
             const mainImg = document.getElementById('product-detail-image-main');
             const carouselContainer = document.getElementById('image-carousel');
-            
+
             if (images.length > 0) {
                 mainImg.src = images[0];
                 mainImg.alt = product.name;
-                
-                // Generar carrusel
+
                 carouselContainer.innerHTML = images.map((img, index) => `
-                    <img src="${img}" data-index="${index}" class="${index === 0 ? 'active' : ''}" alt="Imagen ${index + 1}">
+                    <img src="${img}" data-index="${index}" class="${index === 0 ? 'active' : ''}" alt="Imagen ${index + 1}" loading="lazy">
                 `).join('');
-                
-                // Event listeners para el carrusel
+
                 document.querySelectorAll('#image-carousel img').forEach(img => {
                     img.addEventListener('click', function() {
-                        // Remover clase active de todas
                         document.querySelectorAll('#image-carousel img').forEach(i => {
                             i.classList.remove('active');
                         });
-                        // Agregar clase active a la seleccionada
                         this.classList.add('active');
-                        // Cambiar imagen principal
                         mainImg.src = this.src;
                     });
                 });
@@ -1793,48 +1590,51 @@
                 mainImg.src = 'https://via.placeholder.com/400x300/f1f5f9/64748b?text=Producto';
                 carouselContainer.innerHTML = '';
             }
-            
-            // Actualizar UI
+
             updateQuantityUI();
             updateBuyButton();
-            
+
             openModal('product-detail-modal');
         }
-        
-        // Función para actualizar la UI de cantidad
+
         function updateQuantityUI() {
             document.getElementById('quantity-display').textContent = selectedQuantity;
-            
+
             const decreaseBtn = document.getElementById('decrease-quantity');
             const increaseBtn = document.getElementById('increase-quantity');
-            
+
             decreaseBtn.disabled = selectedQuantity <= 1;
             increaseBtn.disabled = selectedQuantity >= currentProduct.stock;
-            
+
             const totalPrice = selectedQuantity * currentProduct.price;
             document.getElementById('total-price').textContent = formatCurrency(totalPrice);
         }
-        
-        // Función para actualizar botón de compra
+
         function updateBuyButton() {
             const buyBtn = document.getElementById('buy-product-btn');
-            const addressName = document.getElementById('delivery-address-name').value.trim();
-            
-            const hasStock = currentProduct.stock >= selectedQuantity;
+            const deliveryAddress = document.getElementById('delivery-address').value.trim();
+
+            const hasStock = currentProduct && currentProduct.stock >= selectedQuantity;
             const hasLocation = selectedLocationCoords !== null;
-            const hasAddressName = addressName.length > 0;
+            const hasAddress = deliveryAddress.length > 3;
             const hasDeliveryTime = selectedDeliveryTime !== null;
-            const totalPrice = selectedQuantity * currentProduct.price;
+            const totalPrice = currentProduct ? selectedQuantity * currentProduct.price : 0;
             const hasBalance = currentBalance >= totalPrice;
-            
-            buyBtn.disabled = !hasStock || !hasLocation || !hasAddressName || !hasDeliveryTime || !hasBalance;
-            
+
+            if (!currentProduct) {
+                buyBtn.disabled = true;
+                buyBtn.innerHTML = '<i class="fas fa-exclamation-circle mr-2"></i>Selecciona un producto';
+                return;
+            }
+
+            buyBtn.disabled = !hasStock || !hasLocation || !hasAddress || !hasDeliveryTime || !hasBalance;
+
             if (!hasStock) {
-                buyBtn.innerHTML = '<i class="fas fa-times-circle mr-2"></i>Sin stock';
+                buyBtn.innerHTML = '<i class="fas fa-times-circle mr-2"></i>Sin stock suficiente';
             } else if (!hasLocation) {
                 buyBtn.innerHTML = '<i class="fas fa-map-marker-alt mr-2"></i>Selecciona ubicación';
-            } else if (!hasAddressName) {
-                buyBtn.innerHTML = '<i class="fas fa-home mr-2"></i>Nombre del lugar';
+            } else if (!hasAddress) {
+                buyBtn.innerHTML = '<i class="fas fa-home mr-2"></i>Ingresa dirección';
             } else if (!hasDeliveryTime) {
                 buyBtn.innerHTML = '<i class="fas fa-clock mr-2"></i>Selecciona hora';
             } else if (!hasBalance) {
@@ -1843,35 +1643,37 @@
                 buyBtn.innerHTML = '<i class="fas fa-shopping-cart mr-2"></i>Comprar ahora';
             }
         }
-        
-        // Funciones para cargar datos del usuario
+
+        // ============================================
+        // FUNCIONES DE USUARIO Y BALANCE
+        // ============================================
         const loadUserProfile = async (userId) => {
-            const { data, error } = await supabase
+            const { data, error } = await window.supabase
                 .from('user_profiles')
                 .select('*')
                 .eq('id', userId)
                 .single();
-                
+
             if (error && error.code !== 'PGRST116') {
                 console.error('Error loading profile:', error);
                 return null;
             }
-            
+
             return data;
         };
-        
+
         const calculateBalance = async (userId) => {
-            const { data, error } = await supabase
+            const { data, error } = await window.supabase
                 .from('transactions')
                 .select('amount, type')
                 .eq('user_id', userId)
                 .eq('status', 'completed');
-                
+
             if (error) {
                 console.error('Error calculating balance:', error);
                 return 0;
             }
-            
+
             let balance = 0;
             data.forEach(transaction => {
                 if (transaction.type === 'deposit') {
@@ -1880,13 +1682,12 @@
                     balance -= transaction.amount;
                 }
             });
-            
+
             return balance;
         };
-        
-        // Función para crear transacción
+
         const createTransaction = async (userId, amount, type, description = '', metadata = {}) => {
-            const { data, error } = await supabase
+            const { data, error } = await window.supabase
                 .from('transactions')
                 .insert([
                     {
@@ -1900,231 +1701,326 @@
                 ])
                 .select()
                 .single();
-                
+
             if (error) {
                 console.error('Error creating transaction:', error);
                 return null;
             }
-            
+
             return data;
         };
-        
-        // FUNCIÓN: Crear compra y RESTAR STOCK
-        const createProductPurchase = async (purchaseData) => {
+
+        // ============================================
+        // FUNCIÓN PARA ACTUALIZAR STOCK
+        // ============================================
+        const updateProductStock = async (productId, quantityToReduce) => {
             try {
-                const { data: productData, error: productError } = await supabase
+                const { data: productData, error: fetchError } = await window.supabase
                     .from('products')
                     .select('stock')
-                    .eq('id', purchaseData.product_id)
+                    .eq('id', productId)
                     .single();
-                
-                if (productError) throw productError;
-                
-                if (productData.stock < purchaseData.quantity) {
+
+                if (fetchError) throw fetchError;
+
+                const newStock = productData.stock - quantityToReduce;
+
+                if (newStock < 0) {
                     throw new Error('Stock insuficiente');
                 }
-                
-                const { error: updateError } = await supabase
+
+                const { error: updateError } = await window.supabase
                     .from('products')
-                    .update({ 
-                        stock: productData.stock - purchaseData.quantity,
+                    .update({
+                        stock: newStock,
                         updated_at: new Date().toISOString()
                     })
-                    .eq('id', purchaseData.product_id);
-                
+                    .eq('id', productId);
+
                 if (updateError) throw updateError;
-                
-                const { data, error } = await supabase
+
+                return newStock;
+            } catch (error) {
+                console.error('Error actualizando stock:', error);
+                throw error;
+            }
+        };
+
+        // ============================================
+        // FUNCIÓN PARA CREAR COMPRA
+        // ============================================
+        const createProductPurchase = async (purchaseData) => {
+            try {
+                const insertData = {
+                    user_id: purchaseData.user_id,
+                    product_id: purchaseData.product_id,
+                    quantity: purchaseData.quantity,
+                    unit_price: purchaseData.unit_price,
+                    total_price: purchaseData.total_price,
+                    transaction_id: purchaseData.transaction_id,
+                    status: purchaseData.status || 'completed',
+                    delivery_address: purchaseData.delivery_address || null,
+                    delivery_notes: purchaseData.delivery_notes || null
+                };
+
+                const { data, error } = await window.supabase
                     .from('product_purchases')
-                    .insert([purchaseData])
+                    .insert([insertData])
                     .select()
                     .single();
-                    
-                if (error) throw error;
-                
+
+                if (error) {
+                    console.error('Error de Supabase:', error);
+                    throw error;
+                }
+
                 return data;
             } catch (error) {
                 console.error('Error creating product purchase:', error);
-                return null;
+                throw error;
             }
         };
-        
-        // Función para actualizar el saldo en pantalla
-        function updateBalanceDisplay() {
-            document.getElementById('current-balance').textContent = formatCurrency(currentBalance);
-        }
-        
-        // Inicialización
-        document.addEventListener('DOMContentLoaded', async () => {
-            const { data: { session } } = await supabase.auth.getSession();
-            
-            if (!session) {
-                window.location.href = 'index.html';
+
+        // ============================================
+        // FUNCIÓN PARA MOSTRAR FACTURA
+        // ============================================
+        function showPurchaseInvoice(purchaseData) {
+            if (!purchaseData) {
+                console.error('No purchase data provided');
                 return;
             }
-            
-            currentUser = session.user;
-            
-            userProfile = await loadUserProfile(currentUser.id);
-            
-            if (!userProfile) {
-                window.location.href = 'index.html';
-                return;
-            }
-            
-            currentBalance = await calculateBalance(currentUser.id);
-            updateBalanceDisplay();
-            
-            await loadProducts();
-            
-            document.getElementById('product-search').addEventListener('input', (e) => {
-                loadProducts(e.target.value, currentCategory);
-            });
-            
-            document.querySelectorAll('.category-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    document.querySelectorAll('.category-btn').forEach(b => {
-                        b.classList.remove('active');
-                    });
-                    
-                    btn.classList.add('active');
-                    
-                    currentCategory = btn.dataset.category;
-                    const searchTerm = document.getElementById('product-search').value;
-                    loadProducts(searchTerm, currentCategory);
-                });
-            });
-            
-            document.getElementById('increase-quantity').addEventListener('click', () => {
-                if (selectedQuantity < currentProduct.stock) {
-                    selectedQuantity++;
-                    updateQuantityUI();
-                    updateBuyButton();
+
+            const invoiceId = 'PUR-' + Date.now().toString().slice(-8);
+
+            let gmapsLinkHtml = '';
+            if (purchaseData.coordinates) {
+                const coords = purchaseData.coordinates.split(',').map(c => c.trim());
+                if (coords.length === 2) {
+                    const gmapsLink = generateGoogleMapsLink(
+                        coords[0],
+                        coords[1],
+                        purchaseData.delivery_address || 'Entrega TokTok'
+                    );
+                    gmapsLinkHtml = `<a href="${gmapsLink}" target="_blank" style="color: #3b82f6; text-decoration: none; font-size: 7px;">Abrir en Google Maps</a>`;
                 }
-            });
-            
-            document.getElementById('decrease-quantity').addEventListener('click', () => {
-                if (selectedQuantity > 1) {
-                    selectedQuantity--;
-                    updateQuantityUI();
-                    updateBuyButton();
-                }
-            });
-            
-            document.querySelectorAll('.time-option').forEach(option => {
-                option.addEventListener('click', () => {
-                    document.querySelectorAll('.time-option').forEach(opt => {
-                        opt.classList.remove('selected');
-                    });
-                    option.classList.add('selected');
-                    selectedDeliveryTime = option.dataset.time;
-                    updateBuyButton();
-                });
-            });
-            
-            document.getElementById('open-map-btn').addEventListener('click', openMapModal);
-            document.getElementById('location-preview').addEventListener('click', openMapModal);
-            document.getElementById('close-map-modal').addEventListener('click', () => {
-                closeModal('map-modal');
-                if (tempMarker && fullscreenMap) {
-                    fullscreenMap.removeLayer(tempMarker);
-                    tempMarker = null;
-                }
-                window.tempCoords = null;
-            });
-            document.getElementById('confirm-location-btn').addEventListener('click', confirmMapLocation);
-            
-            document.getElementById('delivery-address-name').addEventListener('input', updateBuyButton);
-            
-            document.getElementById('close-product-detail').addEventListener('click', () => {
-                closeModal('product-detail-modal');
-            });
-            
-            document.getElementById('buy-product-btn').addEventListener('click', initiatePurchase);
-            
-            document.getElementById('close-confirmation-modal').addEventListener('click', () => {
-                closeModal('confirmation-modal');
-            });
-            
-            document.getElementById('cancel-purchase').addEventListener('click', () => {
-                closeModal('confirmation-modal');
-            });
-            
-            document.getElementById('confirm-purchase').addEventListener('click', processPurchase);
-            
-            document.getElementById('close-result-modal').addEventListener('click', () => {
-                closeModal('result-modal');
-                window.location.reload();
-            });
-            
-            document.getElementById('close-invoice-modal').addEventListener('click', closeInvoiceModal);
-            document.getElementById('close-invoice').addEventListener('click', closeInvoiceModal);
-            document.getElementById('download-invoice').addEventListener('click', downloadInvoiceAsImage);
-        });
-        
-        // Función para iniciar compra
-        function initiatePurchase() {
-            const totalPrice = selectedQuantity * currentProduct.price;
-            const addressName = document.getElementById('delivery-address-name').value.trim();
-            const notes = document.getElementById('delivery-notes').value.trim();
-            
-            let deliveryTimeText = '';
-            const selectedTimeOption = document.querySelector('.time-option.selected');
-            if (selectedTimeOption) {
-                const timeLabel = selectedTimeOption.querySelector('.time-label').textContent;
-                const timeValue = selectedTimeOption.querySelector('.time-value').textContent;
-                deliveryTimeText = `${timeLabel} (${timeValue})`;
             }
-            
-            const coordinates = selectedLocationCoords ? 
-                `${selectedLocationCoords[0].toFixed(6)}, ${selectedLocationCoords[1].toFixed(6)}` : 
-                'No especificadas';
-            
-            let gmapsLink = '';
-            if (selectedLocationCoords) {
-                gmapsLink = generateGoogleMapsLink(
-                    selectedLocationCoords[0], 
-                    selectedLocationCoords[1],
-                    addressName || 'Entrega TokTok'
-                );
-            }
-            
-            document.getElementById('confirmation-text').innerHTML = `
-                <div class="bg-gray-50 p-2 rounded-lg mb-2 text-sm">
-                    <strong>${currentProduct.name}</strong><br>
-                    Cantidad: ${selectedQuantity} unidades<br>
-                    Total: <strong class="text-purple-600">${formatCurrency(totalPrice)}</strong>
+
+            const invoiceHTML = `
+            <div class="invoice-container success-animation" style="font-size: 8px; line-height: 1.1; padding: 5px;">
+                <div class="invoice-header" style="margin-bottom: 3px;">
+                    <div class="invoice-logo" style="font-size: 10px; margin-bottom: 1px;">TokTok Shop</div>
+                    <div class="invoice-title" style="font-size: 9px; margin-bottom: 1px;">COMPROBANTE DE COMPRA</div>
+                    <div class="text-xs text-green-600" style="font-size: 7px;">
+                        <i class="fas fa-check-circle mr-1"></i>Compra completada
+                    </div>
                 </div>
-                <div class="text-xs">
-                    <div class="mb-1"><strong>Lugar de entrega:</strong><br>${addressName}</div>
-                    <div class="mb-1"><strong>Ubicación:</strong><br>${selectedLocationName || selectedLocation || 'Ubicación seleccionada'}</div>
-                    <div class="mb-1"><strong>Coordenadas:</strong><br>${coordinates}</div>
-                    ${gmapsLink ? `<div class="mb-1"><a href="${gmapsLink}" target="_blank" class="text-blue-600 hover:underline text-xs">
-                        <i class="fas fa-external-link-alt mr-1"></i>Abrir en Google Maps
-                    </a></div>` : ''}
-                    <div class="mb-1"><strong>Hora de entrega:</strong><br>${deliveryTimeText}</div>
-                    ${notes ? `<div><strong>Notas:</strong><br>${notes}</div>` : ''}
+
+                <div class="invoice-details">
+                    <div class="invoice-section" style="margin-bottom: 2px;">
+                        <span class="invoice-label" style="font-size: 7px;">Fecha:</span>
+                        <span class="invoice-value" style="font-size: 7px;">${new Date().toLocaleString('es-ES')}</span>
+                    </div>
+
+                    <div class="invoice-section" style="margin-bottom: 2px;">
+                        <span class="invoice-label" style="font-size: 7px;">ID Compra:</span>
+                        <span class="invoice-value" style="font-size: 6px;">${invoiceId}</span>
+                    </div>
+
+                    <div class="invoice-section" style="margin-bottom: 2px;">
+                        <span class="invoice-label" style="font-size: 7px;">Producto:</span>
+                        <span class="invoice-value" style="font-size: 7px;">${purchaseData.product_name}</span>
+                    </div>
+
+                    <div class="invoice-section" style="margin-bottom: 2px;">
+                        <span class="invoice-label" style="font-size: 7px;">Cantidad:</span>
+                        <span class="invoice-value" style="font-size: 7px;">${purchaseData.quantity}</span>
+                    </div>
+
+                    <div class="invoice-section" style="margin-bottom: 2px;">
+                        <span class="invoice-label" style="font-size: 7px;">Precio unitario:</span>
+                        <span class="invoice-value" style="font-size: 7px;">${formatCurrency(purchaseData.unit_price)}</span>
+                    </div>
+
+                    <div class="invoice-section" style="margin-bottom: 2px;">
+                        <span class="invoice-label" style="font-size: 7px;">Usuario:</span>
+                        <span class="invoice-value" style="font-size: 7px;">${userProfile?.full_name || currentUser?.email || 'Usuario'}</span>
+                    </div>
+
+                    <div class="invoice-section" style="margin-bottom: 2px;">
+                        <span class="invoice-label" style="font-size: 7px;">Dirección:</span>
+                        <span class="invoice-value" style="font-size: 6px;">${purchaseData.delivery_address || 'No especificado'}</span>
+                    </div>
+
+                    <div class="invoice-section" style="margin-bottom: 2px;">
+                        <span class="invoice-label" style="font-size: 7px;">Hora entrega:</span>
+                        <span class="invoice-value" style="font-size: 6px;">${purchaseData.delivery_time || 'Por definir'}</span>
+                    </div>
+
+                    <div class="invoice-section" style="margin-bottom: 2px;">
+                        <span class="invoice-label" style="font-size: 7px;">Coordenadas:</span>
+                        <div style="font-size: 6px; margin-top: 2px;">
+                            <span style="display: block; margin-bottom: 2px;">${purchaseData.coordinates || 'No disponibles'}</span>
+                            ${gmapsLinkHtml}
+                        </div>
+                    </div>
+
+                    ${purchaseData.delivery_notes ? `
+                    <div class="invoice-section" style="margin-bottom: 2px;">
+                        <span class="invoice-label" style="font-size: 7px;">Notas:</span>
+                        <span class="invoice-value" style="font-size: 6px;">${purchaseData.delivery_notes}</span>
+                    </div>
+                    ` : ''}
+
+                    <div class="invoice-amount negative-amount" style="font-size: 12px; margin: 3px 0;">
+                        -${formatCurrency(purchaseData.total_price).replace('Bs', '')}
+                    </div>
+
+                    <div class="invoice-footer" style="font-size: 6px; margin-top: 3px;">
+                        Comprobante digital - No requiere firma - TokTok Shop
+                    </div>
                 </div>
+            </div>
             `;
-            
-            openModal('confirmation-modal');
+
+            document.getElementById('invoice-content').innerHTML = invoiceHTML;
+
+            setTimeout(() => {
+                openModal('invoice-modal');
+            }, 400);
+
+            currentInvoiceData = {
+                html: invoiceHTML,
+                id: invoiceId,
+                purchase: purchaseData
+            };
         }
-        
-        // Función para procesar la compra
+
+        // ============================================
+        // FUNCIÓN PARA DESCARGAR FACTURA
+        // ============================================
+        function downloadInvoiceAsImage() {
+            if (!currentInvoiceData) {
+                showToast('No hay datos de factura para descargar', 'error');
+                return;
+            }
+
+            const downloadBtn = document.getElementById('download-invoice');
+            const originalText = downloadBtn.innerHTML;
+            downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i><span>Generando...</span>';
+            downloadBtn.disabled = true;
+
+            const invoiceElement = document.getElementById('invoice-content');
+            if (!invoiceElement) {
+                fallbackDownload();
+                return;
+            }
+
+            if (typeof html2canvas === 'undefined') {
+                const script = document.createElement('script');
+                script.src = 'https://html2canvas.hertzen.com/dist/html2canvas.min.js';
+                script.onload = () => generateInvoiceImage();
+                script.onerror = fallbackDownload;
+                document.head.appendChild(script);
+            } else {
+                generateInvoiceImage();
+            }
+
+            function generateInvoiceImage() {
+                html2canvas(invoiceElement, {
+                    scale: 2,
+                    useCORS: true,
+                    logging: false,
+                    backgroundColor: '#ffffff'
+                }).then(canvas => {
+                    const image = canvas.toDataURL('image/png');
+                    const link = document.createElement('a');
+                    link.download = `comprobante-compra-${currentInvoiceData.id}.png`;
+                    link.href = image;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+
+                    downloadBtn.innerHTML = originalText;
+                    downloadBtn.disabled = false;
+
+                    showToast('Comprobante descargado');
+                }).catch(error => {
+                    console.error('Error al generar la imagen:', error);
+                    fallbackDownload();
+                });
+            }
+
+            function fallbackDownload() {
+                showToast('Descargando comprobante en formato texto...');
+
+                const invoiceText = `
+                    COMPROBANTE TOKTOK SHOP
+                    ========================
+                    ID: ${currentInvoiceData.id}
+                    Fecha: ${new Date().toLocaleString('es-ES')}
+                    Producto: ${currentInvoiceData.purchase.product_name}
+                    Cantidad: ${currentInvoiceData.purchase.quantity}
+                    Total: ${formatCurrency(currentInvoiceData.purchase.total_price)}
+                    Dirección: ${currentInvoiceData.purchase.delivery_address || 'No especificado'}
+                    Hora entrega: ${currentInvoiceData.purchase.delivery_time || 'Por definir'}
+                    Coordenadas: ${currentInvoiceData.purchase.coordinates || 'No disponibles'}
+                    ${currentInvoiceData.purchase.coordinates ? `Google Maps: ${generateGoogleMapsLink(
+                        currentInvoiceData.purchase.coordinates.split(',')[0].trim(),
+                        currentInvoiceData.purchase.coordinates.split(',')[1].trim(),
+                        currentInvoiceData.purchase.delivery_address || 'Entrega TokTok'
+                    )}` : ''}
+                `;
+
+                const blob = new Blob([invoiceText], { type: 'text/plain' });
+                const link = document.createElement('a');
+                link.download = `comprobante-${currentInvoiceData.id}.txt`;
+                link.href = URL.createObjectURL(blob);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                downloadBtn.innerHTML = originalText;
+                downloadBtn.disabled = false;
+            }
+        }
+
+        // ============================================
+        // PROCESO DE COMPRA COMPLETO
+        // ============================================
         async function processPurchase() {
             const confirmBtn = document.getElementById('confirm-purchase');
             const confirmText = document.getElementById('confirm-purchase-text');
             const confirmSpinner = document.getElementById('confirm-purchase-spinner');
-            
+
             confirmBtn.disabled = true;
             confirmText.textContent = 'Procesando...';
             confirmSpinner.classList.remove('hidden');
-            
+
             try {
+                if (!currentProduct) {
+                    throw new Error('No hay producto seleccionado');
+                }
+
                 const totalPrice = selectedQuantity * currentProduct.price;
-                const addressName = document.getElementById('delivery-address-name').value.trim();
+                const deliveryAddress = document.getElementById('delivery-address').value.trim();
                 const notes = document.getElementById('delivery-notes').value.trim();
-                
+
+                if (!deliveryAddress) {
+                    throw new Error('Debes ingresar la dirección de entrega');
+                }
+
+                if (!selectedDeliveryTime) {
+                    throw new Error('Debes seleccionar una hora de entrega');
+                }
+
+                if (!selectedLocationCoords) {
+                    throw new Error('Debes seleccionar una ubicación en el mapa');
+                }
+
+                if (currentBalance < totalPrice) {
+                    throw new Error(`Saldo insuficiente. Necesitas ${formatCurrency(totalPrice)}`);
+                }
+
                 let deliveryTimeText = '';
                 const selectedTimeOption = document.querySelector('.time-option.selected');
                 if (selectedTimeOption) {
@@ -2132,72 +2028,31 @@
                     const timeValue = selectedTimeOption.querySelector('.time-value').textContent;
                     deliveryTimeText = `${timeLabel} (${timeValue})`;
                 }
-                
-                const coordinates = selectedLocationCoords ? 
-                    `${selectedLocationCoords[0].toFixed(6)}, ${selectedLocationCoords[1].toFixed(6)}` : 
-                    'No especificadas';
-                
-                let gmapsLink = '';
-                if (selectedLocationCoords) {
-                    gmapsLink = generateGoogleMapsLink(
-                        selectedLocationCoords[0], 
-                        selectedLocationCoords[1],
-                        addressName || 'Entrega TokTok'
-                    );
-                }
-                
-                const telegramMessage = `
-🛍️ *NUEVA COMPRA*
 
-📦 *PRODUCTO*
-${currentProduct.name}
-Cantidad: ${selectedQuantity}
-Total: ${totalPrice} Bs
+                const coordinates = `${selectedLocationCoords[0].toFixed(6)}, ${selectedLocationCoords[1].toFixed(6)}`;
 
-📍 *ENTREGA*
-Lugar: ${addressName}
-Ubicación: ${selectedLocationName || selectedLocation || 'Ubicación seleccionada'}
-Coordenadas: ${coordinates}
-${gmapsLink ? `🗺️ Google Maps: ${gmapsLink}` : ''}
-Hora: ${deliveryTimeText}
+                // 1. ACTUALIZAR STOCK
+                await updateProductStock(currentProduct.id, selectedQuantity);
 
-👤 *CLIENTE*
-${userProfile?.full_name || currentUser.email}
-Teléfono: ${userProfile?.phone || 'No especificado'}
-Email: ${currentUser.email}
-
-${notes ? `📝 *NOTAS*
-${notes}\n` : ''}
-
-⏰ ${new Date().toLocaleTimeString()}
-`;
-                
-                const telegramSent = await sendTelegramMessage(telegramMessage);
-                
-                if (!telegramSent) {
-                    showToast('Error al enviar a Telegram', 'error');
-                    confirmBtn.disabled = false;
-                    confirmText.textContent = 'Confirmar';
-                    confirmSpinner.classList.add('hidden');
-                    return false;
-                }
-                
+                // 2. CREAR TRANSACCIÓN
                 const transaction = await createTransaction(
                     currentUser.id,
                     totalPrice,
                     'withdrawal',
-                    `Compra: ${selectedQuantity} ${currentProduct.name}`,
-                    { 
+                    `Compra: ${selectedQuantity} x ${currentProduct.name}`,
+                    {
                         product_id: currentProduct.id,
                         product_name: currentProduct.name,
                         quantity: selectedQuantity
                     }
                 );
-                
+
                 if (!transaction) {
-                    throw new Error('Error al crear transacción');
+                    await updateProductStock(currentProduct.id, -selectedQuantity);
+                    throw new Error('Error al crear la transacción');
                 }
-                
+
+                // 3. CREAR REGISTRO DE COMPRA
                 const purchase = await createProductPurchase({
                     user_id: currentUser.id,
                     product_id: currentProduct.id,
@@ -2206,42 +2061,95 @@ ${notes}\n` : ''}
                     total_price: totalPrice,
                     transaction_id: transaction.id,
                     status: 'completed',
-                    delivery_address: addressName,
+                    delivery_address: deliveryAddress,
                     delivery_notes: notes
                 });
-                
+
                 if (!purchase) {
-                    throw new Error('Error al registrar compra');
+                    await window.supabase
+                        .from('transactions')
+                        .update({ status: 'failed' })
+                        .eq('id', transaction.id);
+                    await updateProductStock(currentProduct.id, -selectedQuantity);
+                    throw new Error('Error al registrar la compra');
                 }
-                
+
+                // 4. ACTUALIZAR SALDO LOCAL
                 currentBalance -= totalPrice;
                 updateBalanceDisplay();
-                
+
+                // 5. ENVIAR MENSAJE A TELEGRAM (SILENCIOSO - SIN TOAST)
+                const gmapsLink = generateGoogleMapsLink(
+                    selectedLocationCoords[0],
+                    selectedLocationCoords[1],
+                    deliveryAddress || 'Entrega TokTok'
+                );
+
+                const telegramMessage = `
+🛍️ <b>NUEVA COMPRA</b>
+
+📦 <b>PRODUCTO</b>
+${currentProduct.name}
+Cantidad: ${selectedQuantity}
+Total: ${formatCurrency(totalPrice)}
+
+📍 <b>ENTREGA</b>
+Dirección: ${deliveryAddress}
+Ubicación: ${selectedLocationName || 'Ubicación seleccionada'}
+Coordenadas: ${coordinates}
+<a href="${gmapsLink}">🗺️ Ver en Google Maps</a>
+Hora: ${deliveryTimeText}
+
+👤 <b>CLIENTE</b>
+${userProfile?.full_name || currentUser.email}
+Teléfono: ${userProfile?.phone || 'No especificado'}
+Email: ${currentUser.email}
+
+${notes ? `📝 <b>NOTAS</b>\n${notes}` : ''}
+
+⏰ ${new Date().toLocaleString('es-ES')}
+`;
+
+                // Enviar a Telegram sin mostrar notificación al usuario
+                sendTelegramMessage(telegramMessage).then(sent => {
+                    if (sent) {
+                        console.log('✅ Notificación enviada a Telegram (silencioso)');
+                    } else {
+                        console.warn('⚠️ No se pudo enviar notificación a Telegram');
+                    }
+                });
+
+                // 6. MOSTRAR ÉXITO
                 document.getElementById('result-title').textContent = '¡Compra exitosa!';
                 document.getElementById('result-message').textContent = `Se ha descontado ${formatCurrency(totalPrice)} de tu saldo.`;
-                document.getElementById('result-icon').innerHTML = '<i class="fas fa-check-circle text-green-500"></i>';
-                
+                document.getElementById('result-icon').innerHTML = '<i class="fas fa-check-circle text-green-500 text-4xl"></i>';
+
                 closeModal('confirmation-modal');
                 closeModal('product-detail-modal');
                 openModal('result-modal');
-                
+
+                // 7. MOSTRAR FACTURA
                 const purchaseData = {
                     ...purchase,
                     product_name: currentProduct.name,
                     delivery_time: deliveryTimeText,
-                    delivery_address: addressName,
+                    delivery_address: deliveryAddress,
                     coordinates: coordinates,
                     transaction: transaction
                 };
                 showPurchaseInvoice(purchaseData);
-                
+
+                // 8. RECARGAR PRODUCTOS
+                const searchTerm = document.getElementById('product-search').value;
+                await loadProducts(searchTerm, currentCategory);
+
             } catch (error) {
-                console.error('Error en la compra:', error);
-                
+                console.error('❌ Error en la compra:', error);
+
                 document.getElementById('result-title').textContent = 'Error';
-                document.getElementById('result-message').textContent = error.message || 'Error al procesar compra';
-                document.getElementById('result-icon').innerHTML = '<i class="fas fa-times-circle text-red-500"></i>';
-                
+                document.getElementById('result-message').textContent = error.message || 'Error al procesar la compra';
+                document.getElementById('result-icon').innerHTML = '<i class="fas fa-times-circle text-red-500 text-4xl"></i>';
+
                 closeModal('confirmation-modal');
                 openModal('result-modal');
             } finally {
@@ -2250,6 +2158,185 @@ ${notes}\n` : ''}
                 confirmSpinner.classList.add('hidden');
             }
         }
+
+        function initiatePurchase() {
+            const totalPrice = selectedQuantity * currentProduct.price;
+            const deliveryAddress = document.getElementById('delivery-address').value.trim();
+            const notes = document.getElementById('delivery-notes').value.trim();
+
+            let deliveryTimeText = '';
+            const selectedTimeOption = document.querySelector('.time-option.selected');
+            if (selectedTimeOption) {
+                const timeLabel = selectedTimeOption.querySelector('.time-label').textContent;
+                const timeValue = selectedTimeOption.querySelector('.time-value').textContent;
+                deliveryTimeText = `${timeLabel} (${timeValue})`;
+            }
+
+            const coordinates = selectedLocationCoords ?
+                `${selectedLocationCoords[0].toFixed(6)}, ${selectedLocationCoords[1].toFixed(6)}` :
+                'No especificadas';
+
+            let gmapsLink = '';
+            if (selectedLocationCoords) {
+                gmapsLink = generateGoogleMapsLink(
+                    selectedLocationCoords[0],
+                    selectedLocationCoords[1],
+                    deliveryAddress || 'Entrega TokTok'
+                );
+            }
+
+            document.getElementById('confirmation-text').innerHTML = `
+                <div class="bg-gray-50 p-2 rounded-lg mb-2 text-sm">
+                    <strong>${currentProduct.name}</strong><br>
+                    Cantidad: ${selectedQuantity} unidades<br>
+                    Total: <strong class="text-purple-600">${formatCurrency(totalPrice)}</strong>
+                </div>
+                <div class="text-xs">
+                    <div class="mb-1"><strong>Dirección:</strong><br>${deliveryAddress}</div>
+                    <div class="mb-1"><strong>Ubicación:</strong><br>${selectedLocationName || 'Ubicación seleccionada'}</div>
+                    <div class="mb-1"><strong>Coordenadas:</strong><br>${coordinates}</div>
+                    ${gmapsLink ? `<div class="mb-1"><a href="${gmapsLink}" target="_blank" class="text-blue-600 hover:underline text-xs">
+                        <i class="fas fa-external-link-alt mr-1"></i>Abrir en Google Maps
+                    </a></div>` : ''}
+                    <div class="mb-1"><strong>Hora de entrega:</strong><br>${deliveryTimeText}</div>
+                    ${notes ? `<div><strong>Notas:</strong><br>${notes}</div>` : ''}
+                </div>
+            `;
+
+            openModal('confirmation-modal');
+        }
+
+        // ============================================
+        // ACTUALIZAR SALDO EN PANTALLA
+        // ============================================
+        function updateBalanceDisplay() {
+            document.getElementById('current-balance').textContent = formatCurrency(currentBalance);
+        }
+
+        // ============================================
+        // INICIALIZACIÓN
+        // ============================================
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                console.log('🚀 Iniciando aplicación...');
+
+                const { data: { session } } = await window.supabase.auth.getSession();
+
+                if (!session) {
+                    window.location.href = 'index.html';
+                    return;
+                }
+
+                currentUser = session.user;
+
+                userProfile = await loadUserProfile(currentUser.id);
+
+                if (!userProfile) {
+                    window.location.href = 'index.html';
+                    return;
+                }
+
+                currentBalance = await calculateBalance(currentUser.id);
+                updateBalanceDisplay();
+
+                await loadProducts();
+
+                // ============================================
+                // EVENT LISTENERS
+                // ============================================
+
+                document.getElementById('product-search').addEventListener('input', (e) => {
+                    loadProducts(e.target.value, currentCategory);
+                });
+
+                document.querySelectorAll('.category-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        document.querySelectorAll('.category-btn').forEach(b => {
+                            b.classList.remove('active');
+                        });
+
+                        btn.classList.add('active');
+
+                        currentCategory = btn.dataset.category;
+                        const searchTerm = document.getElementById('product-search').value;
+                        loadProducts(searchTerm, currentCategory);
+                    });
+                });
+
+                document.getElementById('increase-quantity').addEventListener('click', () => {
+                    if (currentProduct && selectedQuantity < currentProduct.stock) {
+                        selectedQuantity++;
+                        updateQuantityUI();
+                        updateBuyButton();
+                    }
+                });
+
+                document.getElementById('decrease-quantity').addEventListener('click', () => {
+                    if (selectedQuantity > 1) {
+                        selectedQuantity--;
+                        updateQuantityUI();
+                        updateBuyButton();
+                    }
+                });
+
+                document.querySelectorAll('.time-option').forEach(option => {
+                    option.addEventListener('click', () => {
+                        document.querySelectorAll('.time-option').forEach(opt => {
+                            opt.classList.remove('selected');
+                        });
+                        option.classList.add('selected');
+                        selectedDeliveryTime = option.dataset.time;
+                        updateBuyButton();
+                    });
+                });
+
+                document.getElementById('open-map-btn').addEventListener('click', openMapModal);
+                document.getElementById('location-preview').addEventListener('click', openMapModal);
+                document.getElementById('close-map-modal').addEventListener('click', () => {
+                    closeModal('map-modal');
+                    if (tempMarker && fullscreenMap) {
+                        fullscreenMap.removeLayer(tempMarker);
+                        tempMarker = null;
+                    }
+                    window.tempCoords = null;
+                });
+                document.getElementById('confirm-location-btn').addEventListener('click', confirmMapLocation);
+
+                document.getElementById('delivery-address').addEventListener('input', updateBuyButton);
+
+                document.getElementById('close-product-detail').addEventListener('click', () => {
+                    closeModal('product-detail-modal');
+                });
+
+                document.getElementById('buy-product-btn').addEventListener('click', initiatePurchase);
+
+                document.getElementById('close-confirmation-modal').addEventListener('click', () => {
+                    closeModal('confirmation-modal');
+                });
+                document.getElementById('cancel-purchase').addEventListener('click', () => {
+                    closeModal('confirmation-modal');
+                });
+                document.getElementById('confirm-purchase').addEventListener('click', processPurchase);
+
+                document.getElementById('close-result-modal').addEventListener('click', () => {
+                    closeModal('result-modal');
+                });
+
+                document.getElementById('close-invoice-modal').addEventListener('click', () => {
+                    closeModal('invoice-modal');
+                });
+                document.getElementById('close-invoice').addEventListener('click', () => {
+                    closeModal('invoice-modal');
+                });
+                document.getElementById('download-invoice').addEventListener('click', downloadInvoiceAsImage);
+
+                console.log('✅ Aplicación iniciada correctamente');
+
+            } catch (error) {
+                console.error('❌ Error en la inicialización:', error);
+                showToast('Error al cargar la aplicación', 'error');
+            }
+        });
     </script>
 </body>
 </html>
