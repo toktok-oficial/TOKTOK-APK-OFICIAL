@@ -640,6 +640,7 @@
                 });
                 
                 const data = await response.json();
+                console.log('Telegram API response:', data);
                 return data.ok;
             } catch (error) {
                 console.error('Error sending Telegram message:', error);
@@ -799,7 +800,7 @@
                         <span class="invoice-label" style="font-size: 7px;">Detalles:</span>
                         <span class="invoice-value" style="font-size: 6px;">
                             ${Object.entries(transaction.metadata).map(([key, value]) => 
-                                `<div>${key}:${value}</div>`
+                                `<div>${key}: ${value}</div>`
                             ).join('')}
                         </span>
                     </div>
@@ -1140,7 +1141,7 @@
             openModal('confirmation-modal');
         }
         
-        // FUNCIÓN MODIFICADA: Procesar la recarga CON VALIDACIÓN DE TELEGRAM
+        // FUNCIÓN MODIFICADA: VALIDACIÓN ESTRICTA DE AMBAS OPERACIONES (TELEGRAM Y BD)
         async function processRecharge() {
             const confirmBtn = document.getElementById('confirm-recharge');
             const confirmText = document.getElementById('confirm-recharge-text');
@@ -1158,7 +1159,7 @@
                 playerName = document.getElementById('ml-name').value;
                 region = document.getElementById('ml-region').value;
                 
-                // PRIMERO ENVIAR A TELEGRAM - SI FALLA, NO CONTINUAR
+                // Preparar mensaje para Telegram
                 const telegramMessage = `
 <b>Nueva recarga de Mobile Legends solicitada</b>
 
@@ -1173,11 +1174,15 @@
 ⏱ <b>Fecha:</b> ${new Date().toLocaleString()}
                 `;
                 
-                // INTENTAR ENVIAR A TELEGRAM - SI FALLA, NO CREAR TRANSACCIÓN
+                // =============================================
+                // PASO 1: INTENTAR ENVIAR A TELEGRAM
+                // =============================================
+                console.log('🔵 PASO 1: Enviando mensaje a Telegram...');
                 const telegramSent = await sendTelegramMessage(telegramMessage);
                 
                 if (!telegramSent) {
-                    showToast('❌ Error de conexión. No se pudo enviar la solicitud a Telegram. Verifica tu conexión a internet o activa modo avión y desactívalo, luego intenta nuevamente.', 'error');
+                    console.error('❌ PASO 1 FALLÓ: No se pudo enviar el mensaje a Telegram');
+                    showToast('❌ Error de conexión con Telegram. La recarga NO se ha procesado. Verifica tu conexión a internet e intenta nuevamente.', 'error');
                     
                     // Restaurar estado del botón
                     confirmBtn.disabled = false;
@@ -1186,7 +1191,13 @@
                     return false;
                 }
                 
-                // SOLO SI TELEGRAM RESPONDE OK, CREAR TRANSACCIÓN
+                console.log('✅ PASO 1 EXITOSO: Mensaje enviado a Telegram correctamente');
+                
+                // =============================================
+                // PASO 2: CREAR TRANSACCIÓN EN LA BASE DE DATOS
+                // =============================================
+                console.log('🔵 PASO 2: Creando transacción en la base de datos...');
+                
                 const transaction = await createTransaction(
                     currentUser.id,
                     selectedPackage.price,
@@ -1203,24 +1214,92 @@
                 );
                 
                 if (!transaction) {
-                    throw new Error('Error al crear la transacción');
+                    console.error('❌ PASO 2 FALLÓ: No se pudo crear la transacción en la base de datos');
+                    
+                    // Intentar notificar a Telegram que la transacción falló
+                    const errorMessage = `
+<b>⚠️ ERROR EN RECARGA - Transacción no creada</b>
+
+🎮 <b>Juego:</b> Mobile Legends
+💎 <b>Diamantes:</b> ${selectedPackage.diamonds}
+💰 <b>Monto:</b> ${selectedPackage.price} Bs
+🆔 <b>ID Juego:</b> ${gameId}
+👤 <b>Jugador:</b> ${playerName}
+🌍 <b>Región:</b> ${region}
+👤 <b>Usuario:</b> ${userProfile?.full_name || currentUser.email}
+⏱ <b>Fecha:</b> ${new Date().toLocaleString()}
+
+<b>Error:</b> La transacción no pudo ser creada en la base de datos. El mensaje de Telegram fue enviado pero la BD falló. NO se descontó el saldo.
+                    `;
+                    await sendTelegramMessage(errorMessage);
+                    
+                    showToast('❌ Error al procesar la transacción en la base de datos. NO se ha descontado tu saldo. Por favor, intenta nuevamente.', 'error');
+                    
+                    // Restaurar estado del botón
+                    confirmBtn.disabled = false;
+                    confirmText.textContent = 'Confirmar';
+                    confirmSpinner.classList.add('hidden');
+                    return false;
                 }
                 
-                // Crear registro de recarga de juego
+                console.log('✅ PASO 2 EXITOSO: Transacción creada en la base de datos');
+                
+                // =============================================
+                // PASO 3: CREAR REGISTRO DE RECARGA DE JUEGO
+                // =============================================
+                console.log('🔵 PASO 3: Creando registro de recarga de juego...');
+                
                 const gameRecharge = await createGameRecharge(
                     currentUser.id,
                     currentGame,
                     gameId,
                     playerName,
                     region,
-                    parseInt(selectedPackage.diamonds) || 0,
+                    selectedPackage.diamonds,
                     selectedPackage.price,
                     transaction.id
                 );
                 
                 if (!gameRecharge) {
-                    throw new Error('Error al registrar la recarga de juego');
+                    console.error('❌ PASO 3 FALLÓ: No se pudo crear el registro de recarga de juego');
+                    
+                    // Notificar a Telegram sobre el error en el registro de recarga
+                    const errorMessage = `
+<b>⚠️ ERROR PARCIAL - Recarga no registrada completamente</b>
+
+🎮 <b>Juego:</b> Mobile Legends
+💎 <b>Diamantes:</b> ${selectedPackage.diamonds}
+💰 <b>Monto:</b> ${selectedPackage.price} Bs
+🆔 <b>ID Juego:</b> ${gameId}
+👤 <b>Jugador:</b> ${playerName}
+🌍 <b>Región:</b> ${region}
+👤 <b>Usuario:</b> ${userProfile?.full_name || currentUser.email}
+⏱ <b>Fecha:</b> ${new Date().toLocaleString()}
+
+<b>Error:</b> La transacción fue creada pero el registro de recarga de juego falló. El saldo SÍ fue descontado. Contactar a soporte.
+<b>ID Transacción:</b> ${transaction.id}
+                    `;
+                    await sendTelegramMessage(errorMessage);
+                    
+                    showToast('⚠️ La transacción se procesó pero hubo un error en el registro. Por favor, contacta a soporte.', 'error');
+                    
+                    // Restaurar estado del botón
+                    confirmBtn.disabled = false;
+                    confirmText.textContent = 'Confirmar';
+                    confirmSpinner.classList.add('hidden');
+                    return false;
                 }
+                
+                console.log('✅ PASO 3 EXITOSO: Registro de recarga de juego creado');
+                
+                // =============================================
+                // TODOS LOS PASOS COMPLETADOS EXITOSAMENTE
+                // =============================================
+                console.log('🎉 TODOS LOS PASOS COMPLETADOS EXITOSAMENTE');
+                console.log('✅ Telegram: Mensaje enviado');
+                console.log('✅ Base de datos: Transacción creada');
+                console.log('✅ Base de datos: Registro de recarga creado');
+                console.log('💰 Saldo descontado correctamente');
                 
                 // Mostrar modal de éxito
                 const resultTitle = document.getElementById('result-title');
@@ -1246,8 +1325,28 @@
                 };
                 showTransactionInvoice(invoiceTransaction, 'game_recharge');
                 
+                return true;
+                
             } catch (error) {
-                console.error('Error en el proceso de recarga:', error);
+                console.error('❌ ERROR INESPERADO en el proceso de recarga:', error);
+                console.error('Error details:', error.message);
+                
+                // Intentar notificar a Telegram sobre el error inesperado
+                try {
+                    const errorMessage = `
+<b>❌ ERROR CRÍTICO EN RECARGA</b>
+
+🎮 <b>Juego:</b> Mobile Legends
+👤 <b>Usuario:</b> ${userProfile?.full_name || currentUser.email}
+⏱ <b>Fecha:</b> ${new Date().toLocaleString()}
+
+<b>Error:</b> ${error.message}
+<b>Stack:</b> ${error.stack ? error.stack.substring(0, 200) : 'No disponible'}
+                    `;
+                    await sendTelegramMessage(errorMessage);
+                } catch (telegramError) {
+                    console.error('No se pudo notificar a Telegram sobre el error:', telegramError);
+                }
                 
                 // Mostrar modal de error
                 const resultTitle = document.getElementById('result-title');
@@ -1255,11 +1354,13 @@
                 const resultIcon = document.getElementById('result-icon');
                 
                 resultTitle.textContent = 'Error en la recarga';
-                resultMessage.textContent = 'Ha ocurrido un error al procesar tu recarga. Por favor, intenta nuevamente. Si el problema persiste, contacta con soporte.';
+                resultMessage.textContent = 'Ha ocurrido un error inesperado al procesar tu recarga. NO se ha descontado tu saldo. Por favor, intenta nuevamente.';
                 resultIcon.innerHTML = '<i class="fas fa-times-circle text-red-500"></i>';
                 
                 closeModal('confirmation-modal');
                 openModal('result-modal');
+                
+                return false;
             } finally {
                 // Restaurar estado del botón
                 confirmBtn.disabled = false;
