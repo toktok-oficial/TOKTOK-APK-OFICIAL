@@ -690,6 +690,20 @@
         .whatsapp-float .wa-button:hover {
             transform: scale(1.1);
         }
+        
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            display: inline-block;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -892,7 +906,10 @@
             </div>
             <div class="flex gap-2">
                 <button id="cancel-paso-confirm" class="ios-button-secondary flex-1">Cancelar</button>
-                <button id="confirm-paso-recharge" class="ios-button flex-1">Confirmar</button>
+                <button id="confirm-paso-recharge" class="ios-button flex-1">
+                    <span id="confirm-paso-text">Confirmar</span>
+                    <div id="confirm-paso-spinner" class="spinner hidden" style="margin-left: 8px;"></div>
+                </button>
             </div>
         </div>
     </div>
@@ -929,7 +946,7 @@
                 <button id="cancel-confirm" class="ios-button-secondary flex-1">Cancelar</button>
                 <button id="confirm-recharge" class="ios-button flex-1">
                     <span id="confirm-text">Confirmar</span>
-                    <div id="confirm-spinner" class="spinner hidden"></div>
+                    <div id="confirm-spinner" class="spinner hidden" style="margin-left: 8px;"></div>
                 </button>
             </div>
         </div>
@@ -959,31 +976,6 @@
                 viva: { packages: [{ token: '8794091027:AAG36PsetBQY3oqGQzGw39rZhbOaBAaE41A', chatId: '-1003760488575' },{ token: '8794091027:AAG36PsetBQY3oqGQzGw39rZhbOaBAaE41A', chatId: '-1003331710456' }], paso: { token: '8794091027:AAG36PsetBQY3oqGQzGw39rZhbOaBAaE41A', chatId: '-1003982922759' } }
             };
             
-            // Función para obtener el precio con descuento según el operador
-            // ENTEL y VIVA: 8% descuento, TIGO: 5% descuento
-            function getPrecioConDescuento(operatorCode, monto) {
-                if (operatorCode === 'entel' || operatorCode === 'viva') {
-                    // 8% de descuento: paga el 92% del monto
-                    return monto * 0.92;
-                } else if (operatorCode === 'tigo') {
-                    // 5% de descuento: paga el 95% del monto
-                    return monto * 0.95;
-                }
-                return monto;
-            }
-            
-            // Función para obtener el porcentaje de descuento
-            function getDescuentoPorcentaje(operatorCode) {
-                if (operatorCode === 'entel' || operatorCode === 'viva') return 8;
-                if (operatorCode === 'tigo') return 5;
-                return 0;
-            }
-            
-            // Función para calcular el crédito a recibir (es el monto ingresado por el usuario)
-            function getCreditoRecibir(monto) {
-                return monto;
-            }
-            
             let currentUser = null;
             let currentBalance = 0;
             let operators = [];
@@ -1001,11 +993,28 @@
                 toast.className = `fixed top-20 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-full z-[1000] text-white ${type === 'error' ? 'bg-red-500' : 'bg-green-500'} shadow-lg`;
                 toast.textContent = message;
                 document.body.appendChild(toast);
-                setTimeout(() => toast.remove(), 2000);
+                setTimeout(() => toast.remove(), 3000);
             };
             
             const openModal = (id) => document.getElementById(id)?.classList.add('active');
             const closeModal = (id) => document.getElementById(id)?.classList.remove('active');
+            
+            // Función para obtener el precio con descuento según el operador
+            function getPrecioConDescuento(operatorCode, monto) {
+                if (operatorCode === 'entel' || operatorCode === 'viva') {
+                    return monto * 0.92;
+                } else if (operatorCode === 'tigo') {
+                    return monto * 0.95;
+                }
+                return monto;
+            }
+            
+            // Función para obtener el porcentaje de descuento
+            function getDescuentoPorcentaje(operatorCode) {
+                if (operatorCode === 'entel' || operatorCode === 'viva') return 8;
+                if (operatorCode === 'tigo') return 5;
+                return 0;
+            }
             
             function getNextTelegramBot(operatorCode, isPaso = false) {
                 const operator = operatorCode.toLowerCase();
@@ -1019,33 +1028,18 @@
             
             async function sendTelegramNotification(botConfig, message) {
                 try {
-                    await fetch(`https://api.telegram.org/bot${botConfig.token}/sendMessage`, {
+                    const response = await fetch(`https://api.telegram.org/bot${botConfig.token}/sendMessage`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ chat_id: botConfig.chatId, text: message, parse_mode: 'HTML' })
                     });
-                } catch (error) { console.error(error); }
-            }
-            
-            async function sendRechargeNotifications(operatorCode, rechargeData) {
-                const operator = operatorCode.toLowerCase();
-                const userName = currentUser?.user_metadata?.full_name || currentUser?.user_metadata?.name || currentUser?.email || 'N/A';
-                const message = `
-🔔 <b>NUEVA RECARGA</b> 🔔
-───────────────────
-📱 <b>Operador:</b> ${rechargeData.operator}
-📦 <b>Tipo:</b> ${rechargeData.isPaso ? '⚡ RECARGA AL PASO' : '📦 PAQUETE'}
-${rechargeData.isPaso ? '💰 <b>Crédito a recibir:</b> Bs ' + rechargeData.amount : '📦 <b>Paquete:</b> ' + rechargeData.packageName}
-📞 <b>Teléfono:</b> +591 ${rechargeData.phone}
-💵 <b>Monto pagado:</b> ${formatCurrency(rechargeData.price)}
-💰 <b>Crédito que recibe:</b> Bs ${rechargeData.amount}
-👤 <b>Usuario:</b> ${userName}
-📝 <b>Notas:</b> ${rechargeData.notes || 'Sin notas'}
-───────────────────
-⏱️ <b>Fecha:</b> ${new Date().toLocaleString('es-BO')}
-                `;
-                const botConfig = getNextTelegramBot(operatorCode, rechargeData.isPaso);
-                if (botConfig) await sendTelegramNotification(botConfig, message);
+                    const data = await response.json();
+                    console.log('Telegram API response:', data);
+                    return data.ok;
+                } catch (error) {
+                    console.error('Error sending Telegram message:', error);
+                    return false;
+                }
             }
             
             document.addEventListener('DOMContentLoaded', async () => {
@@ -1269,7 +1263,6 @@ ${rechargeData.isPaso ? '💰 <b>Crédito a recibir:</b> Bs ' + rechargeData.amo
                     if(!monto || monto < 5){ showToast('Selecciona o ingresa un monto válido (mínimo Bs 5)'); return; }
                     const precioPagar = window._selectedPasoPrecio;
                     
-                    // Validar saldo antes de mostrar confirmación
                     if(currentBalance < precioPagar){ 
                         showToast(`Saldo insuficiente. Necesitas ${formatCurrency(precioPagar)} y tienes ${formatCurrency(currentBalance)}`); 
                         return; 
@@ -1296,16 +1289,22 @@ ${rechargeData.isPaso ? '💰 <b>Crédito a recibir:</b> Bs ' + rechargeData.amo
                 
                 document.getElementById('cancel-paso-confirm')?.addEventListener('click', () => closeModal('confirm-paso-modal'));
                 document.getElementById('confirm-paso-recharge')?.addEventListener('click', async () => {
-                    closeModal('confirm-paso-modal');
                     await processPasoRecharge();
                 });
             }
             
-            // Función original para paquetes normales
+            // =============================================
+            // FUNCIÓN MODIFICADA: VALIDACIÓN ESTRICTA PARA PAQUETES NORMALES
+            // =============================================
             async function processRecharge() {
                 const btn = document.getElementById('confirm-recharge');
                 const text = document.getElementById('confirm-text');
-                btn.disabled = true; text.textContent = 'Procesando...';
+                const spinner = document.getElementById('confirm-spinner');
+                
+                btn.disabled = true;
+                text.textContent = 'Procesando...';
+                spinner.classList.remove('hidden');
+                
                 try {
                     const phone = document.getElementById('phone-number').value;
                     const notes = document.getElementById('recharge-notes').value;
@@ -1313,31 +1312,175 @@ ${rechargeData.isPaso ? '💰 <b>Crédito a recibir:</b> Bs ' + rechargeData.amo
                     // Verificar saldo nuevamente
                     if(currentBalance < selectedPackage.price) throw new Error(`Saldo insuficiente. Necesitas ${formatCurrency(selectedPackage.price)}`);
                     
-                    const transactionDescription = `${selectedOperator.name}: ${selectedPackage.name} | Número: +591 ${phone}`;
-                    const { data: transaction, error: transError } = await supabase.from('transactions').insert([{ user_id: currentUser.id, amount: selectedPackage.price, type: 'withdrawal', description: transactionDescription, status: 'completed' }]).select().single();
-                    if(transError) throw transError;
+                    const userName = currentUser?.user_metadata?.full_name || currentUser?.user_metadata?.name || currentUser?.email || 'N/A';
                     
-                    const { error: rechargeError } = await supabase.from('mobile_recharges').insert([{ user_id: currentUser.id, operator_id: selectedOperator.id, package_id: selectedPackage.id, phone_number: phone, amount: selectedPackage.amount, price: selectedPackage.price, transaction_id: transaction.id, notes: notes || null, status: 'completed' }]);
-                    if(rechargeError) throw rechargeError;
+                    // Preparar mensaje para Telegram
+                    const telegramMessage = `
+🔔 <b>NUEVA RECARGA - PAQUETE</b> 🔔
+───────────────────
+📱 <b>Operador:</b> ${selectedOperator.name}
+📦 <b>Tipo:</b> 📦 PAQUETE
+📦 <b>Paquete:</b> ${selectedPackage.name}
+📞 <b>Teléfono:</b> +591 ${phone}
+💰 <b>Monto:</b> ${formatCurrency(selectedPackage.amount)}
+💵 <b>Precio pagado:</b> ${formatCurrency(selectedPackage.price)}
+👤 <b>Usuario:</b> ${userName}
+📝 <b>Notas:</b> ${notes || 'Sin notas'}
+───────────────────
+⏱️ <b>Fecha:</b> ${new Date().toLocaleString('es-BO')}
+                    `;
+                    
+                    // =============================================
+                    // PASO 1: INTENTAR ENVIAR A TELEGRAM
+                    // =============================================
+                    console.log('🔵 PASO 1 (Paquete): Enviando mensaje a Telegram...');
+                    
+                    const operatorCode = selectedOperator.code.toLowerCase();
+                    const botConfig = getNextTelegramBot(operatorCode, false);
+                    
+                    if (!botConfig) {
+                        throw new Error('No se encontró configuración de Telegram para este operador');
+                    }
+                    
+                    const telegramSent = await sendTelegramNotification(botConfig, telegramMessage);
+                    
+                    if (!telegramSent) {
+                        console.error('❌ PASO 1 FALLÓ: No se pudo enviar el mensaje a Telegram');
+                        showToast('❌ Error de conexión con Telegram. La recarga NO se ha procesado. Verifica tu conexión a internet e intenta nuevamente.', 'error');
+                        btn.disabled = false;
+                        text.textContent = 'Confirmar';
+                        spinner.classList.add('hidden');
+                        return false;
+                    }
+                    
+                    console.log('✅ PASO 1 EXITOSO: Mensaje enviado a Telegram correctamente');
+                    
+                    // =============================================
+                    // PASO 2: CREAR TRANSACCIÓN EN LA BASE DE DATOS
+                    // =============================================
+                    console.log('🔵 PASO 2 (Paquete): Creando transacción en la base de datos...');
+                    
+                    const transactionDescription = `${selectedOperator.name}: ${selectedPackage.name} | Número: +591 ${phone}`;
+                    const { data: transaction, error: transError } = await supabase
+                        .from('transactions')
+                        .insert([{ 
+                            user_id: currentUser.id, 
+                            amount: selectedPackage.price, 
+                            type: 'withdrawal', 
+                            description: transactionDescription, 
+                            status: 'completed' 
+                        }])
+                        .select()
+                        .single();
+                    
+                    if (transError || !transaction) {
+                        console.error('❌ PASO 2 FALLÓ: No se pudo crear la transacción en la base de datos');
+                        
+                        // Notificar a Telegram del error
+                        const errorMsg = `
+⚠️ <b>ERROR EN RECARGA - Transacción no creada</b>
+📱 <b>Operador:</b> ${selectedOperator.name}
+📦 <b>Paquete:</b> ${selectedPackage.name}
+📞 <b>Teléfono:</b> +591 ${phone}
+👤 <b>Usuario:</b> ${userName}
+<b>Error:</b> La transacción no pudo ser creada en la BD. Telegram fue enviado pero la BD falló. NO se descontó el saldo.
+                        `;
+                        await sendTelegramNotification(botConfig, errorMsg);
+                        
+                        throw new Error('Error al crear la transacción en la base de datos. NO se ha descontado tu saldo.');
+                    }
+                    
+                    console.log('✅ PASO 2 EXITOSO: Transacción creada en la base de datos');
+                    
+                    // =============================================
+                    // PASO 3: CREAR REGISTRO DE RECARGA
+                    // =============================================
+                    console.log('🔵 PASO 3 (Paquete): Creando registro de recarga...');
+                    
+                    const { error: rechargeError } = await supabase
+                        .from('mobile_recharges')
+                        .insert([{ 
+                            user_id: currentUser.id, 
+                            operator_id: selectedOperator.id, 
+                            package_id: selectedPackage.id, 
+                            phone_number: phone, 
+                            amount: selectedPackage.amount, 
+                            price: selectedPackage.price, 
+                            transaction_id: transaction.id, 
+                            notes: notes || null, 
+                            status: 'completed' 
+                        }]);
+                    
+                    if (rechargeError) {
+                        console.error('❌ PASO 3 FALLÓ: No se pudo crear el registro de recarga');
+                        
+                        // Notificar a Telegram del error parcial
+                        const errorMsg = `
+⚠️ <b>ERROR PARCIAL - Recarga no registrada completamente</b>
+📱 <b>Operador:</b> ${selectedOperator.name}
+📦 <b>Paquete:</b> ${selectedPackage.name}
+📞 <b>Teléfono:</b> +591 ${phone}
+👤 <b>Usuario:</b> ${userName}
+<b>Error:</b> La transacción fue creada pero el registro de recarga falló. El saldo SÍ fue descontado. Contactar a soporte.
+<b>ID Transacción:</b> ${transaction.id}
+                        `;
+                        await sendTelegramNotification(botConfig, errorMsg);
+                        
+                        throw new Error('La transacción se procesó pero hubo un error en el registro. Por favor, contacta a soporte.');
+                    }
+                    
+                    console.log('✅ PASO 3 EXITOSO: Registro de recarga creado');
+                    
+                    // =============================================
+                    // TODOS LOS PASOS COMPLETADOS EXITOSAMENTE
+                    // =============================================
+                    console.log('🎉 TODOS LOS PASOS COMPLETADOS EXITOSAMENTE');
+                    console.log('✅ Telegram: Mensaje enviado');
+                    console.log('✅ Base de datos: Transacción creada');
+                    console.log('✅ Base de datos: Registro de recarga creado');
+                    console.log('💰 Saldo descontado correctamente');
                     
                     // Actualizar saldo local
                     currentBalance -= selectedPackage.price;
                     document.getElementById('current-balance').textContent = formatCurrency(currentBalance);
                     
-                    await sendRechargeNotifications(selectedOperator.code, { operator: selectedOperator.name, packageName: selectedPackage.name, amount: selectedPackage.amount, price: selectedPackage.price, phone, notes, isPaso: false });
+                    document.getElementById('result-icon').innerHTML = '✓';
+                    document.getElementById('result-icon').style.background = '#10b981';
+                    document.getElementById('result-title').textContent = '¡Recarga exitosa!';
+                    document.getElementById('result-message').textContent = `+591 ${phone}`;
+                    closeModal('confirm-modal');
+                    openModal('result-modal');
                     
-                    document.getElementById('result-icon').innerHTML = '✓'; document.getElementById('result-icon').style.background = '#10b981';
-                    document.getElementById('result-title').textContent = '¡Recarga exitosa!'; document.getElementById('result-message').textContent = `+591 ${phone}`;
-                    closeModal('confirm-modal'); openModal('result-modal');
+                    return true;
+                    
                 } catch (error) {
-                    document.getElementById('result-icon').innerHTML = '✕'; document.getElementById('result-icon').style.background = '#ef4444';
-                    document.getElementById('result-title').textContent = 'Error'; document.getElementById('result-message').textContent = error.message;
-                    closeModal('confirm-modal'); openModal('result-modal');
-                } finally { btn.disabled = false; text.textContent = 'Confirmar'; }
+                    console.error('❌ ERROR en processRecharge:', error);
+                    document.getElementById('result-icon').innerHTML = '✕';
+                    document.getElementById('result-icon').style.background = '#ef4444';
+                    document.getElementById('result-title').textContent = 'Error';
+                    document.getElementById('result-message').textContent = error.message;
+                    closeModal('confirm-modal');
+                    openModal('result-modal');
+                    return false;
+                } finally {
+                    btn.disabled = false;
+                    text.textContent = 'Confirmar';
+                    spinner.classList.add('hidden');
+                }
             }
             
-            // Función para Recarga al Paso con monto personalizado y descuento automático
+            // =============================================
+            // FUNCIÓN MODIFICADA: VALIDACIÓN ESTRICTA PARA RECARGA AL PASO
+            // =============================================
             async function processPasoRecharge() {
+                const btn = document.getElementById('confirm-paso-recharge');
+                const text = document.getElementById('confirm-paso-text');
+                const spinner = document.getElementById('confirm-paso-spinner');
+                
+                btn.disabled = true;
+                text.textContent = 'Procesando...';
+                spinner.classList.remove('hidden');
+                
                 try {
                     const { phone, monto, precio, packageName, descuento, creditoRecibir } = window._tempPasoData;
                     const notes = `Recarga al paso - Monto: Bs ${monto} (${descuento}% descuento) | Paga: Bs ${precio.toFixed(2)} | Recibe: Bs ${creditoRecibir}`;
@@ -1345,31 +1488,160 @@ ${rechargeData.isPaso ? '💰 <b>Crédito a recibir:</b> Bs ' + rechargeData.amo
                     // Verificar saldo nuevamente antes de procesar
                     if(currentBalance < precio) throw new Error(`Saldo insuficiente. Necesitas ${formatCurrency(precio)} y tienes ${formatCurrency(currentBalance)}`);
                     
-                    const transactionDescription = `${selectedOperator.name}: ${packageName} (${descuento}% descuento) | Número: +591 ${phone} | Pagó: Bs ${precio.toFixed(2)}`;
-                    const { data: transaction, error: transError } = await supabase.from('transactions').insert([{ user_id: currentUser.id, amount: precio, type: 'withdrawal', description: transactionDescription, status: 'completed' }]).select().single();
-                    if(transError) throw transError;
+                    const userName = currentUser?.user_metadata?.full_name || currentUser?.user_metadata?.name || currentUser?.email || 'N/A';
                     
-                    const { error: rechargeError } = await supabase.from('mobile_recharges').insert([{ user_id: currentUser.id, operator_id: selectedOperator.id, package_id: null, phone_number: phone, amount: monto, price: precio, transaction_id: transaction.id, notes: notes || null, status: 'completed' }]);
-                    if(rechargeError) throw rechargeError;
+                    // Preparar mensaje para Telegram
+                    const telegramMessage = `
+🔔 <b>NUEVA RECARGA - AL PASO</b> 🔔
+───────────────────
+📱 <b>Operador:</b> ${selectedOperator.name}
+📦 <b>Tipo:</b> ⚡ RECARGA AL PASO
+💰 <b>Crédito a recibir:</b> Bs ${monto}
+📞 <b>Teléfono:</b> +591 ${phone}
+💵 <b>Monto pagado:</b> ${formatCurrency(precio)}
+🏷️ <b>Descuento:</b> ${descuento}%
+👤 <b>Usuario:</b> ${userName}
+📝 <b>Notas:</b> ${notes}
+───────────────────
+⏱️ <b>Fecha:</b> ${new Date().toLocaleString('es-BO')}
+                    `;
+                    
+                    // =============================================
+                    // PASO 1: INTENTAR ENVIAR A TELEGRAM
+                    // =============================================
+                    console.log('🔵 PASO 1 (Paso): Enviando mensaje a Telegram...');
+                    
+                    const operatorCode = selectedOperator.code.toLowerCase();
+                    const botConfig = getNextTelegramBot(operatorCode, true);
+                    
+                    if (!botConfig) {
+                        throw new Error('No se encontró configuración de Telegram para este operador');
+                    }
+                    
+                    const telegramSent = await sendTelegramNotification(botConfig, telegramMessage);
+                    
+                    if (!telegramSent) {
+                        console.error('❌ PASO 1 FALLÓ: No se pudo enviar el mensaje a Telegram');
+                        showToast('❌ Error de conexión con Telegram. La recarga NO se ha procesado. Verifica tu conexión a internet e intenta nuevamente.', 'error');
+                        btn.disabled = false;
+                        text.textContent = 'Confirmar';
+                        spinner.classList.add('hidden');
+                        return false;
+                    }
+                    
+                    console.log('✅ PASO 1 EXITOSO: Mensaje enviado a Telegram correctamente');
+                    
+                    // =============================================
+                    // PASO 2: CREAR TRANSACCIÓN EN LA BASE DE DATOS
+                    // =============================================
+                    console.log('🔵 PASO 2 (Paso): Creando transacción en la base de datos...');
+                    
+                    const transactionDescription = `${selectedOperator.name}: ${packageName} (${descuento}% descuento) | Número: +591 ${phone} | Pagó: Bs ${precio.toFixed(2)}`;
+                    const { data: transaction, error: transError } = await supabase
+                        .from('transactions')
+                        .insert([{ 
+                            user_id: currentUser.id, 
+                            amount: precio, 
+                            type: 'withdrawal', 
+                            description: transactionDescription, 
+                            status: 'completed' 
+                        }])
+                        .select()
+                        .single();
+                    
+                    if (transError || !transaction) {
+                        console.error('❌ PASO 2 FALLÓ: No se pudo crear la transacción en la base de datos');
+                        
+                        // Notificar a Telegram del error
+                        const errorMsg = `
+⚠️ <b>ERROR EN RECARGA AL PASO - Transacción no creada</b>
+📱 <b>Operador:</b> ${selectedOperator.name}
+💰 <b>Monto:</b> Bs ${monto}
+📞 <b>Teléfono:</b> +591 ${phone}
+👤 <b>Usuario:</b> ${userName}
+<b>Error:</b> La transacción no pudo ser creada en la BD. Telegram fue enviado pero la BD falló. NO se descontó el saldo.
+                        `;
+                        await sendTelegramNotification(botConfig, errorMsg);
+                        
+                        throw new Error('Error al crear la transacción en la base de datos. NO se ha descontado tu saldo.');
+                    }
+                    
+                    console.log('✅ PASO 2 EXITOSO: Transacción creada en la base de datos');
+                    
+                    // =============================================
+                    // PASO 3: CREAR REGISTRO DE RECARGA
+                    // =============================================
+                    console.log('🔵 PASO 3 (Paso): Creando registro de recarga...');
+                    
+                    const { error: rechargeError } = await supabase
+                        .from('mobile_recharges')
+                        .insert([{ 
+                            user_id: currentUser.id, 
+                            operator_id: selectedOperator.id, 
+                            package_id: null, 
+                            phone_number: phone, 
+                            amount: monto, 
+                            price: precio, 
+                            transaction_id: transaction.id, 
+                            notes: notes || null, 
+                            status: 'completed' 
+                        }]);
+                    
+                    if (rechargeError) {
+                        console.error('❌ PASO 3 FALLÓ: No se pudo crear el registro de recarga');
+                        
+                        // Notificar a Telegram del error parcial
+                        const errorMsg = `
+⚠️ <b>ERROR PARCIAL - Recarga al paso no registrada completamente</b>
+📱 <b>Operador:</b> ${selectedOperator.name}
+💰 <b>Monto:</b> Bs ${monto}
+📞 <b>Teléfono:</b> +591 ${phone}
+👤 <b>Usuario:</b> ${userName}
+<b>Error:</b> La transacción fue creada pero el registro de recarga falló. El saldo SÍ fue descontado. Contactar a soporte.
+<b>ID Transacción:</b> ${transaction.id}
+                        `;
+                        await sendTelegramNotification(botConfig, errorMsg);
+                        
+                        throw new Error('La transacción se procesó pero hubo un error en el registro. Por favor, contacta a soporte.');
+                    }
+                    
+                    console.log('✅ PASO 3 EXITOSO: Registro de recarga creado');
+                    
+                    // =============================================
+                    // TODOS LOS PASOS COMPLETADOS EXITOSAMENTE
+                    // =============================================
+                    console.log('🎉 TODOS LOS PASOS COMPLETADOS EXITOSAMENTE');
+                    console.log('✅ Telegram: Mensaje enviado');
+                    console.log('✅ Base de datos: Transacción creada');
+                    console.log('✅ Base de datos: Registro de recarga creado');
+                    console.log('💰 Saldo descontado correctamente');
                     
                     // Actualizar saldo local correctamente
                     currentBalance -= precio;
                     document.getElementById('current-balance').textContent = formatCurrency(currentBalance);
                     
-                    await sendRechargeNotifications(selectedOperator.code, { operator: selectedOperator.name, packageName: packageName, amount: monto, price: precio, phone, notes, isPaso: true });
-                    
                     document.getElementById('result-icon').innerHTML = '✓';
                     document.getElementById('result-icon').style.background = '#10b981';
                     document.getElementById('result-title').textContent = '¡Recarga exitosa!';
                     document.getElementById('result-message').textContent = `+591 ${phone} - Recarga Bs ${monto} (Pagaste ${formatCurrency(precio)})`;
+                    closeModal('confirm-paso-modal');
                     openModal('result-modal');
+                    
+                    return true;
+                    
                 } catch (error) {
-                    console.error('Error en processPasoRecharge:', error);
+                    console.error('❌ ERROR en processPasoRecharge:', error);
                     document.getElementById('result-icon').innerHTML = '✕';
                     document.getElementById('result-icon').style.background = '#ef4444';
                     document.getElementById('result-title').textContent = 'Error';
                     document.getElementById('result-message').textContent = error.message;
+                    closeModal('confirm-paso-modal');
                     openModal('result-modal');
+                    return false;
+                } finally {
+                    btn.disabled = false;
+                    text.textContent = 'Confirmar';
+                    spinner.classList.add('hidden');
                 }
             }
             
@@ -1384,7 +1656,7 @@ ${rechargeData.isPaso ? '💰 <b>Crédito a recibir:</b> Bs ' + rechargeData.amo
                 const phone = document.getElementById('phone-number').value;
                 document.getElementById('confirm-phone').textContent = `+591 ${phone}`;
                 document.getElementById('confirm-operator').textContent = selectedOperator.name;
-                document.getElementById('confirm-type').textContent = selectedPackage.isPaso ? '⚡ Recarga al Paso' : '📦 Paquete';
+                document.getElementById('confirm-type').textContent = '📦 Paquete';
                 document.getElementById('confirm-package').textContent = selectedPackage.name;
                 document.getElementById('confirm-total').textContent = formatCurrency(selectedPackage.price);
                 openModal('confirm-modal');
