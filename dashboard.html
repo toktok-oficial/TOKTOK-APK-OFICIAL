@@ -1504,7 +1504,10 @@
                     <label for="mobile-send-description" class="block text-sm font-medium text-gray-700 mb-1">Descripción (opcional)</label>
                     <textarea id="mobile-send-description" rows="2" class="mobile-input"></textarea>
                 </div>
-                <button id="mobile-confirm-send" class="mobile-btn mobile-btn-primary">Enviar dinero</button>
+                <button id="mobile-confirm-send" class="mobile-btn mobile-btn-primary flex items-center justify-center disabled:opacity-70 disabled:cursor-not-allowed">
+                    <span id="mobile-confirm-send-text">Enviar dinero</span>
+                    <div id="mobile-confirm-send-spinner" class="loading-spinner ml-2 hidden"></div>
+                </button>
                 <button id="mobile-cancel-send" class="mobile-btn mobile-btn-secondary">Cancelar</button>
             </div>
         </div>
@@ -1809,7 +1812,10 @@
                     <div><label for="send-description" class="block text-sm font-medium text-gray-700 mb-1">Descripción (opcional)</label><textarea id="send-description" rows="2" class="input-field w-full"></textarea></div>
                     <div class="pt-4 flex justify-end space-x-3">
                         <button id="cancel-send" class="px-4 py-2.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-800 transition-colors font-medium">Cancelar</button>
-                        <button id="confirm-send" class="px-4 py-2.5 rounded-lg bg-purple-600 hover:bg-purple-700 text-white transition-colors font-medium">Enviar dinero</button>
+                        <button id="confirm-send" class="px-4 py-2.5 rounded-lg bg-purple-600 hover:bg-purple-700 text-white transition-colors font-medium flex items-center justify-center min-w-32 disabled:opacity-70 disabled:cursor-not-allowed">
+                            <span id="confirm-send-text">Enviar dinero</span>
+                            <div id="confirm-send-spinner" class="loading-spinner ml-2 hidden"></div>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -2662,28 +2668,40 @@
             if (!amount || amount <= 0) { showToast('Ingresa un monto válido', 'error'); return false; }
             if (amount > currentBalance) { showToast('Saldo insuficiente', 'error'); return false; }
 
-            const { data: recipientUser, error: recipientError } = await supabase.from('user_profiles').select('id').eq(
-                'phone', recipientPhone).single();
-            if (recipientError || !recipientUser) { showToast('El destinatario no está registrado', 'error'); return false; }
+            const confirmText = document.getElementById(isMobile ? 'mobile-confirm-send-text' : 'confirm-send-text');
+            const confirmSpinner = document.getElementById(isMobile ? 'mobile-confirm-send-spinner' : 'confirm-send-spinner');
+            btn.disabled = true;
+            if (confirmText) confirmText.textContent = 'Enviando...';
+            if (confirmSpinner) confirmSpinner.classList.remove('hidden');
 
-            const sendTransaction = await createTransaction(currentUser.id, amount, 'transfer', description ||
-                `Transferencia a ${recipientPhone}`, { recipient: recipientPhone, type: 'send' });
-            if (!sendTransaction) { showToast('Error al procesar la transferencia', 'error'); return false; }
+            try {
+                const { data: recipientUser, error: recipientError } = await supabase.from('user_profiles').select('id').eq(
+                    'phone', recipientPhone).single();
+                if (recipientError || !recipientUser) { showToast('El destinatario no está registrado', 'error'); return false; }
 
-            const receiveTransaction = await createTransaction(recipientUser.id, amount, 'deposit', description ||
-                `Transferencia de ${currentUser.email}`, { sender: currentUser.email, type: 'receive' });
+                const sendTransaction = await createTransaction(currentUser.id, amount, 'transfer', description ||
+                    `Transferencia a ${recipientPhone}`, { recipient: recipientPhone, type: 'send' });
+                if (!sendTransaction) { showToast('Error al procesar la transferencia', 'error'); return false; }
 
-            if (receiveTransaction) {
-                showToast(`Transferencia de ${amount} Bs enviada`);
-                const invoiceTransaction = { ...sendTransaction, recipient_phone: recipientPhone, description: description ||
-                        `Transferencia a ${recipientPhone}` };
-                showTransactionInvoice(invoiceTransaction, 'transfer');
-                if (isMobile) { closeMobileModal('mobile-send-money-modal'); } else { closeModal('send-money-modal'); }
-                updateUI();
-                return true;
-            } else {
-                showToast('Error al completar la transferencia', 'error');
-                return false;
+                const receiveTransaction = await createTransaction(recipientUser.id, amount, 'deposit', description ||
+                    `Transferencia de ${currentUser.email}`, { sender: currentUser.email, type: 'receive' });
+
+                if (receiveTransaction) {
+                    showToast(`Transferencia de ${amount} Bs enviada`);
+                    const invoiceTransaction = { ...sendTransaction, recipient_phone: recipientPhone, description: description ||
+                            `Transferencia a ${recipientPhone}` };
+                    showTransactionInvoice(invoiceTransaction, 'transfer');
+                    if (isMobile) { closeMobileModal('mobile-send-money-modal'); } else { closeModal('send-money-modal'); }
+                    updateUI();
+                    return true;
+                } else {
+                    showToast('Error al completar la transferencia', 'error');
+                    return false;
+                }
+            } finally {
+                btn.disabled = false;
+                if (confirmText) confirmText.textContent = 'Enviar dinero';
+                if (confirmSpinner) confirmSpinner.classList.add('hidden');
             }
         };
 
