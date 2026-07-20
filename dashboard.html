@@ -402,6 +402,244 @@
                 font-size: 14px;
             }
 
+            .mobile-security-card {
+                background: linear-gradient(135deg, #eef2ff 0%, #f5f3ff 100%);
+                border-radius: 24px;
+                margin: 16px;
+                padding: 18px;
+                box-shadow: 0 18px 40px rgba(99, 102, 241, 0.08);
+            }
+
+            .mobile-security-title {
+                display: flex;
+                align-items: flex-start;
+                gap: 12px;
+                margin-bottom: 14px;
+            }
+
+            .mobile-security-title h3 {
+                font-size: 16px;
+                font-weight: 700;
+                color: #312e81;
+            }
+
+            .mobile-security-desc {
+                font-size: 13px;
+                color: #4b5563;
+                line-height: 1.5;
+                margin-bottom: 14px;
+            }
+
+            .security-setting-row {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 14px 0;
+                border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+            }
+
+            .security-setting-row:last-child {
+                border-bottom: none;
+            }
+
+            .security-toggle {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 10px;
+                padding: 14px 16px;
+                background: white;
+                border: 1px solid #e5e7eb;
+                border-radius: 16px;
+                color: #1e293b;
+                font-weight: 600;
+            }
+
+            .security-toggle input {
+                width: 20px;
+                height: 20px;
+                accent-color: #6366f1;
+            }
+
+            .mobile-security-input {
+                width: 100%;
+                padding: 14px 16px;
+                border-radius: 16px;
+                border: 1px solid #dbeafe;
+                font-size: 15px;
+                background: #f8fafc;
+                color: #0f172a;
+                margin-bottom: 12px;
+            }
+
+            .mobile-security-input:focus {
+                outline: none;
+                border-color: #6366f1;
+                background: white;
+                box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+            }
+
+            .mobile-security-btn {
+                width: 100%;
+                padding: 14px 16px;
+                border-radius: 16px;
+                font-size: 15px;
+                font-weight: 700;
+                border: none;
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+            }
+
+            .mobile-security-btn.primary {
+                background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+                color: white;
+            }
+
+            .mobile-security-btn.secondary {
+                background: white;
+                color: #4338ca;
+                border: 1px solid #c7d2fe;
+            }
+
+            .mobile-security-btn:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 14px 24px rgba(99, 102, 241, 0.18);
+            }
+
+            .mobile-security-note {
+                font-size: 13px;
+                color: #475569;
+                line-height: 1.6;
+                margin-top: 10px;
+            }
+
+            .lock-screen-overlay {
+                position: fixed;
+                inset: 0;
+                background: rgba(15, 23, 42, 0.76);
+                backdrop-filter: blur(16px);
+                z-index: 200;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 24px;
+            }
+
+            .lock-screen-panel {
+                background: rgba(255, 255, 255, 0.98);
+                border-radius: 32px;
+                width: min(520px, 100%);
+                max-width: 420px;
+                padding: 28px;
+                box-shadow: 0 32px 80px rgba(15, 23, 42, 0.24);
+                border: 1px solid rgba(226, 232, 240, 0.7);
+            }
+
+            .lock-screen-panel h2 {
+                font-size: 24px;
+                font-weight: 800;
+                color: #312e81;
+                margin-bottom: 6px;
+            }
+
+            .lock-screen-panel p {
+                color: #475569;
+                margin-bottom: 18px;
+                line-height: 1.6;
+            }
+
+            .lock-screen-input {
+                width: 100%;
+                padding: 14px 16px;
+                border-radius: 16px;
+                border: 1px solid #e5e7eb;
+                font-size: 16px;
+                background: #f8fafc;
+                margin-bottom: 16px;
+            }
+
+            .lock-screen-input:focus {
+                outline: none;
+                border-color: #6366f1;
+                background: white;
+                box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+            }
+
+            .lock-screen-actions {
+                display: grid;
+                gap: 12px;
+            }
+
+            .lock-screen-btn {
+                width: 100%;
+                padding: 14px 16px;
+                border-radius: 16px;
+                font-size: 15px;
+                font-weight: 700;
+            }
+
+            .lock-screen-btn.primary {
+                background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+                color: white;
+                border: none;
+            }
+
+            .lock-screen-btn.secondary {
+                background: white;
+                color: #4338ca;
+                border: 1px solid #c7d2fe;
+            }
+
+            .lock-screen-error {
+                color: #dc2626;
+                font-size: 13px;
+                text-align: center;
+                margin-top: 4px;
+            }
+
+            .desktop-security-card {
+                background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
+                border-radius: 24px;
+                padding: 18px;
+                border: 1px solid rgba(99, 102, 241, 0.14);
+                margin-top: 20px;
+            }
+
+            .desktop-security-card h3 {
+                font-size: 15px;
+                font-weight: 700;
+                color: #1f2937;
+                margin-bottom: 8px;
+            }
+
+            .desktop-security-card p {
+                color: #475569;
+                font-size: 13px;
+                line-height: 1.6;
+            }
+
+            .desktop-security-summary {
+                display: grid;
+                gap: 10px;
+                margin-top: 12px;
+            }
+
+            .desktop-security-summary div {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                background: white;
+                padding: 12px 14px;
+                border-radius: 16px;
+                border: 1px solid #e5e7eb;
+                font-size: 14px;
+                color: #334155;
+            }
+
+            .desktop-security-summary span {
+                font-weight: 700;
+            }
+        
             .mobile-balance-card {
                 background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
                 color: white;
@@ -1423,6 +1661,29 @@
                     </div>
                 </div>
 
+                <div class="mobile-security-card">
+                    <div class="mobile-security-title">
+                        <div>
+                            <p class="text-sm font-semibold text-purple-700">Seguridad de acceso</p>
+                            <p class="text-xs text-gray-500 mt-1">Protege tu dashboard con PIN y biometría.</p>
+                        </div>
+                        <i class="fas fa-shield-alt text-purple-600 text-xl"></i>
+                    </div>
+                    <p class="mobile-security-desc">Configura un PIN para bloquear el dashboard cuando cierres la app o regreses al mismo.</p>
+                    <input id="mobile-pin-input" type="password" maxlength="6" placeholder="Crear PIN de 4-6 dígitos" class="mobile-security-input">
+                    <button id="mobile-save-pin" class="mobile-security-btn primary">Guardar PIN</button>
+                    <div class="security-setting-row">
+                        <div>
+                            <div class="text-sm font-medium">Huella/reconocimiento facial</div>
+                            <div class="text-xs text-gray-500">Activa el acceso biométrico en dispositivos compatibles.</div>
+                        </div>
+                        <label class="security-toggle">
+                            <span>Activar</span>
+                            <input id="mobile-biometric-toggle" type="checkbox">
+                        </label>
+                    </div>
+                    <p class="mobile-security-note">Si activas biometría, la app solicitará huella o cara al volver a entrar o al reanudar la app.</p>
+                </div>
                 <div class="mobile-card mt-4 p-4">
                     <a href="seguridad.html" class="w-full py-3 text-left flex items-center justify-between block">
                         <span class="font-medium">Seguridad</span>
@@ -1558,6 +1819,21 @@
         </div>
     </div>
 
+    <div id="lock-screen" class="lock-screen-overlay hidden" style="display:none;">
+        <div class="lock-screen-panel">
+            <div class="text-center mb-4">
+                <h2>Acceso seguro</h2>
+                <p id="lock-screen-message">Ingresa tu PIN para continuar.</p>
+            </div>
+            <input id="lock-screen-pin" type="password" maxlength="6" placeholder="Ingresa el PIN" class="lock-screen-input">
+            <div id="lock-screen-error" class="lock-screen-error"></div>
+            <div class="lock-screen-actions">
+                <button id="lock-screen-unlock" class="lock-screen-btn primary">Desbloquear</button>
+                <button id="lock-screen-cancel" class="lock-screen-btn secondary">Cerrar app</button>
+                <button id="lock-screen-biometric" class="lock-screen-btn secondary" style="display:none;">Usar huella / rostro</button>
+            </div>
+        </div>
+    </div>
     <!-- Factura flotante para transacciones -->
     <div id="invoice-modal" class="modal fixed inset-0 z-50 flex items-center justify-center opacity-0 invisible transition-all duration-300">
         <div class="modal-overlay absolute inset-0"></div>
@@ -1654,6 +1930,15 @@
                                 <i class="fas fa-plus-circle mr-2"></i>
                                 Recargar saldo
                             </button>
+                        </div>
+                    </div>
+
+                    <div class="desktop-security-card">
+                        <h3>Seguridad del dashboard</h3>
+                        <p>Activate un PIN de acceso para bloquear la app cuando vuelvas a la pantalla o cierres la aplicación. Si tu dispositivo lo permite, también puedes usar huella o reconocimiento facial.</p>
+                        <div class="desktop-security-summary">
+                            <div><span>PIN activo</span><span id="desktop-pin-status">No configurado</span></div>
+                            <div><span>Biometría</span><span id="desktop-biometric-status">Desactivado</span></div>
                         </div>
                     </div>
 
@@ -1968,6 +2253,184 @@
         };
 
         const isMobileDevice = () => window.innerWidth <= 768;
+
+        const bufferToBase64 = (buffer) => {
+            return btoa(String.fromCharCode(...new Uint8Array(buffer)));
+        };
+
+        const base64ToBuffer = (base64) => {
+            const binary = atob(base64);
+            const bytes = new Uint8Array(binary.length);
+            for (let i = 0; i < binary.length; i++) {
+                bytes[i] = binary.charCodeAt(i);
+            }
+            return bytes.buffer;
+        };
+
+        const getSecuritySettings = () => {
+            return {
+                pin: localStorage.getItem('toktok_dashboard_pin') || null,
+                biometric: localStorage.getItem('toktok_biometric_enabled') === 'true',
+                credentialId: localStorage.getItem('toktok_biometric_cred_id') || null,
+            };
+        };
+
+        const savePin = (pin) => {
+            localStorage.setItem('toktok_dashboard_pin', pin);
+            localStorage.setItem('toktok_dashboard_locked', 'true');
+        };
+
+        const setBiometricEnabled = (enabled) => {
+            localStorage.setItem('toktok_biometric_enabled', enabled ? 'true' : 'false');
+        };
+
+        const setBiometricCredential = (credentialId) => {
+            localStorage.setItem('toktok_biometric_cred_id', credentialId);
+        };
+
+        const isBiometricAvailable = async () => {
+            if (!window.PublicKeyCredential || !PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable) {
+                return false;
+            }
+            try {
+                return await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
+            } catch (error) {
+                return false;
+            }
+        };
+
+        const updateSecurityUI = async () => {
+            const security = getSecuritySettings();
+            const pinStatus = document.getElementById('desktop-pin-status');
+            const biometricStatus = document.getElementById('desktop-biometric-status');
+            const biometricToggle = document.getElementById('mobile-biometric-toggle');
+            const lockScreenBiometric = document.getElementById('lock-screen-biometric');
+            const biometricAvailable = await isBiometricAvailable();
+
+            if (pinStatus) pinStatus.textContent = security.pin ? 'Configurado' : 'No configurado';
+            if (biometricStatus) biometricStatus.textContent = security.biometric ? 'Activado' : 'Desactivado';
+            if (biometricToggle) {
+                biometricToggle.checked = security.biometric;
+                biometricToggle.disabled = !biometricAvailable;
+            }
+            if (lockScreenBiometric) {
+                lockScreenBiometric.style.display = security.biometric && biometricAvailable ? 'block' : 'none';
+            }
+        };
+
+        const openLockScreen = async (message = 'Ingresa tu PIN para continuar.') => {
+            const lockScreen = document.getElementById('lock-screen');
+            const lockMessage = document.getElementById('lock-screen-message');
+            const biometricButton = document.getElementById('lock-screen-biometric');
+            const security = getSecuritySettings();
+            const biometricAvailable = await isBiometricAvailable();
+
+            if (lockMessage) lockMessage.textContent = message;
+            if (lockScreen) {
+                lockScreen.classList.remove('hidden');
+                lockScreen.style.display = 'flex';
+            }
+            if (biometricButton) {
+                biometricButton.style.display = security.biometric && biometricAvailable ? 'block' : 'none';
+            }
+            document.body.style.overflow = 'hidden';
+            document.getElementById('lock-screen-pin')?.focus();
+        };
+
+        const closeLockScreen = () => {
+            const lockScreen = document.getElementById('lock-screen');
+            if (lockScreen) {
+                lockScreen.classList.add('hidden');
+                lockScreen.style.display = 'none';
+            }
+            document.body.style.overflow = '';
+            const errorEl = document.getElementById('lock-screen-error');
+            const pinInput = document.getElementById('lock-screen-pin');
+            if (errorEl) errorEl.textContent = '';
+            if (pinInput) pinInput.value = '';
+        };
+
+        const createBiometricCredential = async () => {
+            if (!await isBiometricAvailable()) {
+                throw new Error('Biometría no disponible en este dispositivo');
+            }
+            const userId = currentUser?.id || 'user';
+            const challenge = window.crypto.getRandomValues(new Uint8Array(32));
+            const publicKey = {
+                challenge,
+                rp: { name: 'TokTok' },
+                user: {
+                    id: new TextEncoder().encode(userId),
+                    name: currentUser?.email || 'usuario@toktok.com',
+                    displayName: userProfile?.full_name || currentUser?.email || 'Usuario TokTok',
+                },
+                pubKeyCredParams: [{ type: 'public-key', alg: -7 }],
+                timeout: 60000,
+                authenticatorSelection: {
+                    authenticatorAttachment: 'platform',
+                    userVerification: 'required',
+                },
+                attestation: 'direct',
+            };
+            const credential = await navigator.credentials.create({ publicKey });
+            if (!credential || !credential.rawId) {
+                throw new Error('No se pudo crear la credencial biométrica');
+            }
+            setBiometricCredential(bufferToBase64(credential.rawId));
+            setBiometricEnabled(true);
+        };
+
+        const tryBiometricUnlock = async () => {
+            const security = getSecuritySettings();
+            if (!security.biometric || !security.credentialId) {
+                throw new Error('Biometría no configurada');
+            }
+            if (!await isBiometricAvailable()) {
+                throw new Error('Biometría no está disponible');
+            }
+            const credentialId = base64ToBuffer(security.credentialId);
+            const challenge = window.crypto.getRandomValues(new Uint8Array(32));
+            const publicKey = {
+                challenge,
+                allowCredentials: [{ id: credentialId, type: 'public-key', transports: ['internal'] }],
+                timeout: 60000,
+                userVerification: 'required',
+            };
+            const assertion = await navigator.credentials.get({ publicKey });
+            return Boolean(assertion);
+        };
+
+        const lockApp = () => {
+            if (getSecuritySettings().pin) {
+                localStorage.setItem('toktok_dashboard_locked', 'true');
+            }
+        };
+
+        const unlockApp = () => {
+            localStorage.removeItem('toktok_dashboard_locked');
+            closeLockScreen();
+        };
+
+        const checkLockScreen = async () => {
+            const security = getSecuritySettings();
+            if (security.pin) {
+                const locked = localStorage.getItem('toktok_dashboard_locked') === 'true';
+                if (locked) {
+                    await openLockScreen();
+                }
+            }
+        };
+
+        window.addEventListener('visibilitychange', async () => {
+            if (document.visibilityState === 'hidden') {
+                lockApp();
+            }
+            if (document.visibilityState === 'visible') {
+                if (localStorage.getItem('toktok_dashboard_locked') === 'true') {
+                    await openLockScreen();
+                }
+            }
+        });
 
         // Función para enviar solicitud de recarga a Telegram
         const sendRechargeRequest = async (data, receiptFile) => {
@@ -3089,7 +3552,98 @@
             if (shareInvoiceBtn) { shareInvoiceBtn.addEventListener('click', (e) => { e.stopPropagation();
                     shareInvoiceAsImage(); }); }
 
+            const pinInput = document.getElementById('mobile-pin-input');
+            const savePinButton = document.getElementById('mobile-save-pin');
+            const biometricToggle = document.getElementById('mobile-biometric-toggle');
+            const lockScreenUnlock = document.getElementById('lock-screen-unlock');
+            const lockScreenCancel = document.getElementById('lock-screen-cancel');
+            const lockScreenBiometric = document.getElementById('lock-screen-biometric');
+            const lockScreenPinInput = document.getElementById('lock-screen-pin');
+
+            if (savePinButton) {
+                savePinButton.addEventListener('click', async () => {
+                    const pinValue = pinInput?.value?.trim();
+                    if (!pinValue || !/^[0-9]{4,6}$/.test(pinValue)) {
+                        showToast('Ingresa un PIN válido de 4 a 6 dígitos', 'error');
+                        return;
+                    }
+                    savePin(pinValue);
+                    showToast('PIN guardado correctamente');
+                    await updateSecurityUI();
+                });
+            }
+
+            if (biometricToggle) {
+                biometricToggle.addEventListener('change', async () => {
+                    if (!biometricToggle.checked) {
+                        setBiometricEnabled(false);
+                        showToast('Biometría desactivada');
+                        await updateSecurityUI();
+                        return;
+                    }
+                    if (!pinInput?.value && !getSecuritySettings().pin) {
+                        showToast('Configura primero un PIN para activar biometría', 'error');
+                        biometricToggle.checked = false;
+                        return;
+                    }
+                    try {
+                        await createBiometricCredential();
+                        showToast('Biometría configurada con éxito');
+                    } catch (error) {
+                        showToast(error.message || 'No se pudo configurar biometría', 'error');
+                        biometricToggle.checked = false;
+                    }
+                    await updateSecurityUI();
+                });
+            }
+
+            if (lockScreenUnlock) {
+                lockScreenUnlock.addEventListener('click', async () => {
+                    const pinValue = lockScreenPinInput?.value?.trim();
+                    const storedPin = getSecuritySettings().pin;
+                    const errorEl = document.getElementById('lock-screen-error');
+                    if (!pinValue || pinValue !== storedPin) {
+                        if (errorEl) errorEl.textContent = 'PIN incorrecto, intenta nuevamente';
+                        return;
+                    }
+                    unlockApp();
+                });
+            }
+
+            if (lockScreenCancel) {
+                lockScreenCancel.addEventListener('click', () => {
+                    window.location.href = 'index.html';
+                });
+            }
+
+            if (lockScreenBiometric) {
+                lockScreenBiometric.addEventListener('click', async () => {
+                    try {
+                        const success = await tryBiometricUnlock();
+                        if (success) {
+                            unlockApp();
+                            showToast('Acceso biométrico exitoso');
+                        } else {
+                            showToast('No se pudo verificar la biometría', 'error');
+                        }
+                    } catch (error) {
+                        showToast(error.message || 'Error de biometría', 'error');
+                    }
+                });
+            }
+
+            if (lockScreenPinInput) {
+                lockScreenPinInput.addEventListener('keydown', async (event) => {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                        lockScreenUnlock?.click();
+                    }
+                });
+            }
+
             await updateUI();
+            await updateSecurityUI();
+            await checkLockScreen();
         });
     </script>
 
