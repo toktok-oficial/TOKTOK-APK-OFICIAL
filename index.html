@@ -31,6 +31,184 @@
             width: 100%;
         }
         
+        /* WELCOME OVERLAY - Animación de bienvenida */
+        .welcome-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0066FF 0%, #0099FF 100%);
+            z-index: 10002;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .welcome-overlay.active {
+            animation: welcomeIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        
+        .welcome-overlay.fade-out {
+            animation: welcomeOut 0.4s ease forwards;
+        }
+        
+        @keyframes welcomeIn {
+            0% {
+                opacity: 0;
+                transform: scale(1.1);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes welcomeOut {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+        }
+        
+        .welcome-icon {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            animation: welcomePulse 0.8s ease-in-out infinite;
+        }
+        
+        @keyframes welcomePulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 20px rgba(255, 255, 255, 0);
+            }
+        }
+        
+        .welcome-icon i {
+            font-size: 48px;
+            color: white;
+            animation: welcomeIconPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
+        }
+        
+        @keyframes welcomeIconPop {
+            0% {
+                transform: scale(0) rotate(-180deg);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+        
+        .welcome-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 8px;
+            letter-spacing: -1px;
+            animation: welcomeSlideUp 0.5s ease 0.3s both;
+        }
+        
+        .welcome-subtitle {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+            animation: welcomeSlideUp 0.5s ease 0.4s both;
+        }
+        
+        .welcome-dots {
+            display: flex;
+            gap: 8px;
+            margin-top: 32px;
+            animation: welcomeSlideUp 0.5s ease 0.5s both;
+        }
+        
+        .welcome-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            animation: dotBounce 1.2s ease-in-out infinite;
+        }
+        
+        .welcome-dot:nth-child(1) { animation-delay: 0s; }
+        .welcome-dot:nth-child(2) { animation-delay: 0.2s; }
+        .welcome-dot:nth-child(3) { animation-delay: 0.4s; }
+        
+        @keyframes dotBounce {
+            0%, 80%, 100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            40% {
+                transform: scale(1.4);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes welcomeSlideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .welcome-checkmark {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            animation: checkmarkCircle 0.6s ease forwards;
+        }
+        
+        .welcome-checkmark-circle {
+            stroke-dasharray: 339;
+            stroke-dashoffset: 339;
+            animation: drawCircle 0.6s ease 0.2s forwards;
+        }
+        
+        .welcome-checkmark-check {
+            stroke-dasharray: 50;
+            stroke-dashoffset: 50;
+            animation: drawCheck 0.4s ease 0.6s forwards;
+        }
+        
+        @keyframes drawCircle {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+        
+        @keyframes drawCheck {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+        
         /* LOCK SCREEN - Diseño premium */
         .lock-screen {
             position: fixed;
@@ -114,6 +292,13 @@
             border-color: #0066FF;
             transform: scale(1.2);
             box-shadow: 0 0 12px rgba(0, 102, 255, 0.4);
+        }
+        
+        .pin-dot.success {
+            background: #10B981;
+            border-color: #10B981;
+            transform: scale(1.3);
+            box-shadow: 0 0 16px rgba(16, 185, 129, 0.5);
         }
         
         .pin-dot.error {
@@ -824,6 +1009,20 @@
         <div class="splash-spinner"></div>
     </div>
 
+    <!-- Welcome Overlay - Animación de bienvenida -->
+    <div id="welcome-overlay" class="welcome-overlay">
+        <div class="welcome-icon">
+            <i class="fas fa-check"></i>
+        </div>
+        <h2 class="welcome-title">¡Bienvenido!</h2>
+        <p class="welcome-subtitle">Acceso verificado correctamente</p>
+        <div class="welcome-dots">
+            <div class="welcome-dot"></div>
+            <div class="welcome-dot"></div>
+            <div class="welcome-dot"></div>
+        </div>
+    </div>
+
     <!-- Lock Screen (aparece solo si el PIN está configurado) -->
     <div id="lock-screen" class="lock-screen hidden-lock">
         <div class="lock-avatar">
@@ -1297,7 +1496,6 @@
         
         const LOCK_STORAGE_KEY = 'toktok_lock_pin';
         const BIOMETRIC_STORAGE_KEY = 'toktok_biometric_enabled';
-        const DEFAULT_PIN = '1234';
         
         class LockScreen {
             constructor() {
@@ -1319,6 +1517,7 @@
                 this.biometricBtn = document.getElementById('biometric-btn');
                 this.biometricHint = document.getElementById('biometric-hint');
                 this.mainContent = document.getElementById('main-content');
+                this.welcomeOverlay = document.getElementById('welcome-overlay');
                 
                 this.init();
             }
@@ -1354,7 +1553,6 @@
                 this.renderPinDots();
                 this.updateBiometricUI();
                 
-                // Intentar biometría automática solo si está configurada y disponible
                 if (this.biometricEnabled && this.biometricAvailable && this.isPinConfigured) {
                     setTimeout(() => this.authenticateWithBiometrics(), 500);
                 }
@@ -1402,11 +1600,32 @@
                     });
                     
                     if (credential) {
-                        this.unlockSuccess();
+                        this.showWelcomeAnimation(() => {
+                            this.unlockSuccess();
+                        });
                     }
                 } catch (error) {
                     console.log('Autenticación biométrica fallida o cancelada:', error.message);
                 }
+            }
+            
+            showWelcomeAnimation(callback) {
+                // Mostrar animación de bienvenida
+                this.welcomeOverlay.classList.remove('fade-out');
+                this.welcomeOverlay.classList.add('active');
+                
+                if (navigator.vibrate) {
+                    navigator.vibrate([50, 30, 50, 30, 100]);
+                }
+                
+                // Ocultar después de 1.5 segundos
+                setTimeout(() => {
+                    this.welcomeOverlay.classList.add('fade-out');
+                    setTimeout(() => {
+                        this.welcomeOverlay.classList.remove('active', 'fade-out');
+                        if (callback) callback();
+                    }, 400);
+                }, 1500);
             }
             
             setupKeypad() {
@@ -1470,7 +1689,7 @@
                     if (index < this.pinDigits.length) {
                         dot.classList.add('filled');
                     } else {
-                        dot.classList.remove('filled', 'error');
+                        dot.classList.remove('filled', 'error', 'success');
                     }
                 });
                 
@@ -1481,10 +1700,22 @@
                 const enteredPin = this.pinDigits.join('');
                 
                 if (enteredPin === this.storedPin) {
-                    this.unlockSuccess();
+                    this.showSuccessDots();
+                    this.showWelcomeAnimation(() => {
+                        this.unlockSuccess();
+                    });
                 } else {
                     this.pinError();
                 }
+            }
+            
+            showSuccessDots() {
+                const dots = this.pinDisplay.querySelectorAll('.pin-dot');
+                dots.forEach((dot, index) => {
+                    setTimeout(() => {
+                        dot.classList.add('success');
+                    }, index * 50);
+                });
             }
             
             unlockSuccess() {
@@ -1546,7 +1777,6 @@
             
             show() {
                 if (!this.isPinConfigured) {
-                    // Si no hay PIN configurado, mostrar contenido directamente
                     this.lockScreen.classList.add('hidden-lock');
                     this.mainContent.style.display = 'block';
                     return;
@@ -1573,7 +1803,7 @@
             constructor(lockScreenInstance) {
                 this.lockScreen = lockScreenInstance;
                 this.setupPinDigits = [];
-                this.setupPinStep = 'create'; // 'create', 'confirm', 'change-old', 'change-new', 'change-confirm'
+                this.setupPinStep = 'create';
                 this.tempPin = '';
                 
                 this.initModals();
@@ -1581,7 +1811,6 @@
             }
             
             initModals() {
-                // Modal de configuración de seguridad
                 document.getElementById('open-security-settings').addEventListener('click', () => {
                     this.openSecuritySettings();
                 });
@@ -1600,7 +1829,6 @@
                     }
                 });
                 
-                // Botones de PIN
                 document.getElementById('setup-pin-btn').addEventListener('click', () => {
                     this.openPinSetup('create');
                 });
@@ -1609,12 +1837,10 @@
                     this.openPinSetup('change');
                 });
                 
-                // Toggle de biometría
                 document.getElementById('biometric-toggle').addEventListener('click', () => {
                     this.toggleBiometric();
                 });
                 
-                // Modal de setup de PIN
                 document.getElementById('close-pin-setup-modal').addEventListener('click', () => {
                     this.closePinSetup();
                 });
@@ -1625,7 +1851,6 @@
                     }
                 });
                 
-                // Teclado de setup de PIN
                 const setupKeypad = document.querySelector('#pin-setup-modal .keypad');
                 if (setupKeypad) {
                     setupKeypad.addEventListener('click', (e) => {
@@ -1819,7 +2044,6 @@
                 const newState = !this.lockScreen.biometricEnabled;
                 
                 if (newState) {
-                    // Intentar autenticar para activar
                     try {
                         const credential = await navigator.credentials.get({
                             publicKey: {
@@ -1854,7 +2078,6 @@
                 const isBiometricEnabled = this.lockScreen.biometricEnabled;
                 const isBiometricAvailable = this.lockScreen.biometricAvailable;
                 
-                // Actualizar badges de estado
                 const pinBadge = document.getElementById('pin-status-badge');
                 const biometricBadge = document.getElementById('biometric-status-badge');
                 
@@ -1874,7 +2097,6 @@
                     biometricBadge.innerHTML = '<i class="fas fa-times-circle"></i> No activado';
                 }
                 
-                // Actualizar botones de PIN
                 const setupPinBtn = document.getElementById('setup-pin-btn');
                 const changePinBtn = document.getElementById('change-pin-btn');
                 
@@ -1886,7 +2108,6 @@
                     changePinBtn.classList.add('hidden');
                 }
                 
-                // Actualizar toggle de biometría
                 const biometricToggle = document.getElementById('biometric-toggle');
                 const biometricAvailabilityText = document.getElementById('biometric-availability-text');
                 
@@ -1914,7 +2135,6 @@
         // INICIALIZACIÓN DE LA APLICACIÓN
         // ==========================================
         
-        // Configuración de Supabase
         const supabaseUrl = 'https://aleadadisazocjovibeh.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFsZWFkYWRpc2F6b2Nqb3ZpYmVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk0NDE5NjMsImV4cCI6MjA3NTAxNzk2M30.z82tP0C-UiiNuzP_jqrQf4LBusFqrDi1WYbdnuTh47E';
         window.supabase = supabase.createClient(supabaseUrl, supabaseKey);
@@ -1925,12 +2145,10 @@
         async function checkSession() {
             try {
                 const { data: { session }, error } = await window.supabase.auth.getSession();
-                
                 if (error) {
                     console.error('Error al verificar sesión:', error);
                     return false;
                 }
-                
                 return !!session;
             } catch (error) {
                 console.error('Error inesperado al verificar sesión:', error);
@@ -1945,7 +2163,6 @@
                     .select('full_name')
                     .eq('full_name', name)
                     .maybeSingle();
-                
                 if (error) throw error;
                 return !!data;
             } catch (error) {
@@ -1961,7 +2178,6 @@
                     .select('email')
                     .eq('email', email)
                     .maybeSingle();
-                
                 if (error) throw error;
                 return !!data;
             } catch (error) {
@@ -1977,7 +2193,6 @@
                     .select('phone')
                     .eq('phone', phone)
                     .maybeSingle();
-                
                 if (error) throw error;
                 return !!data;
             } catch (error) {
@@ -2013,25 +2228,18 @@
         }
         
         document.addEventListener('DOMContentLoaded', async function() {
-            // Inicializar pantalla de bloqueo
             lockScreen = new LockScreen();
             securityManager = new SecuritySettingsManager(lockScreen);
             
-            // Mostrar splash screen
             const splashScreen = document.getElementById('splash-screen');
-            
-            // Verificar sesión
             const hasActiveSession = await checkSession();
             
             setTimeout(() => {
                 splashScreen.style.opacity = '0';
                 setTimeout(() => {
                     splashScreen.style.display = 'none';
-                    
-                    // Mostrar lock screen si el PIN está configurado
                     lockScreen.show();
                     
-                    // Si hay sesión activa, preparar redirección después del desbloqueo
                     if (hasActiveSession) {
                         const originalUnlockSuccess = lockScreen.unlockSuccess.bind(lockScreen);
                         lockScreen.unlockSuccess = function() {
@@ -2071,7 +2279,7 @@
             switchToSignup.addEventListener('click', showSignup);
             switchToLogin.addEventListener('click', showLogin);
             
-            // Toggle para mostrar/ocultar contraseña
+            // Toggle contraseñas
             const toggleLoginPassword = document.getElementById('toggle-login-password');
             const loginPassword = document.getElementById('login-password');
             const toggleSignupPassword = document.getElementById('toggle-signup-password');
@@ -2091,7 +2299,7 @@
                 this.classList.toggle('fa-eye-slash');
             });
             
-            // Modal de recuperación de contraseña
+            // Modal de recuperación
             const forgotPasswordBtn = document.getElementById('forgot-password-btn');
             const recoveryModal = document.getElementById('password-recovery-modal');
             const closeModalBtn = document.getElementById('close-recovery-modal');
@@ -2108,9 +2316,7 @@
             closeModalBtn.addEventListener('click', closeRecoveryModal);
             
             recoveryModal.addEventListener('click', function(e) {
-                if (e.target === recoveryModal) {
-                    closeRecoveryModal();
-                }
+                if (e.target === recoveryModal) closeRecoveryModal();
             });
             
             function closeRecoveryModal() {
@@ -2142,7 +2348,7 @@
                 document.getElementById('contact-phone').value = '';
                 document.getElementById('selected-department').value = '';
                 
-                document.querySelectorAll('.department-option').forEach(opt => {
+                document.querySelectorAll('#password-recovery-modal .department-option').forEach(opt => {
                     opt.classList.remove('selected');
                 });
                 
@@ -2172,27 +2378,19 @@
                     showToast('warning', 'Campos requeridos', 'Por favor, completa todos los campos obligatorios.');
                     return;
                 }
-                
                 goToStep(2);
             });
             
-            document.getElementById('back-to-step-1').addEventListener('click', function() {
-                goToStep(1);
-            });
-            
+            document.getElementById('back-to-step-1').addEventListener('click', () => goToStep(1));
             document.getElementById('next-to-step-3').addEventListener('click', function() {
                 if (!document.getElementById('accept-terms').checked) {
                     showToast('warning', 'Términos no aceptados', 'Debes aceptar los términos para continuar.');
                     return;
                 }
-                
                 goToStep(3);
             });
             
-            document.getElementById('back-to-step-2').addEventListener('click', function() {
-                goToStep(2);
-            });
-            
+            document.getElementById('back-to-step-2').addEventListener('click', () => goToStep(2));
             document.getElementById('next-to-step-4').addEventListener('click', function() {
                 const name = document.getElementById('contact-name').value;
                 const phone = document.getElementById('contact-phone').value;
@@ -2205,9 +2403,7 @@
                 sendToTelegram();
                 goToStep(4);
                 
-                setTimeout(() => {
-                    closeRecoveryModal();
-                }, 3000);
+                setTimeout(() => closeRecoveryModal(), 3000);
             });
             
             document.getElementById('accept-terms').addEventListener('change', function() {
@@ -2219,7 +2415,6 @@
                     document.querySelectorAll('#password-recovery-modal .department-option').forEach(opt => {
                         opt.classList.remove('selected');
                     });
-                    
                     this.classList.add('selected');
                     selectedDepartment = this.getAttribute('data-dept');
                     document.getElementById('selected-department').value = selectedDepartment;
@@ -2237,11 +2432,17 @@
                     const botToken = '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY';
                     const chatId = '7100840475';
                     
+                    const deptNames = {
+                        'LP': 'La Paz', 'SC': 'Santa Cruz', 'CB': 'Cochabamba',
+                        'OR': 'Oruro', 'PT': 'Potosí', 'TJ': 'Tarija',
+                        'CH': 'Chuquisaca', 'BE': 'Beni', 'PD': 'Pando'
+                    };
+                    
                     const message = `📋 *NUEVA SOLICITUD DE RECUPERACIÓN - TOKTOK*\n\n` +
                                   `👤 *Nombre:* ${name}\n` +
                                   `📧 *Email:* ${email}\n` +
                                   `📱 *Teléfono:* ${phone}\n` +
-                                  `📍 *Departamento:* ${getDepartmentName(department)}\n\n` +
+                                  `📍 *Departamento:* ${deptNames[department] || 'Desconocido'}\n\n` +
                                   `📝 *Situación:*\n${situation}\n\n` +
                                   `⏰ *Hora:* ${new Date().toLocaleString()}`;
                     
@@ -2262,20 +2463,10 @@
                     } else {
                         showToast('warning', 'Advertencia', 'Solicitud guardada localmente.');
                     }
-                    
                 } catch (error) {
                     console.error('Error en sendToTelegram:', error);
                     showToast('error', 'Error', 'Hubo un problema al enviar la solicitud.');
                 }
-            }
-            
-            function getDepartmentName(code) {
-                const departments = {
-                    'LP': 'La Paz', 'SC': 'Santa Cruz', 'CB': 'Cochabamba',
-                    'OR': 'Oruro', 'PT': 'Potosí', 'TJ': 'Tarija',
-                    'CH': 'Chuquisaca', 'BE': 'Beni', 'PD': 'Pando'
-                };
-                return departments[code] || 'Desconocido';
             }
             
             // Login form
@@ -2299,11 +2490,7 @@
                     
                     if (error) throw error;
                     
-                    if (rememberSession) {
-                        localStorage.setItem('toktok_remember_session', 'true');
-                    } else {
-                        localStorage.setItem('toktok_remember_session', 'false');
-                    }
+                    localStorage.setItem('toktok_remember_session', rememberSession ? 'true' : 'false');
                     
                     showToast('success', '¡Éxito!', 'Inicio de sesión exitoso');
                     
@@ -2374,10 +2561,7 @@
                     if (authError) throw authError;
                     
                     const userId = authData.user?.id;
-                    
-                    if (!userId) {
-                        throw new Error('No se pudo obtener el ID del usuario');
-                    }
+                    if (!userId) throw new Error('No se pudo obtener el ID del usuario');
                     
                     const { error: dbError } = await window.supabase
                         .from('user_profiles')
@@ -2429,15 +2613,11 @@
             
             toastContainer.appendChild(toast);
             
-            setTimeout(() => {
-                toast.classList.add('show');
-            }, 10);
+            setTimeout(() => toast.classList.add('show'), 10);
             
             setTimeout(() => {
                 toast.classList.remove('show');
-                setTimeout(() => {
-                    toast.remove();
-                }, 300);
+                setTimeout(() => toast.remove(), 300);
             }, 5000);
         }
         
@@ -2445,7 +2625,7 @@
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/sw.js')
-                    .then(registration => console.log('SW registered'))
+                    .then(reg => console.log('SW registered'))
                     .catch(err => console.log('SW registration failed'));
             });
         }
