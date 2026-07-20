@@ -8,8 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#1f113a">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#6d28d9">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js">
@@ -105,21 +104,19 @@
                 position: sticky;
                 top: 0;
                 z-index: 40;
-                background: linear-gradient(135deg, #1f113a 0%, #5b21b6 100%);
-                padding: 10px 14px;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+                background: white;
+                padding: 12px 16px;
+                border-bottom: 1px solid #f1f5f9;
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                padding-top: calc(10px + var(--safe-area-inset-top));
-                box-shadow: 0 6px 16px rgba(31, 17, 58, 0.18);
+                padding-top: calc(12px + var(--safe-area-inset-top));
             }
 
             .mobile-header-title {
                 font-size: 18px;
-                font-weight: 700;
-                color: white;
-                letter-spacing: -0.02em;
+                font-weight: 600;
+                color: #1e293b;
             }
 
             .mobile-header-actions {
@@ -154,38 +151,38 @@
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
-                background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-                border-radius: 18px;
+                background: white;
+                border-radius: 16px;
                 padding: 10px 4px;
-                box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
                 transition: all 0.2s ease;
-                border: 1px solid #eef2f7;
+                border: 1px solid #f1f5f9;
                 text-decoration: none;
                 color: #1e293b;
             }
 
             .modern-action-btn:active {
                 transform: scale(0.96);
-                background: #f1f5f9;
+                background: #f8fafc;
             }
 
             .modern-action-icon {
-                width: 46px;
-                height: 46px;
-                border-radius: 16px;
+                width: 44px;
+                height: 44px;
+                border-radius: 20px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 margin-bottom: 6px;
                 font-size: 18px;
                 color: white;
-                box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
             }
 
             .modern-action-btn span {
                 font-size: 11px;
-                font-weight: 600;
-                color: #334155;
+                font-weight: 500;
+                color: #475569;
                 text-align: center;
             }
 
@@ -406,88 +403,46 @@
             }
 
             .mobile-balance-card {
-                background:
-                    linear-gradient(135deg, rgba(7, 11, 24, 0.8) 0%, rgba(88, 28, 135, 0.65) 100%),
-                    url('https://mx.web.img3.acsta.net/img/3e/6b/3e6b3a6de42a48d8fdf851b1d5eb92fb.jpg') center/cover no-repeat;
+                background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
                 color: white;
-                border-radius: 20px;
-                padding: 16px;
-                margin: 14px;
+                border-radius: 16px;
+                padding: 20px;
+                margin: 16px;
                 position: relative;
                 overflow: hidden;
-                box-shadow: 0 10px 24px rgba(31, 17, 58, 0.2);
-                border: 1px solid rgba(255, 255, 255, 0.14);
-            }
-
-            .mobile-balance-card::before {
-                content: '';
-                position: absolute;
-                inset: auto -18px -28px auto;
-                width: 120px;
-                height: 120px;
-                border-radius: 50%;
-                background: rgba(255, 255, 255, 0.12);
-                filter: blur(2px);
-            }
-
-            .mobile-balance-top {
-                display: flex;
-                justify-content: flex-end;
-                margin-bottom: 10px;
-            }
-
-            .mobile-balance-badge {
-                display: none;
             }
 
             .mobile-balance-label {
-                font-size: 13px;
+                font-size: 14px;
                 color: rgba(255, 255, 255, 0.9);
-                margin-bottom: 6px;
-                font-weight: 500;
+                margin-bottom: 4px;
             }
 
             .mobile-balance-amount {
-                font-size: 26px;
-                font-weight: 800;
-                margin-bottom: 12px;
-                letter-spacing: -0.03em;
+                font-size: 28px;
+                font-weight: 700;
+                margin-bottom: 20px;
             }
 
             .mobile-balance-footer {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                margin-bottom: 8px;
             }
 
             .mobile-balance-wallet {
                 font-size: 12px;
-                color: rgba(255, 255, 255, 0.92);
+                color: rgba(255, 255, 255, 0.9);
             }
 
             .mobile-balance-icon {
-                width: 40px;
-                height: 40px;
+                width: 36px;
+                height: 36px;
                 border-radius: 50%;
-                background: rgba(255, 255, 255, 0.18);
+                background: rgba(255, 255, 255, 0.2);
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                backdrop-filter: blur(8px);
-            }
-
-            .mobile-balance-highlight {
-                display: inline-flex;
-                align-items: center;
-                padding: 4px 8px;
-                border-radius: 999px;
-                background: rgba(255, 255, 255, 0.14);
-                color: #fef3c7;
-                font-size: 9px;
-                font-weight: 600;
-                margin-bottom: 10px;
-                backdrop-filter: blur(8px);
             }
 
             .mobile-empty-state {
@@ -1329,12 +1284,8 @@
             <div id="mobile-home-view">
                 <!-- Tarjeta de balance -->
                 <div class="mobile-balance-card">
-                    <div class="mobile-balance-top">
-                        <div class="mobile-balance-badge"><i class="fas fa-sparkles"></i> Premium</div>
-                    </div>
                     <div class="mobile-balance-label">Balance disponible</div>
                     <div class="mobile-balance-amount" id="mobile-balance">Bs</div>
-                    <div class="mobile-balance-highlight">Celebramos la final del Mundial</div>
                     <div class="mobile-balance-footer">
                         <div>
                             <div class="mobile-balance-wallet">TokTok Wallet</div>
@@ -1344,7 +1295,7 @@
                             <i class="fas fa-wallet"></i>
                         </div>
                     </div>
-                    <button id="mobile-recharge-balance-btn" class="mt-4 w-full py-2.5 px-4 rounded-xl bg-white text-purple-700 font-semibold flex items-center justify-center shadow-lg shadow-purple-900/20">
+                    <button id="mobile-recharge-balance-btn" class="mt-4 w-full py-2 px-4 rounded-lg bg-white text-purple-600 font-medium flex items-center justify-center">
                         <i class="fas fa-plus-circle mr-2"></i>
                         Recargar saldo
                     </button>
