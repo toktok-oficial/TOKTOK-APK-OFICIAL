@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>plan hogar</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <meta name="theme-color" content="#2563eb" id="theme-color">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+        }
+
+        * { -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            padding-bottom: env(safe-area-inset-bottom);
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        /* ---------- HEADER ---------- */
+        .mobile-header {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            background: white;
+            padding: 12px 16px;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .mobile-header-title {
+            font-size: 17px;
+            font-weight: 800;
+            color: #1e293b;
+            letter-spacing: -0.02em;
+        }
+        .mobile-header-title span { color: var(--primary); }
+
+        /* ---------- BURBUJA DE SALDO ---------- */
+        .balance-bubble {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid #93c5fd;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+        }
+        .balance-bubble:active { transform: scale(0.95); }
+        .balance-bubble i {
+            font-size: 10px;
+            color: #2563eb;
+            margin-bottom: 1px;
+        }
+        .balance-bubble .bubble-amount {
+            font-size: 9px;
+            font-weight: 800;
+            color: #1e40af;
+            line-height: 1;
+        }
+        .balance-bubble .bubble-label {
+            font-size: 6.5px;
+            font-weight: 700;
+            color: #3b82f6;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ---------- TABS ---------- */
+        .tabs-container {
+            display: flex;
+            border-bottom: 1px solid #e2e8f0;
+            background: white;
+            padding: 0 12px;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 10px 8px;
+            background: none;
+            border: none;
+            font-size: 13px;
+            font-weight: 600;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-bottom: 2px solid transparent;
+        }
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        /* ---------- COVERAGE CARD ---------- */
+        .coverage-card {
+            background: white;
+            margin: 12px;
+            border-radius: 14px;
+            padding: 16px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+        }
+        .coverage-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .coverage-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+            color: white;
+            padding: 14px 16px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+        }
+        .coverage-link:active { transform: scale(0.98); }
+
+        .credentials-box {
+            background: #fffbeb;
+            border: 2px solid #fbbf24;
+            border-radius: 12px;
+            padding: 12px;
+            margin-top: 12px;
+        }
+
+        .credential-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: white;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 8px;
+        }
+
+        .credential-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .copy-btn {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #2563eb;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .copy-btn:active {
+            background: #2563eb;
+            color: white;
+        }
+        .copy-btn.copied {
+            background: #059669;
+            color: white;
+            border-color: #059669;
+        }
+
+        /* ---------- PRODUCT GRID ---------- */
+        .products-container { padding: 4px 12px 24px; }
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 10px;
+        }
+        .product-card {
+            border-radius: 12px;
+            overflow: hidden;
+            background: white;
+            border: 1px solid #eef1f5;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+            position: relative;
+            cursor: pointer;
+            transition: transform .2s, box-shadow .2s;
+            padding: 16px;
+        }
+        .product-card:active { transform: scale(0.98); }
+        
+        .badge-discount {
+            position: absolute; top: 10px; right: 10px;
+            background: #ef4444; color: #fff;
+            font-size: 10px; font-weight: 700;
+            padding: 3px 8px; border-radius: 6px;
+            z-index: 2;
+        }
+        .badge-featured {
+            position: absolute; top: 10px; right: 10px;
+            background: #fbbf24; color: #78350f;
+            font-size: 10px; font-weight: 700;
+            padding: 3px 8px; border-radius: 6px;
+            z-index: 2;
+        }
+        
+        .plan-speed-display {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--primary);
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+        .plan-speed-display span {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .product-name {
+            font-weight: 600; font-size: 14px; color: #1e293b;
+            margin-bottom: 4px;
+        }
+        .product-description {
+            font-size: 11px; color: #94a3b8; margin-bottom: 8px;
+        }
+        .price-row { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+        .product-price { color: var(--primary); font-weight: 800; font-size: 18px; }
+        .product-price-old { color: #cbd5e1; font-size: 11px; text-decoration: line-through; }
+        
+        .features-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 12px 0;
+        }
+        .features-list li {
+            font-size: 11px;
+            color: #64748b;
+            padding: 2px 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .features-list li i {
+            color: #10b981;
+            font-size: 10px;
+        }
+
+        .btn-contract {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .btn-contract:active { transform: scale(0.98); }
+
+        /* ---------- HISTORIAL ---------- */
+        .history-item {
+            background: white;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        .history-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 6px;
+        }
+        .history-product-name {
+            font-weight: 600;
+            font-size: 13px;
+            color: #1e293b;
+        }
+        .history-date {
+            font-size: 10px;
+            color: #94a3b8;
+        }
+        .history-detail {
+            font-size: 11px;
+            color: #64748b;
+            margin-bottom: 3px;
+        }
+        .history-amount {
+            font-weight: 700;
+            color: #dc2626;
+            font-size: 13px;
+        }
+
+        /* ---------- STATUS BADGES ---------- */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+        .status-pending { background: #fef3c7; color: #92400e; }
+        .status-approved { background: #d1fae5; color: #065f46; }
+        .status-rejected { background: #fee2e2; color: #991b1b; }
+        .status-installed { background: #dbeafe; color: #1e40af; }
+
+        /* ---------- MODALS ---------- */
+        .modal {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.55);
+            z-index: 100;
+            display: flex; align-items: flex-end; justify-content: center;
+            opacity: 0; visibility: hidden; transition: all 0.25s;
+        }
+        .modal.active { opacity: 1; visibility: visible; }
+        .modal-content {
+            background: white; width: 100%; max-width: 480px;
+            border-radius: 20px 20px 0 0; padding: 18px;
+            transform: translateY(24px); transition: all 0.3s;
+            max-height: 92vh; overflow-y: auto;
+            position: relative;
+        }
+        .modal.active .modal-content { transform: translateY(0); }
+        @media (min-width: 560px) {
+            .modal { align-items: center; }
+            .modal-content { border-radius: 18px; }
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white; padding: 12px 16px; border-radius: 12px;
+            font-weight: 700; transition: all 0.3s;
+            display: flex; align-items: center; justify-content: center;
+            border: none; font-size: 14.5px; width: 100%;
+            cursor: pointer;
+        }
+        .btn-primary:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(37,99,235,0.25); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .loading-spinner {
+            width: 18px; height: 18px;
+            border: 2px solid rgba(255,255,255,0.3); border-radius: 50%;
+            border-top-color: white; animation: spin 1s ease-in-out infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .input-field {
+            width: 100%; padding: 10px 12px; border: 1px solid #e2e8f0;
+            border-radius: 10px; font-size: 14px; margin-bottom: 12px; background: white;
+            font-family: 'Inter', sans-serif;
+        }
+        .input-field:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+
+        .upload-area {
+            border: 2px dashed #cbd5e1;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            background: #f8fafc;
+            margin-bottom: 12px;
+            transition: all 0.2s;
+        }
+        .upload-area:active { border-color: var(--primary); background: #eff6ff; }
+        .upload-area.has-photo { border-color: #10b981; background: #f0fdf4; }
+        .upload-area img {
+            max-width: 100%;
+            max-height: 180px;
+            border-radius: 8px;
+            margin-top: 8px;
+        }
+
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+        .step-dot {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            background: #e2e8f0;
+            color: #94a3b8;
+            flex-shrink: 0;
+        }
+        .step-dot.active {
+            background: var(--primary);
+            color: white;
+        }
+        .step-dot.done {
+            background: #10b981;
+            color: white;
+        }
+        .step-line {
+            flex: 1;
+            height: 2px;
+            background: #e2e8f0;
+        }
+        .step-line.done {
+            background: var(--primary);
+        }
+
+        .section-title {
+            font-weight: 700; color: #374151; margin-bottom: 10px;
+            display: flex; align-items: center; gap: 6px; font-size: 14px;
+        }
+
+        .no-history {
+            text-align: center;
+            padding: 30px;
+            color: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER con burbuja de saldo -->
+    <div class="mobile-header">
+        <div class="mobile-header-title">PLAN <span>HOGAR</span></div>
+        <div class="balance-bubble" id="balance-bubble" onclick="toggleBalanceDetail()">
+            <i class="fas fa-wallet"></i>
+            <div class="bubble-amount" id="bubble-amount">Carg...</div>
+            <div class="bubble-label">Saldo</div>
+        </div>
+    </div>
+
+    <!-- Tabs: Paquetes / Historial -->
+    <div class="tabs-container">
+        <button class="tab-btn active" data-tab="plans">
+            <i class="fas fa-box mr-1"></i> Paquetes
+        </button>
+        <button class="tab-btn" data-tab="history">
+            <i class="fas fa-history mr-1"></i> Historial
+        </button>
+    </div>
+
+    <!-- Sección Paquetes -->
+    <div id="plans-section">
+        <!-- Lista de Planes -->
+        <div class="products-container">
+            <div class="products-grid" id="plans-list"></div>
+        </div>
+        <div id="no-plans" class="hidden text-center py-10 px-4">
+            <i class="fas fa-box-open text-3xl text-gray-300 mb-3"></i>
+            <p class="text-gray-500 font-medium text-sm">No hay planes disponibles</p>
+        </div>
+    </div>
+
+    <!-- Sección Historial -->
+    <div id="history-section" class="hidden px-3 py-3">
+        <div id="history-list"></div>
+        <div id="no-history" class="no-history hidden">
+            <i class="fas fa-receipt text-3xl mb-3"></i>
+            <p class="font-medium text-sm">Sin solicitudes aún</p>
+            <p class="text-xs mt-1">Tus solicitudes aparecerán aquí</p>
+        </div>
+    </div>
+
+    <!-- Modal de Balance -->
+    <div id="balance-modal" class="modal">
+        <div class="modal-content text-center">
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="text-lg font-semibold text-gray-800">Tu Saldo</h3>
+                <button id="close-balance-modal" class="text-gray-400 hover:text-gray-500">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div style="width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, #2563eb, #1d4ed8); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                <i class="fas fa-wallet text-2xl text-white"></i>
+            </div>
+            <p class="text-sm text-gray-500 mb-1">Saldo disponible</p>
+            <p id="detail-balance" class="text-3xl font-extrabold mb-4" style="color: var(--primary);"></p>
+            <button id="close-balance-btn" class="btn-primary">
+                <i class="fas fa-check mr-2"></i> Cerrar
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal de Contratación (Multi-paso) -->
+    <div id="contract-modal" class="modal">
+        <div class="modal-content" id="contract-modal-content">
+            <!-- Contenido dinámico -->
+        </div>
+    </div>
+
+    <!-- Modal de Confirmación -->
+    <div id="confirmation-modal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="text-lg font-semibold text-gray-800">Confirmar solicitud</h3>
+                <button id="close-confirmation-modal" class="text-gray-400 hover:text-gray-500"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="mb-3"><p id="confirmation-text" class="text-gray-600 text-sm"></p></div>
+            <div class="flex space-x-2">
+                <button id="cancel-request" class="flex-1 py-2 px-3 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-800 transition-colors font-medium text-sm">Cancelar</button>
+                <button id="confirm-request" class="flex-1 py-2 px-3 rounded-lg text-white transition-colors font-medium flex items-center justify-center text-sm" style="background:var(--primary)">
+                    <span id="confirm-request-text">Enviar solicitud</span>
+                    <div id="confirm-request-spinner" class="loading-spinner ml-2 hidden"></div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Resultado -->
+    <div id="result-modal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-center mb-3">
+                <div id="result-icon" class="w-14 h-14 rounded-full flex items-center justify-center text-2xl">
+                    <i class="fas fa-check-circle text-green-500"></i>
+                </div>
+            </div>
+            <div class="text-center mb-4">
+                <h3 id="result-title" class="text-lg font-semibold text-gray-800 mb-1">¡Solicitud enviada!</h3>
+                <p id="result-message" class="text-gray-600 text-sm">Tu solicitud se ha enviado correctamente.</p>
+            </div>
+            <button id="close-result-modal" class="w-full py-2 px-3 rounded-lg text-white transition-colors font-medium text-sm" style="background:var(--primary)">Aceptar</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // ---------- Configuración Supabase ----------
+        const supabaseUrl = 'https://aleadadisazocjovibeh.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFsZWFkYWRpc2F6b2Nqb3ZpYmVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk0NDE5NjMsImV4cCI6MjA3NTAxNzk2M30.z82tP0C-UiiNuzP_jqrQf4LBusFqrDi1WYbdnuTh47E';
+        window.supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+        // ---------- Bot de Telegram ----------
+        const TELEGRAM_BOT_TOKEN = '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY';
+        const TELEGRAM_CHAT_ID = '-5155315945';
+
+        // ---------- Estado global ----------
+        let currentUser = null;
+        let userProfile = null;
+        let currentBalance = 0;
+        let currentPlan = null;
+        let currentStep = 1;
+        let currentTab = 'plans';
+        
+        // Datos del formulario
+        let formData = {
+            fullName: '',
+            idNumber: '',
+            phonePrimary: '',
+            phoneReference: '',
+            installationAddress: '',
+            city: 'La Paz',
+            zone: '',
+            idFrontPhoto: null,
+            idBackPhoto: null,
+            selfiePhoto: null,
+            hasCoverage: false
+        };
+
+        // ---------- Utilidades ----------
+        const formatCurrency = (amount) => 'Bs ' + parseFloat(amount).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+        function copyToClipboard(text, buttonElement) {
+            navigator.clipboard.writeText(text).then(() => {
+                if (buttonElement) {
+                    const originalHTML = buttonElement.innerHTML;
+                    buttonElement.classList.add('copied');
+                    buttonElement.innerHTML = '<i class="fas fa-check mr-1"></i> Copiado';
+                    setTimeout(() => {
+                        buttonElement.classList.remove('copied');
+                        buttonElement.innerHTML = originalHTML;
+                    }, 2000);
+                }
+            }).catch(err => {
+                console.error('Error al copiar:', err);
+            });
+        }
+
+        const showToast = (message, type = 'success') => {
+            const toast = document.createElement('div');
+            toast.className = `fixed top-4 right-4 px-4 py-2 rounded-md shadow-lg z-50 ${type === 'success' ? 'bg-green-600' : 'bg-red-600'} text-white font-medium text-sm`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        };
+
+        const openModal = (modalId) => {
+            document.getElementById(modalId).classList.add('active');
+            document.body.style.overflow = 'hidden';
+        };
+        const closeModal = (modalId) => {
+            document.getElementById(modalId).classList.remove('active');
+            document.body.style.overflow = '';
+        };
+
+        // ---------- Tabs ----------
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector(`.tab-btn[data-tab="${tab}"]`).classList.add('active');
+            
+            document.getElementById('plans-section').classList.toggle('hidden', tab !== 'plans');
+            document.getElementById('history-section').classList.toggle('hidden', tab !== 'history');
+            
+            if (tab === 'history') {
+                loadHistory();
+            }
+        }
+
+        // ---------- Balance ----------
+        async function calculateBalance() {
+            const { data, error } = await supabase
+                .from('transactions')
+                .select('amount, type')
+                .eq('user_id', currentUser.id)
+                .eq('status', 'completed');
+            
+            if (error) {
+                console.error('Error calculating balance:', error);
+                return 0;
+            }
+            
+            let balance = 0;
+            (data || []).forEach(t => {
+                balance += (t.type === 'deposit' ? t.amount : -t.amount);
+            });
+            return balance;
+        }
+
+        function updateBalanceDisplay() {
+            const formatted = formatCurrency(currentBalance);
+            const parts = formatted.split('.');
+            
+            document.getElementById('bubble-amount').innerHTML = parts[0] + '.<small style="font-size:7px">' + (parts[1] || '00') + '</small>';
+            document.getElementById('detail-balance').textContent = formatted;
+        }
+
+        function toggleBalanceDetail() {
+            updateBalanceDisplay();
+            openModal('balance-modal');
+        }
+
+        // ---------- Cargar Planes ----------
+        async function loadPlans() {
+            try {
+                const { data, error } = await supabase
+                    .from('internet_packages')
+                    .select('*')
+                    .eq('is_active', true)
+                    .order('is_featured', { ascending: false })
+                    .order('price', { ascending: true });
+
+                if (error) throw error;
+                
+                const plans = data || [];
+                renderPlans(plans);
+            } catch (error) {
+                console.error('Error loading plans:', error);
+                showToast('Error al cargar planes', 'error');
+            }
+        }
+
+        function renderPlans(plans) {
+            const plansList = document.getElementById('plans-list');
+            const noPlans = document.getElementById('no-plans');
+
+            if (!plans || plans.length === 0) {
+                plansList.innerHTML = '';
+                noPlans.classList.remove('hidden');
+                return;
+            }
+            noPlans.classList.add('hidden');
+
+            plansList.innerHTML = plans.map(plan => {
+                const finalPrice = plan.discount_percentage > 0 
+                    ? plan.price * (1 - plan.discount_percentage / 100) 
+                    : plan.price;
+                const totalFirstPayment = finalPrice + (plan.installation_fee || 0);
+                const hasDiscount = plan.discount_percentage > 0;
+
+                return `
+                    <div class="product-card" data-plan-id="${plan.id}">
+                        ${plan.is_featured && !hasDiscount ? '<span class="badge-featured">★ Destacado</span>' : ''}
+                        ${hasDiscount ? `<span class="badge-discount">-${plan.discount_percentage}%</span>` : ''}
+                        
+                        <div class="plan-speed-display">
+                            ${plan.speed_mbps} <span>Mbps</span>
+                        </div>
+                        <div class="product-name">${plan.name}</div>
+                        <div class="product-description">${plan.description || ''}</div>
+                        
+                        <div class="price-row">
+                            <span class="product-price">${formatCurrency(finalPrice)}</span>
+                            <span style="font-size: 12px; color: #64748b;">/mes</span>
+                            ${hasDiscount ? `<span class="product-price-old">${formatCurrency(plan.price)}</span>` : ''}
+                        </div>
+                        
+                        ${plan.installation_fee > 0 ? `
+                            <p style="font-size: 12px; color: #d97706; font-weight: 600; margin-bottom: 8px;">
+                                + Instalación: ${formatCurrency(plan.installation_fee)}
+                            </p>
+                        ` : `
+                            <p style="font-size: 12px; color: #059669; font-weight: 600; margin-bottom: 8px;">
+                                ¡Instalación GRATIS!
+                            </p>
+                        `}
+                        
+                        <p style="font-size: 11px; color: #64748b; margin-bottom: 8px;">
+                            Primer pago: <strong>${formatCurrency(totalFirstPayment)}</strong>
+                        </p>
+                        
+                        ${plan.features && plan.features.length > 0 ? `
+                            <ul class="features-list">
+                                ${plan.features.map(f => `<li><i class="fas fa-check-circle"></i> ${f}</li>`).join('')}
+                            </ul>
+                        ` : ''}
+                        
+                        <button class="btn-contract" onclick="event.stopPropagation(); startContract('${plan.id}')">
+                            <i class="fas fa-wifi"></i> Contratar Plan
+                        </button>
+                    </div>`;
+            }).join('');
+
+            document.querySelectorAll('.product-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const planId = card.dataset.planId;
+                    startContract(planId);
+                });
+            });
+        }
+
+        // ---------- Iniciar Contratación ----------
+        async function startContract(planId) {
+            const { data: plan } = await supabase
+                .from('internet_packages')
+                .select('*')
+                .eq('id', planId)
+                .single();
+
+            if (!plan) {
+                showToast('Plan no encontrado', 'error');
+                return;
+            }
+
+            currentPlan = plan;
+            currentStep = 1;
+            formData = {
+                fullName: '',
+                idNumber: '',
+                phonePrimary: '',
+                phoneReference: '',
+                installationAddress: '',
+                city: 'La Paz',
+                zone: '',
+                idFrontPhoto: null,
+                idBackPhoto: null,
+                selfiePhoto: null,
+                hasCoverage: false
+            };
+
+            openModal('contract-modal');
+            renderContractStep();
+        }
+
+        // ---------- Renderizar Pasos ----------
+        function renderContractStep() {
+            const container = document.getElementById('contract-modal-content');
+            
+            let stepsHTML = `
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="text-lg font-semibold text-gray-800">${currentPlan.name}</h3>
+                    <button onclick="closeModal('contract-modal')" class="text-gray-400 hover:text-gray-500">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="step-indicator">
+                    <div class="step-dot ${currentStep >= 1 ? 'active' : ''} ${currentStep > 1 ? 'done' : ''}">${currentStep > 1 ? '<i class="fas fa-check"></i>' : '1'}</div>
+                    <div class="step-line ${currentStep > 1 ? 'done' : ''}"></div>
+                    <div class="step-dot ${currentStep >= 2 ? 'active' : ''} ${currentStep > 2 ? 'done' : ''}">${currentStep > 2 ? '<i class="fas fa-check"></i>' : '2'}</div>
+                    <div class="step-line ${currentStep > 2 ? 'done' : ''}"></div>
+                    <div class="step-dot ${currentStep >= 3 ? 'active' : ''} ${currentStep > 3 ? 'done' : ''}">${currentStep > 3 ? '<i class="fas fa-check"></i>' : '3'}</div>
+                </div>
+            `;
+
+            let contentHTML = '';
+            
+            switch(currentStep) {
+                case 1:
+                    contentHTML = renderCoverageStep();
+                    break;
+                case 2:
+                    contentHTML = renderDocumentsStep();
+                    break;
+                case 3:
+                    contentHTML = renderDataStep();
+                    break;
+            }
+
+            container.innerHTML = stepsHTML + contentHTML;
+            setTimeout(() => updateNextButton(), 100);
+        }
+
+        // Paso 1: Cobertura
+        function renderCoverageStep() {
+            return `
+                <div class="text-center py-3">
+                    <i class="fas fa-map-marked-alt text-5xl mb-3" style="color: var(--primary);"></i>
+                    <h4 class="font-bold text-base mb-2">Verifica tu Cobertura</h4>
+                    <p class="text-gray-600 text-xs mb-4">
+                        Consulta en el sistema de Entel si hay cobertura de fibra óptica en tu zona
+                    </p>
+                    
+                    <a href="https://appwebjb.entel.bo/ConsultaGestor/index.jsp" target="_blank" 
+                       style="display: block; background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%); border-radius: 12px; padding: 16px; margin-bottom: 14px; text-decoration: none; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);">
+                        <i class="fas fa-globe text-2xl mb-2" style="color: #93c5fd;"></i>
+                        <p style="font-weight: 700; color: white; font-size: 14px; margin-bottom: 4px;">Consultar Cobertura Entel</p>
+                        <p style="font-size: 11px; color: #bfdbfe;">Abrir sistema de consulta</p>
+                    </a>
+                    
+                    <div style="background: #fffbeb; border: 2px solid #fbbf24; border-radius: 12px; padding: 14px; margin-bottom: 14px; text-align: left;">
+                        <p style="font-size: 12px; font-weight: 700; color: #92400e; margin-bottom: 10px; text-align: center;">
+                            <i class="fas fa-key mr-1"></i> DATOS DE ACCESO
+                        </p>
+                        
+                        <div style="display: flex; align-items: center; gap: 8px; background: white; border-radius: 8px; padding: 10px; margin-bottom: 8px;">
+                            <i class="fas fa-user" style="color: #2563eb; font-size: 13px;"></i>
+                            <div style="flex: 1;">
+                                <p style="font-size: 9px; color: #94a3b8; margin: 0;">Usuario</p>
+                                <p style="font-size: 12px; font-weight: 700; color: #1e293b; margin: 0; letter-spacing: 0.5px;">AUPARR</p>
+                            </div>
+                            <button onclick="copyToClipboard('AUPARR', this)" style="background: #eff6ff; border: 1px solid #bfdbfe; color: #2563eb; padding: 6px 10px; border-radius: 6px; font-size: 10px; font-weight: 600; cursor: pointer; white-space: nowrap;">
+                                <i class="fas fa-copy mr-1"></i> Copiar
+                            </button>
+                        </div>
+                        
+                        <div style="display: flex; align-items: center; gap: 8px; background: white; border-radius: 8px; padding: 10px;">
+                            <i class="fas fa-lock" style="color: #2563eb; font-size: 13px;"></i>
+                            <div style="flex: 1;">
+                                <p style="font-size: 9px; color: #94a3b8; margin: 0;">Contraseña</p>
+                                <p style="font-size: 12px; font-weight: 700; color: #1e293b; margin: 0; letter-spacing: 0.5px;">14422766</p>
+                            </div>
+                            <button onclick="copyToClipboard('14422766', this)" style="background: #eff6ff; border: 1px solid #bfdbfe; color: #2563eb; padding: 6px 10px; border-radius: 6px; font-size: 10px; font-weight: 600; cursor: pointer; white-space: nowrap;">
+                                <i class="fas fa-copy mr-1"></i> Copiar
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div style="background: #fefce8; border: 1px solid #fde68a; border-radius: 10px; padding: 10px; margin-bottom: 14px;">
+                        <p style="font-size: 12px; color: #a16207;">
+                            <i class="fas fa-info-circle mr-1"></i>
+                            Use estos datos para ingresar al sistema de consulta de Entel
+                        </p>
+                    </div>
+                    
+                    <label style="display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; background: #f0fdf4; padding: 12px; border-radius: 10px; border: 2px solid #bbf7d0;">
+                        <input type="checkbox" id="coverage-check" style="width: 18px; height: 18px;" 
+                               ${formData.hasCoverage ? 'checked' : ''}
+                               onchange="formData.hasCoverage = this.checked; updateNextButton();">
+                        <span style="font-weight: 600; color: #166534; font-size: 13px;">✅ Sí, hay cobertura en mi zona</span>
+                    </label>
+                    
+                    <div class="flex gap-3 mt-5">
+                        <button onclick="closeModal('contract-modal')" style="flex: 1; padding: 10px; background: #f1f5f9; border: none; border-radius: 10px; font-weight: 600; font-size: 13px; cursor: pointer;">Cancelar</button>
+                        <button onclick="currentStep=2; renderContractStep();" style="flex: 1; padding: 10px; background: var(--primary); color: white; border: none; border-radius: 10px; font-weight: 600; font-size: 13px; cursor: pointer;" 
+                                id="step1-next" disabled>
+                            Siguiente <i class="fas fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Paso 2: Documentos
+        function renderDocumentsStep() {
+            return `
+                <div>
+                    <h4 class="font-bold text-base mb-3">📸 Documentación Requerida</h4>
+                    <p class="text-xs text-gray-600 mb-3">
+                        Necesitamos fotos de tu documento de identidad y una selfie
+                    </p>
+                    
+                    <div class="mb-3">
+                        <label style="font-size: 12px; font-weight: 600; color: #475569; display: block; margin-bottom: 4px;">Foto del ANVERSO del Carnet</label>
+                        <div class="upload-area ${formData.idFrontPhoto ? 'has-photo' : ''}" 
+                             onclick="document.getElementById('id-front-input').click()">
+                            ${formData.idFrontPhoto ? 
+                                `<img src="${formData.idFrontPhoto}" alt="Anverso">` :
+                                '<i class="fas fa-id-card text-2xl text-gray-400"></i><p style="font-size: 12px; font-weight: 600; color: #64748b;">Tocar para tomar foto</p><p style="font-size: 10px; color: #94a3b8;">Cámara trasera</p>'
+                            }
+                        </div>
+                        <input type="file" id="id-front-input" accept="image/*" capture="environment" style="display: none;"
+                               onchange="handlePhoto(event, 'idFrontPhoto')">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label style="font-size: 12px; font-weight: 600; color: #475569; display: block; margin-bottom: 4px;">Foto del REVERSO del Carnet</label>
+                        <div class="upload-area ${formData.idBackPhoto ? 'has-photo' : ''}" 
+                             onclick="document.getElementById('id-back-input').click()">
+                            ${formData.idBackPhoto ? 
+                                `<img src="${formData.idBackPhoto}" alt="Reverso">` :
+                                '<i class="fas fa-id-card text-2xl text-gray-400"></i><p style="font-size: 12px; font-weight: 600; color: #64748b;">Tocar para tomar foto</p><p style="font-size: 10px; color: #94a3b8;">Cámara trasera</p>'
+                            }
+                        </div>
+                        <input type="file" id="id-back-input" accept="image/*" capture="environment" style="display: none;"
+                               onchange="handlePhoto(event, 'idBackPhoto')">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label style="font-size: 12px; font-weight: 600; color: #475569; display: block; margin-bottom: 4px;">Selfie SOSTENIENDO tu Carnet</label>
+                        <div class="upload-area ${formData.selfiePhoto ? 'has-photo' : ''}" 
+                             onclick="document.getElementById('selfie-input').click()">
+                            ${formData.selfiePhoto ? 
+                                `<img src="${formData.selfiePhoto}" alt="Selfie">` :
+                                '<i class="fas fa-camera text-2xl text-gray-400"></i><p style="font-size: 12px; font-weight: 600; color: #64748b;">Tocar para selfie</p><p style="font-size: 10px; color: #94a3b8;">Cámara frontal</p>'
+                            }
+                        </div>
+                        <input type="file" id="selfie-input" accept="image/*" capture="user" style="display: none;"
+                               onchange="handlePhoto(event, 'selfiePhoto')">
+                    </div>
+                    
+                    <div class="flex gap-3 mt-5">
+                        <button onclick="currentStep=1; renderContractStep();" style="flex: 1; padding: 10px; background: #f1f5f9; border: none; border-radius: 10px; font-weight: 600; font-size: 13px; cursor: pointer;">
+                            <i class="fas fa-arrow-left mr-1"></i> Atrás
+                        </button>
+                        <button onclick="currentStep=3; renderContractStep();" style="flex: 1; padding: 10px; background: var(--primary); color: white; border: none; border-radius: 10px; font-weight: 600; font-size: 13px; cursor: pointer;" 
+                                id="step2-next" disabled>
+                            Siguiente <i class="fas fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Paso 3: Datos personales
+        function renderDataStep() {
+            const finalPrice = currentPlan.discount_percentage > 0 
+                ? currentPlan.price * (1 - currentPlan.discount_percentage / 100) 
+                : currentPlan.price;
+            const totalFirstPayment = finalPrice + (currentPlan.installation_fee || 0);
+
+            return `
+                <div>
+                    <h4 class="font-bold text-base mb-3">📝 Datos del Cliente</h4>
+                    
+                    <div style="margin-bottom: 10px;">
+                        <label style="font-size: 11px; font-weight: 600; color: #475569; display: block; margin-bottom: 3px;">Nombre Completo *</label>
+                        <input type="text" class="input-field" placeholder="Ej: Juan Pérez Mamani" 
+                               value="${formData.fullName}" oninput="formData.fullName = this.value; updateNextButton();" style="margin-bottom: 0;">
+                    </div>
+                    
+                    <div style="margin-bottom: 10px;">
+                        <label style="font-size: 11px; font-weight: 600; color: #475569; display: block; margin-bottom: 3px;">Número de Carnet *</label>
+                        <input type="text" class="input-field" placeholder="Ej: 12345678 LP" 
+                               value="${formData.idNumber}" oninput="formData.idNumber = this.value; updateNextButton();" style="margin-bottom: 0;">
+                    </div>
+                    
+                    <div style="margin-bottom: 10px;">
+                        <label style="font-size: 11px; font-weight: 600; color: #475569; display: block; margin-bottom: 3px;">Teléfono Principal *</label>
+                        <input type="tel" class="input-field" placeholder="Ej: 71234567" 
+                               value="${formData.phonePrimary}" oninput="formData.phonePrimary = this.value; updateNextButton();" style="margin-bottom: 0;">
+                    </div>
+                    
+                    <div style="margin-bottom: 10px;">
+                        <label style="font-size: 11px; font-weight: 600; color: #475569; display: block; margin-bottom: 3px;">Teléfono de Referencia</label>
+                        <input type="tel" class="input-field" placeholder="Otro número de contacto" 
+                               value="${formData.phoneReference}" oninput="formData.phoneReference = this.value;" style="margin-bottom: 0;">
+                    </div>
+                    
+                    <div style="margin-bottom: 10px;">
+                        <label style="font-size: 11px; font-weight: 600; color: #475569; display: block; margin-bottom: 3px;">Dirección de Instalación *</label>
+                        <textarea class="input-field" rows="2" placeholder="Av. Siempre Viva #742, Zona Central" 
+                                  oninput="formData.installationAddress = this.value; updateNextButton();" style="margin-bottom: 0;">${formData.installationAddress}</textarea>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px;">
+                        <div style="margin-bottom: 0;">
+                            <label style="font-size: 11px; font-weight: 600; color: #475569; display: block; margin-bottom: 3px;">Ciudad *</label>
+                            <input type="text" class="input-field" value="${formData.city}" 
+                                   oninput="formData.city = this.value; updateNextButton();" style="margin-bottom: 0;">
+                        </div>
+                        <div style="margin-bottom: 0;">
+                            <label style="font-size: 11px; font-weight: 600; color: #475569; display: block; margin-bottom: 3px;">Zona/Barrio</label>
+                            <input type="text" class="input-field" placeholder="Ej: Miraflores" 
+                                   value="${formData.zone}" oninput="formData.zone = this.value;" style="margin-bottom: 0;">
+                        </div>
+                    </div>
+
+                    <div style="background: #f8fafc; border-radius: 10px; padding: 12px; margin-bottom: 12px;">
+                        <p style="font-size: 12px; font-weight: 700; color: #1e40af; margin-bottom: 4px;">📦 ${currentPlan.name}</p>
+                        <p style="font-size: 11px; color: #64748b;">Velocidad: ${currentPlan.speed_mbps} Mbps</p>
+                        <p style="font-size: 11px; color: #64748b;">Precio mensual: ${formatCurrency(finalPrice)}</p>
+                        <p style="font-size: 11px; font-weight: 600; color: #1e293b;">Primer pago: ${formatCurrency(totalFirstPayment)}</p>
+                    </div>
+                    
+                    <div class="flex gap-3 mt-5">
+                        <button onclick="currentStep=2; renderContractStep();" style="flex: 1; padding: 10px; background: #f1f5f9; border: none; border-radius: 10px; font-weight: 600; font-size: 13px; cursor: pointer;">
+                            <i class="fas fa-arrow-left mr-1"></i> Atrás
+                        </button>
+                        <button onclick="confirmSubmit()" style="flex: 1; padding: 10px; background: #059669; color: white; border: none; border-radius: 10px; font-weight: 600; font-size: 13px; cursor: pointer;" 
+                                id="step3-next" disabled>
+                            <i class="fas fa-paper-plane mr-1"></i> Enviar Solicitud
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ---------- Manejo de Fotos ----------
+        function handlePhoto(event, fieldName) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                formData[fieldName] = e.target.result;
+                renderContractStep();
+                updateNextButton();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function updateNextButton() {
+            setTimeout(() => {
+                let buttonId = '';
+                let isValid = false;
+                
+                if (currentStep === 1) {
+                    isValid = formData.hasCoverage;
+                    buttonId = 'step1-next';
+                } else if (currentStep === 2) {
+                    isValid = formData.idFrontPhoto && formData.idBackPhoto && formData.selfiePhoto;
+                    buttonId = 'step2-next';
+                } else if (currentStep === 3) {
+                    isValid = formData.fullName && formData.idNumber && 
+                             formData.phonePrimary && formData.installationAddress && formData.city;
+                    buttonId = 'step3-next';
+                }
+                
+                const button = document.getElementById(buttonId);
+                if (button) {
+                    button.disabled = !isValid;
+                }
+            }, 100);
+        }
+
+        // ---------- Confirmar y Enviar ----------
+        function confirmSubmit() {
+            const finalPrice = currentPlan.discount_percentage > 0 
+                ? currentPlan.price * (1 - currentPlan.discount_percentage / 100) 
+                : currentPlan.price;
+            const totalFirstPayment = finalPrice + (currentPlan.installation_fee || 0);
+
+            document.getElementById('confirmation-text').innerHTML = `
+                <div style="background: #f8fafc; padding: 10px; border-radius: 8px; margin-bottom: 8px;">
+                    <strong>${currentPlan.name}</strong><br>
+                    <span style="font-size: 12px;">Velocidad: ${currentPlan.speed_mbps} Mbps</span><br>
+                    <span style="font-size: 12px;">Primer pago: <strong style="color: var(--primary);">${formatCurrency(totalFirstPayment)}</strong></span>
+                </div>
+                <div style="font-size: 12px;">
+                    <p><strong>Nombre:</strong> ${formData.fullName}</p>
+                    <p><strong>CI:</strong> ${formData.idNumber}</p>
+                    <p><strong>Teléfono:</strong> ${formData.phonePrimary}</p>
+                    <p><strong>Dirección:</strong> ${formData.installationAddress}</p>
+                    <p><strong>Ciudad:</strong> ${formData.city} ${formData.zone ? '- ' + formData.zone : ''}</p>
+                    <p><strong>Cobertura:</strong> ${formData.hasCoverage ? '✅ Confirmada' : '❌ No confirmada'}</p>
+                </div>
+            `;
+            
+            closeModal('contract-modal');
+            openModal('confirmation-modal');
+        }
+
+        // ---------- Enviar a Supabase y Telegram ----------
+        async function submitRequest() {
+            const confirmBtn = document.getElementById('confirm-request');
+            const confirmText = document.getElementById('confirm-request-text');
+            const confirmSpinner = document.getElementById('confirm-request-spinner');
+
+            confirmBtn.disabled = true;
+            confirmText.textContent = 'Enviando...';
+            confirmSpinner.classList.remove('hidden');
+
+            try {
+                const finalPrice = currentPlan.discount_percentage > 0 
+                    ? currentPlan.price * (1 - currentPlan.discount_percentage / 100) 
+                    : currentPlan.price;
+                const totalFirstPayment = finalPrice + (currentPlan.installation_fee || 0);
+
+                const { data: request, error } = await supabase
+                    .from('installation_requests')
+                    .insert([{
+                        user_id: currentUser.id,
+                        full_name: formData.fullName,
+                        id_number: formData.idNumber,
+                        phone_primary: formData.phonePrimary,
+                        phone_reference: formData.phoneReference || null,
+                        package_id: currentPlan.id,
+                        package_name: currentPlan.name,
+                        package_speed: currentPlan.speed_mbps,
+                        monthly_price: finalPrice,
+                        installation_fee: currentPlan.installation_fee || 0,
+                        total_first_payment: totalFirstPayment,
+                        installation_address: formData.installationAddress,
+                        city: formData.city,
+                        zone: formData.zone || null,
+                        has_coverage: formData.hasCoverage,
+                        id_front_url: formData.idFrontPhoto,
+                        id_back_url: formData.idBackPhoto,
+                        selfie_with_id_url: formData.selfiePhoto,
+                        status: 'pending'
+                    }])
+                    .select()
+                    .single();
+
+                if (error) throw error;
+
+                const telegramMessage = `
+🔔 <b>NUEVA SOLICITUD DE INTERNET</b>
+
+📦 <b>PLAN:</b> ${request.package_name}
+⚡ Velocidad: ${request.package_speed} Mbps
+💰 Precio: ${formatCurrency(request.monthly_price)}/mes
+💵 Primer pago: ${formatCurrency(request.total_first_payment)}
+
+👤 <b>CLIENTE</b>
+Nombre: ${request.full_name}
+CI: ${request.id_number}
+📞 Teléfono: ${request.phone_primary}
+📞 Referencia: ${request.phone_reference || 'No'}
+
+📍 <b>DIRECCIÓN</b>
+${request.installation_address}
+${request.city}${request.zone ? ', ' + request.zone : ''}
+
+📡 Cobertura: ${request.has_coverage ? '✅ Confirmada' : '❌ No confirmada'}
+
+📄 <b>ESTADO:</b> Pendiente de revisión
+🆔 ID: ${request.id.slice(0, 8)}
+⏰ ${new Date().toLocaleString('es-BO')}
+                `;
+
+                await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: telegramMessage,
+                        parse_mode: 'HTML'
+                    })
+                });
+
+                if (request.id_front_url) {
+                    await sendPhotoToTelegram(request.id_front_url, '📸 Anverso CI - ' + request.full_name);
+                }
+                if (request.id_back_url) {
+                    await sendPhotoToTelegram(request.id_back_url, '📸 Reverso CI - ' + request.full_name);
+                }
+                if (request.selfie_with_id_url) {
+                    await sendPhotoToTelegram(request.selfie_with_id_url, '🤳 Selfie con CI - ' + request.full_name);
+                }
+
+                document.getElementById('result-title').textContent = '¡Solicitud enviada!';
+                document.getElementById('result-message').innerHTML = `
+                    Tu solicitud <strong>#${request.id.slice(0, 8)}</strong> ha sido enviada.<br>
+                    <span class="status-badge status-pending" style="display: inline-flex; margin-top: 8px;">⏳ Pendiente</span><br>
+                    <small style="color: #64748b; display: block; margin-top: 8px;">Te contactaremos al ${formData.phonePrimary}</small>
+                `;
+                document.getElementById('result-icon').innerHTML = '<i class="fas fa-check-circle text-green-500"></i>';
+
+                closeModal('confirmation-modal');
+                openModal('result-modal');
+
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('result-title').textContent = 'Error';
+                document.getElementById('result-message').textContent = 'No se pudo enviar la solicitud. Intenta nuevamente.';
+                document.getElementById('result-icon').innerHTML = '<i class="fas fa-times-circle text-red-500"></i>';
+                closeModal('confirmation-modal');
+                openModal('result-modal');
+            } finally {
+                confirmBtn.disabled = false;
+                confirmText.textContent = 'Enviar solicitud';
+                confirmSpinner.classList.add('hidden');
+            }
+        }
+
+        async function sendPhotoToTelegram(base64Data, caption) {
+            try {
+                const response = await fetch(base64Data);
+                const blob = await response.blob();
+                
+                const formDataTelegram = new FormData();
+                formDataTelegram.append('chat_id', TELEGRAM_CHAT_ID);
+                formDataTelegram.append('photo', blob, 'documento.jpg');
+                formDataTelegram.append('caption', caption);
+
+                await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
+                    method: 'POST',
+                    body: formDataTelegram
+                });
+            } catch (error) {
+                console.error('Error sending photo:', error);
+            }
+        }
+
+        // ---------- Cargar Historial ----------
+        async function loadHistory() {
+            const { data: requests, error } = await supabase
+                .from('installation_requests')
+                .select('*')
+                .eq('user_id', currentUser.id)
+                .order('created_at', { ascending: false });
+
+            const list = document.getElementById('history-list');
+            const noHistory = document.getElementById('no-history');
+
+            if (error || !requests || requests.length === 0) {
+                list.innerHTML = '';
+                noHistory.classList.remove('hidden');
+                return;
+            }
+
+            noHistory.classList.add('hidden');
+
+            const statusMap = {
+                'pending': { class: 'status-pending', label: '⏳ Pendiente' },
+                'coverage_check': { class: 'status-pending', label: '📡 Verificando' },
+                'documents_review': { class: 'status-pending', label: '📄 Revisando docs' },
+                'approved': { class: 'status-approved', label: '✅ Aprobado' },
+                'rejected': { class: 'status-rejected', label: '❌ Rechazado' },
+                'installation_scheduled': { class: 'status-installed', label: '📅 Programado' },
+                'installed': { class: 'status-installed', label: '🎉 Instalado' },
+                'cancelled': { class: 'status-rejected', label: '🚫 Cancelado' }
+            };
+
+            list.innerHTML = requests.map(req => {
+                const status = statusMap[req.status] || statusMap['pending'];
+                return `
+                    <div class="history-item">
+                        <div class="history-item-header">
+                            <div class="history-product-name">${req.package_name}</div>
+                            <span class="status-badge ${status.class}">${status.label}</span>
+                        </div>
+                        <div class="history-detail">
+                            ${req.package_speed} Mbps | ${formatCurrency(req.monthly_price)}/mes
+                        </div>
+                        <div class="history-detail">
+                            ${new Date(req.created_at).toLocaleDateString('es-BO', { 
+                                day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' 
+                            })}
+                        </div>
+                        <div class="history-amount">Primer pago: ${formatCurrency(req.total_first_payment)}</div>
+                        ${req.status === 'rejected' && req.rejection_reason ? `
+                            <div style="background: #fee2e2; padding: 8px; border-radius: 6px; margin-top: 6px; font-size: 11px; color: #991b1b;">
+                                <strong>Motivo:</strong> ${req.rejection_reason}
+                            </div>
+                        ` : ''}
+                        ${req.installation_date ? `
+                            <div style="background: #dbeafe; padding: 8px; border-radius: 6px; margin-top: 6px; font-size: 11px; color: #1e40af;">
+                                📅 Instalación: ${new Date(req.installation_date).toLocaleDateString('es-BO')} a las ${req.installation_time || '--:--'}
+                            </div>
+                        ` : ''}
+                        <div style="font-size: 10px; color: #94a3b8; margin-top: 4px;">ID: #${req.id.slice(0, 8)}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ---------- Inicialización ----------
+        document.addEventListener('DOMContentLoaded', async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) { window.location.href = 'index.html'; return; }
+
+            currentUser = session.user;
+            currentBalance = await calculateBalance();
+            updateBalanceDisplay();
+
+            await loadPlans();
+
+            // Tabs
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+            });
+
+            // Balance modal
+            document.getElementById('close-balance-modal').addEventListener('click', () => closeModal('balance-modal'));
+            document.getElementById('close-balance-btn').addEventListener('click', () => closeModal('balance-modal'));
+
+            // Confirmation modal
+            document.getElementById('close-confirmation-modal').addEventListener('click', () => closeModal('confirmation-modal'));
+            document.getElementById('cancel-request').addEventListener('click', () => closeModal('confirmation-modal'));
+            document.getElementById('confirm-request').addEventListener('click', submitRequest);
+
+            // Result modal
+            document.getElementById('close-result-modal').addEventListener('click', () => { 
+                closeModal('result-modal'); 
+                window.location.reload(); 
+            });
+        });
+    </script>
+</body>
+</html>
