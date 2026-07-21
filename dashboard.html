@@ -1374,9 +1374,9 @@
                                     </div>
                                 </div>
                                 <div class="filter-buttons">
-                                    <button id="mobile-filter-7days" class="filter-btn active">7 días</button>
+                                    <button id="mobile-filter-7days" class="filter-btn">7 días</button>
                                     <button id="mobile-filter-30days" class="filter-btn">30 días</button>
-                                    <button id="mobile-filter-all" class="filter-btn">Todo</button>
+                                    <button id="mobile-filter-all" class="filter-btn active">Todo</button>
                                     <button id="mobile-reset-filters" class="filter-btn reset-btn">✕</button>
                                 </div>
                                 <button id="mobile-download-pdf-btn" class="filter-btn download-btn" style="width:100%;">
@@ -1733,9 +1733,9 @@
                                         <input type="date" id="date-to" class="date-input">
                                     </div>
                                     <div class="filter-buttons">
-                                        <button id="filter-7days" class="filter-btn active">7 días</button>
+                                        <button id="filter-7days" class="filter-btn">7 días</button>
                                         <button id="filter-30days" class="filter-btn">30 días</button>
-                                        <button id="filter-all" class="filter-btn">Todo</button>
+                                        <button id="filter-all" class="filter-btn active">Todo</button>
                                         <button id="reset-filters" class="filter-btn reset-btn">✕ Reset</button>
                                     </div>
                                     <button id="download-pdf-btn" class="filter-btn download-btn">
@@ -2638,21 +2638,7 @@
             const balanceElements = document.querySelectorAll('#balance, #mobile-balance');
             balanceElements.forEach(el => { if (el) el.textContent = formatCurrency(currentBalance); });
 
-            // Establecer fechas por defecto (últimos 7 días)
-            const defaultDateFrom = new Date();
-            defaultDateFrom.setDate(defaultDateFrom.getDate() - 7);
-            const defaultDateFromStr = defaultDateFrom.toISOString().split('T')[0];
-            const todayStr = new Date().toISOString().split('T')[0];
-
-            ['date-from', 'mobile-date-from'].forEach(id => {
-                const el = document.getElementById(id);
-                if (el && !el.value) el.value = defaultDateFromStr;
-            });
-            ['date-to', 'mobile-date-to'].forEach(id => {
-                const el = document.getElementById(id);
-                if (el && !el.value) el.value = todayStr;
-            });
-
+            // Por defecto se muestran TODAS las transacciones (sin rango de fechas)
             await applyFilters();
         };
 
