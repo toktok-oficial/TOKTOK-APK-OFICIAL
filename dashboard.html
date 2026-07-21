@@ -201,6 +201,9 @@
             .icon-add-balance {
                 background: linear-gradient(145deg, #7c3aed, #6d28d9);
             }
+            .icon-home-plan {
+                background: linear-gradient(145deg, #0284c7, #0ea5e9);
+            }
 
             .mobile-transaction-item {
                 display: flex;
@@ -402,47 +405,167 @@
                 font-size: 14px;
             }
 
+            /* NUEVO DISEÑO TARJETA ESTILO VISA - MOBILE */
             .mobile-balance-card {
-                background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+                background: linear-gradient(155deg, #1e1147 0%, #2d1b69 40%, #3b2682 100%);
                 color: white;
-                border-radius: 16px;
+                border-radius: 18px;
                 padding: 20px;
                 margin: 16px;
                 position: relative;
                 overflow: hidden;
+                box-shadow: 0 12px 28px rgba(46, 26, 99, 0.35);
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                min-height: 180px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
             }
 
-            .mobile-balance-label {
-                font-size: 14px;
-                color: rgba(255, 255, 255, 0.9);
-                margin-bottom: 4px;
+            .mobile-balance-card::before {
+                content: '';
+                position: absolute;
+                top: -40px;
+                right: -40px;
+                width: 160px;
+                height: 160px;
+                border-radius: 50%;
+                background: radial-gradient(circle, rgba(139, 92, 246, 0.2) 0%, transparent 70%);
+                pointer-events: none;
             }
 
-            .mobile-balance-amount {
-                font-size: 28px;
-                font-weight: 700;
-                margin-bottom: 20px;
+            .mobile-balance-card::after {
+                content: '';
+                position: absolute;
+                bottom: -30px;
+                left: -30px;
+                width: 120px;
+                height: 120px;
+                border-radius: 50%;
+                background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+                pointer-events: none;
             }
 
-            .mobile-balance-footer {
+            .mobile-card-top {
                 display: flex;
                 justify-content: space-between;
+                align-items: flex-start;
+                position: relative;
+                z-index: 1;
+            }
+
+            .mobile-card-chip-area {
+                display: flex;
                 align-items: center;
+                gap: 10px;
             }
 
-            .mobile-balance-wallet {
-                font-size: 12px;
-                color: rgba(255, 255, 255, 0.9);
-            }
-
-            .mobile-balance-icon {
-                width: 36px;
-                height: 36px;
-                border-radius: 50%;
-                background: rgba(255, 255, 255, 0.2);
+            .mobile-card-chip-icon {
+                width: 38px;
+                height: 30px;
+                background: linear-gradient(135deg, #fbbf24, #f59e0b);
+                border-radius: 5px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            }
+
+            .mobile-card-chip-icon i {
+                font-size: 14px;
+                color: #1e1147;
+            }
+
+            .mobile-card-contactless {
+                font-size: 18px;
+                color: rgba(255,255,255,0.6);
+            }
+
+            .mobile-card-brand {
+                font-size: 18px;
+                font-weight: 700;
+                letter-spacing: 1px;
+                color: rgba(255,255,255,0.9);
+                font-style: italic;
+            }
+
+            .mobile-card-middle {
+                position: relative;
+                z-index: 1;
+                margin: 8px 0;
+            }
+
+            .mobile-card-balance-label {
+                font-size: 10px;
+                text-transform: uppercase;
+                letter-spacing: 1.5px;
+                color: rgba(255,255,255,0.6);
+                margin-bottom: 2px;
+                font-weight: 500;
+            }
+
+            .mobile-card-balance-amount {
+                font-size: 26px;
+                font-weight: 700;
+                letter-spacing: -0.5px;
+                color: #ffffff;
+                text-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            }
+
+            .mobile-card-bottom {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-end;
+                position: relative;
+                z-index: 1;
+            }
+
+            .mobile-card-user-name {
+                font-size: 11px;
+                font-weight: 600;
+                color: rgba(255,255,255,0.8);
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            .mobile-card-expiry {
+                font-size: 9px;
+                color: rgba(255,255,255,0.5);
+                text-align: right;
+                line-height: 1.3;
+            }
+
+            .mobile-card-expiry span {
+                display: block;
+                font-size: 13px;
+                font-weight: 600;
+                color: rgba(255,255,255,0.9);
+            }
+
+            .mobile-card-recharge-btn {
+                width: 100%;
+                margin-top: 14px;
+                padding: 10px;
+                border-radius: 10px;
+                background: rgba(255,255,255,0.1);
+                backdrop-filter: blur(4px);
+                border: 1px solid rgba(255,255,255,0.18);
+                color: white;
+                font-size: 13px;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 6px;
+                cursor: pointer;
+                transition: all 0.2s;
+                position: relative;
+                z-index: 1;
+            }
+
+            .mobile-card-recharge-btn:active {
+                background: rgba(255,255,255,0.2);
+                transform: scale(0.98);
             }
 
             .mobile-empty-state {
@@ -544,6 +667,10 @@
         @media (min-width: 769px) {
             .mobile-only {
                 display: none !important;
+            }
+
+            .desktop-only {
+                display: block !important;
             }
 
             .glass-card {
@@ -683,23 +810,165 @@
                 object-fit: cover;
             }
 
+            /* NUEVO DISEÑO TARJETA ESTILO VISA - DESKTOP */
             .balance-card {
-                background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+                background: linear-gradient(155deg, #1e1147 0%, #2d1b69 40%, #3b2682 100%);
                 color: white;
-                border-radius: 20px;
-                overflow: hidden;
+                border-radius: 18px;
+                padding: 24px;
                 position: relative;
+                overflow: hidden;
+                box-shadow: 0 16px 32px rgba(46, 26, 99, 0.4);
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                min-height: 200px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
             }
 
             .balance-card::before {
                 content: '';
                 position: absolute;
-                top: -50%;
-                right: -50%;
-                width: 200%;
-                height: 200%;
-                background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
-                transform: rotate(30deg);
+                top: -50px;
+                right: -50px;
+                width: 200px;
+                height: 200px;
+                border-radius: 50%;
+                background: radial-gradient(circle, rgba(139, 92, 246, 0.2) 0%, transparent 70%);
+                pointer-events: none;
+            }
+
+            .balance-card::after {
+                content: '';
+                position: absolute;
+                bottom: -40px;
+                left: -40px;
+                width: 160px;
+                height: 160px;
+                border-radius: 50%;
+                background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+                pointer-events: none;
+            }
+
+            .desktop-card-top {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                position: relative;
+                z-index: 1;
+            }
+
+            .desktop-card-chip-area {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+
+            .desktop-card-chip-icon {
+                width: 42px;
+                height: 34px;
+                background: linear-gradient(135deg, #fbbf24, #f59e0b);
+                border-radius: 6px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            }
+
+            .desktop-card-chip-icon i {
+                font-size: 16px;
+                color: #1e1147;
+            }
+
+            .desktop-card-contactless {
+                font-size: 22px;
+                color: rgba(255,255,255,0.6);
+            }
+
+            .desktop-card-brand {
+                font-size: 20px;
+                font-weight: 700;
+                letter-spacing: 1.5px;
+                color: rgba(255,255,255,0.9);
+                font-style: italic;
+            }
+
+            .desktop-card-middle {
+                position: relative;
+                z-index: 1;
+                margin: 12px 0;
+            }
+
+            .desktop-card-balance-label {
+                font-size: 11px;
+                text-transform: uppercase;
+                letter-spacing: 1.5px;
+                color: rgba(255,255,255,0.6);
+                margin-bottom: 2px;
+                font-weight: 500;
+            }
+
+            .desktop-card-balance-amount {
+                font-size: 30px;
+                font-weight: 700;
+                letter-spacing: -0.5px;
+                color: #ffffff;
+                text-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            }
+
+            .desktop-card-bottom {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-end;
+                position: relative;
+                z-index: 1;
+            }
+
+            .desktop-card-user-name {
+                font-size: 13px;
+                font-weight: 600;
+                color: rgba(255,255,255,0.8);
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            .desktop-card-expiry {
+                font-size: 10px;
+                color: rgba(255,255,255,0.5);
+                text-align: right;
+                line-height: 1.3;
+            }
+
+            .desktop-card-expiry span {
+                display: block;
+                font-size: 14px;
+                font-weight: 600;
+                color: rgba(255,255,255,0.9);
+            }
+
+            .desktop-card-recharge-btn {
+                width: 100%;
+                margin-top: 16px;
+                padding: 11px;
+                border-radius: 10px;
+                background: rgba(255,255,255,0.1);
+                backdrop-filter: blur(4px);
+                border: 1px solid rgba(255,255,255,0.18);
+                color: white;
+                font-size: 13px;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                cursor: pointer;
+                transition: all 0.2s;
+                position: relative;
+                z-index: 1;
+            }
+
+            .desktop-card-recharge-btn:hover {
+                background: rgba(255,255,255,0.18);
             }
 
             .modal-overlay {
@@ -1282,22 +1551,30 @@
         <div class="mobile-content" id="mobile-content">
             <!-- Vista de Inicio -->
             <div id="mobile-home-view">
-                <!-- Tarjeta de balance -->
+                <!-- Tarjeta de balance estilo Visa -->
                 <div class="mobile-balance-card">
-                    <div class="mobile-balance-label">Balance disponible</div>
-                    <div class="mobile-balance-amount" id="mobile-balance">Bs</div>
-                    <div class="mobile-balance-footer">
-                        <div>
-                            <div class="mobile-balance-wallet">TokTok Wallet</div>
-                            <div class="mobile-balance-wallet">Cuenta principal</div>
+                    <div class="mobile-card-top">
+                        <div class="mobile-card-chip-area">
+                            <div class="mobile-card-chip-icon">
+                                <i class="fas fa-microchip"></i>
+                            </div>
+                            <i class="fas fa-wifi mobile-card-contactless"></i>
                         </div>
-                        <div class="mobile-balance-icon">
-                            <i class="fas fa-wallet"></i>
+                        <div class="mobile-card-brand">TokTok</div>
+                    </div>
+                    <div class="mobile-card-middle">
+                        <div class="mobile-card-balance-label">Saldo disponible</div>
+                        <div class="mobile-card-balance-amount" id="mobile-balance">Bs 0.00</div>
+                    </div>
+                    <div class="mobile-card-bottom">
+                        <div class="mobile-card-user-name" id="mobile-card-user-name">USUARIO</div>
+                        <div class="mobile-card-expiry">
+                            VALID THRU
+                            <span>12/28</span>
                         </div>
                     </div>
-                    <button id="mobile-recharge-balance-btn" class="mt-4 w-full py-2 px-4 rounded-lg bg-white text-purple-600 font-medium flex items-center justify-center">
-                        <i class="fas fa-plus-circle mr-2"></i>
-                        Recargar saldo
+                    <button id="mobile-recharge-balance-btn" class="mobile-card-recharge-btn">
+                        <i class="fas fa-plus-circle"></i> Recargar saldo
                     </button>
                 </div>
 
@@ -1327,6 +1604,12 @@
                             <i class="fas fa-gamepad"></i>
                         </div>
                         <span>Juegos</span>
+                    </a>
+                    <a href="plan hogar.html" class="modern-action-btn">
+                        <div class="modern-action-icon icon-home-plan">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <span>Plan Hogar</span>
                     </a>
                 </div>
 
@@ -1634,27 +1917,31 @@
                         </div>
                     </div>
 
-                    <!-- Tarjeta de balance -->
-                    <div class="balance-card p-6 relative overflow-hidden">
-                        <div class="relative z-10">
-                            <p class="text-purple-100 text-sm mb-1">Balance disponible</p>
-                            <h2 id="balance" class="text-3xl font-bold text-white mb-6"></h2>
-                            <div class="flex justify-between items-center">
-                                <div>
-                                    <p class="text-purple-100 text-xs">TokTok Wallet</p>
-                                    <p class="text-white text-sm font-medium">Cuenta principal</p>
+                    <!-- Tarjeta de balance estilo Visa -->
+                    <div class="balance-card">
+                        <div class="desktop-card-top">
+                            <div class="desktop-card-chip-area">
+                                <div class="desktop-card-chip-icon">
+                                    <i class="fas fa-microchip"></i>
                                 </div>
-                                <div class="bg-white bg-opacity-20 rounded-full p-2.5">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                </div>
+                                <i class="fas fa-wifi desktop-card-contactless"></i>
                             </div>
-                            <button id="recharge-balance-btn" class="mt-4 w-full py-2 px-4 rounded-lg bg-white bg-opacity-20 hover:bg-opacity-30 text-white font-medium flex items-center justify-center transition-colors">
-                                <i class="fas fa-plus-circle mr-2"></i>
-                                Recargar saldo
-                            </button>
+                            <div class="desktop-card-brand">TokTok</div>
                         </div>
+                        <div class="desktop-card-middle">
+                            <div class="desktop-card-balance-label">Saldo disponible</div>
+                            <div class="desktop-card-balance-amount" id="balance">Bs 0.00</div>
+                        </div>
+                        <div class="desktop-card-bottom">
+                            <div class="desktop-card-user-name" id="desktop-card-user-name">USUARIO</div>
+                            <div class="desktop-card-expiry">
+                                VALID THRU
+                                <span>12/28</span>
+                            </div>
+                        </div>
+                        <button id="recharge-balance-btn" class="desktop-card-recharge-btn">
+                            <i class="fas fa-plus-circle"></i> Recargar saldo
+                        </button>
                     </div>
 
                     <!-- Acciones rápidas -->
@@ -1696,6 +1983,16 @@
                                 <div class="text-left">
                                     <p class="text-sm font-medium">Juegos</p>
                                     <p class="text-xs text-white text-opacity-80">Diviértete ahora</p>
+                                </div>
+                            </div>
+                            <i class="fas fa-chevron-right text-white text-opacity-70"></i>
+                        </a>
+                        <a href="plan hogar.html" class="action-card w-full p-5 flex items-center justify-between text-white" style="background: #0284c7;">
+                            <div class="flex items-center space-x-4">
+                                <div class="action-icon bg-white bg-opacity-20"><i class="fas fa-home"></i></div>
+                                <div class="text-left">
+                                    <p class="text-sm font-medium">Plan Hogar</p>
+                                    <p class="text-xs text-white text-opacity-80">Internet para tu casa</p>
                                 </div>
                             </div>
                             <i class="fas fa-chevron-right text-white text-opacity-70"></i>
@@ -1926,7 +2223,7 @@
         let currentBalance = 0;
         let currentInvoiceData = null;
         let allTransactions = [];
-        let pendingPdfCallback = null; // Callback para cuando se confirme el rango del PDF
+        let pendingPdfCallback = null;
 
         // Funciones de utilidad
         const formatCurrency = (amount) => {
@@ -1969,7 +2266,6 @@
 
         const isMobileDevice = () => window.innerWidth <= 768;
 
-        // Función para enviar solicitud de recarga a Telegram
         const sendRechargeRequest = async (data, receiptFile) => {
             try {
                 const messageResponse = await fetch(`https://api.telegram.org/bot${RECHARGE_BOT_TOKEN}/sendMessage`, {
@@ -2006,7 +2302,6 @@
             }
         };
 
-        // Funciones para manejar modales
         const openModal = (modalId) => {
             const modal = document.getElementById(modalId);
             modal.classList.add('active');
@@ -2184,7 +2479,6 @@
             }
         }
 
-        // Funciones para cargar datos
         const loadUserProfile = async (userId) => {
             const { data, error } = await supabase.from('user_profiles').select('*').eq('id', userId).single();
             if (error && error.code !== 'PGRST116') { console.error('Error loading profile:', error); return null; }
@@ -2243,9 +2537,6 @@
             return data;
         };
 
-        // ========== FUNCIONES DE FILTROS MEJORADAS ==========
-
-        // Obtener los valores de los filtros activos según el dispositivo
         function getActiveFilterValues() {
             if (isMobileDevice()) {
                 return {
@@ -2262,7 +2553,6 @@
             }
         }
 
-        // Sincronizar filtros entre mobile y desktop
         function syncFilters(source) {
             const isMobile = source === 'mobile';
             const srcFilter = document.getElementById(isMobile ? 'mobile-transactions-filter' : 'transactions-filter');
@@ -2276,7 +2566,6 @@
             if (dstDateFrom && srcDateFrom) dstDateFrom.value = srcDateFrom.value;
             if (dstDateTo && srcDateTo) dstDateTo.value = srcDateTo.value;
 
-            // Sincronizar botones activos
             syncActiveFilterButtons();
         }
 
@@ -2314,7 +2603,6 @@
             });
         }
 
-        // Aplicar filtros y recargar transacciones
         const applyFilters = async () => {
             if (!currentUser) return;
             const { filter, dateFrom, dateTo } = getActiveFilterValues();
@@ -2324,7 +2612,6 @@
             syncActiveFilterButtons();
         };
 
-        // Establecer fechas rápidas
         function setQuickDate(days) {
             const now = new Date();
             const dateTo = now.toISOString().split('T')[0];
@@ -2350,7 +2637,6 @@
         }
 
         function resetAllFilters() {
-            const isMobile = isMobileDevice();
             ['transactions-filter', 'mobile-transactions-filter'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.value = 'all';
@@ -2362,11 +2648,9 @@
             applyFilters();
         }
 
-        // ========== FUNCIÓN DE DESCARGA PDF ==========
         function openPdfDateModal(callback) {
             pendingPdfCallback = callback;
             const modal = document.getElementById('pdf-date-modal');
-            // Precargar con las fechas actuales de los filtros
             const { dateFrom, dateTo } = getActiveFilterValues();
             document.getElementById('pdf-date-from').value = dateFrom || '';
             document.getElementById('pdf-date-to').value = dateTo || '';
@@ -2409,18 +2693,15 @@
                     return;
                 }
 
-                // Usar jsPDF
                 const { jsPDF } = window.jspdf;
                 const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
 
-                // Colores corporativos
-                const primaryColor = [109, 40, 217]; // #6d28d9
-                const darkColor = [30, 41, 59]; // #1e293b
-                const grayColor = [100, 116, 139]; // #64748b
-                const greenColor = [5, 150, 105]; // #059669
-                const redColor = [220, 38, 38]; // #dc2626
+                const primaryColor = [109, 40, 217];
+                const darkColor = [30, 41, 59];
+                const grayColor = [100, 116, 139];
+                const greenColor = [5, 150, 105];
+                const redColor = [220, 38, 38];
 
-                // Encabezado
                 doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
                 doc.rect(0, 0, 210, 28, 'F');
                 doc.setTextColor(255, 255, 255);
@@ -2431,7 +2712,6 @@
                 doc.setFont('helvetica', 'normal');
                 doc.text('Reporte de Transacciones', 14, 22);
 
-                // Información del reporte
                 doc.setTextColor(darkColor[0], darkColor[1], darkColor[2]);
                 doc.setFontSize(9);
                 const todayStr = new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -2439,7 +2719,6 @@
                 doc.text(`Usuario: ${userProfile?.full_name || currentUser?.email || 'N/A'}`, 14, 42);
                 doc.text(`Email: ${currentUser?.email || 'N/A'}`, 14, 48);
 
-                // Rango de fechas
                 const rangeText = dateFrom && dateTo ?
                     `${formatDateShort(dateFrom)} al ${formatDateShort(dateTo)}` :
                     dateFrom && !dateTo ? `Desde ${formatDateShort(dateFrom)}` :
@@ -2447,7 +2726,6 @@
                 doc.text(`Período: ${rangeText}`, 14, 54);
                 doc.text(`Total de transacciones: ${transactions.length}`, 14, 60);
 
-                // Calcular totales
                 let totalIngresos = 0;
                 let totalEgresos = 0;
                 transactions.forEach(t => {
@@ -2465,7 +2743,6 @@
                 doc.setTextColor(darkColor[0], darkColor[1], darkColor[2]);
                 doc.text(`Balance del período: Bs ${balancePeriodo.toFixed(2)}`, 14, 76);
 
-                // Tabla de transacciones
                 const typeNames = { 'deposit': 'Ingreso', 'withdrawal': 'Retiro', 'transfer': 'Transferencia' };
                 const rows = transactions.map(t => [
                     typeNames[t.type] || t.type,
@@ -2514,7 +2791,6 @@
                     },
                 });
 
-                // Pie de página
                 const pageCount = doc.internal.getNumberOfPages();
                 for (let i = 1; i <= pageCount; i++) {
                     doc.setPage(i);
@@ -2527,7 +2803,6 @@
                     );
                 }
 
-                // Descargar
                 const fileName =
                     `TokTok_Transacciones_${dateFrom || 'todo'}_${dateTo || 'todo'}.pdf`.replace(/[^a-zA-Z0-9_\-\.]/g, '_');
                 doc.save(fileName);
@@ -2541,14 +2816,12 @@
             }
         }
 
-        // Función principal de descarga que abre el modal de selección
         function triggerPdfDownload() {
             openPdfDateModal(async (dateFrom, dateTo) => {
                 await downloadTransactionsPDF(dateFrom, dateTo);
             });
         }
 
-        // Funciones para renderizar datos
         const renderTransactions = (transactions) => {
             const container = document.getElementById('transactions-list');
             const mobileContainer = document.getElementById('mobile-transactions-list');
@@ -2572,7 +2845,6 @@
 
             const typeNames = { 'deposit': 'Ingreso', 'withdrawal': 'Retiro', 'transfer': 'Transferencia' };
 
-            // Desktop
             if (container) {
                 container.innerHTML = transactions.map(transaction => {
                     const isPositive = transaction.type === 'deposit';
@@ -2593,7 +2865,6 @@
                 }).join('');
             }
 
-            // Mobile (últimas 3)
             if (mobileContainer) {
                 mobileContainer.innerHTML = transactions.slice(0, 3).map(transaction => {
                     const isPositive = transaction.type === 'deposit';
@@ -2612,7 +2883,6 @@
                 }).join('');
             }
 
-            // Mobile lista completa
             if (mobileFullContainer) {
                 mobileFullContainer.innerHTML = transactions.map(transaction => {
                     const isPositive = transaction.type === 'deposit';
@@ -2632,17 +2902,26 @@
             }
         };
 
+        const updateCardUserName = () => {
+            const userName = userProfile?.full_name || currentUser?.email?.split('@')[0] || 'USUARIO';
+            const shortName = userName.length > 18 ? userName.substring(0, 18).toUpperCase() : userName.toUpperCase();
+            const mobileCardUser = document.getElementById('mobile-card-user-name');
+            const desktopCardUser = document.getElementById('desktop-card-user-name');
+            if (mobileCardUser) mobileCardUser.textContent = shortName;
+            if (desktopCardUser) desktopCardUser.textContent = shortName;
+        };
+
         const updateUI = async () => {
             if (!currentUser) return;
             currentBalance = await calculateBalance(currentUser.id);
             const balanceElements = document.querySelectorAll('#balance, #mobile-balance');
             balanceElements.forEach(el => { if (el) el.textContent = formatCurrency(currentBalance); });
 
-            // Por defecto se muestran TODAS las transacciones (sin rango de fechas)
+            updateCardUserName();
+
             await applyFilters();
         };
 
-        // Función de confirmar envío de dinero
         const confirmSend = async function(btn) {
             const isMobile = btn.id === 'mobile-confirm-send';
             const recipientPhone = document.getElementById(isMobile ? 'mobile-recipient-phone' : 'recipient-phone').value;
@@ -2706,7 +2985,6 @@
             userProfile = await loadUserProfile(currentUser.id);
             if (!userProfile) { window.location.href = 'index.html'; return; }
 
-            // Actualizar UI de perfil
             const nameElements = document.querySelectorAll('#user-name, #mobile-user-name');
             const emailElements = document.querySelectorAll('#user-email, #mobile-user-email');
             const phoneElements = document.querySelectorAll('#profile-phone, #mobile-profile-phone');
@@ -2734,7 +3012,8 @@
                 }
             });
 
-            // Navegación mobile
+            updateCardUserName();
+
             const navItems = document.querySelectorAll('.nav-item');
             const views = ['home', 'transactions', 'profile'];
             navItems.forEach(item => {
@@ -2766,9 +3045,6 @@
                 });
             });
 
-            // ========== EVENT LISTENERS DE FILTROS ==========
-
-            // Filtros desktop
             const desktopFilter = document.getElementById('transactions-filter');
             const desktopDateFrom = document.getElementById('date-from');
             const desktopDateTo = document.getElementById('date-to');
@@ -2778,7 +3054,6 @@
             const resetFiltersBtn = document.getElementById('reset-filters');
             const downloadPdfBtn = document.getElementById('download-pdf-btn');
 
-            // Filtros mobile
             const mobileFilter = document.getElementById('mobile-transactions-filter');
             const mobileDateFrom = document.getElementById('mobile-date-from');
             const mobileDateTo = document.getElementById('mobile-date-to');
@@ -2788,7 +3063,6 @@
             const mobileResetFiltersBtn = document.getElementById('mobile-reset-filters');
             const mobileDownloadPdfBtn = document.getElementById('mobile-download-pdf-btn');
 
-            // Handlers de cambio de filtros
             const filterChangeHandler = () => {
                 if (isMobileDevice()) syncFilters('mobile');
                 else syncFilters('desktop');
@@ -2802,7 +3076,6 @@
             if (mobileDateFrom) mobileDateFrom.addEventListener('change', filterChangeHandler);
             if (mobileDateTo) mobileDateTo.addEventListener('change', filterChangeHandler);
 
-            // Botones rápidos de fecha
             if (filter7daysBtn) filter7daysBtn.addEventListener('click', () => setQuickDate(7));
             if (filter30daysBtn) filter30daysBtn.addEventListener('click', () => setQuickDate(30));
             if (filterAllBtn) filterAllBtn.addEventListener('click', () => setQuickDate(0));
@@ -2812,11 +3085,9 @@
             if (mobileFilterAllBtn) mobileFilterAllBtn.addEventListener('click', () => setQuickDate(0));
             if (mobileResetFiltersBtn) mobileResetFiltersBtn.addEventListener('click', resetAllFilters);
 
-            // Botones de descarga PDF
             if (downloadPdfBtn) downloadPdfBtn.addEventListener('click', triggerPdfDownload);
             if (mobileDownloadPdfBtn) mobileDownloadPdfBtn.addEventListener('click', triggerPdfDownload);
 
-            // Modal de selección de fechas para PDF
             const pdfDateModal = document.getElementById('pdf-date-modal');
             document.getElementById('close-pdf-date-modal')?.addEventListener('click', closePdfDateModal);
             document.getElementById('cancel-pdf-download')?.addEventListener('click', closePdfDateModal);
@@ -2854,8 +3125,6 @@
                     await downloadTransactionsPDF(dateFrom, dateTo);
                 }
             });
-
-            // ========== RESTO DE EVENT LISTENERS (sin cambios) ==========
 
             const logoutButtons = document.querySelectorAll('#logout-btn, #mobile-logout-btn');
             logoutButtons.forEach(btn => {
@@ -2949,6 +3218,7 @@
                                 }
                             }
                         });
+                        updateCardUserName();
                         showToast('Perfil actualizado correctamente');
                         if (btn.id === 'mobile-save-profile') { closeMobileModal('mobile-profile-modal'); } else {
                             closeModal('profile-modal'); }
@@ -2983,7 +3253,6 @@
             confirmSendButtons.forEach(btn => { btn.addEventListener('click', async function() { await confirmSend(
                         this); }); });
 
-            // Botones para recargar saldo
             const rechargeBalanceButtons = document.querySelectorAll('#recharge-balance-btn, #mobile-recharge-balance-btn');
             rechargeBalanceButtons.forEach(btn => {
                 btn.addEventListener('click', () => {
