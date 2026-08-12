@@ -97,6 +97,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 12px;
             border-bottom: 1px solid transparent;
         }
         .app-bar.scrolled { border-bottom-color: var(--border); }
@@ -109,6 +110,8 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            flex: 1;
+            text-align: center;
         }
 
         .icon-btn {
@@ -211,16 +214,23 @@
         }
 
         .operator-logo {
-            width: 54px;
-            height: 54px;
+            width: 64px;
+            height: 64px;
             border-radius: var(--shape-m);
             margin: 0 auto 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-            color: white;
-            box-shadow: 0 6px 14px rgba(0,0,0,0.14);
+            overflow: hidden;
+            background: var(--surface-alt);
+            border: 2px solid var(--border);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .operator-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .operator-card .op-name { font-size: 13px; font-weight: 700; color: var(--text); letter-spacing: -0.1px; }
@@ -734,8 +744,9 @@
         .step-screen { transition: opacity 0.3s ease; }
 
         .back-button {
-            width: 38px;
-            height: 38px;
+            width: 44px;
+            height: 44px;
+            min-width: 44px;
             border-radius: var(--shape-full);
             display: flex;
             align-items: center;
@@ -743,9 +754,23 @@
             color: var(--primary);
             cursor: pointer;
             background: var(--primary-light);
-            border: 1px solid var(--border-strong);
+            border: 2px solid var(--primary-soft);
+            transition: all 0.2s ease;
+            font-size: 18px;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
         }
-        .back-button:active { background: var(--primary-soft); }
+        .back-button:active { 
+            background: var(--primary-soft); 
+            transform: scale(0.92);
+            border-color: var(--primary);
+        }
+        .back-button:focus {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
 
         /* ============ WhatsApp float ============ */
         .whatsapp-float {
@@ -790,13 +815,24 @@
             display: inline-block;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Mejoras para móvil */
+        @media (max-width: 380px) {
+            .app-bar { padding: 16px 0 12px; }
+            .app-bar-title { font-size: 18px; }
+            .balance-chip { padding: 7px 12px; font-size: 12px; }
+            .back-button { width: 40px; height: 40px; min-width: 40px; }
+            .section-headline { font-size: 22px; }
+            .operators-grid { gap: 8px; }
+            .operator-logo { width: 52px; height: 52px; }
+        }
     </style>
 </head>
 <body>
     <div class="app-shell">
         <div class="screen">
             <div class="app-bar" id="app-bar">
-                <div class="back-button hidden" id="back-to-operators">
+                <div class="back-button hidden" id="back-to-operators" role="button" aria-label="Volver atrás">
                     <i class="fas fa-arrow-left"></i>
                 </div>
                 <div class="app-bar-title">TokTok Recargas</div>
@@ -1069,6 +1105,13 @@
                 viva: { packages: [{ token: '8794091027:AAG36PsetBQY3oqGQzGw39rZhbOaBAaE41A', chatId: '-1003760488575' },{ token: '8794091027:AAG36PsetBQY3oqGQzGw39rZhbOaBAaE41A', chatId: '-1003331710456' }], paso: { token: '8794091027:AAG36PsetBQY3oqGQzGw39rZhbOaBAaE41A', chatId: '-1003982922759' } }
             };
 
+            // URLs de imágenes de operadores
+            const OPERATOR_IMAGES = {
+                entel: 'https://mir-s3-cdn-cf.behance.net/project_modules/1400/591606143398369.627a1936bea3a.png',
+                tigo: 'https://dplnews.com/wp-content/uploads/2020/06/dplnews_tigo_mc090620.jpg',
+                viva: 'https://cdn.bitrefill.com/primg/i1w800h800/viva-bolivia.webp'
+            };
+
             let currentUser = null;
             let currentBalance = 0;
             let operators = [];
@@ -1108,7 +1151,6 @@
                 });
                 if (step !== 3) document.getElementById('summary-sheet').classList.remove('active');
                 currentStep = step;
-                document.getElementById('screen-scroll-target')?.scrollTo?.(0, 0);
                 document.querySelector('.screen').scrollTop = 0;
             }
 
@@ -1183,11 +1225,13 @@
             function renderOperators() {
                 const container = document.getElementById('operators-container');
                 container.innerHTML = operators.map(op => {
-                    let bgColor = '#6D28D9', icon = 'fas fa-sim-card';
-                    if (op.code?.toLowerCase() === 'entel') { bgColor = '#0B63C5'; icon = 'fas fa-signal'; }
-                    else if (op.code?.toLowerCase() === 'tigo') { bgColor = '#1E1B8F'; icon = 'fas fa-signal'; }
-                    else if (op.code?.toLowerCase() === 'viva') { bgColor = '#2E9E12'; icon = 'fas fa-signal'; }
-                    return `<div class="operator-card" data-id="${op.id}" data-code="${op.code}"><div class="operator-logo" style="background: ${bgColor};"><i class="${icon}"></i></div><div class="op-name">${op.name}</div></div>`;
+                    const imgUrl = OPERATOR_IMAGES[op.code?.toLowerCase()] || '';
+                    return `<div class="operator-card" data-id="${op.id}" data-code="${op.code}">
+                        <div class="operator-logo">
+                            ${imgUrl ? `<img src="${imgUrl}" alt="${op.name}" loading="lazy" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\'fas fa-sim-card\' style=\'font-size:24px;color:var(--primary);\'></i>'">` : '<i class="fas fa-sim-card" style="font-size:24px;color:var(--primary);"></i>'}
+                        </div>
+                        <div class="op-name">${op.name}</div>
+                    </div>`;
                 }).join('');
                 document.querySelectorAll('.operator-card').forEach(card => card.addEventListener('click', () => selectOperator(card.dataset.id)));
             }
@@ -1199,10 +1243,48 @@
                 await loadRechargeTypes(id);
             }
 
-            document.getElementById('back-to-operators')?.addEventListener('click', () => {
-                if (currentStep === 3) { showStep(2); }
-                else if (currentStep === 2) { showStep(1); }
+            // Botón de retroceso optimizado
+            document.getElementById('back-to-operators')?.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (currentStep === 3) { 
+                    showStep(2); 
+                    // Limpiar selección de paquete
+                    selectedPackage = null;
+                }
+                else if (currentStep === 2) { 
+                    showStep(1); 
+                    selectedOperator = null;
+                }
             });
+
+            // También permitir retroceso con gesto de swipe en móvil
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            document.querySelector('.screen').addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+
+            document.querySelector('.screen').addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }, { passive: true });
+
+            function handleSwipe() {
+                const swipeThreshold = 100;
+                const swipeDistance = touchEndX - touchStartX;
+                
+                if (swipeDistance > swipeThreshold) {
+                    // Swipe hacia la derecha = ir atrás
+                    if (currentStep === 3) {
+                        showStep(2);
+                        selectedPackage = null;
+                    } else if (currentStep === 2) {
+                        showStep(1);
+                        selectedOperator = null;
+                    }
+                }
+            }
 
             async function loadRechargeTypes(operatorId) {
                 const { data } = await supabase.from('recharge_types').select('*').eq('operator_id', operatorId).eq('is_active', true).order('display_order');
