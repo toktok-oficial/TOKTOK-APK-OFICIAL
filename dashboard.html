@@ -2,157 +2,3491 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>TokTok - Mantenimiento</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TokTok</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#6d28d9">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js">
+    </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --primary: #6d28d9;
+            --primary-dark: #5b21b6;
+            --secondary: #059669;
+            --secondary-dark: #047857;
+            --accent: #f59e0b;
+            --accent-dark: #d97706;
+            --safe-area-inset-top: env(safe-area-inset-top);
+            --safe-area-inset-bottom: env(safe-area-inset-bottom);
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #7C3AED 0%, #5B21B6 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            padding-top: var(--safe-area-inset-top);
+            padding-bottom: var(--safe-area-inset-bottom);
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .maintenance-container {
-            text-align: center;
-            color: white;
-            max-width: 400px;
-            width: 100%;
-        }
-
-        .maintenance-icon {
-            width: 80px;
-            height: 80px;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 30px;
-            font-size: 35px;
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            animation: pulse 2s infinite;
-        }
-
-        .maintenance-title {
-            font-size: 32px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            margin-bottom: 10px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-
-        .maintenance-subtitle {
-            font-size: 16px;
-            font-weight: 500;
-            opacity: 0.9;
-            margin-bottom: 40px;
-            line-height: 1.5;
-        }
-
-        .loading-dots {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 30px;
-        }
-
-        .loading-dot {
-            width: 10px;
-            height: 10px;
-            background: white;
-            border-radius: 50%;
-            animation: bounce 1.4s infinite;
-        }
-
-        .loading-dot:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .loading-dot:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-
-        .maintenance-footer {
-            font-size: 13px;
-            opacity: 0.7;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-        }
-
-        .brand-toktok {
-            font-size: 18px;
-            font-weight: 900;
-            letter-spacing: -0.3px;
-            background: rgba(255, 255, 255, 0.2);
-            display: inline-block;
-            padding: 8px 20px;
-            border-radius: 50px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            margin-bottom: 25px;
-        }
-
-        @keyframes bounce {
-            0%, 60%, 100% {
-                transform: translateY(0);
-                opacity: 0.4;
+        @media (max-width: 768px) {
+            body {
+                background-color: white;
+                max-width: 100vw;
+                overflow-x: hidden;
             }
-            30% {
-                transform: translateY(-15px);
+
+            main {
+                padding-left: 0;
+                padding-right: 0;
+            }
+
+            .mobile-app-container {
+                max-width: 100%;
+                margin: 0 auto;
+                position: relative;
+                height: 100vh;
+                height: calc(var(--vh, 1vh) * 100);
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .mobile-content {
+                flex: 1;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                padding-bottom: 60px;
+            }
+
+            .mobile-bottom-nav {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 60px;
+                background: white;
+                border-top: 1px solid #e2e8f0;
+                display: flex;
+                z-index: 50;
+                padding-bottom: var(--safe-area-inset-bottom);
+            }
+
+            .nav-item {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                color: #64748b;
+                font-size: 10px;
+                text-decoration: none;
+                transition: all 0.2s;
+            }
+
+            .nav-item i {
+                font-size: 20px;
+                margin-bottom: 4px;
+            }
+
+            .nav-item.active {
+                color: var(--primary);
+            }
+
+            .mobile-header {
+                position: sticky;
+                top: 0;
+                z-index: 40;
+                background: white;
+                padding: 12px 16px;
+                border-bottom: 1px solid #f1f5f9;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding-top: calc(12px + var(--safe-area-inset-top));
+            }
+
+            .mobile-header-title {
+                font-size: 18px;
+                font-weight: 600;
+                color: #1e293b;
+            }
+
+            .mobile-header-actions {
+                display: flex;
+                align-items: center;
+            }
+
+            .mobile-card {
+                background: white;
+                border-radius: 12px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+                margin: 16px;
+                overflow: hidden;
+            }
+
+            .mobile-section-title {
+                font-size: 16px;
+                font-weight: 600;
+                color: #1e293b;
+                margin: 16px 16px 8px;
+            }
+
+            .quick-actions-grid {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 8px;
+                margin: 0 16px 16px 16px;
+            }
+
+            .modern-action-btn {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                background: white;
+                border-radius: 16px;
+                padding: 10px 4px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+                transition: all 0.2s ease;
+                border: 1px solid #f1f5f9;
+                text-decoration: none;
+                color: #1e293b;
+            }
+
+            .modern-action-btn:active {
+                transform: scale(0.96);
+                background: #f8fafc;
+            }
+
+            .modern-action-icon {
+                width: 44px;
+                height: 44px;
+                border-radius: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 6px;
+                font-size: 18px;
+                color: white;
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            }
+
+            .modern-action-btn span {
+                font-size: 11px;
+                font-weight: 500;
+                color: #475569;
+                text-align: center;
+            }
+
+            .icon-send {
+                background: linear-gradient(145deg, #6d28d9, #8b5cf6);
+            }
+            .icon-store {
+                background: linear-gradient(145deg, #094292, #1e4b8f);
+            }
+            .icon-recharge {
+                background: linear-gradient(145deg, #0b5e42, #059669);
+            }
+            .icon-games {
+                background: linear-gradient(145deg, #f59e0b, #fbbf24);
+            }
+            .icon-add-balance {
+                background: linear-gradient(145deg, #7c3aed, #6d28d9);
+            }
+            .icon-home-plan {
+                background: linear-gradient(145deg, #0284c7, #0ea5e9);
+            }
+
+            .mobile-transaction-item {
+                display: flex;
+                align-items: center;
+                padding: 12px 16px;
+                border-bottom: 1px solid #f1f5f9;
+            }
+
+            .mobile-transaction-icon {
+                width: 40px;
+                height: 40px;
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-right: 12px;
+                font-size: 18px;
+            }
+
+            .mobile-transaction-details {
+                flex: 1;
+            }
+
+            .mobile-transaction-title {
+                font-size: 14px;
+                font-weight: 500;
+                color: #1e293b;
+                margin-bottom: 2px;
+            }
+
+            .mobile-transaction-date {
+                font-size: 12px;
+                color: #64748b;
+            }
+
+            .mobile-transaction-amount {
+                font-size: 14px;
+                font-weight: 600;
+            }
+
+            .mobile-tabs {
+                display: flex;
+                border-bottom: 1px solid #e2e8f0;
+                margin: 0 16px;
+            }
+
+            .mobile-tab {
+                flex: 1;
+                text-align: center;
+                padding: 12px 0;
+                font-size: 14px;
+                font-weight: 500;
+                color: #64748b;
+                position: relative;
+            }
+
+            .mobile-tab.active {
+                color: var(--primary);
+            }
+
+            .mobile-tab.active::after {
+                content: '';
+                position: absolute;
+                bottom: -1px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 40%;
+                height: 2px;
+                background: var(--primary);
+                border-radius: 2px;
+            }
+
+            .mobile-modal {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 100;
+                display: flex;
+                align-items: flex-end;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s;
+            }
+
+            .mobile-modal.active {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .mobile-modal-content {
+                background: white;
+                width: 100%;
+                border-radius: 24px 24px 0 0;
+                padding: 24px;
+                transform: translateY(100%);
+                transition: all 0.3s;
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+
+            .mobile-modal.active .mobile-modal-content {
+                transform: translateY(0);
+            }
+
+            .mobile-modal-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+
+            .mobile-modal-title {
+                font-size: 18px;
+                font-weight: 600;
+                color: #1e293b;
+            }
+
+            .mobile-modal-close {
+                color: #64748b;
+                font-size: 20px;
+            }
+
+            .mobile-input {
+                width: 100%;
+                padding: 14px 16px;
+                border: 1px solid #e2e8f0;
+                border-radius: 12px;
+                font-size: 16px;
+                margin-bottom: 16px;
+                background: #f8fafc;
+            }
+
+            .mobile-input:focus {
+                border-color: var(--primary);
+                outline: none;
+                background: white;
+            }
+
+            .mobile-btn {
+                width: 100%;
+                padding: 14px;
+                border-radius: 12px;
+                font-size: 16px;
+                font-weight: 500;
+                text-align: center;
+                margin-top: 8px;
+            }
+
+            .mobile-btn-primary {
+                background: var(--primary);
+                color: white;
+            }
+
+            .mobile-btn-secondary {
+                background: #f1f5f9;
+                color: #334155;
+            }
+
+            .mobile-avatar {
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+                background: #ede9fe;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 24px;
+                font-weight: 600;
+                color: var(--primary);
+                margin: 0 auto 16px;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .mobile-avatar img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            .mobile-profile-item {
+                display: flex;
+                justify-content: space-between;
+                padding: 12px 0;
+                border-bottom: 1px solid #f1f5f9;
+            }
+
+            .mobile-profile-label {
+                color: #64748b;
+                font-size: 14px;
+            }
+
+            .mobile-profile-value {
+                color: #1e293b;
+                font-weight: 500;
+                font-size: 14px;
+            }
+
+            /* NUEVO DISEÑO TARJETA ESTILO VISA - MOBILE */
+            .mobile-balance-card {
+                background: linear-gradient(155deg, #1e1147 0%, #2d1b69 40%, #3b2682 100%);
+                color: white;
+                border-radius: 18px;
+                padding: 20px;
+                margin: 16px;
+                position: relative;
+                overflow: hidden;
+                box-shadow: 0 12px 28px rgba(46, 26, 99, 0.35);
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                min-height: 180px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+
+            .mobile-balance-card::before {
+                content: '';
+                position: absolute;
+                top: -40px;
+                right: -40px;
+                width: 160px;
+                height: 160px;
+                border-radius: 50%;
+                background: radial-gradient(circle, rgba(139, 92, 246, 0.2) 0%, transparent 70%);
+                pointer-events: none;
+            }
+
+            .mobile-balance-card::after {
+                content: '';
+                position: absolute;
+                bottom: -30px;
+                left: -30px;
+                width: 120px;
+                height: 120px;
+                border-radius: 50%;
+                background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+                pointer-events: none;
+            }
+
+            .mobile-card-top {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                position: relative;
+                z-index: 1;
+            }
+
+            .mobile-card-chip-area {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .mobile-card-chip-icon {
+                width: 38px;
+                height: 30px;
+                background: linear-gradient(135deg, #fbbf24, #f59e0b);
+                border-radius: 5px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            }
+
+            .mobile-card-chip-icon i {
+                font-size: 14px;
+                color: #1e1147;
+            }
+
+            .mobile-card-contactless {
+                font-size: 18px;
+                color: rgba(255,255,255,0.6);
+            }
+
+            .mobile-card-brand {
+                font-size: 18px;
+                font-weight: 700;
+                letter-spacing: 1px;
+                color: rgba(255,255,255,0.9);
+                font-style: italic;
+            }
+
+            .mobile-card-middle {
+                position: relative;
+                z-index: 1;
+                margin: 8px 0;
+            }
+
+            .mobile-card-balance-label {
+                font-size: 10px;
+                text-transform: uppercase;
+                letter-spacing: 1.5px;
+                color: rgba(255,255,255,0.6);
+                margin-bottom: 2px;
+                font-weight: 500;
+            }
+
+            .mobile-card-balance-amount {
+                font-size: 26px;
+                font-weight: 700;
+                letter-spacing: -0.5px;
+                color: #ffffff;
+                text-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            }
+
+            .mobile-card-bottom {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-end;
+                position: relative;
+                z-index: 1;
+            }
+
+            .mobile-card-user-name {
+                font-size: 11px;
+                font-weight: 600;
+                color: rgba(255,255,255,0.8);
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            .mobile-card-expiry {
+                font-size: 9px;
+                color: rgba(255,255,255,0.5);
+                text-align: right;
+                line-height: 1.3;
+            }
+
+            .mobile-card-expiry span {
+                display: block;
+                font-size: 13px;
+                font-weight: 600;
+                color: rgba(255,255,255,0.9);
+            }
+
+            .mobile-card-recharge-btn {
+                width: 100%;
+                margin-top: 14px;
+                padding: 10px;
+                border-radius: 10px;
+                background: rgba(255,255,255,0.1);
+                backdrop-filter: blur(4px);
+                border: 1px solid rgba(255,255,255,0.18);
+                color: white;
+                font-size: 13px;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 6px;
+                cursor: pointer;
+                transition: all 0.2s;
+                position: relative;
+                z-index: 1;
+            }
+
+            .mobile-card-recharge-btn:active {
+                background: rgba(255,255,255,0.2);
+                transform: scale(0.98);
+            }
+
+            .mobile-empty-state {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 40px 16px;
+                text-align: center;
+            }
+
+            .mobile-empty-icon {
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                background: #f1f5f9;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 16px;
+                color: #94a3b8;
+                font-size: 24px;
+            }
+
+            .mobile-empty-text {
+                color: #64748b;
+                font-size: 14px;
+                margin-top: 8px;
+            }
+
+            .mobile-input:disabled,
+            .input-field:disabled {
+                background-color: #e2e8f0;
+                color: #64748b;
+                cursor: not-allowed;
+            }
+
+            .desktop-only {
+                display: none !important;
+            }
+
+            .creator-code-input {
+                background: #fff3cd;
+                border-color: #ffc107;
+                color: #856404;
+                font-weight: 500;
+            }
+
+            .creator-code-input:focus {
+                border-color: #ffc107;
+                box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.1);
+                background: #fff;
+            }
+
+            .qr-code-container {
+                display: flex;
+                justify-content: center;
+                margin: 20px 0;
+            }
+
+            .qr-code {
+                width: 200px;
+                height: 200px;
+                border: 1px solid #e2e8f0;
+                border-radius: 12px;
+                padding: 10px;
+                background: white;
+            }
+
+            .file-input-label {
+                display: block;
+                width: 100%;
+                padding: 12px;
+                border: 1px dashed #e2e8f0;
+                border-radius: 12px;
+                text-align: center;
+                cursor: pointer;
+                margin-bottom: 16px;
+                transition: all 0.2s;
+            }
+
+            .file-input-label:hover {
+                border-color: var(--primary);
+                background: #f5f3ff;
+            }
+
+            .file-input-label i {
+                margin-right: 8px;
+            }
+
+            .file-name {
+                font-size: 12px;
+                color: #64748b;
+                margin-top: 8px;
+                word-break: break-all;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-only {
+                display: none !important;
+            }
+
+            .desktop-only {
+                display: block !important;
+            }
+
+            .glass-card {
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+            }
+
+            .btn-primary {
+                background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+                box-shadow: 0 4px 20px rgba(109, 40, 217, 0.3);
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            .btn-primary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(109, 40, 217, 0.4);
+            }
+
+            .btn-secondary {
+                background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+                box-shadow: 0 4px 20px rgba(5, 150, 105, 0.3);
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            .btn-secondary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(5, 150, 105, 0.4);
+            }
+
+            .action-card {
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                border-radius: 16px;
+                overflow: hidden;
+                position: relative;
+            }
+
+            .action-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1));
+                opacity: 0;
+                transition: opacity 0.3s;
+            }
+
+            .action-card:hover::before {
                 opacity: 1;
             }
+
+            .action-card:hover {
+                transform: translateY(-5px);
+            }
+
+            .action-icon {
+                width: 48px;
+                height: 48px;
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.25rem;
+                transition: transform 0.3s;
+            }
+
+            .action-card:hover .action-icon {
+                transform: scale(1.1);
+            }
+
+            .card {
+                border-radius: 20px;
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.03);
+                transition: all 0.3s;
+                border: 1px solid rgba(226, 232, 240, 0.7);
+                background: white;
+            }
+
+            .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+            }
+
+            .tab-active {
+                position: relative;
+                color: var(--primary);
+                font-weight: 600;
+            }
+
+            .tab-active::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 40%;
+                height: 3px;
+                background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+                border-radius: 3px 3px 0 0;
+            }
+
+            .transaction-item {
+                transition: all 0.2s ease;
+                border-radius: 12px;
+            }
+
+            .transaction-item:hover {
+                background-color: #f8fafc;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+            }
+
+            .avatar {
+                width: 88px;
+                height: 88px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 2rem;
+                font-weight: 600;
+                color: var(--primary);
+                background-color: #ede9fe;
+                border: 4px solid white;
+                box-shadow: 0 8px 25px rgba(109, 40, 217, 0.1);
+                position: relative;
+                overflow: hidden;
+            }
+
+            .avatar img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            /* NUEVO DISEÑO TARJETA ESTILO VISA - DESKTOP */
+            .balance-card {
+                background: linear-gradient(155deg, #1e1147 0%, #2d1b69 40%, #3b2682 100%);
+                color: white;
+                border-radius: 18px;
+                padding: 24px;
+                position: relative;
+                overflow: hidden;
+                box-shadow: 0 16px 32px rgba(46, 26, 99, 0.4);
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                min-height: 200px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+
+            .balance-card::before {
+                content: '';
+                position: absolute;
+                top: -50px;
+                right: -50px;
+                width: 200px;
+                height: 200px;
+                border-radius: 50%;
+                background: radial-gradient(circle, rgba(139, 92, 246, 0.2) 0%, transparent 70%);
+                pointer-events: none;
+            }
+
+            .balance-card::after {
+                content: '';
+                position: absolute;
+                bottom: -40px;
+                left: -40px;
+                width: 160px;
+                height: 160px;
+                border-radius: 50%;
+                background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+                pointer-events: none;
+            }
+
+            .desktop-card-top {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                position: relative;
+                z-index: 1;
+            }
+
+            .desktop-card-chip-area {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+
+            .desktop-card-chip-icon {
+                width: 42px;
+                height: 34px;
+                background: linear-gradient(135deg, #fbbf24, #f59e0b);
+                border-radius: 6px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            }
+
+            .desktop-card-chip-icon i {
+                font-size: 16px;
+                color: #1e1147;
+            }
+
+            .desktop-card-contactless {
+                font-size: 22px;
+                color: rgba(255,255,255,0.6);
+            }
+
+            .desktop-card-brand {
+                font-size: 20px;
+                font-weight: 700;
+                letter-spacing: 1.5px;
+                color: rgba(255,255,255,0.9);
+                font-style: italic;
+            }
+
+            .desktop-card-middle {
+                position: relative;
+                z-index: 1;
+                margin: 12px 0;
+            }
+
+            .desktop-card-balance-label {
+                font-size: 11px;
+                text-transform: uppercase;
+                letter-spacing: 1.5px;
+                color: rgba(255,255,255,0.6);
+                margin-bottom: 2px;
+                font-weight: 500;
+            }
+
+            .desktop-card-balance-amount {
+                font-size: 30px;
+                font-weight: 700;
+                letter-spacing: -0.5px;
+                color: #ffffff;
+                text-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            }
+
+            .desktop-card-bottom {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-end;
+                position: relative;
+                z-index: 1;
+            }
+
+            .desktop-card-user-name {
+                font-size: 13px;
+                font-weight: 600;
+                color: rgba(255,255,255,0.8);
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            .desktop-card-expiry {
+                font-size: 10px;
+                color: rgba(255,255,255,0.5);
+                text-align: right;
+                line-height: 1.3;
+            }
+
+            .desktop-card-expiry span {
+                display: block;
+                font-size: 14px;
+                font-weight: 600;
+                color: rgba(255,255,255,0.9);
+            }
+
+            .desktop-card-recharge-btn {
+                width: 100%;
+                margin-top: 16px;
+                padding: 11px;
+                border-radius: 10px;
+                background: rgba(255,255,255,0.1);
+                backdrop-filter: blur(4px);
+                border: 1px solid rgba(255,255,255,0.18);
+                color: white;
+                font-size: 13px;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                cursor: pointer;
+                transition: all 0.2s;
+                position: relative;
+                z-index: 1;
+            }
+
+            .desktop-card-recharge-btn:hover {
+                background: rgba(255,255,255,0.18);
+            }
+
+            .modal-overlay {
+                background-color: rgba(0, 0, 0, 0.6);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+            }
+
+            .modal-content {
+                background: white;
+                border-radius: 24px;
+                box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.2);
+                transform: translateY(20px);
+                opacity: 0;
+                transition: all 0.4s cubic-bezier(0.2, 0.8, 0.4, 1);
+            }
+
+            .modal.active .modal-content {
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .animate-fade-in {
+                animation: fadeIn 0.4s cubic-bezier(0.2, 0.8, 0.4, 1) forwards;
+            }
+
+            .scrollbar-hide::-webkit-scrollbar {
+                display: none;
+            }
+
+            .scrollbar-hide {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+
+            .input-field {
+                border-radius: 12px;
+                border: 1px solid #e2e8f0;
+                padding: 14px 16px;
+                transition: all 0.2s;
+                background-color: #f8fafc;
+                font-size: 0.95rem;
+            }
+
+            .input-field:focus {
+                border-color: var(--secondary);
+                box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+                outline: none;
+                background-color: white;
+            }
+
+            .select-field {
+                appearance: none;
+                background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+                background-repeat: no-repeat;
+                background-position: right 1rem center;
+                background-size: 1em;
+            }
+
+            .loading-spinner {
+                width: 24px;
+                height: 24px;
+                border: 3px solid rgba(255, 255, 255, 0.3);
+                border-radius: 50%;
+                border-top-color: white;
+                animation: spin 1s ease-in-out infinite;
+            }
+
+            @keyframes spin {
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+
+            .status-badge {
+                padding: 4px 10px;
+                border-radius: 12px;
+                font-size: 0.75rem;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+            }
+
+            .status-success {
+                background-color: #d1fae5;
+                color: #059669;
+            }
+
+            .status-pending {
+                background-color: #fef3c7;
+                color: #d97706;
+            }
+
+            .qr-code-container-desktop {
+                display: flex;
+                justify-content: center;
+                margin: 20px 0;
+            }
+
+            .qr-code-desktop {
+                width: 200px;
+                height: 200px;
+                border: 1px solid #e2e8f0;
+                border-radius: 12px;
+                padding: 10px;
+                background: white;
+            }
+
+            .file-input-label-desktop {
+                display: block;
+                width: 100%;
+                padding: 12px;
+                border: 1px dashed #e2e8f0;
+                border-radius: 12px;
+                text-align: center;
+                cursor: pointer;
+                margin-bottom: 16px;
+                transition: all 0.2s;
+                color: #1e293b;
+            }
+
+            .file-input-label-desktop:hover {
+                border-color: var(--primary);
+                background: var(--primary);
+                color: white;
+            }
+
+            .file-input-label-desktop i {
+                margin-right: 8px;
+            }
+
+            .file-name-desktop {
+                font-size: 12px;
+                color: #64748b;
+                margin-top: 8px;
+                word-break: break-all;
+            }
+
+            .creator-code-input-desktop {
+                background: #fff3cd;
+                border-color: #ffc107;
+                color: #856404;
+                font-weight: 500;
+            }
+
+            .creator-code-input-desktop:focus {
+                border-color: #ffc107;
+                box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.1);
+                background: #fff;
+            }
         }
 
-        @keyframes pulse {
-            0%, 100% {
+        .invoice-container {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            max-width: 100%;
+        }
+
+        .invoice-header {
+            text-align: center;
+            margin-bottom: 16px;
+            border-bottom: 1px solid #6d28d9;
+            padding-bottom: 12px;
+        }
+
+        .invoice-shell {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f5ff 100%);
+            border-radius: 24px;
+            padding: 18px;
+            border: 1px solid #e9d5ff;
+            box-shadow: 0 20px 50px rgba(109, 40, 217, 0.14);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .invoice-shell::before {
+            content: '';
+            position: absolute;
+            inset: -24px auto auto -24px;
+            width: 140px;
+            height: 140px;
+            background: radial-gradient(circle, rgba(167, 139, 250, 0.25), transparent 70%);
+            pointer-events: none;
+        }
+
+        .invoice-shell::after {
+            content: '';
+            position: absolute;
+            right: -20px;
+            bottom: -20px;
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.16), transparent 70%);
+            pointer-events: none;
+        }
+
+        .invoice-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .invoice-brand {
+            font-size: 16px;
+            font-weight: 800;
+            color: #6d28d9;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
+        .invoice-badge {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 6px 10px;
+            border-radius: 999px;
+            box-shadow: 0 8px 18px rgba(5, 150, 105, 0.2);
+        }
+
+        .invoice-title {
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .invoice-amount {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 800;
+            margin: 12px 0 8px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 16px;
+            border: 1px solid #ede9fe;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
+            position: relative;
+            z-index: 1;
+        }
+
+        .invoice-subtitle {
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .invoice-card {
+            background: white;
+            border-radius: 16px;
+            padding: 12px;
+            border: 1px solid #f3e8ff;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
+            position: relative;
+            z-index: 1;
+        }
+
+        .invoice-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 8px 0;
+            border-bottom: 1px dashed #e2e8f0;
+            font-size: 12px;
+            color: #334155;
+        }
+
+        .invoice-row:last-child {
+            border-bottom: none;
+        }
+
+        .invoice-row span {
+            color: #64748b;
+        }
+
+        .invoice-row strong {
+            color: #0f172a;
+            font-weight: 700;
+            text-align: right;
+        }
+
+        .invoice-footer {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .invoice-chip {
+            background: #f5f3ff;
+            color: #6d28d9;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .invoice-action-btn {
+            width: 100%;
+            border: none;
+            border-radius: 14px;
+            padding: 11px 12px;
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            margin-top: 8px;
+            cursor: pointer;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+            touch-action: manipulation;
+            user-select: none;
+        }
+
+        .invoice-action-btn:active {
+            transform: scale(0.98);
+        }
+
+        .invoice-action-btn.primary {
+            background: linear-gradient(135deg, #6d28d9, #8b5cf6);
+            color: white;
+            box-shadow: 0 10px 24px rgba(109, 40, 217, 0.22);
+        }
+
+        .invoice-action-btn.secondary {
+            background: linear-gradient(135deg, #0f766e, #14b8a6);
+            color: white;
+            box-shadow: 0 10px 24px rgba(20, 184, 166, 0.22);
+        }
+
+        .invoice-action-btn.ghost {
+            background: #f8fafc;
+            color: #334155;
+            border: 1px solid #e2e8f0;
+        }
+
+        .success-animation {
+            animation: successPulse 1.4s ease-in-out;
+        }
+
+        @keyframes successPulse {
+            0% {
                 transform: scale(1);
             }
             50% {
-                transform: scale(1.05);
+                transform: scale(1.01);
             }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @media (max-width: 768px) {
+            #invoice-modal .modal-content {
+                margin: 12px;
+                width: calc(100% - 24px);
+                max-width: 420px;
+                position: relative;
+                z-index: 1000;
+            }
+
+            #invoice-modal .modal-overlay {
+                z-index: 999;
+            }
+
+            .invoice-shell {
+                padding: 14px;
+                border-radius: 20px;
+            }
+
+            .invoice-amount {
+                font-size: 22px;
+                margin: 10px 0 8px;
+                padding: 10px;
+            }
+
+            .invoice-row {
+                font-size: 11px;
+                padding: 7px 0;
+            }
+
+            .invoice-action-btn {
+                padding: 13px 12px;
+                min-height: 50px;
+                font-size: 14px;
+                border-radius: 14px;
+            }
+        }
+
+        #wheel {
+            transition: transform 3s cubic-bezier(0.25, 0.1, 0.15, 1);
+        }
+        .animate-bounce {
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .filter-container {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            margin-bottom: 16px;
+            padding: 12px;
+            background: #f8fafc;
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+        }
+        .filter-group {
+            flex: 1;
+            min-width: 100px;
+        }
+        .filter-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 4px;
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .date-input {
+            padding: 10px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 13px;
+            width: 100%;
+            background: white;
+            transition: all 0.2s;
+        }
+        .date-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.08);
+            outline: none;
+        }
+        .filter-select {
+            padding: 10px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 13px;
+            width: 100%;
+            background: white;
+            transition: all 0.2s;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 14px;
+        }
+        .filter-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.08);
+            outline: none;
+        }
+        @media (max-width: 768px) {
+            .filter-container {
+                flex-direction: column;
+                gap: 8px;
+                padding: 10px;
+            }
+            .filter-group {
+                width: 100%;
+                min-width: auto;
+            }
+            .filter-buttons {
+                display: flex;
+                gap: 6px;
+                width: 100%;
+                flex-wrap: wrap;
+            }
+            .filter-buttons button {
+                flex: 1;
+                min-width: 60px;
+                font-size: 11px;
+                padding: 10px 8px;
+            }
+            .filter-row-mobile {
+                display: flex;
+                gap: 8px;
+                width: 100%;
+            }
+            .filter-row-mobile .filter-group {
+                flex: 1;
+            }
+        }
+        .filter-buttons {
+            display: flex;
+            gap: 6px;
+            align-items: flex-end;
+        }
+        .filter-btn {
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            background: white;
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            color: #475569;
+        }
+        .filter-btn:hover {
+            background: #f1f5f9;
+        }
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        .filter-btn.reset-btn {
+            background: #fef2f2;
+            color: #dc2626;
+            border-color: #fecaca;
+        }
+        .filter-btn.reset-btn:hover {
+            background: #fee2e2;
+        }
+        .filter-btn.download-btn {
+            background: #ecfdf5;
+            color: #059669;
+            border-color: #a7f3d0;
+            font-weight: 700;
+        }
+        .filter-btn.download-btn:hover {
+            background: #d1fae5;
+        }
+        .filter-btn.download-btn i {
+            margin-right: 4px;
         }
     </style>
 </head>
-<body>
-    <div class="maintenance-container">
-        <div class="brand-toktok">
-            TokTok
+<body class="min-h-screen bg-gray-50">
+    <!-- Versión Mobile -->
+    <div class="mobile-only mobile-app-container">
+        <!-- Header -->
+        <div class="mobile-header">
+            <div class="mobile-header-title" id="mobile-header-title">Inicio</div>
+            <div class="mobile-header-actions">
+                <button id="mobile-logout-btn" class="text-purple-600">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
         </div>
-        
-        <div class="maintenance-icon">
-            <i class="fas fa-tools"></i>
+
+        <!-- Contenido principal -->
+        <div class="mobile-content" id="mobile-content">
+            <!-- Vista de Inicio -->
+            <div id="mobile-home-view">
+                <!-- Tarjeta de balance estilo Visa -->
+                <div class="mobile-balance-card">
+                    <div class="mobile-card-top">
+                        <div class="mobile-card-chip-area">
+                            <div class="mobile-card-chip-icon">
+                                <i class="fas fa-microchip"></i>
+                            </div>
+                            <i class="fas fa-wifi mobile-card-contactless"></i>
+                        </div>
+                        <div class="mobile-card-brand">TokTok</div>
+                    </div>
+                    <div class="mobile-card-middle">
+                        <div class="mobile-card-balance-label">Saldo disponible</div>
+                        <div class="mobile-card-balance-amount" id="mobile-balance">Bs 0.00</div>
+                    </div>
+                    <div class="mobile-card-bottom">
+                        <div class="mobile-card-user-name" id="mobile-card-user-name">USUARIO</div>
+                        <div class="mobile-card-expiry">
+                            MIEMBRO
+                            <span>Activo</span>
+                        </div>
+                    </div>
+                    <button id="mobile-recharge-balance-btn" class="mobile-card-recharge-btn">
+                        <i class="fas fa-plus-circle"></i> Recargar saldo
+                    </button>
+                </div>
+
+                <!-- Acciones rápidas -->
+                <div class="mobile-section-title">Acciones rápidas</div>
+                <div class="quick-actions-grid">
+                    <button id="mobile-send-money-btn" class="modern-action-btn">
+                        <div class="modern-action-icon icon-send">
+                            <i class="fas fa-paper-plane"></i>
+                        </div>
+                        <span>Enviar</span>
+                    </button>
+                    <a href="tienda.html" class="modern-action-btn">
+                        <div class="modern-action-icon icon-store">
+                            <i class="fas fa-store"></i>
+                        </div>
+                        <span>Tienda</span>
+                    </a>
+                    <a href="recargas movil.html" class="modern-action-btn">
+                        <div class="modern-action-icon icon-recharge">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <span>Recargas</span>
+                    </a>
+                    <a href="juegos.html" class="modern-action-btn">
+                        <div class="modern-action-icon icon-games">
+                            <i class="fas fa-gamepad"></i>
+                        </div>
+                        <span>Juegos</span>
+                    </a>
+                    <a href="plan hogar.html" class="modern-action-btn">
+                        <div class="modern-action-icon icon-home-plan">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <span>Plan Hogar</span>
+                    </a>
+                </div>
+
+                <!-- Últimas transacciones -->
+                <div class="mobile-section-title">Últimas transacciones</div>
+                <div class="mobile-card">
+                    <div id="mobile-transactions-list">
+                        <div class="mobile-transaction-item">
+                            <div class="w-full text-center py-8">
+                                <i class="fas fa-spinner fa-spin text-gray-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vista de Transacciones -->
+            <div id="mobile-transactions-view" class="hidden">
+                <div class="mobile-tabs">
+                    <div class="mobile-tab active" data-tab="transactions">Transacciones</div>
+                </div>
+
+                <div id="mobile-transactions-tab" class="tab-content">
+                    <div class="mobile-card mt-2">
+                        <!-- FILTROS MEJORADOS MOBILE -->
+                        <div class="p-3 border-b border-gray-100">
+                            <div class="filter-container">
+                                <div class="filter-group" style="min-width:100%;">
+                                    <label class="filter-label">Tipo de transacción</label>
+                                    <select id="mobile-transactions-filter" class="filter-select">
+                                        <option value="all">📋 Todos los tipos</option>
+                                        <option value="deposit">🟢 Ingresos</option>
+                                        <option value="withdrawal">🔴 Retiros</option>
+                                        <option value="transfer">🔵 Transferencias</option>
+                                    </select>
+                                </div>
+                                <div class="filter-row-mobile">
+                                    <div class="filter-group">
+                                        <label class="filter-label">Desde</label>
+                                        <input type="date" id="mobile-date-from" class="date-input">
+                                    </div>
+                                    <div class="filter-group">
+                                        <label class="filter-label">Hasta</label>
+                                        <input type="date" id="mobile-date-to" class="date-input">
+                                    </div>
+                                </div>
+                                <div class="filter-buttons">
+                                    <button id="mobile-filter-7days" class="filter-btn">7 días</button>
+                                    <button id="mobile-filter-30days" class="filter-btn">30 días</button>
+                                    <button id="mobile-filter-all" class="filter-btn active">Todo</button>
+                                    <button id="mobile-reset-filters" class="filter-btn reset-btn">✕</button>
+                                </div>
+                                <button id="mobile-download-pdf-btn" class="filter-btn download-btn" style="width:100%;">
+                                    <i class="fas fa-file-pdf"></i> Descargar PDF
+                                </button>
+                            </div>
+                        </div>
+                        <div id="mobile-transactions-full-list">
+                            <div class="mobile-transaction-item">
+                                <div class="w-full text-center py-8">
+                                    <i class="fas fa-spinner fa-spin text-gray-400"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vista de Perfil -->
+            <div id="mobile-profile-view" class="hidden">
+                <div class="mobile-card mt-4">
+                    <div class="p-6 flex flex-col items-center">
+                        <div id="mobile-user-avatar" class="mobile-avatar">
+                            <span id="mobile-user-initials"></span>
+                        </div>
+                        <h2 id="mobile-user-name" class="text-lg font-semibold text-center text-gray-800"></h2>
+                        <p id="mobile-user-email" class="text-gray-500 text-sm mt-1 text-center"></p>
+
+                        <button id="mobile-edit-profile-btn" class="mt-6 w-full py-3 px-4 rounded-xl transition duration-200 flex items-center justify-center space-x-2 text-purple-600 hover:text-purple-800 hover:bg-purple-50 border border-purple-100 font-medium">
+                            <i class="fas fa-user-edit"></i>
+                            <span>Editar perfil</span>
+                        </button>
+                    </div>
+
+                    <div class="p-4">
+                        <div class="mobile-profile-item">
+                            <span class="mobile-profile-label">Teléfono</span>
+                            <span id="mobile-profile-phone" class="mobile-profile-value"></span>
+                        </div>
+                        <div class="mobile-profile-item">
+                            <span class="mobile-profile-label">Miembro desde</span>
+                            <span id="mobile-profile-created-at" class="mobile-profile-value"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mobile-card mt-4 p-4">
+                    <a href="seguridad.html" class="w-full py-3 text-left flex items-center justify-between block">
+                        <span class="font-medium">Seguridad</span>
+                        <i class="fas fa-chevron-right text-gray-400"></i>
+                    </a>
+                    <a href="ayuda.html" class="w-full py-3 text-left flex items-center justify-between block">
+                        <span class="font-medium">Ayuda</span>
+                        <i class="fas fa-chevron-right text-gray-400"></i>
+                    </a>
+                    <a href="acerca.html" class="w-full py-3 text-left flex items-center justify-between block">
+                        <span class="font-medium">Acerca de</span>
+                        <i class="fas fa-chevron-right text-gray-400"></i>
+                    </a>
+                </div>
+            </div>
         </div>
-        
-        <h1 class="maintenance-title">Actualizando...</h1>
-        
-        <p class="maintenance-subtitle">
-            Estamos en mantenimiento.<br>
-            Volveremos muy pronto.
-        </p>
-        
-        <div class="loading-dots">
-            <div class="loading-dot"></div>
-            <div class="loading-dot"></div>
-            <div class="loading-dot"></div>
+
+        <!-- Barra de navegación inferior -->
+        <div class="mobile-bottom-nav">
+            <a href="#" class="nav-item active" data-view="home">
+                <i class="fas fa-home"></i>
+                <span>Inicio</span>
+            </a>
+            <a href="#" class="nav-item" data-view="transactions">
+                <i class="fas fa-exchange-alt"></i>
+                <span>Transacciones</span>
+            </a>
+            <a href="#" class="nav-item" data-view="profile">
+                <i class="fas fa-user"></i>
+                <span>Perfil</span>
+            </a>
         </div>
-        
-        <div class="maintenance-footer">
-            TokTok Recargas GC 2026
+
+        <!-- Modal para editar perfil (mobile) -->
+        <div id="mobile-profile-modal" class="mobile-modal">
+            <div class="mobile-modal-content">
+                <div class="mobile-modal-header">
+                    <div class="mobile-modal-title">Editar perfil</div>
+                    <button id="mobile-close-profile-modal" class="mobile-modal-close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="flex justify-center mb-6">
+                    <div class="text-center">
+                        <div id="mobile-avatar-preview" class="mobile-avatar mx-auto mb-4"></div>
+                        <input type="file" id="mobile-avatar-input" accept="image/*" class="hidden">
+                        <button id="mobile-change-avatar-btn" class="text-sm text-purple-600 font-medium">
+                            Cambiar foto de perfil
+                        </button>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label for="mobile-full-name" class="block text-sm font-medium text-gray-700 mb-1">Nombre completo</label>
+                    <input type="text" id="mobile-full-name" class="mobile-input">
+                </div>
+                <button id="mobile-save-profile" class="mobile-btn mobile-btn-primary">Guardar cambios</button>
+                <button id="mobile-cancel-profile-edit" class="mobile-btn mobile-btn-secondary">Cancelar</button>
+            </div>
+        </div>
+
+        <!-- Modal para enviar dinero (mobile) -->
+        <div id="mobile-send-money-modal" class="mobile-modal">
+            <div class="mobile-modal-content">
+                <div class="mobile-modal-header">
+                    <div class="mobile-modal-title">Enviar dinero</div>
+                    <button id="mobile-close-send-modal" class="mobile-modal-close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="mb-4">
+                    <label for="mobile-recipient-phone" class="block text-sm font-medium text-gray-700 mb-1">Teléfono del destinatario</label>
+                    <input type="tel" id="mobile-recipient-phone" class="mobile-input" placeholder="Ej: 77712345">
+                </div>
+                <div class="mb-4">
+                    <label for="mobile-send-amount" class="block text-sm font-medium text-gray-700 mb-1">Monto</label>
+                    <input type="number" id="mobile-send-amount" class="mobile-input" min="1">
+                </div>
+                <div class="mb-4">
+                    <label for="mobile-send-description" class="block text-sm font-medium text-gray-700 mb-1">Descripción (opcional)</label>
+                    <textarea id="mobile-send-description" rows="2" class="mobile-input"></textarea>
+                </div>
+                <button id="mobile-confirm-send" class="mobile-btn mobile-btn-primary flex items-center justify-center disabled:opacity-70 disabled:cursor-not-allowed">
+                    <span id="mobile-confirm-send-text">Enviar dinero</span>
+                    <div id="mobile-confirm-send-spinner" class="loading-spinner ml-2 hidden"></div>
+                </button>
+                <button id="mobile-cancel-send" class="mobile-btn mobile-btn-secondary">Cancelar</button>
+            </div>
+        </div>
+
+        <!-- Modal para recarga de saldo (mobile) -->
+        <div id="mobile-recharge-balance-modal" class="mobile-modal">
+            <div class="mobile-modal-content">
+                <div class="mobile-modal-header">
+                    <div class="mobile-modal-title">Recargar saldo</div>
+                    <button id="mobile-close-recharge-balance-modal" class="mobile-modal-close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="mb-4">
+                    <label for="mobile-recharge-name" class="block text-sm font-medium text-gray-700 mb-1">Nombre completo</label>
+                    <input type="text" id="mobile-recharge-name" class="mobile-input" placeholder="Ingrese su nombre completo">
+                </div>
+                <div class="mb-4">
+                    <label for="mobile-recharge-phone" class="block text-sm font-medium text-gray-700 mb-1">Número de teléfono</label>
+                    <input type="tel" id="mobile-recharge-phone" class="mobile-input" placeholder="Ej: 77712345">
+                </div>
+                <div class="mb-4">
+                    <label for="mobile-recharge-amount-input" class="block text-sm font-medium text-gray-700 mb-1">Monto a recargar (Bs)</label>
+                    <input type="number" id="mobile-recharge-amount-input" class="mobile-input" placeholder="Ej: 100" min="1">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Método de pago</label>
+                    <div class="qr-code-container">
+                        <img src="imagenes/qr.jpg" class="qr-code" alt="QR de pago">
+                    </div>
+                    <p class="text-sm text-center text-gray-500 mt-2">Escanee el código QR para realizar el pago</p>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Comprobante de pago</label>
+                    <input type="file" id="mobile-recharge-receipt" accept="image/*" class="hidden">
+                    <label for="mobile-recharge-receipt" class="file-input-label">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        Seleccionar imagen
+                        <div id="mobile-recharge-file-name" class="file-name"></div>
+                    </label>
+                </div>
+                <button id="mobile-confirm-recharge-balance" class="mobile-btn mobile-btn-primary flex items-center justify-center">
+                    <span id="mobile-confirm-recharge-balance-text">Enviar solicitud</span>
+                    <div id="mobile-confirm-recharge-balance-spinner" class="loading-spinner ml-2 hidden"></div>
+                </button>
+                <button id="mobile-cancel-recharge-balance" class="mobile-btn mobile-btn-secondary">Cancelar</button>
+            </div>
         </div>
     </div>
+
+    <!-- Factura flotante para transacciones -->
+    <div id="invoice-modal" class="modal fixed inset-0 z-50 flex items-center justify-center opacity-0 invisible transition-all duration-300">
+        <div class="modal-overlay absolute inset-0"></div>
+        <div class="modal-content w-full max-w-md mx-4">
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                <div class="flex justify-between items-center p-4 border-b border-gray-200">
+                    <div class="text-lg font-semibold text-gray-800">Comprobante de Transacción</div>
+                    <button id="close-invoice-modal" class="text-gray-400 hover:text-gray-500">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div id="invoice-content" class="p-4 max-h-[60vh] overflow-y-auto"></div>
+                <div class="p-4 border-t border-gray-200 bg-gray-50">
+                    <button id="download-invoice" class="invoice-action-btn primary">
+                        <i class="fas fa-download"></i>
+                        <span>Guardar imagen</span>
+                    </button>
+                    <button id="share-invoice" class="invoice-action-btn secondary">
+                        <i class="fas fa-share-alt"></i>
+                        <span>Compartir</span>
+                    </button>
+                    <button id="close-invoice" class="invoice-action-btn ghost">Continuar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Versión Desktop -->
+    <div class="desktop-only">
+        <!-- Header -->
+        <header class="bg-white shadow-sm py-5 px-6 sticky top-0 z-20">
+            <div class="container mx-auto flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-purple-100 p-2 rounded-xl">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                    </div>
+                    <h1 class="text-2xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">TokTok</h1>
+                </div>
+                <button id="logout-btn" class="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors">
+                    <span class="font-medium">Cerrar sesión</span>
+                    <i class="fas fa-sign-out-alt text-lg"></i>
+                </button>
+            </div>
+        </header>
+
+        <main class="container mx-auto px-4 py-8">
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                <!-- Columna izquierda - Perfil y acciones -->
+                <div class="lg:col-span-1 space-y-8">
+                    <!-- Tarjeta de perfil -->
+                    <div class="card p-6">
+                        <div class="flex flex-col items-center">
+                            <div id="user-avatar" class="avatar mb-5">
+                                <span id="user-initials"></span>
+                            </div>
+                            <h2 id="user-name" class="text-xl font-semibold text-center text-gray-800"></h2>
+                            <p id="user-email" class="text-gray-500 text-sm mt-1 text-center"></p>
+                            <div class="mt-6 w-full space-y-3">
+                                <div class="flex justify-between items-center py-2.5 px-4 bg-gray-50 rounded-xl">
+                                    <span class="text-gray-600 text-sm">Teléfono</span>
+                                    <span id="profile-phone" class="font-medium text-gray-800"></span>
+                                </div>
+                                <div class="flex justify-between items-center py-2.5 px-4 bg-gray-50 rounded-xl">
+                                    <span class="text-gray-600 text-sm">Miembro desde</span>
+                                    <span id="profile-created-at" class="font-medium text-gray-800"></span>
+                                </div>
+                            </div>
+                            <button id="edit-profile-btn" class="mt-6 w-full py-3 px-4 rounded-xl transition duration-200 flex items-center justify-center space-x-2 text-purple-600 hover:text-purple-800 hover:bg-purple-50 border border-purple-100 font-medium">
+                                <i class="fas fa-user-edit"></i>
+                                <span>Editar perfil</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tarjeta de balance estilo Visa -->
+                    <div class="balance-card">
+                        <div class="desktop-card-top">
+                            <div class="desktop-card-chip-area">
+                                <div class="desktop-card-chip-icon">
+                                    <i class="fas fa-microchip"></i>
+                                </div>
+                                <i class="fas fa-wifi desktop-card-contactless"></i>
+                            </div>
+                            <div class="desktop-card-brand">TokTok</div>
+                        </div>
+                        <div class="desktop-card-middle">
+                            <div class="desktop-card-balance-label">Saldo disponible</div>
+                            <div class="desktop-card-balance-amount" id="balance">Bs 0.00</div>
+                        </div>
+                        <div class="desktop-card-bottom">
+                            <div class="desktop-card-user-name" id="desktop-card-user-name">USUARIO</div>
+                            <div class="desktop-card-expiry">
+                                VALID THRU
+                                <span>12/28</span>
+                            </div>
+                        </div>
+                        <button id="recharge-balance-btn" class="desktop-card-recharge-btn">
+                            <i class="fas fa-plus-circle"></i> Recargar saldo
+                        </button>
+                    </div>
+
+                    <!-- Acciones rápidas -->
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-gray-800 px-2">Acciones rápidas</h3>
+                        <button id="send-money-btn" class="action-card btn-primary w-full p-5 flex items-center justify-between text-white">
+                            <div class="flex items-center space-x-4">
+                                <div class="action-icon bg-white bg-opacity-20"><i class="fas fa-paper-plane"></i></div>
+                                <div class="text-left">
+                                    <p class="text-sm font-medium">Enviar dinero</p>
+                                    <p class="text-xs text-white text-opacity-80">Transferencias rápidas</p>
+                                </div>
+                            </div>
+                            <i class="fas fa-chevron-right text-white text-opacity-70"></i>
+                        </button>
+                        <a href="tienda.html" class="action-card w-full p-5 flex items-center justify-between text-white" style="background: #094292;">
+                            <div class="flex items-center space-x-4">
+                                <div class="action-icon bg-white bg-opacity-20"><i class="fas fa-store"></i></div>
+                                <div class="text-left">
+                                    <p class="text-sm font-medium">Tienda</p>
+                                    <p class="text-xs text-white text-opacity-80">Compras online</p>
+                                </div>
+                            </div>
+                            <i class="fas fa-chevron-right text-white text-opacity-70"></i>
+                        </a>
+                        <a href="recargas movil.html" class="action-card w-full p-5 flex items-center justify-between text-white" style="background: #059669;">
+                            <div class="flex items-center space-x-4">
+                                <div class="action-icon bg-white bg-opacity-20"><i class="fas fa-phone"></i></div>
+                                <div class="text-left">
+                                    <p class="text-sm font-medium">Recargas</p>
+                                    <p class="text-xs text-white text-opacity-80">Saldo para tu móvil</p>
+                                </div>
+                            </div>
+                            <i class="fas fa-chevron-right text-white text-opacity-70"></i>
+                        </a>
+                        <a href="juegos.html" class="action-card w-full p-5 flex items-center justify-between text-white" style="background: #f59e0b;">
+                            <div class="flex items-center space-x-4">
+                                <div class="action-icon bg-white bg-opacity-20"><i class="fas fa-gamepad"></i></div>
+                                <div class="text-left">
+                                    <p class="text-sm font-medium">Juegos</p>
+                                    <p class="text-xs text-white text-opacity-80">Diviértete ahora</p>
+                                </div>
+                            </div>
+                            <i class="fas fa-chevron-right text-white text-opacity-70"></i>
+                        </a>
+                        <a href="plan hogar.html" class="action-card w-full p-5 flex items-center justify-between text-white" style="background: #0284c7;">
+                            <div class="flex items-center space-x-4">
+                                <div class="action-icon bg-white bg-opacity-20"><i class="fas fa-home"></i></div>
+                                <div class="text-left">
+                                    <p class="text-sm font-medium">Plan Hogar</p>
+                                    <p class="text-xs text-white text-opacity-80">Internet para tu casa</p>
+                                </div>
+                            </div>
+                            <i class="fas fa-chevron-right text-white text-opacity-70"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Columna derecha - Contenido principal -->
+                <div class="lg:col-span-3 space-y-8">
+                    <div class="card overflow-hidden">
+                        <div class="border-b border-gray-200 px-6">
+                            <nav class="flex -mb-px space-x-8">
+                                <button id="transactions-tab" class="tab-active py-5 px-1 text-center font-medium text-sm whitespace-nowrap">Transacciones</button>
+                            </nav>
+                        </div>
+                        <div class="p-6">
+                            <div id="transactions-content" class="tab-content">
+                                <!-- FILTROS MEJORADOS DESKTOP -->
+                                <div class="filter-container" style="margin-bottom: 20px;">
+                                    <div class="filter-group" style="min-width:140px;">
+                                        <label class="filter-label">Tipo de transacción</label>
+                                        <select id="transactions-filter" class="filter-select">
+                                            <option value="all">📋 Todos los tipos</option>
+                                            <option value="deposit">🟢 Ingresos</option>
+                                            <option value="withdrawal">🔴 Retiros</option>
+                                            <option value="transfer">🔵 Transferencias</option>
+                                        </select>
+                                    </div>
+                                    <div class="filter-group" style="min-width:130px;">
+                                        <label class="filter-label">Desde</label>
+                                        <input type="date" id="date-from" class="date-input">
+                                    </div>
+                                    <div class="filter-group" style="min-width:130px;">
+                                        <label class="filter-label">Hasta</label>
+                                        <input type="date" id="date-to" class="date-input">
+                                    </div>
+                                    <div class="filter-buttons">
+                                        <button id="filter-7days" class="filter-btn">7 días</button>
+                                        <button id="filter-30days" class="filter-btn">30 días</button>
+                                        <button id="filter-all" class="filter-btn active">Todo</button>
+                                        <button id="reset-filters" class="filter-btn reset-btn">✕ Reset</button>
+                                    </div>
+                                    <button id="download-pdf-btn" class="filter-btn download-btn">
+                                        <i class="fas fa-file-pdf"></i> Descargar PDF
+                                    </button>
+                                </div>
+
+                                <div class="overflow-x-auto scrollbar-hide">
+                                    <table class="min-w-full divide-y divide-gray-200">
+                                        <thead class="bg-gray-50">
+                                            <tr>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipo</th>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Descripción</th>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+                                                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Monto</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="transactions-list" class="bg-white divide-y divide-gray-200">
+                                            <tr>
+                                                <td colspan="4" class="px-6 py-8 text-center text-gray-400">
+                                                    <i class="fas fa-spinner fa-spin fa-2x mb-2"></i>
+                                                    <p>Cargando transacciones...</p>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Modal para editar perfil -->
+        <div id="profile-modal" class="modal fixed inset-0 z-50 flex items-center justify-center opacity-0 invisible transition-all duration-300">
+            <div class="modal-overlay absolute inset-0"></div>
+            <div class="modal-content w-full max-w-md p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-semibold text-gray-800">Editar perfil</h3>
+                    <button id="close-profile-modal" class="text-gray-400 hover:text-gray-500"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex justify-center">
+                        <div class="avatar-upload">
+                            <div id="avatar-preview" class="avatar mb-4"></div>
+                            <input type="file" id="avatar-input" accept="image/*" class="hidden">
+                            <button class="text-sm text-purple-600 hover:text-purple-700 font-medium">Cambiar foto de perfil</button>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="full-name" class="block text-sm font-medium text-gray-700 mb-1">Nombre completo</label>
+                        <input type="text" id="full-name" class="input-field w-full">
+                    </div>
+                    <div class="pt-4 flex justify-end space-x-3">
+                        <button id="cancel-profile-edit" class="px-4 py-2.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-800 transition-colors font-medium">Cancelar</button>
+                        <button id="save-profile" class="px-4 py-2.5 rounded-lg bg-purple-600 hover:bg-purple-700 text-white transition-colors font-medium">Guardar cambios</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para enviar dinero -->
+        <div id="send-money-modal" class="modal fixed inset-0 z-50 flex items-center justify-center opacity-0 invisible transition-all duration-300">
+            <div class="modal-overlay absolute inset-0"></div>
+            <div class="modal-content w-full max-w-md p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-semibold text-gray-800">Enviar dinero</h3>
+                    <button id="close-send-modal" class="text-gray-400 hover:text-gray-500"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="space-y-4">
+                    <div><label for="recipient-phone" class="block text-sm font-medium text-gray-700 mb-1">Teléfono del destinatario</label><input type="tel" id="recipient-phone" class="input-field w-full" placeholder="Ej: 77712345"></div>
+                    <div><label for="send-amount" class="block text-sm font-medium text-gray-700 mb-1">Monto</label><input type="number" id="send-amount" class="input-field w-full" min="1"></div>
+                    <div><label for="send-description" class="block text-sm font-medium text-gray-700 mb-1">Descripción (opcional)</label><textarea id="send-description" rows="2" class="input-field w-full"></textarea></div>
+                    <div class="pt-4 flex justify-end space-x-3">
+                        <button id="cancel-send" class="px-4 py-2.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-800 transition-colors font-medium">Cancelar</button>
+                        <button id="confirm-send" class="px-4 py-2.5 rounded-lg bg-purple-600 hover:bg-purple-700 text-white transition-colors font-medium flex items-center justify-center min-w-32 disabled:opacity-70 disabled:cursor-not-allowed">
+                            <span id="confirm-send-text">Enviar dinero</span>
+                            <div id="confirm-send-spinner" class="loading-spinner ml-2 hidden"></div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para recarga de saldo (desktop) -->
+        <div id="recharge-balance-modal" class="modal fixed inset-0 z-50 flex items-center justify-center opacity-0 invisible transition-all duration-300">
+            <div class="modal-overlay absolute inset-0"></div>
+            <div class="modal-content w-full max-w-md p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-semibold text-gray-800">Recargar saldo</h3>
+                    <button id="close-recharge-balance-modal" class="text-gray-400 hover:text-gray-500"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="space-y-4">
+                    <div><label for="recharge-name" class="block text-sm font-medium text-gray-700 mb-1">Nombre completo</label><input type="text" id="recharge-name" class="input-field w-full" placeholder="Ingrese su nombre completo"></div>
+                    <div><label for="recharge-phone" class="block text-sm font-medium text-gray-700 mb-1">Número de teléfono</label><input type="tel" id="recharge-phone" class="input-field w-full" placeholder="Ej: 77712345"></div>
+                    <div><label for="recharge-amount-input" class="block text-sm font-medium text-gray-700 mb-1">Monto a recargar (Bs)</label><input type="number" id="recharge-amount-input" class="input-field w-full" placeholder="Ej: 100" min="1"></div>
+                    <div><label class="block text-sm font-medium text-gray-700 mb-1">Método de pago</label><div class="qr-code-container-desktop"><img src="imagenes/qr.jpg" class="qr-code-desktop" alt="QR de pago"></div><p class="text-sm text-center text-gray-500 mt-2">Escanee el código QR para realizar el pago</p></div>
+                    <div><label class="block text-sm font-medium text-gray-700 mb-1">Comprobante de pago</label><input type="file" id="recharge-receipt" accept="image/*" class="hidden"><label for="recharge-receipt" class="file-input-label-desktop"><i class="fas fa-cloud-upload-alt"></i> Seleccionar imagen<div id="recharge-file-name" class="file-name-desktop"></div></label></div>
+                    <div class="pt-4 flex justify-end space-x-3">
+                        <button id="cancel-recharge-balance" class="px-4 py-2.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-800 transition-colors font-medium">Cancelar</button>
+                        <button id="confirm-recharge-balance" class="px-4 py-2.5 rounded-lg bg-purple-600 hover:bg-purple-700 text-white transition-colors font-medium flex items-center justify-center min-w-32"><span id="confirm-recharge-balance-text">Enviar solicitud</span><div id="confirm-recharge-balance-spinner" class="loading-spinner ml-2 hidden"></div></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Factura flotante para transacciones (segunda instancia - se usa la de arriba) -->
+    <!-- Modal de la Ruleta -->
+    <div id="roulette-modal" class="fixed inset-0 z-50 flex items-center justify-center opacity-0 invisible transition-all duration-300" style="background-color: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px);">
+        <div class="bg-gradient-to-br from-gray-900 to-purple-900 rounded-3xl w-11/12 max-w-md p-5 shadow-2xl border border-purple-400 relative">
+            <button id="close-roulette-modal" class="absolute top-2 right-2 text-gray-300 hover:text-white text-xl z-10"><i class="fas fa-times"></i></button>
+            <div class="text-center mb-4">
+                <h2 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-purple-300">✨ Ruleta TokTok ✨</h2>
+                <p class="text-xs text-purple-200">Ingresa código o compra giro por 1 Bs</p>
+            </div>
+            <div class="relative w-48 h-48 mx-auto mb-5">
+                <div id="wheel" class="absolute inset-0 rounded-full border-8 border-yellow-400 shadow-[0_0_30px_#fbbf24] transition-transform duration-3000 ease-out" style="transform: rotate(0deg); background: conic-gradient(#f87171 0deg 36deg, #fbbf24 36deg 72deg, #4ade80 72deg 108deg, #60a5fa 108deg 144deg, #c084fc 144deg 180deg, #f472b6 180deg 216deg, #fb923c 216deg 252deg, #a78bfa 252deg 288deg, #facc15 288deg 324deg, #6ee7b7 324deg 360deg);">
+                    <div class="absolute inset-0 flex items-center justify-center text-white font-black text-sm drop-shadow-lg">TOKTOK</div>
+                </div>
+                <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-3 text-4xl filter drop-shadow-2xl" style="color: #fde047;">▼</div>
+            </div>
+            <div class="grid grid-cols-5 gap-1 text-center text-white text-xs font-semibold mb-4 bg-black/30 p-2 rounded-xl">
+                <div class="bg-red-400/50 p-1 rounded">0</div><div class="bg-yellow-400/50 p-1 rounded">1</div><div class="bg-green-400/50 p-1 rounded">2</div><div class="bg-blue-400/50 p-1 rounded">5</div><div class="bg-purple-400/50 p-1 rounded">8</div>
+                <div class="bg-pink-400/50 p-1 rounded">10</div><div class="bg-orange-400/50 p-1 rounded">20</div><div class="bg-amber-400/50 p-1 rounded">50</div><div class="bg-emerald-400/50 p-1 rounded">80</div><div class="bg-teal-400/50 p-1 rounded">100</div>
+            </div>
+            <input type="text" id="roulette-code" placeholder="Ej: TOKTOK-8A3F" class="w-full px-4 py-3 rounded-xl bg-gray-800 text-white border border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-400 text-center uppercase" maxlength="12">
+            <div class="flex gap-2 mt-4">
+                <button id="spin-roulette-btn" class="flex-1 bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-bold py-3 px-2 rounded-xl shadow-lg hover:scale-105 transition-transform disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1 text-sm"><i class="fas fa-spinner"></i> CÓDIGO</button>
+                <button id="buy-spin-btn" class="flex-1 bg-gradient-to-r from-green-500 to-teal-500 text-white font-bold py-3 px-2 rounded-xl shadow-lg hover:scale-105 transition-transform disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1 text-sm"><i class="fas fa-shopping-cart"></i> COMPRAR 1 BS</button>
+            </div>
+            <p id="roulette-message" class="text-center text-sm text-yellow-300 mt-2 min-h-[20px]"></p>
+        </div>
+    </div>
+
+    <!-- Modal para seleccionar rango de descarga PDF -->
+    <div id="pdf-date-modal" class="modal fixed inset-0 z-50 flex items-center justify-center opacity-0 invisible transition-all duration-300">
+        <div class="modal-overlay absolute inset-0 bg-black bg-opacity-50"></div>
+        <div class="modal-content w-full max-w-sm p-6 bg-white rounded-2xl shadow-xl relative z-10">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold text-gray-800">Descargar transacciones</h3>
+                <button id="close-pdf-date-modal" class="text-gray-400 hover:text-gray-500"><i class="fas fa-times"></i></button>
+            </div>
+            <p class="text-sm text-gray-500 mb-4">Selecciona el rango de fechas para generar el PDF:</p>
+            <div class="space-y-3">
+                <div>
+                    <label for="pdf-date-from" class="block text-sm font-medium text-gray-700 mb-1">Desde</label>
+                    <input type="date" id="pdf-date-from" class="input-field w-full">
+                </div>
+                <div>
+                    <label for="pdf-date-to" class="block text-sm font-medium text-gray-700 mb-1">Hasta</label>
+                    <input type="date" id="pdf-date-to" class="input-field w-full">
+                </div>
+            </div>
+            <div class="flex gap-2 mt-4 flex-wrap">
+                <button id="pdf-7days" class="filter-btn text-xs flex-1">7 días</button>
+                <button id="pdf-30days" class="filter-btn text-xs flex-1">30 días</button>
+                <button id="pdf-all" class="filter-btn text-xs flex-1">Todo</button>
+            </div>
+            <div class="pt-4 flex justify-end space-x-3">
+                <button id="cancel-pdf-download" class="px-4 py-2.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-800 transition-colors font-medium text-sm">Cancelar</button>
+                <button id="confirm-pdf-download" class="px-4 py-2.5 rounded-lg bg-purple-600 hover:bg-purple-700 text-white transition-colors font-medium text-sm flex items-center gap-2">
+                    <i class="fas fa-file-pdf"></i> Generar PDF
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+    </script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js">
+    </script>
+    <script>
+        // Configuración con tus credenciales
+        const supabaseUrl = 'https://aleadadisazocjovibeh.supabase.co';
+        const supabaseKey =
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFsZWFkYWRpc2F6b2Nqb3ZpYmVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk0NDE5NjMsImV4cCI6MjA3NTAxNzk2M30.z82tP0C-UiiNuzP_jqrQf4LBusFqrDi1WYbdnuTh47E';
+        window.supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+        // Configuración del bot de Telegram para recargas de saldo
+        const RECHARGE_BOT_TOKEN = '8794091027:AAG36PsetBQY3oqGQzGw39rZhbOaBAaE41A';
+        const RECHARGE_CHAT_ID = '-1003788594955';
+
+        // Variables globales
+        let currentUser = null;
+        let userProfile = null;
+        let currentBalance = 0;
+        let currentInvoiceData = null;
+        let allTransactions = [];
+        let pendingPdfCallback = null;
+
+        // Funciones de utilidad
+        const formatCurrency = (amount) => {
+            return 'Bs' + parseFloat(amount).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        };
+
+        const formatDate = (dateString) => {
+            const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+            return new Date(dateString).toLocaleDateString('es-ES', options);
+        };
+
+        const formatDateShort = (dateString) => {
+            const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+            return new Date(dateString).toLocaleDateString('es-ES', options);
+        };
+
+        const getInitials = (name) => {
+            if (!name) return '??';
+            const names = name.split(' ');
+            let initials = names[0].substring(0, 1).toUpperCase();
+            if (names.length > 1) {
+                initials += names[names.length - 1].substring(0, 1).toUpperCase();
+            }
+            return initials;
+        };
+
+        const showToast = (message, type = 'success') => {
+            const toast = document.createElement('div');
+            toast.className = `fixed top-4 right-4 px-4 py-2 rounded-md shadow-lg z-50 animate-fade-in ${
+            type === 'success' ? 'bg-green-600' : 'bg-red-600'
+          } text-white font-medium`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.classList.remove('animate-fade-in');
+                toast.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        };
+
+        const isMobileDevice = () => window.innerWidth <= 768;
+
+        const sendRechargeRequest = async (data, receiptFile) => {
+            try {
+                const messageResponse = await fetch(`https://api.telegram.org/bot${RECHARGE_BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: RECHARGE_CHAT_ID,
+                        text: `
+<b>Nueva solicitud de recarga de saldo</b>
+
+👤 <b>Nombre:</b> ${data.name}
+📞 <b>Teléfono:</b> ${data.phone}
+💰 <b>Monto:</b> ${data.amount} Bs
+🆔 <b>Usuario:</b> ${currentUser.email}
+⏱ <b>Fecha:</b> ${new Date().toLocaleString()}`,
+                        parse_mode: 'HTML'
+                    })
+                });
+                const messageData = await messageResponse.json();
+                if (!messageData.ok) throw new Error('Error al enviar el mensaje');
+                if (receiptFile) {
+                    const formData = new FormData();
+                    formData.append('chat_id', RECHARGE_CHAT_ID);
+                    formData.append('photo', receiptFile);
+                    formData.append('caption',
+                        `Comprobante de pago para ${data.name} (${data.phone}) - ${data.amount} Bs`);
+                    await fetch(`https://api.telegram.org/bot${RECHARGE_BOT_TOKEN}/sendPhoto`, { method: 'POST',
+                        body: formData });
+                }
+                return true;
+            } catch (error) {
+                console.error('Error sending recharge request:', error);
+                return false;
+            }
+        };
+
+        const openModal = (modalId) => {
+            const modal = document.getElementById(modalId);
+            modal.classList.add('active');
+            modal.classList.remove('opacity-0', 'invisible');
+        };
+        const closeModal = (modalId) => {
+            const modal = document.getElementById(modalId);
+            modal.classList.remove('active');
+            modal.classList.add('opacity-0', 'invisible');
+        };
+        const openMobileModal = (modalId) => {
+            const modal = document.getElementById(modalId);
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        };
+        const closeMobileModal = (modalId) => {
+            const modal = document.getElementById(modalId);
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        };
+
+        function openInvoiceModal() {
+            const modal = document.getElementById('invoice-modal');
+            modal.classList.add('active');
+            modal.classList.remove('opacity-0', 'invisible');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeInvoiceModal() {
+            const modal = document.getElementById('invoice-modal');
+            modal.classList.remove('active');
+            modal.classList.add('opacity-0', 'invisible');
+            document.body.style.overflow = '';
+        }
+
+        function showTransactionInvoice(transaction, transactionType = 'general') {
+            if (!transaction) return;
+            const isPositive = transaction.type === 'deposit';
+            const amountClass = isPositive ? 'text-emerald-600' : 'text-rose-600';
+            const amountSign = isPositive ? '+' : '-';
+            const invoiceId = 'INV-' + (transaction.id ? transaction.id.substring(0, 8).toUpperCase() : 'TEMP') + '-' + Date
+                .now().toString().slice(-6);
+            const typeNames = { 'deposit': 'Ingreso', 'withdrawal': 'Retiro', 'transfer': 'Transferencia' };
+            const transactionTypeName = typeNames[transaction.type] || transaction.type;
+            let invoiceTitle = 'COMPROBANTE DE TRANSACCIÓN';
+            if (transactionType === 'transfer') invoiceTitle = 'COMPROBANTE DE TRANSFERENCIA';
+            const invoiceHTML = `
+            <div class="invoice-shell">
+                <div class="invoice-header">
+                    <div class="invoice-brand">TokTok</div>
+                    <div class="invoice-badge"><i class="fas fa-check-circle"></i> Completado</div>
+                </div>
+                <div class="invoice-title">${invoiceTitle}</div>
+                <div class="invoice-amount ${amountClass}">${amountSign}${formatCurrency(transaction.amount).replace('Bs', '')}</div>
+                <div class="invoice-subtitle">Transacción procesada en pocos segundos</div>
+                <div class="invoice-card">
+                    <div class="invoice-row"><span>Fecha</span><strong>${new Date().toLocaleString('es-ES')}</strong></div>
+                    <div class="invoice-row"><span>Tipo</span><strong>${transactionTypeName}</strong></div>
+                    <div class="invoice-row"><span>Estado</span><strong>Confirmada</strong></div>
+                    <div class="invoice-row"><span>ID</span><strong>${transaction.id || invoiceId}</strong></div>
+                    <div class="invoice-row"><span>Usuario</span><strong>${userProfile?.full_name || currentUser?.email || 'Usuario'}</strong></div>
+                    <div class="invoice-row"><span>Email</span><strong>${currentUser?.email || 'No disponible'}</strong></div>
+                    ${transaction.description ? `<div class="invoice-row"><span>Descripción</span><strong>${transaction.description}</strong></div>` : ''}
+                </div>
+                <div class="invoice-footer">
+                    <div class="invoice-chip">Digital</div>
+                    <div class="invoice-chip">Sin firma</div>
+                    <div class="invoice-chip">TokTok Wallet</div>
+                </div>
+            </div>`;
+            document.getElementById('invoice-content').innerHTML = invoiceHTML;
+            setTimeout(() => { openInvoiceModal(); }, 400);
+            currentInvoiceData = { html: invoiceHTML, id: invoiceId, transaction: transaction };
+        }
+
+        async function generateInvoiceImageData() {
+            const invoiceElement = document.getElementById('invoice-content');
+            if (!invoiceElement) throw new Error('No se encontró el contenido de la factura');
+            const canvas = await html2canvas(invoiceElement, {
+                scale: 2,
+                useCORS: true,
+                logging: false,
+                backgroundColor: '#ffffff',
+                scrollX: 0,
+                scrollY: 0
+            });
+            return canvas.toDataURL('image/png');
+        }
+
+        function setInvoiceButtonState(button, html, disabled) {
+            if (!button) return;
+            button.innerHTML = html;
+            button.disabled = disabled;
+        }
+
+        async function downloadInvoiceAsImage() {
+            if (!currentInvoiceData) { showToast('No hay datos de factura para guardar', 'error'); return; }
+            const downloadBtn = document.getElementById('download-invoice');
+            const originalHtml = downloadBtn ? downloadBtn.innerHTML : '';
+            if (downloadBtn) {
+                setInvoiceButtonState(downloadBtn, '<i class="fas fa-spinner fa-spin"></i><span>Guardando...</span>', true);
+            }
+            try {
+                if (typeof html2canvas === 'undefined') {
+                    const script = document.createElement('script');
+                    script.src = 'https://html2canvas.hertzen.com/dist/html2canvas.min.js';
+                    await new Promise((resolve, reject) => {
+                        script.onload = resolve;
+                        script.onerror = reject;
+                        document.head.appendChild(script);
+                    });
+                }
+                const dataUrl = await generateInvoiceImageData();
+                const link = document.createElement('a');
+                link.download = `comprobante-${currentInvoiceData.id}.png`;
+                link.href = dataUrl;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                showToast('Comprobante guardado correctamente');
+            } catch (error) {
+                console.error('Error al generar la imagen:', error);
+                showToast('No se pudo guardar el comprobante', 'error');
+            } finally {
+                if (downloadBtn) {
+                    setInvoiceButtonState(downloadBtn, originalHtml, false);
+                }
+            }
+        }
+
+        async function shareInvoiceAsImage() {
+            if (!currentInvoiceData) { showToast('No hay datos de factura para compartir', 'error'); return; }
+            const shareBtn = document.getElementById('share-invoice');
+            const originalHtml = shareBtn ? shareBtn.innerHTML : '';
+            if (shareBtn) {
+                setInvoiceButtonState(shareBtn, '<i class="fas fa-spinner fa-spin"></i><span>Compartiendo...</span>', true);
+            }
+            try {
+                if (typeof html2canvas === 'undefined') {
+                    const script = document.createElement('script');
+                    script.src = 'https://html2canvas.hertzen.com/dist/html2canvas.min.js';
+                    await new Promise((resolve, reject) => {
+                        script.onload = resolve;
+                        script.onerror = reject;
+                        document.head.appendChild(script);
+                    });
+                }
+                const dataUrl = await generateInvoiceImageData();
+                const response = await fetch(dataUrl);
+                const blob = await response.blob();
+                const file = new File([blob], `comprobante-${currentInvoiceData.id}.png`, { type: 'image/png' });
+                if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+                    await navigator.share({
+                        files: [file],
+                        title: 'Comprobante TokTok',
+                        text: 'Mira mi comprobante de transacción'
+                    });
+                    showToast('Comprobante compartido');
+                } else {
+                    const link = document.createElement('a');
+                    link.download = `comprobante-${currentInvoiceData.id}.png`;
+                    link.href = dataUrl;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    showToast('Comprobante listo para compartir');
+                }
+            } catch (error) {
+                console.error('Error al compartir la imagen:', error);
+                showToast('No se pudo compartir el comprobante', 'error');
+            } finally {
+                if (shareBtn) {
+                    setInvoiceButtonState(shareBtn, originalHtml, false);
+                }
+            }
+        }
+
+        const loadUserProfile = async (userId) => {
+            const { data, error } = await supabase.from('user_profiles').select('*').eq('id', userId).single();
+            if (error && error.code !== 'PGRST116') { console.error('Error loading profile:', error); return null; }
+            return data;
+        };
+
+        const updateUserProfile = async (userId, updates) => {
+            const { data, error } = await supabase.from('user_profiles').update(updates).eq('id', userId).select()
+                .single();
+            if (error) { console.error('Error updating profile:', error); return null; }
+            return data;
+        };
+
+        const uploadAvatar = async (userId, file) => {
+            const fileExt = file.name.split('.').pop();
+            const fileName = `${userId}.${fileExt}`;
+            const filePath = `avatars/${fileName}`;
+            const { error } = await supabase.storage.from('avatars').upload(filePath, file, { cacheControl: '3600',
+                upsert: true });
+            if (error) { console.error('Error uploading avatar:', error); return null; }
+            const { data: { publicUrl } } = supabase.storage.from('avatars').getPublicUrl(filePath);
+            return publicUrl;
+        };
+
+        const calculateBalance = async (userId) => {
+            const { data, error } = await supabase.from('transactions').select('amount, type').eq('user_id', userId).eq(
+                'status', 'completed');
+            if (error) { console.error('Error calculating balance:', error); return 0; }
+            let balance = 0;
+            data.forEach(transaction => {
+                if (transaction.type === 'deposit') { balance += transaction.amount; } else { balance -= transaction
+                        .amount; }
+            });
+            return balance;
+        };
+
+        const loadTransactions = async (userId, filter = 'all', dateFrom = null, dateTo = null) => {
+            let query = supabase.from('transactions').select('*').eq('user_id', userId).eq('status', 'completed').order(
+                'created_at', { ascending: false });
+            if (filter !== 'all') query = query.eq('type', filter);
+            if (dateFrom) query = query.gte('created_at', dateFrom);
+            if (dateTo) {
+                const endDate = new Date(dateTo);
+                endDate.setHours(23, 59, 59, 999);
+                query = query.lte('created_at', endDate.toISOString());
+            }
+            const { data, error } = await query;
+            if (error) { console.error('Error loading transactions:', error); return []; }
+            return data;
+        };
+
+        const createTransaction = async (userId, amount, type, description = '', metadata = {}) => {
+            const { data, error } = await supabase.from('transactions').insert([{ user_id: userId, amount, type,
+                description, metadata, status: 'completed' }]).select().single();
+            if (error) { console.error('Error creating transaction:', error); return null; }
+            return data;
+        };
+
+        function getActiveFilterValues() {
+            if (isMobileDevice()) {
+                return {
+                    filter: document.getElementById('mobile-transactions-filter')?.value || 'all',
+                    dateFrom: document.getElementById('mobile-date-from')?.value || null,
+                    dateTo: document.getElementById('mobile-date-to')?.value || null,
+                };
+            } else {
+                return {
+                    filter: document.getElementById('transactions-filter')?.value || 'all',
+                    dateFrom: document.getElementById('date-from')?.value || null,
+                    dateTo: document.getElementById('date-to')?.value || null,
+                };
+            }
+        }
+
+        function syncFilters(source) {
+            const isMobile = source === 'mobile';
+            const srcFilter = document.getElementById(isMobile ? 'mobile-transactions-filter' : 'transactions-filter');
+            const srcDateFrom = document.getElementById(isMobile ? 'mobile-date-from' : 'date-from');
+            const srcDateTo = document.getElementById(isMobile ? 'mobile-date-to' : 'date-to');
+            const dstFilter = document.getElementById(isMobile ? 'transactions-filter' : 'mobile-transactions-filter');
+            const dstDateFrom = document.getElementById(isMobile ? 'date-from' : 'mobile-date-from');
+            const dstDateTo = document.getElementById(isMobile ? 'date-to' : 'mobile-date-to');
+
+            if (dstFilter && srcFilter) dstFilter.value = srcFilter.value;
+            if (dstDateFrom && srcDateFrom) dstDateFrom.value = srcDateFrom.value;
+            if (dstDateTo && srcDateTo) dstDateTo.value = srcDateTo.value;
+
+            syncActiveFilterButtons();
+        }
+
+        function syncActiveFilterButtons() {
+            const activeSource = isMobileDevice() ? 'mobile' : 'desktop';
+            const dateFromVal = document.getElementById(activeSource === 'mobile' ? 'mobile-date-from' : 'date-from')
+                ?.value || '';
+            const dateToVal = document.getElementById(activeSource === 'mobile' ? 'mobile-date-to' : 'date-to')?.value ||
+                '';
+
+            const now = new Date();
+            const sevenDaysAgo = new Date(now);
+            sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+            const thirtyDaysAgo = new Date(now);
+            thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+            const todayStr = now.toISOString().split('T')[0];
+            const sevenStr = sevenDaysAgo.toISOString().split('T')[0];
+            const thirtyStr = thirtyDaysAgo.toISOString().split('T')[0];
+
+            const is7days = dateFromVal === sevenStr && dateToVal === todayStr;
+            const is30days = dateFromVal === thirtyStr && dateToVal === todayStr;
+            const isAll = !dateFromVal && !dateToVal;
+
+            ['filter-7days', 'mobile-filter-7days'].forEach(id => {
+                const btn = document.getElementById(id);
+                if (btn) btn.classList.toggle('active', is7days);
+            });
+            ['filter-30days', 'mobile-filter-30days'].forEach(id => {
+                const btn = document.getElementById(id);
+                if (btn) btn.classList.toggle('active', is30days);
+            });
+            ['filter-all', 'mobile-filter-all'].forEach(id => {
+                const btn = document.getElementById(id);
+                if (btn) btn.classList.toggle('active', isAll);
+            });
+        }
+
+        const applyFilters = async () => {
+            if (!currentUser) return;
+            const { filter, dateFrom, dateTo } = getActiveFilterValues();
+            const transactions = await loadTransactions(currentUser.id, filter, dateFrom, dateTo);
+            allTransactions = transactions;
+            renderTransactions(transactions);
+            syncActiveFilterButtons();
+        };
+
+        function setQuickDate(days) {
+            const now = new Date();
+            const dateTo = now.toISOString().split('T')[0];
+            let dateFrom = '';
+            if (days > 0) {
+                const from = new Date(now);
+                from.setDate(from.getDate() - days);
+                dateFrom = from.toISOString().split('T')[0];
+            }
+
+            const isMobile = isMobileDevice();
+            const dfEl = document.getElementById(isMobile ? 'mobile-date-from' : 'date-from');
+            const dtEl = document.getElementById(isMobile ? 'mobile-date-to' : 'date-to');
+            const dfElOther = document.getElementById(isMobile ? 'date-from' : 'mobile-date-from');
+            const dtElOther = document.getElementById(isMobile ? 'date-to' : 'mobile-date-to');
+
+            if (dfEl) dfEl.value = dateFrom;
+            if (dtEl) dtEl.value = dateTo;
+            if (dfElOther) dfElOther.value = dateFrom;
+            if (dtElOther) dtElOther.value = dateTo;
+
+            applyFilters();
+        }
+
+        function resetAllFilters() {
+            ['transactions-filter', 'mobile-transactions-filter'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = 'all';
+            });
+            ['date-from', 'mobile-date-from', 'date-to', 'mobile-date-to'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = '';
+            });
+            applyFilters();
+        }
+
+        function openPdfDateModal(callback) {
+            pendingPdfCallback = callback;
+            const modal = document.getElementById('pdf-date-modal');
+            const { dateFrom, dateTo } = getActiveFilterValues();
+            document.getElementById('pdf-date-from').value = dateFrom || '';
+            document.getElementById('pdf-date-to').value = dateTo || '';
+            modal.classList.add('active');
+            modal.classList.remove('opacity-0', 'invisible');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePdfDateModal() {
+            const modal = document.getElementById('pdf-date-modal');
+            modal.classList.remove('active');
+            modal.classList.add('opacity-0', 'invisible');
+            document.body.style.overflow = '';
+            pendingPdfCallback = null;
+        }
+
+        async function downloadTransactionsPDF(dateFrom, dateTo) {
+            if (!currentUser) {
+                showToast('Debes iniciar sesión', 'error');
+                return;
+            }
+
+            const downloadBtn = isMobileDevice() ?
+                document.getElementById('mobile-download-pdf-btn') :
+                document.getElementById('download-pdf-btn');
+
+            const originalText = downloadBtn ? downloadBtn.innerHTML : '';
+            if (downloadBtn) {
+                downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generando...';
+                downloadBtn.disabled = true;
+            }
+
+            try {
+                const transactions = await loadTransactions(currentUser.id, 'all', dateFrom || null, dateTo || null);
+
+                if (!transactions || transactions.length === 0) {
+                    showToast('No hay transacciones en el rango seleccionado', 'error');
+                    if (downloadBtn) { downloadBtn.innerHTML = originalText;
+                        downloadBtn.disabled = false; }
+                    return;
+                }
+
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+
+                const primaryColor = [109, 40, 217];
+                const darkColor = [30, 41, 59];
+                const grayColor = [100, 116, 139];
+                const greenColor = [5, 150, 105];
+                const redColor = [220, 38, 38];
+
+                doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+                doc.rect(0, 0, 210, 28, 'F');
+                doc.setTextColor(255, 255, 255);
+                doc.setFontSize(20);
+                doc.setFont('helvetica', 'bold');
+                doc.text('TokTok', 14, 14);
+                doc.setFontSize(10);
+                doc.setFont('helvetica', 'normal');
+                doc.text('Reporte de Transacciones', 14, 22);
+
+                doc.setTextColor(darkColor[0], darkColor[1], darkColor[2]);
+                doc.setFontSize(9);
+                const todayStr = new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+                doc.text(`Fecha de generación: ${todayStr}`, 14, 36);
+                doc.text(`Usuario: ${userProfile?.full_name || currentUser?.email || 'N/A'}`, 14, 42);
+                doc.text(`Email: ${currentUser?.email || 'N/A'}`, 14, 48);
+
+                const rangeText = dateFrom && dateTo ?
+                    `${formatDateShort(dateFrom)} al ${formatDateShort(dateTo)}` :
+                    dateFrom && !dateTo ? `Desde ${formatDateShort(dateFrom)}` :
+                    !dateFrom && dateTo ? `Hasta ${formatDateShort(dateTo)}` : 'Todas las transacciones';
+                doc.text(`Período: ${rangeText}`, 14, 54);
+                doc.text(`Total de transacciones: ${transactions.length}`, 14, 60);
+
+                let totalIngresos = 0;
+                let totalEgresos = 0;
+                transactions.forEach(t => {
+                    if (t.type === 'deposit') totalIngresos += t.amount;
+                    else totalEgresos += t.amount;
+                });
+                const balancePeriodo = totalIngresos - totalEgresos;
+
+                doc.setFontSize(10);
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(greenColor[0], greenColor[1], greenColor[2]);
+                doc.text(`Total Ingresos: +Bs ${totalIngresos.toFixed(2)}`, 14, 68);
+                doc.setTextColor(redColor[0], redColor[1], redColor[2]);
+                doc.text(`Total Egresos: -Bs ${totalEgresos.toFixed(2)}`, 90, 68);
+                doc.setTextColor(darkColor[0], darkColor[1], darkColor[2]);
+                doc.text(`Balance del período: Bs ${balancePeriodo.toFixed(2)}`, 14, 76);
+
+                const typeNames = { 'deposit': 'Ingreso', 'withdrawal': 'Retiro', 'transfer': 'Transferencia' };
+                const rows = transactions.map(t => [
+                    typeNames[t.type] || t.type,
+                    t.description || 'Sin descripción',
+                    formatDateShort(t.created_at),
+                    t.type === 'deposit' ? `+Bs ${t.amount.toFixed(2)}` : `-Bs ${t.amount.toFixed(2)}`,
+                ]);
+
+                doc.autoTable({
+                    startY: 82,
+                    head: [
+                        ['Tipo', 'Descripción', 'Fecha', 'Monto']
+                    ],
+                    body: rows,
+                    headStyles: {
+                        fillColor: primaryColor,
+                        textColor: [255, 255, 255],
+                        fontStyle: 'bold',
+                        fontSize: 9,
+                        halign: 'left',
+                    },
+                    bodyStyles: {
+                        fontSize: 8,
+                        textColor: darkColor,
+                        cellPadding: 3,
+                    },
+                    alternateRowStyles: {
+                        fillColor: [248, 250, 252],
+                    },
+                    columnStyles: {
+                        0: { cellWidth: 28 },
+                        1: { cellWidth: 'auto' },
+                        2: { cellWidth: 28, halign: 'center' },
+                        3: { cellWidth: 32, halign: 'right' },
+                    },
+                    margin: { left: 14, right: 14 },
+                    didParseCell: function(data) {
+                        if (data.column.index === 3 && data.cell.raw) {
+                            const raw = data.cell.raw;
+                            if (raw.startsWith('+')) {
+                                data.cell.styles.textColor = greenColor;
+                            } else if (raw.startsWith('-')) {
+                                data.cell.styles.textColor = redColor;
+                            }
+                        }
+                    },
+                });
+
+                const pageCount = doc.internal.getNumberOfPages();
+                for (let i = 1; i <= pageCount; i++) {
+                    doc.setPage(i);
+                    doc.setFontSize(7);
+                    doc.setTextColor(grayColor[0], grayColor[1], grayColor[2]);
+                    doc.text(
+                        `TokTok Wallet - Reporte generado el ${todayStr} - Página ${i} de ${pageCount}`,
+                        14,
+                        doc.internal.pageSize.height - 8
+                    );
+                }
+
+                const fileName =
+                    `TokTok_Transacciones_${dateFrom || 'todo'}_${dateTo || 'todo'}.pdf`.replace(/[^a-zA-Z0-9_\-\.]/g, '_');
+                doc.save(fileName);
+                showToast('PDF descargado correctamente');
+            } catch (error) {
+                console.error('Error generando PDF:', error);
+                showToast('Error al generar el PDF. Intenta de nuevo.', 'error');
+            } finally {
+                if (downloadBtn) { downloadBtn.innerHTML = originalText;
+                    downloadBtn.disabled = false; }
+            }
+        }
+
+        function triggerPdfDownload() {
+            openPdfDateModal(async (dateFrom, dateTo) => {
+                await downloadTransactionsPDF(dateFrom, dateTo);
+            });
+        }
+
+        const renderTransactions = (transactions) => {
+            const container = document.getElementById('transactions-list');
+            const mobileContainer = document.getElementById('mobile-transactions-list');
+            const mobileFullContainer = document.getElementById('mobile-transactions-full-list');
+
+            if (transactions.length === 0) {
+                const emptyState = `
+                    <div class="mobile-empty-state">
+                        <div class="mobile-empty-icon"><i class="fas fa-exchange-alt"></i></div>
+                        <h3 class="font-medium text-gray-800">No hay transacciones</h3>
+                        <p class="mobile-empty-text">No se encontraron transacciones con los filtros seleccionados</p>
+                    </div>`;
+                if (container) {
+                    container.innerHTML =
+                        `<tr><td colspan="4" class="px-6 py-8 text-center text-gray-400"><i class="fas fa-exchange-alt fa-2x mb-2"></i><p>No hay transacciones con los filtros seleccionados</p></td></tr>`;
+                }
+                if (mobileContainer) mobileContainer.innerHTML = emptyState;
+                if (mobileFullContainer) mobileFullContainer.innerHTML = emptyState;
+                return;
+            }
+
+            const typeNames = { 'deposit': 'Ingreso', 'withdrawal': 'Retiro', 'transfer': 'Transferencia' };
+
+            if (container) {
+                container.innerHTML = transactions.map(transaction => {
+                    const isPositive = transaction.type === 'deposit';
+                    const textColor = isPositive ? 'text-green-600' : 'text-red-600';
+                    const sign = isPositive ? '+' : '-';
+                    return `
+                    <tr class="transaction-item">
+                        <td class="px-6 py-4 whitespace-nowrap capitalize">
+                            <div class="flex items-center">
+                                <span class="w-2 h-2 rounded-full ${isPositive ? 'bg-green-500' : 'bg-red-500'} mr-2"></span>
+                                ${typeNames[transaction.type] || transaction.type}
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">${transaction.description || 'Sin descripción'}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-gray-500 text-sm">${formatDate(transaction.created_at)}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right ${textColor} font-semibold">${sign}${transaction.amount.toFixed(2)}</td>
+                    </tr>`;
+                }).join('');
+            }
+
+            if (mobileContainer) {
+                mobileContainer.innerHTML = transactions.slice(0, 3).map(transaction => {
+                    const isPositive = transaction.type === 'deposit';
+                    const iconColor = isPositive ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600';
+                    const textColor = isPositive ? 'text-green-600' : 'text-red-600';
+                    const sign = isPositive ? '+' : '-';
+                    return `
+                    <div class="mobile-transaction-item">
+                        <div class="mobile-transaction-icon ${iconColor}"><i class="fas ${isPositive ? 'fa-arrow-down' : 'fa-arrow-up'}"></i></div>
+                        <div class="mobile-transaction-details">
+                            <div class="mobile-transaction-title">${typeNames[transaction.type] || transaction.type}</div>
+                            <div class="mobile-transaction-date">${formatDate(transaction.created_at)}</div>
+                        </div>
+                        <div class="mobile-transaction-amount ${textColor}">${sign}${transaction.amount.toFixed(2)}</div>
+                    </div>`;
+                }).join('');
+            }
+
+            if (mobileFullContainer) {
+                mobileFullContainer.innerHTML = transactions.map(transaction => {
+                    const isPositive = transaction.type === 'deposit';
+                    const iconColor = isPositive ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600';
+                    const textColor = isPositive ? 'text-green-600' : 'text-red-600';
+                    const sign = isPositive ? '+' : '-';
+                    return `
+                    <div class="mobile-transaction-item">
+                        <div class="mobile-transaction-icon ${iconColor}"><i class="fas ${isPositive ? 'fa-arrow-down' : 'fa-arrow-up'}"></i></div>
+                        <div class="mobile-transaction-details">
+                            <div class="mobile-transaction-title">${transaction.description || typeNames[transaction.type] || transaction.type}</div>
+                            <div class="mobile-transaction-date">${formatDate(transaction.created_at)}</div>
+                        </div>
+                        <div class="mobile-transaction-amount ${textColor}">${sign}${transaction.amount.toFixed(2)}</div>
+                    </div>`;
+                }).join('');
+            }
+        };
+
+        const updateCardUserName = () => {
+            const userName = userProfile?.full_name || currentUser?.email?.split('@')[0] || 'USUARIO';
+            const shortName = userName.length > 18 ? userName.substring(0, 18).toUpperCase() : userName.toUpperCase();
+            const mobileCardUser = document.getElementById('mobile-card-user-name');
+            const desktopCardUser = document.getElementById('desktop-card-user-name');
+            if (mobileCardUser) mobileCardUser.textContent = shortName;
+            if (desktopCardUser) desktopCardUser.textContent = shortName;
+        };
+
+        const updateUI = async () => {
+            if (!currentUser) return;
+            currentBalance = await calculateBalance(currentUser.id);
+            const balanceElements = document.querySelectorAll('#balance, #mobile-balance');
+            balanceElements.forEach(el => { if (el) el.textContent = formatCurrency(currentBalance); });
+
+            updateCardUserName();
+
+            await applyFilters();
+        };
+
+        const confirmSend = async function(btn) {
+            const isMobile = btn.id === 'mobile-confirm-send';
+            const recipientPhone = document.getElementById(isMobile ? 'mobile-recipient-phone' : 'recipient-phone').value;
+            const amount = parseFloat(document.getElementById(isMobile ? 'mobile-send-amount' : 'send-amount').value);
+            const description = document.getElementById(isMobile ? 'mobile-send-description' : 'send-description').value;
+
+            if (!recipientPhone || recipientPhone.length < 7) { showToast('Ingresa un número de teléfono válido',
+                'error'); return false; }
+            if (!amount || amount <= 0) { showToast('Ingresa un monto válido', 'error'); return false; }
+            if (amount > currentBalance) { showToast('Saldo insuficiente', 'error'); return false; }
+
+            const confirmText = document.getElementById(isMobile ? 'mobile-confirm-send-text' : 'confirm-send-text');
+            const confirmSpinner = document.getElementById(isMobile ? 'mobile-confirm-send-spinner' : 'confirm-send-spinner');
+            btn.disabled = true;
+            if (confirmText) confirmText.textContent = 'Enviando...';
+            if (confirmSpinner) confirmSpinner.classList.remove('hidden');
+
+            try {
+                const { data: recipientUser, error: recipientError } = await supabase.from('user_profiles').select('id').eq(
+                    'phone', recipientPhone).single();
+                if (recipientError || !recipientUser) { showToast('El destinatario no está registrado', 'error'); return false; }
+
+                const sendTransaction = await createTransaction(currentUser.id, amount, 'transfer', description ||
+                    `Transferencia a ${recipientPhone}`, { recipient: recipientPhone, type: 'send' });
+                if (!sendTransaction) { showToast('Error al procesar la transferencia', 'error'); return false; }
+
+                const receiveTransaction = await createTransaction(recipientUser.id, amount, 'deposit', description ||
+                    `Transferencia de ${currentUser.email}`, { sender: currentUser.email, type: 'receive' });
+
+                if (receiveTransaction) {
+                    showToast(`Transferencia de ${amount} Bs enviada`);
+                    const invoiceTransaction = { ...sendTransaction, recipient_phone: recipientPhone, description: description ||
+                            `Transferencia a ${recipientPhone}` };
+                    showTransactionInvoice(invoiceTransaction, 'transfer');
+                    if (isMobile) { closeMobileModal('mobile-send-money-modal'); } else { closeModal('send-money-modal'); }
+                    updateUI();
+                    return true;
+                } else {
+                    showToast('Error al completar la transferencia', 'error');
+                    return false;
+                }
+            } finally {
+                btn.disabled = false;
+                if (confirmText) confirmText.textContent = 'Enviar dinero';
+                if (confirmSpinner) confirmSpinner.classList.add('hidden');
+            }
+        };
+
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', async () => {
+            const setVh = () => {
+                const vh = window.innerHeight * 0.01;
+                document.documentElement.style.setProperty('--vh', `${vh}px`);
+            };
+            setVh();
+            window.addEventListener('resize', setVh);
+
+            const { data: { session }, error } = await supabase.auth.getSession();
+            if (!session) { window.location.href = 'index.html'; return; }
+            currentUser = session.user;
+            userProfile = await loadUserProfile(currentUser.id);
+            if (!userProfile) { window.location.href = 'index.html'; return; }
+
+            const nameElements = document.querySelectorAll('#user-name, #mobile-user-name');
+            const emailElements = document.querySelectorAll('#user-email, #mobile-user-email');
+            const phoneElements = document.querySelectorAll('#profile-phone, #mobile-profile-phone');
+            const dateElements = document.querySelectorAll('#profile-created-at, #mobile-profile-created-at');
+            const avatarElements = document.querySelectorAll('#user-avatar, #mobile-user-avatar');
+            const initialsElements = document.querySelectorAll('#user-initials, #mobile-user-initials');
+
+            nameElements.forEach(el => { if (el) el.textContent = userProfile?.full_name || currentUser.email.split('@')[
+                    0]; });
+            emailElements.forEach(el => { if (el) el.textContent = currentUser.email; });
+            phoneElements.forEach(el => { if (el) el.textContent = userProfile?.phone || 'No especificado'; });
+            const createdAt = new Date(userProfile.created_at || currentUser.created_at);
+            dateElements.forEach(el => { if (el) el.textContent = createdAt.toLocaleDateString('es-ES', { year: 'numeric',
+                    month: 'long', day: 'numeric' }); });
+            avatarElements.forEach((avatarElement, index) => {
+                if (avatarElement) {
+                    const initialsElement = initialsElements[index];
+                    if (userProfile?.avatar_url) {
+                        avatarElement.innerHTML = `<img src="${userProfile.avatar_url}" alt="Avatar">`;
+                        if (initialsElement) initialsElement.textContent = '';
+                    } else {
+                        const initials = getInitials(userProfile?.full_name || currentUser.email);
+                        if (initialsElements[index]) initialsElements[index].textContent = initials;
+                    }
+                }
+            });
+
+            updateCardUserName();
+
+            const navItems = document.querySelectorAll('.nav-item');
+            const views = ['home', 'transactions', 'profile'];
+            navItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const view = item.dataset.view;
+                    navItems.forEach(navItem => navItem.classList.remove('active'));
+                    item.classList.add('active');
+                    views.forEach(v => { const el = document.getElementById(`mobile-${v}-view`); if (el) el
+                            .classList.add('hidden'); });
+                    const viewElement = document.getElementById(`mobile-${view}-view`);
+                    if (viewElement) viewElement.classList.remove('hidden');
+                    const titleMap = { 'home': 'Inicio', 'transactions': 'Transacciones', 'profile': 'Perfil' };
+                    const titleElement = document.getElementById('mobile-header-title');
+                    if (titleElement) titleElement.textContent = titleMap[view];
+                });
+            });
+
+            const mobileTabs = document.querySelectorAll('.mobile-tab');
+            mobileTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.dataset.tab;
+                    mobileTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    document.querySelectorAll('.tab-content').forEach(content => content.classList.add(
+                        'hidden'));
+                    const contentElement = document.getElementById(`mobile-${tabId}-tab`);
+                    if (contentElement) contentElement.classList.remove('hidden');
+                });
+            });
+
+            const desktopFilter = document.getElementById('transactions-filter');
+            const desktopDateFrom = document.getElementById('date-from');
+            const desktopDateTo = document.getElementById('date-to');
+            const filter7daysBtn = document.getElementById('filter-7days');
+            const filter30daysBtn = document.getElementById('filter-30days');
+            const filterAllBtn = document.getElementById('filter-all');
+            const resetFiltersBtn = document.getElementById('reset-filters');
+            const downloadPdfBtn = document.getElementById('download-pdf-btn');
+
+            const mobileFilter = document.getElementById('mobile-transactions-filter');
+            const mobileDateFrom = document.getElementById('mobile-date-from');
+            const mobileDateTo = document.getElementById('mobile-date-to');
+            const mobileFilter7daysBtn = document.getElementById('mobile-filter-7days');
+            const mobileFilter30daysBtn = document.getElementById('mobile-filter-30days');
+            const mobileFilterAllBtn = document.getElementById('mobile-filter-all');
+            const mobileResetFiltersBtn = document.getElementById('mobile-reset-filters');
+            const mobileDownloadPdfBtn = document.getElementById('mobile-download-pdf-btn');
+
+            const filterChangeHandler = () => {
+                if (isMobileDevice()) syncFilters('mobile');
+                else syncFilters('desktop');
+                applyFilters();
+            };
+
+            if (desktopFilter) desktopFilter.addEventListener('change', filterChangeHandler);
+            if (desktopDateFrom) desktopDateFrom.addEventListener('change', filterChangeHandler);
+            if (desktopDateTo) desktopDateTo.addEventListener('change', filterChangeHandler);
+            if (mobileFilter) mobileFilter.addEventListener('change', filterChangeHandler);
+            if (mobileDateFrom) mobileDateFrom.addEventListener('change', filterChangeHandler);
+            if (mobileDateTo) mobileDateTo.addEventListener('change', filterChangeHandler);
+
+            if (filter7daysBtn) filter7daysBtn.addEventListener('click', () => setQuickDate(7));
+            if (filter30daysBtn) filter30daysBtn.addEventListener('click', () => setQuickDate(30));
+            if (filterAllBtn) filterAllBtn.addEventListener('click', () => setQuickDate(0));
+            if (resetFiltersBtn) resetFiltersBtn.addEventListener('click', resetAllFilters);
+            if (mobileFilter7daysBtn) mobileFilter7daysBtn.addEventListener('click', () => setQuickDate(7));
+            if (mobileFilter30daysBtn) mobileFilter30daysBtn.addEventListener('click', () => setQuickDate(30));
+            if (mobileFilterAllBtn) mobileFilterAllBtn.addEventListener('click', () => setQuickDate(0));
+            if (mobileResetFiltersBtn) mobileResetFiltersBtn.addEventListener('click', resetAllFilters);
+
+            if (downloadPdfBtn) downloadPdfBtn.addEventListener('click', triggerPdfDownload);
+            if (mobileDownloadPdfBtn) mobileDownloadPdfBtn.addEventListener('click', triggerPdfDownload);
+
+            const pdfDateModal = document.getElementById('pdf-date-modal');
+            document.getElementById('close-pdf-date-modal')?.addEventListener('click', closePdfDateModal);
+            document.getElementById('cancel-pdf-download')?.addEventListener('click', closePdfDateModal);
+            pdfDateModal?.addEventListener('click', (e) => {
+                if (e.target === pdfDateModal) closePdfDateModal();
+            });
+
+            document.getElementById('pdf-7days')?.addEventListener('click', () => {
+                const now = new Date();
+                const from = new Date(now);
+                from.setDate(from.getDate() - 7);
+                document.getElementById('pdf-date-from').value = from.toISOString().split('T')[0];
+                document.getElementById('pdf-date-to').value = now.toISOString().split('T')[0];
+            });
+            document.getElementById('pdf-30days')?.addEventListener('click', () => {
+                const now = new Date();
+                const from = new Date(now);
+                from.setDate(from.getDate() - 30);
+                document.getElementById('pdf-date-from').value = from.toISOString().split('T')[0];
+                document.getElementById('pdf-date-to').value = now.toISOString().split('T')[0];
+            });
+            document.getElementById('pdf-all')?.addEventListener('click', () => {
+                document.getElementById('pdf-date-from').value = '';
+                document.getElementById('pdf-date-to').value = '';
+            });
+
+            document.getElementById('confirm-pdf-download')?.addEventListener('click', async () => {
+                const dateFrom = document.getElementById('pdf-date-from').value || null;
+                const dateTo = document.getElementById('pdf-date-to').value || null;
+                closePdfDateModal();
+                if (pendingPdfCallback) {
+                    await pendingPdfCallback(dateFrom, dateTo);
+                    pendingPdfCallback = null;
+                } else {
+                    await downloadTransactionsPDF(dateFrom, dateTo);
+                }
+            });
+
+            const logoutButtons = document.querySelectorAll('#logout-btn, #mobile-logout-btn');
+            logoutButtons.forEach(btn => {
+                btn.addEventListener('click', async () => { await supabase.auth.signOut();
+                    window.location.href = 'index.html'; });
+            });
+
+            const editProfileButtons = document.querySelectorAll('#edit-profile-btn, #mobile-edit-profile-btn');
+            editProfileButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const fullNameElements = document.querySelectorAll('#full-name, #mobile-full-name');
+                    fullNameElements.forEach(el => { if (el) el.value = userProfile?.full_name || ''; });
+                    const avatarPreviewElements = document.querySelectorAll(
+                        '#avatar-preview, #mobile-avatar-preview');
+                    avatarPreviewElements.forEach(avatarPreview => {
+                        if (avatarPreview) {
+                            if (userProfile?.avatar_url) {
+                                avatarPreview.innerHTML =
+                                    `<img src="${userProfile.avatar_url}" alt="Avatar">`;
+                            } else {
+                                avatarPreview.textContent = getInitials(userProfile?.full_name ||
+                                    currentUser.email);
+                            }
+                        }
+                    });
+                    if (btn.id === 'mobile-edit-profile-btn') { openMobileModal('mobile-profile-modal'); } else {
+                        openModal('profile-modal'); }
+                });
+            });
+
+            const closeProfileButtons = document.querySelectorAll(
+                '#close-profile-modal, #mobile-close-profile-modal, #cancel-profile-edit, #mobile-cancel-profile-edit');
+            closeProfileButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (btn.id.includes('mobile')) { closeMobileModal('mobile-profile-modal'); } else { closeModal(
+                            'profile-modal'); }
+                });
+            });
+
+            const avatarInputs = document.querySelectorAll('#avatar-input, #mobile-avatar-input');
+            const changeAvatarButtons = document.querySelectorAll('#mobile-change-avatar-btn');
+            changeAvatarButtons.forEach(btn => {
+                btn.addEventListener('click', () => { document.getElementById('mobile-avatar-input').click(); });
+            });
+            avatarInputs.forEach(input => {
+                input.addEventListener('change', function() {
+                    const previewId = this.id === 'mobile-avatar-input' ? 'mobile-avatar-preview' :
+                        'avatar-preview';
+                    const preview = document.getElementById(previewId);
+                    if (this.files && this.files[0]) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) { preview.innerHTML =
+                                `<img src="${e.target.result}" alt="Avatar">`; };
+                        reader.readAsDataURL(this.files[0]);
+                    }
+                });
+            });
+
+            const saveProfileButtons = document.querySelectorAll('#save-profile, #mobile-save-profile');
+            saveProfileButtons.forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const fullName = document.getElementById(btn.id === 'mobile-save-profile' ?
+                        'mobile-full-name' : 'full-name').value;
+                    const updates = { full_name: fullName };
+                    const fileInput = document.getElementById(btn.id === 'mobile-save-profile' ?
+                        'mobile-avatar-input' : 'avatar-input');
+                    if (fileInput.files.length > 0) {
+                        const publicUrl = await uploadAvatar(currentUser.id, fileInput.files[0]);
+                        if (publicUrl) updates.avatar_url = publicUrl;
+                    }
+                    const updatedProfile = await updateUserProfile(currentUser.id, updates);
+                    if (updatedProfile) {
+                        userProfile = updatedProfile;
+                        const nameElements = document.querySelectorAll('#user-name, #mobile-user-name');
+                        nameElements.forEach(el => { if (el) el.textContent = userProfile.full_name; });
+                        const avatarElements = document.querySelectorAll(
+                            '#user-avatar, #mobile-user-avatar, #mobile-avatar-preview, #avatar-preview');
+                        const initialsElements = document.querySelectorAll(
+                            '#user-initials, #mobile-user-initials');
+                        avatarElements.forEach((avatarElement, index) => {
+                            if (avatarElement) {
+                                if (userProfile.avatar_url) {
+                                    avatarElement.innerHTML =
+                                        `<img src="${userProfile.avatar_url}" alt="Avatar">`;
+                                    if (initialsElements[index]) initialsElements[index].textContent =
+                                        '';
+                                } else {
+                                    const initials = getInitials(userProfile.full_name);
+                                    if (initialsElements[index]) initialsElements[index].textContent =
+                                        initials;
+                                }
+                            }
+                        });
+                        updateCardUserName();
+                        showToast('Perfil actualizado correctamente');
+                        if (btn.id === 'mobile-save-profile') { closeMobileModal('mobile-profile-modal'); } else {
+                            closeModal('profile-modal'); }
+                    } else { showToast('Error al actualizar el perfil', 'error'); }
+                });
+            });
+
+            const sendMoneyButtons = document.querySelectorAll('#send-money-btn, #mobile-send-money-btn');
+            sendMoneyButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    ['recipient-phone', 'mobile-recipient-phone'].forEach(id => { const el = document
+                            .getElementById(id); if (el) el.value = ''; });
+                    ['send-amount', 'mobile-send-amount'].forEach(id => { const el = document.getElementById(
+                            id); if (el) el.value = ''; });
+                    ['send-description', 'mobile-send-description'].forEach(id => { const el = document
+                            .getElementById(id); if (el) el.value = ''; });
+                    if (btn.id === 'mobile-send-money-btn') { openMobileModal('mobile-send-money-modal'); } else {
+                        openModal('send-money-modal'); }
+                });
+            });
+
+            const closeSendButtons = document.querySelectorAll(
+                '#close-send-modal, #mobile-close-send-modal, #cancel-send, #mobile-cancel-send');
+            closeSendButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (btn.id.includes('mobile')) { closeMobileModal('mobile-send-money-modal'); } else {
+                        closeModal('send-money-modal'); }
+                });
+            });
+
+            const confirmSendButtons = document.querySelectorAll('#confirm-send, #mobile-confirm-send');
+            confirmSendButtons.forEach(btn => { btn.addEventListener('click', async function() { await confirmSend(
+                        this); }); });
+
+            const rechargeBalanceButtons = document.querySelectorAll('#recharge-balance-btn, #mobile-recharge-balance-btn');
+            rechargeBalanceButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    ['recharge-name', 'mobile-recharge-name'].forEach(id => { const el = document.getElementById(
+                            id); if (el) el.value = userProfile?.full_name || ''; });
+                    ['recharge-phone', 'mobile-recharge-phone'].forEach(id => { const el = document.getElementById(
+                            id); if (el) el.value = userProfile?.phone || ''; });
+                    ['recharge-amount-input', 'mobile-recharge-amount-input'].forEach(id => { const el = document
+                            .getElementById(id); if (el) el.value = ''; });
+                    ['recharge-receipt', 'mobile-recharge-receipt'].forEach(id => { const el = document
+                            .getElementById(id); if (el) el.value = ''; });
+                    ['recharge-file-name', 'mobile-recharge-file-name'].forEach(id => { const el = document
+                            .getElementById(id); if (el) el.textContent = ''; });
+                    if (btn.id === 'mobile-recharge-balance-btn') { openMobileModal(
+                        'mobile-recharge-balance-modal'); } else { openModal('recharge-balance-modal'); }
+                });
+            });
+
+            const closeRechargeBalanceButtons = document.querySelectorAll(
+                '#close-recharge-balance-modal, #mobile-close-recharge-balance-modal, #cancel-recharge-balance, #mobile-cancel-recharge-balance'
+                );
+            closeRechargeBalanceButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (btn.id.includes('mobile')) { closeMobileModal('mobile-recharge-balance-modal'); } else {
+                        closeModal('recharge-balance-modal'); }
+                });
+            });
+
+            const receiptInputs = document.querySelectorAll('#recharge-receipt, #mobile-recharge-receipt');
+            receiptInputs.forEach(input => {
+                input.addEventListener('change', function() {
+                    const fileNameElement = this.id === 'mobile-recharge-receipt' ? document.getElementById(
+                        'mobile-recharge-file-name') : document.getElementById('recharge-file-name');
+                    if (this.files && this.files[0]) { fileNameElement.textContent = this.files[0].name; } else {
+                        fileNameElement.textContent = ''; }
+                });
+            });
+
+            const confirmRechargeBalanceButtons = document.querySelectorAll(
+                '#confirm-recharge-balance, #mobile-confirm-recharge-balance');
+            confirmRechargeBalanceButtons.forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const isMobile = btn.id === 'mobile-confirm-recharge-balance';
+                    const name = document.getElementById(isMobile ? 'mobile-recharge-name' : 'recharge-name')
+                        .value;
+                    const phone = document.getElementById(isMobile ? 'mobile-recharge-phone' : 'recharge-phone')
+                        .value;
+                    const amount = document.getElementById(isMobile ? 'mobile-recharge-amount-input' :
+                        'recharge-amount-input').value;
+                    const receiptInput = document.getElementById(isMobile ? 'mobile-recharge-receipt' :
+                        'recharge-receipt');
+                    const receiptFile = receiptInput.files[0];
+                    if (!name) { showToast('Ingresa tu nombre completo', 'error'); return; }
+                    if (!phone || phone.length < 7) { showToast('Ingresa un número de teléfono válido',
+                        'error'); return; }
+                    if (!amount || parseFloat(amount) <= 0) { showToast('Ingresa un monto válido', 'error'); return; }
+                    if (!receiptFile) { showToast('Selecciona un comprobante de pago', 'error'); return; }
+                    const confirmText = document.getElementById(isMobile ?
+                        'mobile-confirm-recharge-balance-text' : 'confirm-recharge-balance-text');
+                    const confirmSpinner = document.getElementById(isMobile ?
+                        'mobile-confirm-recharge-balance-spinner' : 'confirm-recharge-balance-spinner');
+                    btn.disabled = true;
+                    if (confirmText) confirmText.textContent = 'Enviando...';
+                    if (confirmSpinner) confirmSpinner.classList.remove('hidden');
+                    try {
+                        const rechargeData = { name, phone, amount, email: currentUser.email };
+                        const success = await sendRechargeRequest(rechargeData, receiptFile);
+                        if (success) {
+                            showToast('Solicitud de recarga enviada. Revisaremos tu comprobante pronto.');
+                            if (isMobile) { closeMobileModal('mobile-recharge-balance-modal'); } else { closeModal(
+                                    'recharge-balance-modal'); }
+                        } else { throw new Error('Error al enviar la solicitud'); }
+                    } catch (error) { console.error('Error en el proceso de recarga de saldo:', error);
+                        showToast('Error al enviar la solicitud', 'error'); } finally {
+                        btn.disabled = false;
+                        if (confirmText) confirmText.textContent = 'Enviar solicitud';
+                        if (confirmSpinner) confirmSpinner.classList.add('hidden');
+                    }
+                });
+            });
+
+            const closeInvoiceButtons = document.querySelectorAll('#close-invoice-modal, #close-invoice');
+            closeInvoiceButtons.forEach(btn => { btn.addEventListener('click', (e) => { e.stopPropagation();
+                    closeInvoiceModal(); }); });
+            const downloadInvoiceBtn = document.getElementById('download-invoice');
+            const shareInvoiceBtn = document.getElementById('share-invoice');
+            if (downloadInvoiceBtn) { downloadInvoiceBtn.addEventListener('click', (e) => { e.stopPropagation();
+                    downloadInvoiceAsImage(); }); }
+            if (shareInvoiceBtn) { shareInvoiceBtn.addEventListener('click', (e) => { e.stopPropagation();
+                    shareInvoiceAsImage(); }); }
+
+            await updateUI();
+        });
+    </script>
+
+    <script>
+        // ==================== LÓGICA DE LA RULETA ====================
+        const VALID_CODES = new Set([
+            'TOKTOK-X8P9', 'TOKTOK-M3N2', 'TOKTOK-K7J4', 'TOKTOK-R5T6', 'TOKTOK-W2Z1', 'TOKTOK-Q9L0',
+            'TOKTOK-F4D5', 'TOKTOK-H6G7', 'TOKTOK-V8C3', 'TOKTOK-B1N9', 'TOKTOK-A1B2', 'TOKTOK-C3D4',
+            'TOKTOK-E5F6', 'TOKTOK-G7H8', 'TOKTOK-I9J0', 'TOKTOK-K1L2', 'TOKTOK-M3N4', 'TOKTOK-O5P6',
+            'TOKTOK-Q7R8', 'TOKTOK-S9T0', 'TOKTOK-U1V2', 'TOKTOK-W3X4', 'TOKTOK-Y5Z6', 'TOKTOK-A7B8',
+            'TOKTOK-C9D0', 'TOKTOK-E1F2', 'TOKTOK-G3H4', 'TOKTOK-I5J6', 'TOKTOK-K7L8', 'TOKTOK-M9N0',
+            'TOKTOK-O1P2', 'TOKTOK-Q3R4', 'TOKTOK-S5T6', 'TOKTOK-U7V8', 'TOKTOK-W9X0', 'TOKTOK-Y1Z2',
+            'TOKTOK-A3B4', 'TOKTOK-C5D6', 'TOKTOK-E7F8', 'TOKTOK-G9H0', 'TOKTOK-I1J2', 'TOKTOK-K3L4',
+            'TOKTOK-M5N6', 'TOKTOK-O7P8', 'TOKTOK-Q9R0', 'TOKTOK-S1T2', 'TOKTOK-U3V4', 'TOKTOK-W5X6',
+            'TOKTOK-Y7Z8', 'TOKTOK-A9B0', 'TOKTOK-C1D2', 'TOKTOK-E3F4', 'TOKTOK-G5H6', 'TOKTOK-I7J8',
+            'TOKTOK-K9L0', 'TOKTOK-M1N2', 'TOKTOK-O3P4', 'TOKTOK-Q5R6', 'TOKTOK-S7T8', 'TOKTOK-U9V0',
+            'TOKTOK-W1X2', 'TOKTOK-Y3Z4', 'TOKTOK-A5B6', 'TOKTOK-C7D8', 'TOKTOK-E9F0', 'TOKTOK-G1H2',
+            'TOKTOK-I3J4', 'TOKTOK-K5L6', 'TOKTOK-M7N8', 'TOKTOK-O9P0', 'TOKTOK-Q1R2', 'TOKTOK-S3T4',
+            'TOKTOK-U5V6', 'TOKTOK-W7X8', 'TOKTOK-Y9Z0', 'TOKTOK-A2B3', 'TOKTOK-C4D5', 'TOKTOK-E6F7',
+            'TOKTOK-G8H9', 'TOKTOK-I0J1', 'TOKTOK-K2L3', 'TOKTOK-M4N5', 'TOKTOK-O6P7', 'TOKTOK-Q8R9',
+            'TOKTOK-S0T1', 'TOKTOK-U2V3', 'TOKTOK-W4X5', 'TOKTOK-Y6Z7', 'TOKTOK-A8B9', 'TOKTOK-C0D1',
+            'TOKTOK-E2F3', 'TOKTOK-G4H5', 'TOKTOK-I6J7', 'TOKTOK-K8L9', 'TOKTOK-M0N1', 'TOKTOK-O2P3',
+            'TOKTOK-Q4R5', 'TOKTOK-S6T7', 'TOKTOK-U8V9', 'TOKTOK-W0X1', 'TOKTOK-Y2Z3', 'TOKTOK-A4B5',
+            'TOKTOK-C6D7', 'TOKTOK-E8F9', 'TOKTOK-G0H1', 'TOKTOK-I2J3', 'TOKTOK-K4L5', 'TOKTOK-M6N7',
+            'TOKTOK-O8P9', 'TOKTOK-Q0R1', 'TOKTOK-S2T3', 'TOKTOK-U4V5', 'TOKTOK-W6X7', 'TOKTOK-Y8Z9',
+            'TOKTOK-A0B1', 'TOKTOK-C2D3', 'TOKTOK-E4F5', 'TOKTOK-G6H7', 'TOKTOK-I8J9', 'TOKTOK-K0L1',
+            'TOKTOK-M2N3', 'TOKTOK-O4P5', 'TOKTOK-Q6R7', 'TOKTOK-S8T9', 'TOKTOK-U0V1', 'TOKTOK-W2X3',
+            'TOKTOK-Y4Z5', 'TOKTOK-A6B7', 'TOKTOK-C8D9', 'TOKTOK-E0F1', 'TOKTOK-G2H3', 'TOKTOK-I4J5',
+            'TOKTOK-K6L7', 'TOKTOK-M8N9', 'TOKTOK-O0P1', 'TOKTOK-Q2R3', 'TOKTOK-S4T5', 'TOKTOK-U6V7',
+            'TOKTOK-W8X9', 'TOKTOK-Y0Z1'
+        ]);
+
+        const PRIZES = [0, 1, 2, 5, 8, 10, 20, 50, 80, 100];
+        let usedCodes = new Set();
+        try { const stored = localStorage.getItem('toktok_used_codes'); if (stored) usedCodes = new Set(JSON.parse(
+                stored)); } catch (e) {}
+
+        function saveUsedCodes() { try { localStorage.setItem('toktok_used_codes', JSON.stringify(Array.from(
+                usedCodes))); } catch (e) {} }
+
+        const modal = document.getElementById('roulette-modal');
+        const closeBtn = document.getElementById('close-roulette-modal');
+        const spinBtn = document.getElementById('spin-roulette-btn');
+        const buySpinBtn = document.getElementById('buy-spin-btn');
+        const codeInput = document.getElementById('roulette-code');
+        const wheel = document.getElementById('wheel');
+        const messageEl = document.getElementById('roulette-message');
+        let isSpinning = false;
+
+        function closeModalRoulette() { modal.classList.remove('opacity-100', 'visible');
+            modal.classList.add('opacity-0', 'invisible'); }
+        closeBtn.addEventListener('click', closeModalRoulette);
+        modal.addEventListener('click', (e) => { if (e.target === modal) closeModalRoulette(); });
+
+        async function addPrizeToBalance(prizeAmount) {
+            if (!currentUser) { messageEl.textContent = '❌ Debes iniciar sesión primero'; return false; }
+            try {
+                const transaction = await createTransaction(currentUser.id, prizeAmount, 'deposit',
+                    `🎉 Premio de ruleta: Bs ${prizeAmount}`, { source: 'roulette' });
+                if (!transaction) throw new Error('No se pudo crear la transacción');
+                currentBalance = (currentBalance || 0) + prizeAmount;
+                const balanceElements = document.querySelectorAll('#balance, #mobile-balance');
+                balanceElements.forEach(el => { if (el) el.textContent = formatCurrency(currentBalance); });
+                const transactions = await loadTransactions(currentUser.id);
+                renderTransactions(transactions);
+                messageEl.textContent = `✅ ¡Ganaste Bs ${prizeAmount}! Se añadió a tu saldo.`;
+                return true;
+            } catch (error) { console.error('Error al agregar premio:', error);
+                messageEl.textContent = '❌ Error al acreditar el premio'; return false; }
+        }
+
+        async function performSpin(prizeIndex) {
+            const prize = PRIZES[prizeIndex];
+            const segmentAngle = 360 / PRIZES.length;
+            const spins = 5;
+            const finalRotation = 360 * spins + (360 - (prizeIndex * segmentAngle + segmentAngle / 2));
+            wheel.style.transform = `rotate(${finalRotation}deg)`;
+            return new Promise((resolve) => { setTimeout(async () => { const success = await addPrizeToBalance(
+                        prize);
+                    resolve(success); }, 3000); });
+        }
+
+        function getPrizeIndexWithProbability() {
+            const rand = Math.random() * 100;
+            if (rand < 0.1) return PRIZES.indexOf(100);
+            else if (rand < 0.3) return PRIZES.indexOf(80);
+            else if (rand < 0.7) return PRIZES.indexOf(50);
+            else if (rand < 1.8) return PRIZES.indexOf(20);
+            else if (rand < 2.5) return PRIZES.indexOf(10);
+            else if (rand < 3.3) return PRIZES.indexOf(8);
+            else if (rand < 4.3) return PRIZES.indexOf(5);
+            else if (rand < 24.3) return PRIZES.indexOf(2);
+            else if (rand < 64.3) return PRIZES.indexOf(1);
+            else return PRIZES.indexOf(0);
+        }
+
+        spinBtn.addEventListener('click', async () => {
+            if (isSpinning) return;
+            const code = codeInput.value.trim().toUpperCase();
+            if (!code) { messageEl.textContent = '⚠️ Ingresa un código'; return; }
+            if (!VALID_CODES.has(code)) { messageEl.textContent = '❌ Código inválido'; return; }
+            if (usedCodes.has(code)) { messageEl.textContent = '⛔ Este código ya fue usado'; return; }
+            if (!currentUser) { messageEl.textContent = '❌ No hay sesión activa'; return; }
+            isSpinning = true;
+            spinBtn.disabled = true;
+            buySpinBtn.disabled = true;
+            messageEl.textContent = '🎡 Girando...';
+            const prizeIndex = getPrizeIndexWithProbability();
+            usedCodes.add(code);
+            saveUsedCodes();
+            const success = await performSpin(prizeIndex);
+            if (!success) { usedCodes.delete(code);
+                saveUsedCodes(); }
+            spinBtn.disabled = false;
+            buySpinBtn.disabled = false;
+            isSpinning = false;
+        });
+
+        buySpinBtn.addEventListener('click', async () => {
+            if (isSpinning) return;
+            if (!currentUser) { messageEl.textContent = '❌ No hay sesión activa'; return; }
+            if (currentBalance < 1) { messageEl.textContent = '❌ Saldo insuficiente para comprar un giro (1 Bs)'; return; }
+            isSpinning = true;
+            spinBtn.disabled = true;
+            buySpinBtn.disabled = true;
+            messageEl.textContent = '🎡 Comprando giro...';
+            const purchaseTransaction = await createTransaction(currentUser.id, 1, 'withdrawal',
+                '🎰 Compra de giro en ruleta', { source: 'roulette_purchase' });
+            if (!purchaseTransaction) { messageEl.textContent = '❌ Error al procesar la compra';
+                spinBtn.disabled = false;
+                buySpinBtn.disabled = false;
+                isSpinning = false; return; }
+            currentBalance -= 1;
+            const balanceElements = document.querySelectorAll('#balance, #mobile-balance');
+            balanceElements.forEach(el => { if (el) el.textContent = formatCurrency(currentBalance); });
+            messageEl.textContent = '🎡 Girando...';
+            const prizeIndex = getPrizeIndexWithProbability();
+            const success = await performSpin(prizeIndex);
+            spinBtn.disabled = false;
+            buySpinBtn.disabled = false;
+            isSpinning = false;
+        });
+    </script>
 </body>
 </html>
