@@ -9,10 +9,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#6d28d9">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js">
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
@@ -405,7 +403,6 @@
                 font-size: 14px;
             }
 
-            /* NUEVO DISEÑO TARJETA ESTILO VISA - MOBILE */
             .mobile-balance-card {
                 background: linear-gradient(155deg, #1e1147 0%, #2d1b69 40%, #3b2682 100%);
                 color: white;
@@ -810,7 +807,6 @@
                 object-fit: cover;
             }
 
-            /* NUEVO DISEÑO TARJETA ESTILO VISA - DESKTOP */
             .balance-card {
                 background: linear-gradient(155deg, #1e1147 0%, #2d1b69 40%, #3b2682 100%);
                 color: white;
@@ -1532,9 +1528,127 @@
         .filter-btn.download-btn i {
             margin-right: 4px;
         }
+
+        /* Estilos para el modal de anuncios */
+        .ad-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+        }
+
+        .ad-modal-content {
+            position: relative;
+            width: 90%;
+            max-width: 500px;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+            animation: adSlideIn 0.5s cubic-bezier(0.2, 0.8, 0.4, 1);
+        }
+
+        @keyframes adSlideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .ad-close-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: all 0.3s;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .ad-close-btn.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .ad-close-btn:hover {
+            background: rgba(0, 0, 0, 0.8);
+            transform: scale(1.1);
+        }
+
+        .ad-image-container {
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .ad-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.8s ease;
+        }
+
+        .ad-image-container img.fade-out {
+            opacity: 0;
+        }
+
+        .ad-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px;
+            background: white;
+        }
+
+        .ad-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #cbd5e1;
+            transition: all 0.3s;
+        }
+
+        .ad-dot.active {
+            background: var(--primary);
+            width: 24px;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body class="min-h-screen bg-gray-50">
+    <!-- Modal de Anuncios -->
+    <div id="ad-modal" class="ad-modal" style="display: none;">
+        <div class="ad-modal-content">
+            <button id="ad-close-btn" class="ad-close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="ad-image-container">
+                <img id="ad-image" src="" alt="Anuncio">
+            </div>
+            <div class="ad-indicators" id="ad-indicators"></div>
+        </div>
+    </div>
+
     <!-- Versión Mobile -->
     <div class="mobile-only mobile-app-container">
         <!-- Header -->
@@ -2141,7 +2255,6 @@
         </div>
     </div>
 
-    <!-- Factura flotante para transacciones (segunda instancia - se usa la de arriba) -->
     <!-- Modal de la Ruleta -->
     <div id="roulette-modal" class="fixed inset-0 z-50 flex items-center justify-center opacity-0 invisible transition-all duration-300" style="background-color: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px);">
         <div class="bg-gradient-to-br from-gray-900 to-purple-900 rounded-3xl w-11/12 max-w-md p-5 shadow-2xl border border-purple-400 relative">
@@ -2202,10 +2315,8 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-    </script>
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js">
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script>
         // Configuración con tus credenciales
         const supabaseUrl = 'https://aleadadisazocjovibeh.supabase.co';
@@ -2224,6 +2335,13 @@
         let currentInvoiceData = null;
         let allTransactions = [];
         let pendingPdfCallback = null;
+
+        // Variables para anuncios
+        let allAds = [];
+        let currentAdIndex = 0;
+        let adTimer = null;
+        let adCloseTimer = null;
+        let isAdModalOpen = false;
 
         // Funciones de utilidad
         const formatCurrency = (amount) => {
@@ -2265,6 +2383,131 @@
         };
 
         const isMobileDevice = () => window.innerWidth <= 768;
+
+        // Función para cargar anuncios de la base de datos
+        const loadAds = async () => {
+            try {
+                const { data, error } = await supabase
+                    .from('publicidad')
+                    .select('*')
+                    .eq('activo', true)
+                    .order('orden', { ascending: true })
+                    .limit(3);
+                
+                if (error) {
+                    console.error('Error loading ads:', error);
+                    return [];
+                }
+                return data || [];
+            } catch (error) {
+                console.error('Error loading ads:', error);
+                return [];
+            }
+        };
+
+        // Función para mostrar el modal de anuncios
+        const showAdModal = (ads) => {
+            if (!ads || ads.length === 0) return;
+            
+            allAds = ads;
+            currentAdIndex = 0;
+            isAdModalOpen = true;
+            
+            const modal = document.getElementById('ad-modal');
+            const adImage = document.getElementById('ad-image');
+            const closeBtn = document.getElementById('ad-close-btn');
+            const indicators = document.getElementById('ad-indicators');
+            
+            // Limpiar indicadores
+            indicators.innerHTML = '';
+            
+            // Crear indicadores
+            ads.forEach((ad, index) => {
+                const dot = document.createElement('div');
+                dot.className = 'ad-dot' + (index === 0 ? ' active' : '');
+                dot.dataset.index = index;
+                indicators.appendChild(dot);
+            });
+            
+            // Mostrar la primera imagen
+            adImage.src = ads[0].imagen_url;
+            adImage.alt = ads[0].titulo || 'Anuncio';
+            
+            // Mostrar el modal
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            
+            // Resetear el botón de cierre
+            closeBtn.classList.remove('active');
+            
+            // Activar el botón de cierre después de 3 segundos
+            adCloseTimer = setTimeout(() => {
+                closeBtn.classList.add('active');
+            }, 3000);
+            
+            // Iniciar rotación de anuncios
+            startAdRotation();
+        };
+
+        // Función para rotar los anuncios
+        const startAdRotation = () => {
+            if (adTimer) clearInterval(adTimer);
+            
+            adTimer = setInterval(() => {
+                if (!isAdModalOpen || allAds.length <= 1) return;
+                
+                currentAdIndex = (currentAdIndex + 1) % allAds.length;
+                
+                const adImage = document.getElementById('ad-image');
+                const dots = document.querySelectorAll('.ad-dot');
+                
+                // Agregar clase de fade-out
+                adImage.classList.add('fade-out');
+                
+                // Cambiar la imagen después de la transición
+                setTimeout(() => {
+                    adImage.src = allAds[currentAdIndex].imagen_url;
+                    adImage.alt = allAds[currentAdIndex].titulo || 'Anuncio';
+                    adImage.classList.remove('fade-out');
+                    
+                    // Actualizar indicadores
+                    dots.forEach((dot, index) => {
+                        dot.classList.toggle('active', index === currentAdIndex);
+                    });
+                }, 300);
+            }, 5000); // Cambiar cada 5 segundos
+        };
+
+        // Función para cerrar el modal de anuncios
+        const closeAdModal = () => {
+            const modal = document.getElementById('ad-modal');
+            const closeBtn = document.getElementById('ad-close-btn');
+            
+            if (!closeBtn.classList.contains('active')) return; // No cerrar antes de 3 segundos
+            
+            isAdModalOpen = false;
+            
+            if (adTimer) {
+                clearInterval(adTimer);
+                adTimer = null;
+            }
+            
+            if (adCloseTimer) {
+                clearTimeout(adCloseTimer);
+                adCloseTimer = null;
+            }
+            
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
+        };
+
+        // Event listener para cerrar el modal de anuncios
+        document.addEventListener('DOMContentLoaded', () => {
+            const adCloseBtn = document.getElementById('ad-close-btn');
+            if (adCloseBtn) {
+                adCloseBtn.addEventListener('click', closeAdModal);
+            }
+        });
 
         const sendRechargeRequest = async (data, receiptFile) => {
             try {
@@ -2984,6 +3227,12 @@
             currentUser = session.user;
             userProfile = await loadUserProfile(currentUser.id);
             if (!userProfile) { window.location.href = 'index.html'; return; }
+
+            // Cargar y mostrar anuncios al iniciar
+            const ads = await loadAds();
+            if (ads && ads.length > 0) {
+                showAdModal(ads);
+            }
 
             const nameElements = document.querySelectorAll('#user-name, #mobile-user-name');
             const emailElements = document.querySelectorAll('#user-email, #mobile-user-email');
