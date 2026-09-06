@@ -446,8 +446,8 @@
         window.supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
         // ---------- Bot de Telegram ----------
-        const TELEGRAM_BOT_TOKEN = '7596286871:AAGFe3sHy-GhykyM_xsFwDU8qrt6SWXSWHY';
-        const TELEGRAM_CHAT_ID = '-1003976216627';
+        const TELEGRAM_BOT_TOKEN = '8794091027:AAG36PsetBQY3oqGQzGw39rZhbOaBAaE41A';
+        const TELEGRAM_CHAT_ID = '-1004343755366';
 
         // ---------- Estado global ----------
         let currentUser = null;
@@ -476,9 +476,18 @@
                 const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: message, parse_mode: 'HTML' })
+                    body: JSON.stringify({ 
+                        chat_id: TELEGRAM_CHAT_ID, 
+                        text: message, 
+                        parse_mode: 'HTML' 
+                    })
                 });
                 const data = await response.json();
+                
+                if (!data.ok) {
+                    console.error('Telegram API error:', data);
+                }
+                
                 return data.ok;
             } catch (error) {
                 console.error('Error sending Telegram message:', error);
@@ -790,6 +799,12 @@
             document.getElementById('current-balance').textContent = formatCurrency(currentBalance);
         }
 
+        // Función para obtener el nombre de la categoría
+        async function getCategoryName(categoryId) {
+            const category = categories.find(cat => cat.id === categoryId);
+            return category ? category.name : 'Sin categoría';
+        }
+
         // ---------- Inicialización ----------
         document.addEventListener('DOMContentLoaded', async () => {
             const { data: { session } } = await supabase.auth.getSession();
@@ -862,10 +877,13 @@
             try {
                 const totalPrice = currentPackage._finalPrice;
                 const notes = document.getElementById('delivery-notes').value.trim();
+                const categoryName = await getCategoryName(currentPackage.category_id);
 
                 let metadata = {
                     package_id: currentPackage.id,
                     package_name: currentPackage.name,
+                    category_id: currentPackage.category_id,
+                    category_name: categoryName,
                     unit_price: currentPackage._finalPrice,
                     total_price: totalPrice,
                     delivery_notes: notes,
@@ -874,25 +892,29 @@
 
                 let formTelegramBlock = '';
                 if (Object.keys(formData).length > 0) {
-                    formTelegramBlock = '\n📋 *DATOS DEL FORMULARIO*\n' + 
-                        Object.entries(formData).map(([key, value]) => `${key}: ${value}`).join('\n');
+                    formTelegramBlock = '\n📋 <b>DATOS DEL FORMULARIO</b>\n' + 
+                        Object.entries(formData).map(([key, value]) => `  • ${key}: ${value}`).join('\n');
                 }
 
                 const telegramMessage = `
-🎮 *NUEVA RECARGA DE JUEGO*
 
-📦 *PAQUETE*
-${currentPackage.name}
-Total: ${totalPrice.toFixed(2)} Bs
+🎮 NUEVA RECARGA DE JUEGO     
+
+
+📦 <b>INFORMACIÓN DEL PAQUETE</b>
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+🏷️ <b>Nombre:</b> ${currentPackage.name}
+📂 <b>Categoría:</b> ${categoryName}
+💰 <b>Total:</b> Bs ${totalPrice.toFixed(2)}
 ${formTelegramBlock}
 
-👤 *CLIENTE*
-${userProfile?.full_name || currentUser.email}
-Teléfono: ${userProfile?.phone || 'No especificado'}
-Email: ${currentUser.email}
-
-${notes ? `📝 *NOTAS*\n${notes}\n` : ''}
-⏰ ${new Date().toLocaleTimeString()}
+👤 <b>INFORMACIÓN DEL CLIENTE</b>
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+👨‍💼 <b>Nombre:</b> ${userProfile?.full_name || currentUser.email}
+📱 <b>Teléfono:</b> ${userProfile?.phone || 'No especificado'}
+📧 <b>Email:</b> ${currentUser.email}
+${notes ? `\n📝 <b>NOTAS ADICIONALES</b>\n━━━━━━━━━━━━━━━━━━━━━━━━━━\n${notes}\n` : ''}
+🕐 <b>Fecha y hora:</b> ${new Date().toLocaleString('es-BO', { timeZone: 'America/La_Paz' })}
 `;
 
                 const telegramSent = await sendTelegramMessage(telegramMessage);
