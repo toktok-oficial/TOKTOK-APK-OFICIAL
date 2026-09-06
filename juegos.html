@@ -20,8 +20,6 @@
             --bg-card: #16213e;
             --text-light: #e2e8f0;
             --text-muted: #94a3b8;
-            --neon-glow: 0 0 20px rgba(139, 92, 246, 0.5);
-            --neon-glow-strong: 0 0 30px rgba(139, 92, 246, 0.8);
         }
 
         * { -webkit-tap-highlight-color: transparent; }
@@ -36,6 +34,8 @@
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         body::before {
@@ -76,7 +76,6 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
         }
 
         .header-balance {
@@ -86,7 +85,6 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            box-shadow: 0 2px 10px rgba(139, 92, 246, 0.3);
             font-size: 13px;
             font-weight: 700;
             color: white;
@@ -105,12 +103,11 @@
             background: rgba(26, 26, 46, 0.8) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%238b5cf6'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'%3E%3C/path%3E%3C/svg%3E") no-repeat 12px center;
             background-size: 18px;
             color: var(--text-light);
-            transition: all 0.3s;
+            transition: border-color 0.15s;
         }
         .search-input:focus {
             border-color: var(--primary);
             outline: none;
-            box-shadow: var(--neon-glow);
         }
         .search-input::placeholder { color: var(--text-muted); }
 
@@ -135,18 +132,13 @@
             font-weight: 700;
             white-space: nowrap;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: background 0.15s, color 0.15s;
             letter-spacing: 0.05em;
-        }
-        .category-btn:hover {
-            border-color: rgba(139, 92, 246, 0.6);
-            box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
         }
         .category-btn.active {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
             border-color: var(--primary);
-            box-shadow: var(--neon-glow);
         }
 
         .products-container { padding: 4px 12px 24px; position: relative; z-index: 1; }
@@ -160,17 +152,11 @@
             overflow: hidden;
             background: var(--bg-card);
             border: 2px solid rgba(139, 92, 246, 0.2);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             position: relative;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: transform 0.1s;
         }
-        .product-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(139, 92, 246, 0.5);
-            box-shadow: var(--neon-glow);
-        }
-        .product-card:active { transform: scale(0.98); }
+        .product-card:active { transform: scale(0.97); }
         .product-image-wrap { position: relative; overflow: hidden; }
         .product-image {
             width: 100%;
@@ -178,30 +164,25 @@
             object-fit: cover;
             background: linear-gradient(135deg, #1a1a2e, #16213e);
             display: block;
-            transition: transform 0.3s;
         }
-        .product-card:hover .product-image { transform: scale(1.05); }
         .badge-discount {
             position: absolute; top: 4px; left: 4px;
-            background: linear-gradient(135deg, #ef4444, #dc2626);
+            background: #ef4444;
             color: #fff;
             font-size: 8px; font-weight: 800;
             padding: 2px 6px; border-radius: 6px;
-            box-shadow: 0 2px 10px rgba(239, 68, 68, 0.5);
         }
         .badge-featured {
             position: absolute; top: 4px; right: 4px;
-            background: linear-gradient(135deg, #f59e0b, #d97706);
+            background: #f59e0b;
             color: #78350f;
             font-size: 7px; font-weight: 800;
             padding: 2px 6px; border-radius: 6px;
-            box-shadow: 0 2px 10px rgba(245, 158, 11, 0.5);
         }
         .stock-badge {
             position: absolute; bottom: 4px; left: 4px;
             padding: 2px 6px; border-radius: 6px;
             font-size: 7px; font-weight: 700;
-            backdrop-filter: blur(5px);
         }
         .stock-available { background: rgba(16, 185, 129, 0.9); color: #fff; }
         .stock-low { background: rgba(245, 158, 11, 0.9); color: #fff; }
@@ -223,7 +204,6 @@
             color: #f59e0b; 
             font-weight: 800; 
             font-size: 12px;
-            text-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
         }
         .product-price-old { color: #6b7280; font-size: 8px; text-decoration: line-through; }
 
@@ -232,75 +212,83 @@
             background: rgba(0, 0, 0, 0.8);
             z-index: 100;
             display: flex; align-items: flex-end; justify-content: center;
-            opacity: 0; visibility: hidden; transition: all 0.3s;
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.2s, visibility 0.2s;
+            will-change: opacity, visibility;
         }
         .modal.active { opacity: 1; visibility: visible; }
         .modal-content {
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             width: 100%; max-width: 480px;
-            border-radius: 20px 20px 0 0; padding: 20px;
-            transform: translateY(24px); transition: all 0.3s;
-            max-height: 92vh; overflow-y: auto;
+            border-radius: 20px 20px 0 0;
+            padding: 16px;
+            transform: translateY(30px);
+            transition: transform 0.2s;
+            max-height: 85vh;
+            overflow-y: auto;
             border: 2px solid rgba(139, 92, 246, 0.3);
-            box-shadow: 0 -10px 40px rgba(0,0,0,0.5);
+            will-change: transform;
         }
         .modal.active .modal-content { transform: translateY(0); }
         @media (min-width: 560px) {
             .modal { align-items: center; }
-            .modal-content { border-radius: 20px; }
+            .modal-content { border-radius: 16px; }
         }
 
         .btn-primary {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white; padding: 14px 16px; border-radius: 12px;
-            font-weight: 800; transition: all 0.3s;
-            display: flex; align-items: center; justify-content: center;
-            border: none; font-size: 14px; width: 100%;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            font-size: 14px;
+            width: 100%;
             letter-spacing: 0.05em;
-            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
         }
-        .btn-primary:hover:not(:disabled) { 
-            transform: translateY(-2px); 
-            box-shadow: var(--neon-glow-strong);
-        }
-        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-primary:disabled { opacity: 0.5; }
 
         .loading-spinner {
             width: 18px; height: 18px;
-            border: 2px solid rgba(255,255,255,0.3); border-radius: 50%;
-            border-top-color: white; animation: spin 1s ease-in-out infinite;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
         .input-field {
-            width: 100%; padding: 12px; border: 2px solid rgba(139, 92, 246, 0.3);
-            border-radius: 12px; font-size: 14px; margin-bottom: 12px; 
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            border-radius: 12px;
+            font-size: 14px;
+            margin-bottom: 10px;
             background: rgba(26, 26, 46, 0.8);
             color: var(--text-light);
-            transition: all 0.3s;
+            transition: border-color 0.15s;
         }
-        .input-field:focus { 
-            border-color: var(--primary); 
-            outline: none; 
-            box-shadow: var(--neon-glow);
+        .input-field:focus {
+            border-color: var(--primary);
+            outline: none;
         }
         .input-field::placeholder { color: var(--text-muted); }
 
         .product-detail-image {
-            width: 100%; height: 200px; object-fit: cover;
-            background: linear-gradient(135deg, #1a1a2e, #16213e); 
-            border-radius: 12px; margin-bottom: 12px; 
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border-radius: 12px;
+            margin-bottom: 12px;
             border: 2px solid rgba(139, 92, 246, 0.3);
         }
 
-        .section-title {
-            font-weight: 800; color: #fff; margin-bottom: 12px;
-            display: flex; align-items: center; gap: 8px; font-size: 14px;
-            letter-spacing: 0.05em;
-        }
-
         .dynamic-form-field {
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
         .dynamic-form-label {
             display: block;
@@ -310,55 +298,33 @@
             margin-bottom: 6px;
             letter-spacing: 0.05em;
         }
-        .dynamic-form-input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid rgba(139, 92, 246, 0.3);
-            border-radius: 12px;
-            font-size: 14px;
-            background: rgba(26, 26, 46, 0.8);
-            color: var(--text-light);
-            transition: all 0.3s;
-        }
-        .dynamic-form-input:focus {
-            border-color: var(--primary);
-            outline: none;
-            box-shadow: var(--neon-glow);
-        }
-        .dynamic-form-input::placeholder { color: var(--text-muted); }
-        .dynamic-form-select {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid rgba(139, 92, 246, 0.3);
-            border-radius: 12px;
-            font-size: 14px;
-            background: rgba(26, 26, 46, 0.8);
-            color: var(--text-light);
-            transition: all 0.3s;
-            appearance: none;
-            cursor: pointer;
-        }
-        .dynamic-form-select:focus {
-            border-color: var(--primary);
-            outline: none;
-            box-shadow: var(--neon-glow);
-        }
+        .dynamic-form-input,
+        .dynamic-form-select,
         .dynamic-form-textarea {
             width: 100%;
-            padding: 12px;
+            padding: 10px 12px;
             border: 2px solid rgba(139, 92, 246, 0.3);
             border-radius: 12px;
             font-size: 14px;
             background: rgba(26, 26, 46, 0.8);
             color: var(--text-light);
-            transition: all 0.3s;
-            min-height: 80px;
-            resize: vertical;
+            transition: border-color 0.15s;
         }
+        .dynamic-form-input:focus,
+        .dynamic-form-select:focus,
         .dynamic-form-textarea:focus {
             border-color: var(--primary);
             outline: none;
-            box-shadow: var(--neon-glow);
+        }
+        .dynamic-form-input::placeholder,
+        .dynamic-form-textarea::placeholder { color: var(--text-muted); }
+        .dynamic-form-select {
+            appearance: none;
+            cursor: pointer;
+        }
+        .dynamic-form-textarea {
+            min-height: 60px;
+            resize: vertical;
         }
     </style>
 </head>
@@ -398,17 +364,17 @@
     <!-- Modal de detalle de paquete -->
     <div id="package-detail-modal" class="modal">
         <div class="modal-content">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-white" id="package-detail-title"></h3>
-                <button id="close-package-detail" class="text-gray-400 hover:text-white transition-colors">
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="text-lg font-bold text-white" id="package-detail-title"></h3>
+                <button id="close-package-detail" class="text-gray-400 hover:text-white">
                     <i class="fas fa-times text-xl"></i>
                 </button>
             </div>
 
             <img id="package-detail-image" class="product-detail-image" src="" alt="">
-            <p id="package-detail-description" class="text-gray-400 mb-4 text-sm"></p>
+            <p id="package-detail-description" class="text-gray-400 mb-3 text-sm"></p>
 
-            <div class="flex justify-between items-center mb-4">
+            <div class="flex justify-between items-center mb-3">
                 <div>
                     <div class="text-xs text-gray-500">Stock:</div>
                     <div id="package-detail-stock" class="text-base font-semibold"></div>
@@ -419,17 +385,17 @@
                 </div>
             </div>
 
-            <div class="text-center mb-6">
+            <div class="text-center mb-4">
                 <div class="text-xs text-gray-500">Total a pagar:</div>
-                <div id="total-price" class="text-2xl font-bold text-yellow-500"></div>
+                <div id="total-price" class="text-xl font-bold text-yellow-500"></div>
             </div>
 
             <!-- Formulario dinámico de requisitos -->
-            <div id="dynamic-form" class="mb-6"></div>
+            <div id="dynamic-form" class="mb-4"></div>
 
-            <div class="mb-4">
+            <div class="mb-3">
                 <label class="block text-xs font-bold text-gray-400 mb-2">Notas (opcional)</label>
-                <textarea id="delivery-notes" class="input-field" placeholder="Instrucciones especiales" rows="3"></textarea>
+                <textarea id="delivery-notes" class="input-field" placeholder="Instrucciones especiales" rows="2"></textarea>
             </div>
 
             <button id="buy-package-btn" class="btn-primary" disabled>
@@ -441,14 +407,14 @@
     <!-- Confirmación -->
     <div id="confirmation-modal" class="modal">
         <div class="modal-content">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-white">Confirmar recarga</h3>
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="text-lg font-bold text-white">Confirmar recarga</h3>
                 <button id="close-confirmation-modal" class="text-gray-400 hover:text-white"><i class="fas fa-times text-xl"></i></button>
             </div>
-            <div class="mb-4"><p id="confirmation-text" class="text-gray-300 text-sm"></p></div>
+            <div class="mb-3"><p id="confirmation-text" class="text-gray-300 text-sm"></p></div>
             <div class="flex space-x-3">
-                <button id="cancel-purchase" class="flex-1 py-3 px-4 rounded-lg bg-gray-700 hover:bg-gray-600 text-white transition-all font-bold text-sm">Cancelar</button>
-                <button id="confirm-purchase" class="flex-1 py-3 px-4 rounded-lg text-white transition-all font-bold flex items-center justify-center text-sm bg-purple-600 hover:bg-purple-700">
+                <button id="cancel-purchase" class="flex-1 py-3 px-4 rounded-lg bg-gray-700 hover:bg-gray-600 text-white font-bold text-sm">Cancelar</button>
+                <button id="confirm-purchase" class="flex-1 py-3 px-4 rounded-lg text-white font-bold flex items-center justify-center text-sm bg-purple-600 hover:bg-purple-700">
                     <span id="confirm-purchase-text">Confirmar</span>
                     <div id="confirm-purchase-spinner" class="loading-spinner ml-2 hidden"></div>
                 </button>
@@ -459,16 +425,16 @@
     <!-- Resultado -->
     <div id="result-modal" class="modal">
         <div class="modal-content">
-            <div class="flex justify-center mb-4">
-                <div id="result-icon" class="w-20 h-20 rounded-full flex items-center justify-center text-3xl">
+            <div class="flex justify-center mb-3">
+                <div id="result-icon" class="w-16 h-16 rounded-full flex items-center justify-center text-2xl">
                     <i class="fas fa-check-circle text-green-500"></i>
                 </div>
             </div>
-            <div class="text-center mb-4">
-                <h3 id="result-title" class="text-xl font-bold text-white mb-2">¡Recarga exitosa!</h3>
+            <div class="text-center mb-3">
+                <h3 id="result-title" class="text-lg font-bold text-white mb-2">¡Recarga exitosa!</h3>
                 <p id="result-message" class="text-gray-400 text-sm">Tu recarga se ha procesado correctamente.</p>
             </div>
-            <button id="close-result-modal" class="w-full py-3 px-4 rounded-lg text-white transition-all font-bold text-sm bg-purple-600 hover:bg-purple-700">Aceptar</button>
+            <button id="close-result-modal" class="w-full py-3 px-4 rounded-lg text-white font-bold text-sm bg-purple-600 hover:bg-purple-700">Aceptar</button>
         </div>
     </div>
 
@@ -521,11 +487,18 @@
         };
 
         const openModal = (modalId) => {
-            document.getElementById(modalId).classList.add('active');
+            const modal = document.getElementById(modalId);
+            modal.classList.add('active');
+            modal.style.opacity = '1';
+            modal.style.visibility = 'visible';
             document.body.style.overflow = 'hidden';
         };
+
         const closeModal = (modalId) => {
-            document.getElementById(modalId).classList.remove('active');
+            const modal = document.getElementById(modalId);
+            modal.classList.remove('active');
+            modal.style.opacity = '0';
+            modal.style.visibility = 'hidden';
             document.body.style.overflow = '';
         };
 
@@ -611,7 +584,7 @@
                 return `
                     <div class="product-card" data-package-id="${pkg.id}">
                         <div class="product-image-wrap">
-                            <img src="${pkg.image_url || 'https://via.placeholder.com/400x400/1a1a2e/8b5cf6?text=GAMES'}" alt="${pkg.name}" class="product-image">
+                            <img src="${pkg.image_url || 'https://via.placeholder.com/400x400/1a1a2e/8b5cf6?text=GAMES'}" alt="${pkg.name}" class="product-image" loading="lazy">
                             ${hasDiscount ? `<span class="badge-discount">-${pkg.discount_percentage}%</span>` : ''}
                             ${pkg.is_featured ? `<span class="badge-featured">★ Destacado</span>` : ''}
                             <span class="stock-badge ${stockClass}">${stockText}</span>
