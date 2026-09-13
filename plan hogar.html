@@ -6,6 +6,7 @@
     <title>plan hogar</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <meta name="theme-color" content="#2563eb" id="theme-color">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
@@ -546,6 +547,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         // ---------- Configuración Supabase ----------
         const supabaseUrl = 'https://aleadadisazocjovibeh.supabase.co';
@@ -563,6 +565,8 @@
         let currentPlan = null;
         let currentStep = 1;
         let currentTab = 'plans';
+        let contractMap = null;
+        let contractMapMarker = null;
         
         // Datos del formulario
         let formData = {
@@ -576,7 +580,7 @@
             idFrontPhoto: null,
             idBackPhoto: null,
             selfiePhoto: null,
-            hasCoverage: false
+            location: null
         };
 
         // ---------- Utilidades ----------
@@ -777,7 +781,7 @@
                 idFrontPhoto: null,
                 idBackPhoto: null,
                 selfiePhoto: null,
-                hasCoverage: false
+                location: null
             };
 
             openModal('contract-modal');
@@ -819,77 +823,102 @@
             }
 
             container.innerHTML = stepsHTML + contentHTML;
+
+            if (currentStep === 1) {
+                setTimeout(() => initLocationMap(), 80);
+            }
+
             setTimeout(() => updateNextButton(), 100);
         }
 
-        // Paso 1: Cobertura
+        // Paso 1: Ubicación (mapa OpenStreetMap)
         function renderCoverageStep() {
             return `
-                <div class="text-center py-3">
-                    <i class="fas fa-map-marked-alt text-5xl mb-3" style="color: var(--primary);"></i>
-                    <h4 class="font-bold text-base mb-2">Verifica tu Cobertura</h4>
-                    <p class="text-gray-600 text-xs mb-4">
-                        Consulta en el sistema de Entel si hay cobertura de fibra óptica en tu zona
+                <div class="text-center py-2">
+                    <h4 class="font-bold text-base mb-1">
+                        <i class="fas fa-map-marker-alt" style="color: var(--primary);"></i> Ubicación de instalación
+                    </h4>
+                    <p class="text-gray-600 text-xs mb-3">
+                        Confirma tu ubicación actual o toca el mapa / arrastra el marcador para elegir otra
                     </p>
-                    
-                    <a href="https://appwebjb.entel.bo/ConsultaGestor/index.jsp" target="_blank" 
-                       style="display: block; background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%); border-radius: 12px; padding: 16px; margin-bottom: 14px; text-decoration: none; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);">
-                        <i class="fas fa-globe text-2xl mb-2" style="color: #93c5fd;"></i>
-                        <p style="font-weight: 700; color: white; font-size: 14px; margin-bottom: 4px;">Consultar Cobertura Entel</p>
-                        <p style="font-size: 11px; color: #bfdbfe;">Abrir sistema de consulta</p>
-                    </a>
-                    
-                    <div style="background: #fffbeb; border: 2px solid #fbbf24; border-radius: 12px; padding: 14px; margin-bottom: 14px; text-align: left;">
-                        <p style="font-size: 12px; font-weight: 700; color: #92400e; margin-bottom: 10px; text-align: center;">
-                            <i class="fas fa-key mr-1"></i> DATOS DE ACCESO
-                        </p>
-                        
-                        <div style="display: flex; align-items: center; gap: 8px; background: white; border-radius: 8px; padding: 10px; margin-bottom: 8px;">
-                            <i class="fas fa-user" style="color: #2563eb; font-size: 13px;"></i>
-                            <div style="flex: 1;">
-                                <p style="font-size: 9px; color: #94a3b8; margin: 0;">Usuario</p>
-                                <p style="font-size: 12px; font-weight: 700; color: #1e293b; margin: 0; letter-spacing: 0.5px;">AUPARR</p>
-                            </div>
-                            <button onclick="copyToClipboard('AUPARR', this)" style="background: #eff6ff; border: 1px solid #bfdbfe; color: #2563eb; padding: 6px 10px; border-radius: 6px; font-size: 10px; font-weight: 600; cursor: pointer; white-space: nowrap;">
-                                <i class="fas fa-copy mr-1"></i> Copiar
-                            </button>
-                        </div>
-                        
-                        <div style="display: flex; align-items: center; gap: 8px; background: white; border-radius: 8px; padding: 10px;">
-                            <i class="fas fa-lock" style="color: #2563eb; font-size: 13px;"></i>
-                            <div style="flex: 1;">
-                                <p style="font-size: 9px; color: #94a3b8; margin: 0;">Contraseña</p>
-                                <p style="font-size: 12px; font-weight: 700; color: #1e293b; margin: 0; letter-spacing: 0.5px;">14422766</p>
-                            </div>
-                            <button onclick="copyToClipboard('14422766', this)" style="background: #eff6ff; border: 1px solid #bfdbfe; color: #2563eb; padding: 6px 10px; border-radius: 6px; font-size: 10px; font-weight: 600; cursor: pointer; white-space: nowrap;">
-                                <i class="fas fa-copy mr-1"></i> Copiar
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div style="background: #fefce8; border: 1px solid #fde68a; border-radius: 10px; padding: 10px; margin-bottom: 14px;">
-                        <p style="font-size: 12px; color: #a16207;">
-                            <i class="fas fa-info-circle mr-1"></i>
-                            Use estos datos para ingresar al sistema de consulta de Entel
-                        </p>
-                    </div>
-                    
-                    <label style="display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; background: #f0fdf4; padding: 12px; border-radius: 10px; border: 2px solid #bbf7d0;">
-                        <input type="checkbox" id="coverage-check" style="width: 18px; height: 18px;" 
-                               ${formData.hasCoverage ? 'checked' : ''}
-                               onchange="formData.hasCoverage = this.checked; updateNextButton();">
-                        <span style="font-weight: 600; color: #166534; font-size: 13px;">✅ Sí, hay cobertura en mi zona</span>
-                    </label>
-                    
-                    <div class="flex gap-3 mt-5">
+
+                    <div id="location-map" style="width:100%; height: 260px; border-radius: 12px; overflow: hidden; margin-bottom: 10px; border: 1px solid #e2e8f0;"></div>
+
+                    <p id="location-status" style="font-size: 12px; color: #64748b; margin-bottom: 14px; min-height: 16px;">
+                        Obteniendo tu ubicación actual...
+                    </p>
+
+                    <div class="flex gap-3 mt-2">
                         <button onclick="closeModal('contract-modal')" style="flex: 1; padding: 10px; background: #f1f5f9; border: none; border-radius: 10px; font-weight: 600; font-size: 13px; cursor: pointer;">Cancelar</button>
                         <button onclick="currentStep=2; renderContractStep();" style="flex: 1; padding: 10px; background: var(--primary); color: white; border: none; border-radius: 10px; font-weight: 600; font-size: 13px; cursor: pointer;" 
                                 id="step1-next" disabled>
-                            Siguiente <i class="fas fa-arrow-right ml-1"></i>
+                            <i class="fas fa-check mr-1"></i> Confirmar ubicación
                         </button>
                     </div>
                 </div>
             `;
+        }
+
+        // ---------- Mapa de ubicación (Paso 1) ----------
+        function initLocationMap() {
+            const mapEl = document.getElementById('location-map');
+            if (!mapEl || typeof L === 'undefined') return;
+
+            if (contractMap) {
+                contractMap.remove();
+                contractMap = null;
+                contractMapMarker = null;
+            }
+
+            const defaultCenter = [-16.5, -68.15]; // La Paz, Bolivia
+            contractMap = L.map('location-map').setView(defaultCenter, 13);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap',
+                maxZoom: 19
+            }).addTo(contractMap);
+
+            const statusEl = document.getElementById('location-status');
+
+            function placeMarker(lat, lng, isManual) {
+                formData.location = { lat, lng };
+                if (contractMapMarker) {
+                    contractMapMarker.setLatLng([lat, lng]);
+                } else {
+                    contractMapMarker = L.marker([lat, lng], { draggable: true }).addTo(contractMap);
+                    contractMapMarker.on('dragend', () => {
+                        const pos = contractMapMarker.getLatLng();
+                        formData.location = { lat: pos.lat, lng: pos.lng };
+                        if (statusEl) statusEl.textContent = '📍 Ubicación marcada manualmente';
+                        updateNextButton();
+                    });
+                }
+                contractMap.setView([lat, lng], 16);
+                if (statusEl) {
+                    statusEl.textContent = isManual
+                        ? '📍 Ubicación marcada manualmente'
+                        : '✅ Esta es tu ubicación actual. Puedes arrastrarla o tocar el mapa para cambiarla.';
+                }
+                updateNextButton();
+            }
+
+            contractMap.on('click', (e) => {
+                placeMarker(e.latlng.lat, e.latlng.lng, true);
+            });
+
+            if (formData.location) {
+                placeMarker(formData.location.lat, formData.location.lng, true);
+            } else if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (pos) => placeMarker(pos.coords.latitude, pos.coords.longitude, false),
+                    () => {
+                        if (statusEl) statusEl.textContent = 'No se pudo obtener tu ubicación. Toca el mapa para marcarla.';
+                    },
+                    { enableHighAccuracy: true, timeout: 8000 }
+                );
+            } else {
+                if (statusEl) statusEl.textContent = 'Geolocalización no disponible. Toca el mapa para marcar tu ubicación.';
+            }
         }
 
         // Paso 2: Documentos
@@ -1047,7 +1076,7 @@
                 let isValid = false;
                 
                 if (currentStep === 1) {
-                    isValid = formData.hasCoverage;
+                    isValid = !!formData.location;
                     buttonId = 'step1-next';
                 } else if (currentStep === 2) {
                     isValid = formData.idFrontPhoto && formData.idBackPhoto && formData.selfiePhoto;
@@ -1072,6 +1101,10 @@
                 : currentPlan.price;
             const totalFirstPayment = finalPrice + (currentPlan.installation_fee || 0);
 
+            const locationText = formData.location
+                ? `${formData.location.lat.toFixed(6)}, ${formData.location.lng.toFixed(6)}`
+                : 'No especificada';
+
             document.getElementById('confirmation-text').innerHTML = `
                 <div style="background: #f8fafc; padding: 10px; border-radius: 8px; margin-bottom: 8px;">
                     <strong>${currentPlan.name}</strong><br>
@@ -1084,7 +1117,7 @@
                     <p><strong>Teléfono:</strong> ${formData.phonePrimary}</p>
                     <p><strong>Dirección:</strong> ${formData.installationAddress}</p>
                     <p><strong>Ciudad:</strong> ${formData.city} ${formData.zone ? '- ' + formData.zone : ''}</p>
-                    <p><strong>Cobertura:</strong> ${formData.hasCoverage ? '✅ Confirmada' : '❌ No confirmada'}</p>
+                    <p><strong>Ubicación (mapa):</strong> ${locationText}</p>
                 </div>
             `;
             
@@ -1125,7 +1158,8 @@
                         installation_address: formData.installationAddress,
                         city: formData.city,
                         zone: formData.zone || null,
-                        has_coverage: formData.hasCoverage,
+                        location_lat: formData.location ? formData.location.lat : null,
+                        location_lng: formData.location ? formData.location.lng : null,
                         id_front_url: formData.idFrontPhoto,
                         id_back_url: formData.idBackPhoto,
                         selfie_with_id_url: formData.selfiePhoto,
@@ -1135,6 +1169,10 @@
                     .single();
 
                 if (error) throw error;
+
+                const mapLink = (request.location_lat && request.location_lng)
+                    ? `https://www.openstreetmap.org/?mlat=${request.location_lat}&mlon=${request.location_lng}#map=17/${request.location_lat}/${request.location_lng}`
+                    : 'No especificada';
 
                 const telegramMessage = `
 🔔 <b>NUEVA SOLICITUD DE INTERNET</b>
@@ -1154,7 +1192,7 @@ CI: ${request.id_number}
 ${request.installation_address}
 ${request.city}${request.zone ? ', ' + request.zone : ''}
 
-📡 Cobertura: ${request.has_coverage ? '✅ Confirmada' : '❌ No confirmada'}
+🗺️ Ubicación en mapa: ${mapLink}
 
 📄 <b>ESTADO:</b> Pendiente de revisión
 🆔 ID: ${request.id.slice(0, 8)}
