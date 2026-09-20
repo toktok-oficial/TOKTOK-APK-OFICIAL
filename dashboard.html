@@ -772,7 +772,6 @@ const setLocalAvatar = (dataUrl) => {
 const getEffectiveAvatar = (profile) => {
   const localAvatar = getLocalAvatar();
   if (localAvatar) return localAvatar;
-  if (profile && profile.avatar_url) return profile.avatar_url;
   return null;
 };
 const renderProfileAvatars = () => {
@@ -1445,7 +1444,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (fi.files.length > 0) {
       const localUrl = await uploadAvatar(currentUser.id, fi.files[0]);
       if (localUrl) {
-        upd.avatar_url = localUrl;
         setLocalAvatar(localUrl);
       }
     }
