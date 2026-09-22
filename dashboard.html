@@ -15,6 +15,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 :root{--primary:#6d28d9;--primary-dark:#5b21b6;--secondary:#059669;--secondary-dark:#047857;--accent:#f59e0b;--safe-area-inset-top:env(safe-area-inset-top);--safe-area-inset-bottom:env(safe-area-inset-bottom);}
 body{font-family:'Inter',sans-serif;background:linear-gradient(180deg,#f5f3ff 0%,#eef2ff 28%,#f8fafc 100%);color:#1e293b;padding-top:var(--safe-area-inset-top);padding-bottom:var(--safe-area-inset-bottom);-webkit-tap-highlight-color:transparent;}
+body.tx-locked{overflow:hidden!important;position:fixed;width:100%;height:100%;}
 @media (max-width:768px){
 body{background:linear-gradient(180deg,#f5f3ff 0%,#eef2ff 18%,#f8fafc 100%);max-width:100vw;overflow-x:hidden;}
 main{padding-left:0;padding-right:0;}
@@ -188,6 +189,13 @@ main{padding-left:0;padding-right:0;}
 .recharge-timer{font-variant-numeric:tabular-nums;font-weight:700;color:var(--primary);}
 .recharge-status-dot{width:8px;height:8px;border-radius:50%;background:#f59e0b;display:inline-block;margin-right:6px;animation:rechargePulse 1.5s infinite;}
 @keyframes rechargePulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+/* Overlay de bloqueo durante transacción */
+#tx-lock-overlay{position:fixed;inset:0;z-index:9998;background:rgba(15,23,42,.55);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;pointer-events:all;}
+#tx-lock-overlay.active{display:flex;}
+.tx-lock-content{background:white;border-radius:20px;padding:24px 28px;box-shadow:0 30px 60px -12px rgba(0,0,0,.35);text-align:center;max-width:320px;}
+.tx-lock-spinner{width:56px;height:56px;border:4px solid #ede9fe;border-top-color:#6d28d9;border-radius:50%;margin:0 auto 16px;animation:spin 1s linear infinite;}
+.tx-lock-title{font-size:16px;font-weight:700;color:#1e293b;margin-bottom:6px;}
+.tx-lock-sub{font-size:12px;color:#64748b;line-height:1.5;}
 </style>
 </head>
 <body class="min-h-screen bg-gray-50">
@@ -197,6 +205,15 @@ main{padding-left:0;padding-right:0;}
     <button id="ad-close-btn" class="ad-close-btn"><i class="fas fa-times"></i></button>
     <div class="ad-image-container"><img id="ad-image" src="" alt="Anuncio"></div>
     <div class="ad-indicators" id="ad-indicators"></div>
+  </div>
+</div>
+
+<!-- OVERLAY DE BLOQUEO DURANTE TRANSACCIÓN -->
+<div id="tx-lock-overlay">
+  <div class="tx-lock-content">
+    <div class="tx-lock-spinner"></div>
+    <div class="tx-lock-title">Procesando pago...</div>
+    <div class="tx-lock-sub">No cierres ni recargues esta página.<br>Estamos esperando la confirmación del banco.</div>
   </div>
 </div>
 
@@ -742,6 +759,47 @@ let rechargeQrId = null;
 let rechargePoller = null;
 let rechargeCountdownTimer = null;
 let rechargeSecondsLeft = 0;
+let rechargePollerStartedAt = 0;
+const RECHARGE_POLL_INTERVAL_MS = 2000;
+const RECHARGE_POLL_TIMEOUT_MS = 90000;
+
+// ============ BLOQUEO DURANTE TRANSACCIÓN ============
+let isTxLocked = false;
+
+function lockTransaction() {
+  if (isTxLocked) return;
+  isTxLocked = true;
+  document.body.classList.add('tx-locked');
+  const overlay = document.getElementById('tx-lock-overlay');
+  if (overlay) overlay.classList.add('active');
+}
+
+function unlockTransaction() {
+  if (!isTxLocked) return;
+  isTxLocked = false;
+  document.body.classList.remove('tx-locked');
+  const overlay = document.getElementById('tx-lock-overlay');
+  if (overlay) overlay.classList.remove('active');
+}
+
+// Bloquear navegación al cerrar/recargar la pestaña
+window.addEventListener('beforeunload', (e) => {
+  if (isTxLocked) {
+    e.preventDefault();
+    e.returnValue = 'Hay un pago en proceso. ¿Seguro que quieres salir?';
+    return e.returnValue;
+  }
+});
+
+// Bloquear teclas de atajo durante la transacción
+document.addEventListener('keydown', (e) => {
+  if (!isTxLocked) return;
+  // Bloquear F5, Ctrl+R, Ctrl+W, Alt+Left
+  if (e.key === 'F5' || (e.ctrlKey && e.key.toLowerCase() === 'r') || (e.ctrlKey && e.key.toLowerCase() === 'w') || (e.altKey && e.key === 'ArrowLeft')) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+}, true);
 
 const formatCurrency = (amount) => 'Bs' + parseFloat(amount).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 const formatDate = (dateString) => new Date(dateString).toLocaleDateString('es-ES',{year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
@@ -763,19 +821,11 @@ const showToast = (message, type='success') => {
   setTimeout(() => { toast.classList.add('opacity-0','transition-opacity','duration-300'); setTimeout(() => toast.remove(), 300); }, 3000);
 };
 
-const getLocalAvatar = () => {
-  try { return localStorage.getItem('toktok_local_avatar'); } catch { return null; }
-};
-const setLocalAvatar = (dataUrl) => {
-  try { localStorage.setItem('toktok_local_avatar', dataUrl); } catch {}
-};
-const getEffectiveAvatar = (profile) => {
-  const localAvatar = getLocalAvatar();
-  if (localAvatar) return localAvatar;
-  return null;
-};
+const getLocalAvatar = () => { try { return localStorage.getItem('toktok_local_avatar'); } catch { return null; } };
+const setLocalAvatar = (dataUrl) => { try { localStorage.setItem('toktok_local_avatar', dataUrl); } catch {} };
+const getEffectiveAvatar = () => getLocalAvatar();
 const renderProfileAvatars = () => {
-  const avatarUrl = getEffectiveAvatar(userProfile);
+  const avatarUrl = getEffectiveAvatar();
   const avs = document.querySelectorAll('#user-avatar, #mobile-user-avatar, #mobile-avatar-preview, #avatar-preview');
   const inits = document.querySelectorAll('#user-initials, #mobile-user-initials');
   avs.forEach((a, i) => {
@@ -859,10 +909,7 @@ function openInvoiceModal(){
   m.style.zIndex = '9999';
   m.style.pointerEvents = 'auto';
   const panel = m.querySelector('.modal-content');
-  if (panel) {
-    panel.style.pointerEvents = 'auto';
-    panel.style.zIndex = '10000';
-  }
+  if (panel) { panel.style.pointerEvents = 'auto'; panel.style.zIndex = '10000'; }
   document.body.style.overflow = 'hidden';
 }
 function closeInvoiceModal(){
@@ -895,33 +942,16 @@ function showTransactionInvoice(transaction, transactionType='general'){
           <i class="fas fa-check-circle"></i> Confirmado
         </span>
       </div>
-
       <div class="rounded-2xl bg-white border border-violet-100 p-4 text-center mb-4">
         <div class="text-[10px] uppercase tracking-[0.2em] text-gray-500">${transactionType==='transfer' ? 'Transferencia' : transactionTypeName}</div>
         <div class="mt-2 text-3xl font-extrabold ${amountClass}">${amountSign}${formatCurrency(transaction.amount).replace('Bs','')}</div>
       </div>
-
       <div class="space-y-2 text-sm">
-        <div class="flex justify-between gap-3 border-b border-gray-100 pb-2">
-          <span class="text-gray-500">Fecha</span>
-          <strong class="text-right text-gray-800">${createdDate}</strong>
-        </div>
-        <div class="flex justify-between gap-3 border-b border-gray-100 pb-2">
-          <span class="text-gray-500">Tipo</span>
-          <strong class="text-right text-gray-800">${transactionTypeName}</strong>
-        </div>
-        <div class="flex justify-between gap-3 border-b border-gray-100 pb-2">
-          <span class="text-gray-500">Estado</span>
-          <strong class="text-right text-gray-800">Procesada</strong>
-        </div>
-        <div class="flex justify-between gap-3 border-b border-gray-100 pb-2">
-          <span class="text-gray-500">ID</span>
-          <strong class="text-right text-gray-800 font-mono text-[11px]">${transaction.id || invoiceId}</strong>
-        </div>
-        <div class="flex justify-between gap-3 border-b border-gray-100 pb-2">
-          <span class="text-gray-500">Usuario</span>
-          <strong class="text-right text-gray-800">${userProfile?.full_name || currentUser?.email || 'Usuario'}</strong>
-        </div>
+        <div class="flex justify-between gap-3 border-b border-gray-100 pb-2"><span class="text-gray-500">Fecha</span><strong class="text-right text-gray-800">${createdDate}</strong></div>
+        <div class="flex justify-between gap-3 border-b border-gray-100 pb-2"><span class="text-gray-500">Tipo</span><strong class="text-right text-gray-800">${transactionTypeName}</strong></div>
+        <div class="flex justify-between gap-3 border-b border-gray-100 pb-2"><span class="text-gray-500">Estado</span><strong class="text-right text-gray-800">Procesada</strong></div>
+        <div class="flex justify-between gap-3 border-b border-gray-100 pb-2"><span class="text-gray-500">ID</span><strong class="text-right text-gray-800 font-mono text-[11px]">${transaction.id || invoiceId}</strong></div>
+        <div class="flex justify-between gap-3 border-b border-gray-100 pb-2"><span class="text-gray-500">Usuario</span><strong class="text-right text-gray-800">${userProfile?.full_name || currentUser?.email || 'Usuario'}</strong></div>
         ${transaction.description ? `<div class="flex justify-between gap-3"><span class="text-gray-500">Detalle</span><strong class="text-right text-gray-800 max-w-[55%]">${transaction.description}</strong></div>` : ''}
       </div>
     </div>`;
@@ -947,11 +977,8 @@ async function downloadInvoiceAsImage(){
     link.download = `factura-${currentInvoiceData.id}.png`;
     link.href = dataUrl;
     document.body.appendChild(link); link.click(); document.body.removeChild(link);
-  } catch (error) {
-    console.error(error);
-  } finally {
-    btn.innerHTML = orig; btn.disabled = false;
-  }
+  } catch (error) { console.error(error); }
+  finally { btn.innerHTML = orig; btn.disabled = false; }
 }
 
 async function shareInvoiceAsImage(){
@@ -965,15 +992,12 @@ async function shareInvoiceAsImage(){
     const file = new File([blob], `factura-${currentInvoiceData.id}.png`, {type:'image/png'});
     if (navigator.share && navigator.canShare && navigator.canShare({files:[file]})) {
       await navigator.share({ files:[file], title:'Factura TokTok' });
-    } else if (typeof window !== 'undefined') {
+    } else {
       const whatsappText = encodeURIComponent(`Mi factura TokTok\n${currentInvoiceData.transaction?.description || 'Transacción realizada'}\nMonto: ${formatCurrency(currentInvoiceData.transaction?.amount || 0)}`);
       window.open(`https://wa.me/?text=${whatsappText}`, '_blank');
     }
-  } catch (error) {
-    console.error(error);
-  } finally {
-    btn.innerHTML = orig; btn.disabled = false;
-  }
+  } catch (error) { console.error(error); }
+  finally { btn.innerHTML = orig; btn.disabled = false; }
 }
 
 // ============ DB ============
@@ -1248,7 +1272,10 @@ async function banecoFetch(path, options = {}){
     ...options,
     headers: { 'Content-Type':'application/json', 'Authorization': `Bearer ${session.access_token}`, ...(options.headers||{}) },
   });
-  return await res.json();
+  const text = await res.text();
+  let data = {};
+  try { data = JSON.parse(text); } catch { data = { error: text.slice(0, 200) }; }
+  return data;
 }
 
 function rechargePrefix(){ return isMobileDevice() ? 'mobile-recharge' : 'recharge'; }
@@ -1267,7 +1294,16 @@ function startRechargeCountdown(){
   clearInterval(rechargeCountdownTimer);
   rechargeCountdownTimer = setInterval(() => {
     rechargeSecondsLeft--;
-    if (rechargeSecondsLeft <= 0) { clearInterval(rechargeCountdownTimer); stopRechargePolling(); if (el) el.textContent = 'Expirado'; return; }
+    if (rechargeSecondsLeft <= 0) {
+      clearInterval(rechargeCountdownTimer);
+      stopRechargePolling();
+      if (el) el.textContent = 'Expirado';
+      // Desbloquear al expirar
+      unlockTransaction();
+      showToast('El QR expiró. Intenta de nuevo.','error');
+      closeRechargeFlow(true);
+      return;
+    }
     const mm = String(Math.floor(rechargeSecondsLeft/60)).padStart(2,'0');
     const ss = String(rechargeSecondsLeft%60).padStart(2,'0');
     if (el) el.textContent = `${mm}:${ss}`;
@@ -1281,28 +1317,43 @@ function stopRechargePolling(){
 
 function startRechargePolling(){
   stopRechargePolling();
+  rechargePollerStartedAt = Date.now();
+  setTimeout(() => verifyRechargeStatus(), 500);
   rechargePoller = setInterval(async () => {
     if (!rechargeQrId) return;
-    try {
-      const data = await banecoFetch(`/status/${rechargeQrId}`);
-      const p = rechargePrefix();
-      const sm = document.getElementById(`${p}-status-msg`);
-      if (data.status === 'paid') {
-        stopRechargePolling();
-        const amtEl = document.getElementById(`${p}-success-amount`);
-        if (amtEl) amtEl.textContent = `Se acreditaron Bs ${Number(data.amount).toFixed(2)} a tu saldo.`;
-        switchRechargeStep('success');
-        showToast(`¡Recarga de Bs ${Number(data.amount).toFixed(2)} exitosa!`);
-        await updateUI();
-      } else if (data.status === 'cancelled' || data.status === 'expired') {
-        stopRechargePolling();
-        showToast('El QR expiró o fue cancelado','error');
-        closeRechargeFlow();
-      } else if (sm) {
-        sm.innerHTML = '<span class="recharge-status-dot"></span>Esperando pago...';
-      }
-    } catch (err) { console.error('poll err:', err); }
-  }, 3000);
+    if (Date.now() - rechargePollerStartedAt > RECHARGE_POLL_TIMEOUT_MS) {
+      stopRechargePolling();
+      return;
+    }
+    await verifyRechargeStatus();
+  }, RECHARGE_POLL_INTERVAL_MS);
+}
+
+async function verifyRechargeStatus(){
+  if (!rechargeQrId) return;
+  try {
+    const data = await banecoFetch(`/status/${rechargeQrId}`);
+    const p = rechargePrefix();
+    const sm = document.getElementById(`${p}-status-msg`);
+
+    if (data.status === 'paid') {
+      stopRechargePolling();
+      const amtEl = document.getElementById(`${p}-success-amount`);
+      if (amtEl) amtEl.textContent = `Se acreditaron Bs ${Number(data.amount).toFixed(2)} a tu saldo.`;
+      switchRechargeStep('success');
+      showToast(`¡Recarga de Bs ${Number(data.amount).toFixed(2)} exitosa!`);
+      // DESBLOQUEAR cuando se completa el pago
+      unlockTransaction();
+      await updateUI();
+    } else if (data.status === 'cancelled' || data.status === 'expired') {
+      stopRechargePolling();
+      showToast('El QR expiró o fue cancelado','error');
+      unlockTransaction();
+      closeRechargeFlow(true);
+    } else if (sm) {
+      sm.innerHTML = '<span class="recharge-status-dot"></span>Esperando confirmación...';
+    }
+  } catch (err) { console.error('poll err:', err); }
 }
 
 async function generateRechargeQR(){
@@ -1321,6 +1372,8 @@ async function generateRechargeQR(){
     document.getElementById(`${p}-qr-image`).src = 'data:image/png;base64,' + data.qrImage;
     document.getElementById(`${p}-qr-id`).textContent = data.qrId;
     switchRechargeStep('qr');
+    // BLOQUEAR todo mientras esperamos el pago
+    lockTransaction();
     startRechargeCountdown();
     startRechargePolling();
   } catch (err) {
@@ -1331,9 +1384,11 @@ async function generateRechargeQR(){
 
 async function cancelRechargeQR(){
   if (!rechargeQrId) return closeRechargeFlow();
+  // Desbloquear al cancelar explícitamente
+  unlockTransaction();
   try { await banecoFetch('/cancel', { method:'POST', body: JSON.stringify({ qrId: rechargeQrId }) }); }
   catch (err) { console.error(err); }
-  closeRechargeFlow();
+  closeRechargeFlow(true);
 }
 
 function resetRechargeFlow(){
@@ -1345,7 +1400,8 @@ function resetRechargeFlow(){
   switchRechargeStep('amount');
 }
 
-function closeRechargeFlow(){
+function closeRechargeFlow(skipUnlock){
+  if (!skipUnlock) unlockTransaction();
   resetRechargeFlow();
   if (isMobileDevice()) closeMobileModal('mobile-recharge-balance-modal');
   else closeModal('recharge-balance-modal');
@@ -1376,6 +1432,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   document.querySelectorAll('.nav-item').forEach(item => {
     item.addEventListener('click', (e) => {
+      if (isTxLocked) { e.preventDefault(); return; }
       e.preventDefault();
       const view = item.dataset.view;
       document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -1413,14 +1470,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     else await downloadTransactionsPDF(df, dt);
   });
 
-  ['logout-btn','mobile-logout-btn'].forEach(id => document.getElementById(id)?.addEventListener('click', async () => { await supabase.auth.signOut(); window.location.href = 'index.html'; }));
+  ['logout-btn','mobile-logout-btn'].forEach(id => document.getElementById(id)?.addEventListener('click', async () => {
+    if (isTxLocked) { showToast('No puedes cerrar sesión con un pago en proceso','error'); return; }
+    await supabase.auth.signOut(); window.location.href = 'index.html';
+  }));
 
   ['edit-profile-btn','mobile-edit-profile-btn'].forEach(id => document.getElementById(id)?.addEventListener('click', () => {
+    if (isTxLocked) return;
     const fullNameEl = document.getElementById(id === 'mobile-edit-profile-btn' ? 'mobile-full-name' : 'full-name');
     if (fullNameEl) fullNameEl.value = userProfile?.full_name || '';
     const prev = document.getElementById(id === 'mobile-edit-profile-btn' ? 'mobile-avatar-preview' : 'avatar-preview');
     if (prev) {
-      const avatarUrl = getEffectiveAvatar(userProfile);
+      const avatarUrl = getEffectiveAvatar();
       if (avatarUrl) prev.innerHTML = `<img src="${avatarUrl}" alt="Avatar" style="width:100%;height:100%;object-fit:cover;">`;
       else prev.textContent = getInitials(userProfile?.full_name || currentUser.email);
     }
@@ -1443,22 +1504,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     const fi = document.getElementById(isM ? 'mobile-avatar-input' : 'avatar-input');
     if (fi.files.length > 0) {
       const localUrl = await uploadAvatar(currentUser.id, fi.files[0]);
-      if (localUrl) {
-        setLocalAvatar(localUrl);
-      }
+      if (localUrl) setLocalAvatar(localUrl);
     }
     const updated = await updateUserProfile(currentUser.id, upd);
-    if (updated || true) {
-      userProfile = { ...(userProfile || {}), ...upd };
-      document.querySelectorAll('#user-name, #mobile-user-name').forEach(el => { if (el) el.textContent = userProfile.full_name; });
-      renderProfileAvatars();
-      updateCardUserName();
-      showToast('Perfil actualizado');
-      if (isM) closeMobileModal('mobile-profile-modal'); else closeModal('profile-modal');
-    } else showToast('Error al actualizar','error');
+    userProfile = { ...(userProfile || {}), ...upd };
+    document.querySelectorAll('#user-name, #mobile-user-name').forEach(el => { if (el) el.textContent = userProfile.full_name; });
+    renderProfileAvatars();
+    updateCardUserName();
+    showToast('Perfil actualizado');
+    if (isM) closeMobileModal('mobile-profile-modal'); else closeModal('profile-modal');
   }));
 
   ['send-money-btn','mobile-send-money-btn'].forEach(id => document.getElementById(id)?.addEventListener('click', () => {
+    if (isTxLocked) return;
     ['recipient-phone','mobile-recipient-phone','send-amount','mobile-send-amount','send-description','mobile-send-description'].forEach(x => { const el = document.getElementById(x); if (el) el.value = ''; });
     if (id === 'mobile-send-money-btn') openMobileModal('mobile-send-money-modal'); else openModal('send-money-modal');
   }));
@@ -1466,6 +1524,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   ['confirm-send','mobile-confirm-send'].forEach(id => document.getElementById(id)?.addEventListener('click', function() { confirmSend(this); }));
 
   ['recharge-balance-btn','mobile-recharge-balance-btn'].forEach(id => document.getElementById(id)?.addEventListener('click', () => {
+    if (isTxLocked) { showToast('Ya hay una recarga en proceso','error'); return; }
     resetRechargeFlow();
     if (id === 'mobile-recharge-balance-btn') openMobileModal('mobile-recharge-balance-modal');
     else openModal('recharge-balance-modal');
@@ -1473,11 +1532,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   ['recharge-generate-btn','mobile-recharge-generate-btn'].forEach(id => document.getElementById(id)?.addEventListener('click', generateRechargeQR));
   ['recharge-cancel-btn','mobile-recharge-cancel-btn'].forEach(id => document.getElementById(id)?.addEventListener('click', cancelRechargeQR));
-  ['close-recharge-balance-modal','mobile-close-recharge-balance-modal','recharge-done-btn','mobile-recharge-done-btn'].forEach(id => document.getElementById(id)?.addEventListener('click', closeRechargeFlow));
+  ['close-recharge-balance-modal','mobile-close-recharge-balance-modal','recharge-done-btn','mobile-recharge-done-btn'].forEach(id => document.getElementById(id)?.addEventListener('click', () => {
+    // El botón cerrar solo funciona si NO hay transacción activa
+    if (isTxLocked) { showToast('Espera a que se complete el pago','error'); return; }
+    closeRechargeFlow(true);
+  }));
 
   document.querySelectorAll('.recharge-quick').forEach(b => b.addEventListener('click', () => {
     const amt = b.dataset.amount;
     ['recharge-amount-input','mobile-recharge-amount-input'].forEach(id => { const el = document.getElementById(id); if (el) el.value = amt; });
+    document.querySelectorAll('.recharge-quick').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
   }));
 
   ['close-invoice-modal','close-invoice'].forEach(id => document.getElementById(id)?.addEventListener('click', (e) => {
@@ -1497,11 +1562,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
   document.getElementById('invoice-modal')?.addEventListener('click', (e) => {
     if (e.target && e.target.id === 'invoice-modal') closeInvoiceModal();
-  });
-  const invoiceButtons = document.querySelectorAll('#invoice-modal button');
-  invoiceButtons.forEach((button) => {
-    button.style.pointerEvents = 'auto';
-    button.style.zIndex = '10001';
   });
 
   await updateUI();
