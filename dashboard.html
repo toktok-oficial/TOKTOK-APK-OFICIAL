@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -190,13 +189,6 @@ main{padding-left:0;padding-right:0;}
 .recharge-timer{font-variant-numeric:tabular-nums;font-weight:700;color:var(--primary);}
 .recharge-status-dot{width:8px;height:8px;border-radius:50%;background:#f59e0b;display:inline-block;margin-right:6px;animation:rechargePulse 1.5s infinite;}
 @keyframes rechargePulse{0%,100%{opacity:1;}50%{opacity:.4;}}
-/* Overlay de bloqueo silencioso */
-#tx-lock-overlay{position:fixed;inset:0;z-index:9998;background:rgba(15,23,42,.6);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;pointer-events:all;}
-#tx-lock-overlay.active{display:flex;}
-.tx-lock-content{background:white;border-radius:20px;padding:28px 32px;box-shadow:0 30px 60px -12px rgba(0,0,0,.4);text-align:center;max-width:320px;}
-.tx-lock-spinner{width:56px;height:56px;border:4px solid #ede9fe;border-top-color:#6d28d9;border-radius:50%;margin:0 auto 18px;animation:spin 1s linear infinite;}
-.tx-lock-title{font-size:16px;font-weight:700;color:#1e293b;margin-bottom:6px;}
-.tx-lock-sub{font-size:12px;color:#64748b;line-height:1.6;}
 </style>
 </head>
 <body class="min-h-screen bg-gray-50">
@@ -206,15 +198,6 @@ main{padding-left:0;padding-right:0;}
     <button id="ad-close-btn" class="ad-close-btn"><i class="fas fa-times"></i></button>
     <div class="ad-image-container"><img id="ad-image" src="" alt="Anuncio"></div>
     <div class="ad-indicators" id="ad-indicators"></div>
-  </div>
-</div>
-
-<!-- OVERLAY DE BLOQUEO DURANTE TRANSACCIÓN -->
-<div id="tx-lock-overlay">
-  <div class="tx-lock-content">
-    <div class="tx-lock-spinner"></div>
-    <div class="tx-lock-title">Procesando pago...</div>
-    <div class="tx-lock-sub">Esperando confirmación del banco.<br>Por favor, no cierres la aplicación.</div>
   </div>
 </div>
 
@@ -764,29 +747,57 @@ let rechargePollerStartedAt = 0;
 const RECHARGE_POLL_INTERVAL_MS = 2000;
 const RECHARGE_POLL_TIMEOUT_MS = 90000;
 
-// ============ BLOQUEO SILENCIOSO ============
+// ============ BLOQUEO SILENCIOSO DE BOTONES ============
 let isTxLocked = false;
+
+function getElementsToLock() {
+  return [
+    'mobile-logout-btn', 'logout-btn',
+    'mobile-recharge-balance-btn', 'recharge-balance-btn',
+    'mobile-send-money-btn', 'send-money-btn',
+    'mobile-close-recharge-balance-modal', 'close-recharge-balance-modal',
+    'mobile-recharge-cancel-btn', 'recharge-cancel-btn',
+    'mobile-close-profile-modal', 'close-profile-modal',
+    'mobile-close-send-modal', 'close-send-modal',
+    'mobile-edit-profile-btn', 'edit-profile-btn',
+    'mobile-cancel-profile-edit', 'cancel-profile-edit',
+    'mobile-cancel-send', 'cancel-send',
+    'mobile-recharge-done-btn', 'recharge-done-btn',
+    'mobile-change-avatar-btn'
+  ];
+}
 
 function lockTransaction() {
   if (isTxLocked) return;
   isTxLocked = true;
   document.body.classList.add('tx-locked');
-  const overlay = document.getElementById('tx-lock-overlay');
-  if (overlay) overlay.classList.add('active');
+  getElementsToLock().forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.disabled = true; el.style.pointerEvents = 'none'; el.style.opacity = '0.5'; }
+  });
+  document.querySelectorAll('.nav-item').forEach(el => {
+    el.style.pointerEvents = 'none';
+    el.style.opacity = '0.5';
+  });
 }
 
 function unlockTransaction() {
   if (!isTxLocked) return;
   isTxLocked = false;
   document.body.classList.remove('tx-locked');
-  const overlay = document.getElementById('tx-lock-overlay');
-  if (overlay) overlay.classList.remove('active');
+  getElementsToLock().forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.disabled = false; el.style.pointerEvents = ''; el.style.opacity = ''; }
+  });
+  document.querySelectorAll('.nav-item').forEach(el => {
+    el.style.pointerEvents = '';
+    el.style.opacity = '';
+  });
 }
 
-// Bloquear teclas de atajo durante la transacción (sin mensajes)
+// Bloquear teclas de atajo durante la transacción
 document.addEventListener('keydown', (e) => {
   if (!isTxLocked) return;
-  // Bloquear F5, Ctrl+R, Ctrl+W, Ctrl+T, Ctrl+N, Alt+Left, Alt+Right, Ctrl+Shift+R
   if (e.key === 'F5'
     || (e.ctrlKey && e.key.toLowerCase() === 'r')
     || (e.ctrlKey && e.key.toLowerCase() === 'w')
@@ -803,20 +814,6 @@ document.addEventListener('keydown', (e) => {
 // Bloquear clic derecho durante la transacción
 document.addEventListener('contextmenu', (e) => {
   if (isTxLocked) { e.preventDefault(); }
-}, true);
-
-// Bloquear cualquier click que no sea sobre el botón Cancelar
-document.addEventListener('click', (e) => {
-  if (!isTxLocked) return;
-  const target = e.target;
-  // Permitir solo clicks en el botón Cancelar de recarga (móvil o desktop)
-  if (target && (target.id === 'recharge-cancel-btn' || target.id === 'mobile-recharge-cancel-btn' ||
-      target.closest('#recharge-cancel-btn') || target.closest('#mobile-recharge-cancel-btn'))) {
-    return;
-  }
-  // Bloquear todo lo demás
-  e.preventDefault();
-  e.stopPropagation();
 }, true);
 
 const formatCurrency = (amount) => 'Bs' + parseFloat(amount).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -1489,7 +1486,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   ['logout-btn','mobile-logout-btn'].forEach(id => document.getElementById(id)?.addEventListener('click', async () => {
-    if (isTxLocked) { showToast('No puedes cerrar sesión con un pago en proceso','error'); return; }
+    if (isTxLocked) return;
     await supabase.auth.signOut(); window.location.href = 'index.html';
   }));
 
@@ -1542,7 +1539,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   ['confirm-send','mobile-confirm-send'].forEach(id => document.getElementById(id)?.addEventListener('click', function() { confirmSend(this); }));
 
   ['recharge-balance-btn','mobile-recharge-balance-btn'].forEach(id => document.getElementById(id)?.addEventListener('click', () => {
-    if (isTxLocked) { showToast('Ya hay una recarga en proceso','error'); return; }
+    if (isTxLocked) return;
     resetRechargeFlow();
     if (id === 'mobile-recharge-balance-btn') openMobileModal('mobile-recharge-balance-modal');
     else openModal('recharge-balance-modal');
@@ -1551,7 +1548,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   ['recharge-generate-btn','mobile-recharge-generate-btn'].forEach(id => document.getElementById(id)?.addEventListener('click', generateRechargeQR));
   ['recharge-cancel-btn','mobile-recharge-cancel-btn'].forEach(id => document.getElementById(id)?.addEventListener('click', cancelRechargeQR));
   ['close-recharge-balance-modal','mobile-close-recharge-balance-modal','recharge-done-btn','mobile-recharge-done-btn'].forEach(id => document.getElementById(id)?.addEventListener('click', () => {
-    if (isTxLocked) { showToast('Espera a que se complete el pago','error'); return; }
+    if (isTxLocked) return;
     closeRechargeFlow(true);
   }));
 
