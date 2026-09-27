@@ -821,6 +821,7 @@ let rechargePoller = null;
 let rechargeCountdownTimer = null;
 let rechargeSecondsLeft = 0;
 let rechargePollerStartedAt = 0;
+let rechargeCompletionWarningShown = false;
 const RECHARGE_POLL_INTERVAL_MS = 2000;
 const RECHARGE_POLL_TIMEOUT_MS = 90000;
 
@@ -1496,8 +1497,38 @@ async function markRechargeFailed(qrId){
   const { error } = await supabase.from('transacciones')
     .update({ estado:'fallido' })
     .filter('metadata->>qr_id','eq',qrId)
+    .eq('usuario_id',currentUser.id)
     .eq('estado','pendiente');
   if (error) console.error('Error marcando QR fallido:', error);
+}
+
+async function markRechargeCompleted(qrId){
+  const { data, error } = await supabase.from('transacciones')
+    .update({ estado:'completado', descripcion:'Recarga exitosa de saldo' })
+    .filter('metadata->>qr_id','eq',qrId)
+    .eq('usuario_id',currentUser.id)
+    .eq('estado','pendiente')
+    .select('id');
+  if (error) throw error;
+  if (data && data.length > 0) return;
+
+  const { data: transaction, error: lookupError } = await supabase.from('transacciones')
+    .select('estado, descripcion')
+    .filter('metadata->>qr_id','eq',qrId)
+    .eq('usuario_id',currentUser.id)
+    .maybeSingle();
+  if (lookupError) throw lookupError;
+  if (!transaction || transaction.estado !== 'completado') {
+    throw new Error('No se encontró la recarga pendiente para confirmarla.');
+  }
+  if (transaction.descripcion !== 'Recarga exitosa de saldo') {
+    const { error: descriptionError } = await supabase.from('transacciones')
+      .update({ descripcion:'Recarga exitosa de saldo' })
+      .filter('metadata->>qr_id','eq',qrId)
+      .eq('usuario_id',currentUser.id)
+      .eq('estado','completado');
+    if (descriptionError) throw descriptionError;
+  }
 }
 
 async function verifyRechargeStatus(){
@@ -1508,6 +1539,19 @@ async function verifyRechargeStatus(){
     const sm = document.getElementById(`${p}-status-msg`);
 
     if (data.status === 'paid') {
+      try{
+        await markRechargeCompleted(rechargeQrId);
+        rechargeCompletionWarningShown = false;
+      }catch(error){
+        console.error('Error completando la transacción de recarga:', error);
+        if (sm) sm.textContent = 'Pago recibido. Confirmando el saldo...';
+        if (!rechargeCompletionWarningShown) {
+          showToast('El pago fue recibido; estamos actualizando tu saldo.','error');
+          rechargeCompletionWarningShown = true;
+        }
+        rechargePollerStartedAt = Date.now();
+        return;
+      }
       stopRechargePolling();
       const amtEl = document.getElementById(`${p}-success-amount`);
       if (amtEl) amtEl.textContent = `Se acreditaron Bs ${Number(data.amount).toFixed(2)} a tu saldo.`;
@@ -1541,6 +1585,7 @@ async function generateRechargeQR(){
     const data = await banecoFetch('/create', { method:'POST', body: JSON.stringify({ amount }) });
     if (data.error) throw new Error(data.error);
     rechargeQrId = data.qrId;
+    rechargeCompletionWarningShown = false;
     const transaction = await createTransaction(currentUser.id, amount, 'deposit', `Recarga QR Baneco ${data.qrId}`, { source:'baneco_qr', qr_id:data.qrId }, 'pending');
     if (!transaction) {
       try { await banecoFetch('/cancel', { method:'POST', body: JSON.stringify({ qrId:data.qrId }) }); } catch (cancelError) { console.error(cancelError); }
