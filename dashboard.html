@@ -2,26 +2,26 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>TokTok</title>
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#6d28d9">
+<meta name="theme-color" content="#000000">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap');
 :root{--primary:#6d28d9;--primary-dark:#5b21b6;--secondary:#059669;--secondary-dark:#047857;--accent:#f59e0b;--safe-area-inset-top:env(safe-area-inset-top);--safe-area-inset-bottom:env(safe-area-inset-bottom);}
 body{font-family:'Inter',sans-serif;background:linear-gradient(180deg,#f5f3ff 0%,#eef2ff 28%,#f8fafc 100%);color:#1e293b;padding-top:var(--safe-area-inset-top);padding-bottom:var(--safe-area-inset-bottom);-webkit-tap-highlight-color:transparent;}
 body.tx-locked{overflow:hidden!important;position:fixed;width:100%;height:100%;}
-@media (max-width:768px){
+@media (min-width:0px){
 body{background:linear-gradient(180deg,#f5f3ff 0%,#eef2ff 18%,#f8fafc 100%);max-width:100vw;overflow-x:hidden;}
 main{padding-left:0;padding-right:0;}
-.mobile-app-container{max-width:100%;margin:0 auto;position:relative;height:100vh;height:calc(var(--vh,1vh) * 100);overflow:hidden;display:flex;flex-direction:column;background:linear-gradient(180deg,rgba(255,255,255,.96) 0%,rgba(245,247,255,.95) 100%);}
+.mobile-app-container{width:100%;max-width:480px;margin:0 auto;position:relative;height:100vh;height:calc(var(--vh,1vh) * 100);overflow:hidden;display:flex;flex-direction:column;background:linear-gradient(180deg,rgba(255,255,255,.96) 0%,rgba(245,247,255,.95) 100%);box-shadow:0 0 40px rgba(15,23,42,.12);}
 .mobile-content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:60px;}
-.mobile-bottom-nav{position:fixed;bottom:0;left:0;right:0;height:60px;background:rgba(255,255,255,.92);backdrop-filter:blur(14px);border-top:1px solid rgba(226,232,240,.8);display:flex;z-index:50;padding-bottom:var(--safe-area-inset-bottom);box-shadow:0 -12px 24px rgba(15,23,42,.04);}
+.mobile-bottom-nav{position:fixed;bottom:0;left:50%;right:auto;transform:translateX(-50%);width:min(100%,480px);height:60px;background:rgba(255,255,255,.92);backdrop-filter:blur(14px);border-top:1px solid rgba(226,232,240,.8);display:flex;z-index:50;padding-bottom:var(--safe-area-inset-bottom);box-shadow:0 -12px 24px rgba(15,23,42,.04);}
 .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#64748b;font-size:10px;text-decoration:none;}
 .nav-item i{font-size:20px;margin-bottom:4px;}
 .nav-item.active{color:var(--primary);}
@@ -80,7 +80,6 @@ main{padding-left:0;padding-right:0;}
 .mobile-card-balance-label{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,.6);margin-bottom:2px;font-weight:500;}
 .mobile-card-balance-amount{font-size:26px;font-weight:700;letter-spacing:-.5px;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.2);}
 .mobile-card-bottom{display:flex;justify-content:space-between;align-items:flex-end;position:relative;z-index:1;}
-.mobile-card-user-name{font-size:11px;font-weight:600;color:rgba(255,255,255,.8);text-transform:uppercase;}
 .mobile-card-expiry{font-size:9px;color:rgba(255,255,255,.5);text-align:right;}
 .mobile-card-expiry span{display:block;font-size:13px;font-weight:600;color:rgba(255,255,255,.9);}
 .mobile-card-recharge-btn{width:100%;margin-top:14px;padding:10px;border-radius:10px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:white;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;position:relative;z-index:1;}
@@ -138,6 +137,8 @@ main{padding-left:0;padding-right:0;}
 .qr-code-container-desktop{display:flex;justify-content:center;margin:20px 0;}
 .qr-code-desktop{width:220px;height:220px;border:1px solid #e2e8f0;border-radius:12px;padding:10px;background:white;}
 }
+.mobile-only{display:flex!important;}
+.desktop-only{display:none!important;}
 .invoice-shell{background:linear-gradient(135deg,#ffffff 0%,#f8f5ff 100%);border-radius:24px;padding:18px;border:1px solid #e9d5ff;box-shadow:0 20px 50px rgba(109,40,217,.14);position:relative;overflow:hidden;}
 .invoice-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;position:relative;z-index:1;}
 .invoice-brand{font-size:16px;font-weight:800;color:#6d28d9;letter-spacing:.14em;text-transform:uppercase;}
@@ -157,7 +158,6 @@ main{padding-left:0;padding-right:0;}
 .invoice-action-btn.primary{background:linear-gradient(135deg,#6d28d9,#8b5cf6);color:white;}
 .invoice-action-btn.secondary{background:linear-gradient(135deg,#0f766e,#14b8a6);color:white;}
 .invoice-action-btn.ghost{background:#f8fafc;color:#334155;border:1px solid #e2e8f0;}
-#wheel{transition:transform 3s cubic-bezier(.25,.1,.15,1);}
 .filter-container{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-bottom:16px;padding:12px;background:#f8fafc;border-radius:14px;border:1px solid #e2e8f0;}
 .filter-group{flex:1;min-width:100px;}
 .filter-label{font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px;display:block;text-transform:uppercase;letter-spacing:.3px;}
@@ -180,18 +180,139 @@ main{padding-left:0;padding-right:0;}
 .ad-dot{width:8px;height:8px;border-radius:50%;background:#cbd5e1;transition:all .3s;}
 .ad-dot.active{background:var(--primary);width:24px;border-radius:4px;}
 .recharge-step.hidden{display:none;}
-.recharge-shell{background:linear-gradient(180deg,#ffffff,#f8f5ff);border:1px solid #e9d5ff;border-radius:22px;padding:16px;box-shadow:0 20px 40px -30px rgba(109,40,217,.5);}
-.recharge-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:linear-gradient(135deg,#f5f3ff,#ede9fe);color:#6d28d9;font-size:11px;font-weight:700;margin-bottom:12px;}
-.recharge-pill{display:inline-flex;align-items:center;justify-content:center;padding:8px 10px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;font-size:11px;font-weight:600;color:#475569;}
-.recharge-quick{border-radius:12px;padding:10px 8px;font-size:12px;font-weight:700;background:#fff;border:1px solid #e2e8f0;transition:all .2s ease;}
-.recharge-quick:hover{background:#f5f3ff;border-color:#c4b5fd;color:#4c1d95;}
+.recharge-shell{background:linear-gradient(180deg,var(--card),var(--card2));border:1px solid var(--border);border-radius:22px;padding:16px;box-shadow:0 20px 40px -30px rgba(0,0,0,.55);}
+.recharge-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid var(--border);border-radius:999px;background:linear-gradient(135deg,var(--accent-soft),var(--card2));color:var(--accent);font-size:11px;font-weight:700;margin-bottom:12px;}
+.recharge-pill{display:inline-flex;align-items:center;justify-content:center;padding:8px 10px;background:var(--card2);border:1px solid var(--border);border-radius:12px;font-size:11px;font-weight:600;color:var(--muted);}
+.recharge-quick{border-radius:12px;padding:10px 8px;font-size:12px;font-weight:700;background:var(--card2);color:var(--text);border:1px solid var(--border);transition:all .2s ease;}
+.recharge-quick:hover{background:var(--accent-soft);border-color:var(--accent);color:var(--text);}
 .recharge-quick.active{background:linear-gradient(135deg,#6d28d9,#8b5cf6);color:white;border-color:#8b5cf6;box-shadow:0 12px 18px -12px rgba(109,40,217,.7);}
 .recharge-timer{font-variant-numeric:tabular-nums;font-weight:700;color:var(--primary);}
 .recharge-status-dot{width:8px;height:8px;border-radius:50%;background:#f59e0b;display:inline-block;margin-right:6px;animation:rechargePulse 1.5s infinite;}
+#mobile-recharge-balance-modal .recharge-shell .text-gray-600,#mobile-recharge-balance-modal .recharge-shell .text-gray-500,#mobile-recharge-balance-modal .recharge-shell .text-gray-400{color:var(--muted);}
 @keyframes rechargePulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+:root{--bg:#000000;--bg2:#0a0a0a;--card:#141414;--card2:#1c1c1c;--text:#fff;--muted:#8a8a8a;--accent:#6F2A82;--accent-soft:rgba(111,42,130,.24);--accent2:#26A69A;--accent2-soft:rgba(38,166,154,.15);--success:#26A69A;--danger:#EF5350;--border:rgba(255,255,255,.08);--safe-area-inset-bottom:env(safe-area-inset-bottom);}
+:root.light-mode{--bg:#f5f5f5;--bg2:#fff;--card:#fff;--card2:#fafafa;--text:#1a1a1a;--muted:#666;--accent:#7B1FA2;--accent-soft:rgba(123,31,162,.14);--border:rgba(0,0,0,.08);}
+html,body{width:100%;height:100%;margin:0;padding:0;overflow:hidden;}
+body{font-family:'Public Sans',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;transition:background .3s,color .3s;}
+.app-container{position:relative;width:100%;max-width:480px;height:100vh;height:100dvh;max-height:900px;margin:0 auto;overflow:hidden;background:linear-gradient(180deg,var(--bg),var(--bg2));}
+.app-content{width:100%;height:calc(100% - 80px - env(safe-area-inset-bottom));overflow-y:auto;overflow-x:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;}
+.app-content::-webkit-scrollbar{display:none;}
+.header-top{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;padding:18px 20px;background:linear-gradient(180deg,var(--bg) 70%,transparent);backdrop-filter:blur(12px);}
+.greeting{display:flex;align-items:center;gap:12px;min-width:0;}
+.avatar{display:flex;align-items:center;justify-content:center;width:46px;height:46px;flex-shrink:0;overflow:hidden;border:2px solid rgba(111,42,130,.45);border-radius:50%;background:linear-gradient(135deg,var(--accent),#4A145A);color:#fff;font-size:17px;font-weight:700;}
+.avatar img{width:100%;height:100%;object-fit:cover;}
+.greet-text .hello{margin-bottom:2px;color:var(--muted);font-size:12px;}
+.greet-text .name{max-width:190px;overflow:hidden;color:var(--text);font-size:16px;font-weight:700;text-overflow:ellipsis;white-space:nowrap;}
+.header-actions{display:flex;flex-shrink:0;gap:10px;}
+.icon-btn{position:relative;display:flex;align-items:center;justify-content:center;width:40px;height:40px;border:1px solid var(--border);border-radius:50%;background:var(--card);color:var(--text);cursor:pointer;transition:background .2s,transform .2s;}
+.icon-btn:hover{transform:scale(1.05);background:var(--card2);}
+.balance-card{position:relative;overflow:hidden;margin:0 16px 20px;padding:22px;border-radius:22px;background:linear-gradient(135deg,#4A145A 0%,#6F2A82 55%,#8A3A9B 100%);box-shadow:0 10px 35px rgba(74,20,90,.42);}
+.balance-card::before{position:absolute;top:-50px;right:-30px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.12);content:'';}
+.balance-card::after{position:absolute;bottom:-70px;left:-20px;width:160px;height:160px;border-radius:50%;background:rgba(0,0,0,.08);content:'';}
+.balance-label{position:relative;z-index:1;display:flex;align-items:center;gap:8px;margin-bottom:8px;color:rgba(255,255,255,.85);font-size:13px;font-weight:600;}
+.balance-label span{padding:2px 8px;border-radius:10px;background:rgba(255,255,255,.18);color:rgba(255,255,255,.95);font-size:10px;font-weight:700;}
+.balance-amount,.balance-hidden{position:relative;z-index:1;margin-bottom:4px;color:#fff;font-size:34px;font-weight:800;font-variant-numeric:tabular-nums;}
+.balance-hidden{letter-spacing:4px;}
+.balance-sub{position:relative;z-index:1;color:rgba(255,255,255,.75);font-size:12px;font-weight:600;}
+.balance-actions{position:relative;z-index:1;display:flex;gap:10px;margin-top:16px;}
+.eye-btn,.add-btn{display:flex;align-items:center;gap:6px;padding:7px 13px;border:1px solid rgba(255,255,255,.25);border-radius:20px;background:rgba(255,255,255,.18);color:#fff;font-size:12px;font-weight:700;cursor:pointer;backdrop-filter:blur(10px);transition:background .2s;}
+.eye-btn:hover,.add-btn:hover{background:rgba(255,255,255,.28);}
+.quick-actions{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;padding:0 12px 20px;}
+.action-item{display:flex;flex-direction:column;align-items:center;gap:8px;min-width:0;padding:10px 4px;border:0;border-radius:14px;background:transparent;color:inherit;font:inherit;text-decoration:none;cursor:pointer;transition:background .2s;}
+.action-item:hover{background:var(--card);}
+.action-icon{display:flex;align-items:center;justify-content:center;width:50px;height:50px;border:1px solid var(--border);border-radius:14px;background:var(--card);color:var(--accent);}
+.action-label{color:var(--muted);font-size:11px;font-weight:500;text-align:center;overflow-wrap:anywhere;}
+.section-title{display:flex;align-items:center;justify-content:space-between;padding:0 20px 12px;}
+.section-title h3{margin:0;color:var(--text);font-size:15px;font-weight:700;}
+.section-title a,.section-title button{border:0;background:transparent;color:var(--accent);font-size:12px;font-weight:600;text-decoration:none;cursor:pointer;}
+.movimientos{padding:0 16px 20px;}
+.mov-item{display:flex;align-items:center;gap:12px;padding:13px 4px;border-bottom:1px solid var(--border);cursor:pointer;transition:opacity .2s;}
+.mov-item:hover{opacity:.8;}
+.mov-item:last-child{border-bottom:0;}
+.mov-icon{display:flex;align-items:center;justify-content:center;width:42px;height:42px;flex-shrink:0;border-radius:12px;}
+.mov-icon.in{background:var(--accent2-soft);color:var(--accent2);}
+.mov-icon.out,.mov-icon.pay{background:rgba(171,71,188,.12);color:var(--accent);}
+.mov-info{flex:1;min-width:0;}
+.mov-title{overflow:hidden;margin-bottom:2px;color:var(--text);font-size:14px;font-weight:600;text-overflow:ellipsis;white-space:nowrap;}
+.mov-sub{overflow:hidden;color:var(--muted);font-size:12px;text-overflow:ellipsis;white-space:nowrap;}
+.mov-amount{flex-shrink:0;text-align:right;}
+.mov-val{font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;}
+.mov-val.in{color:var(--success);}.mov-val.out{color:var(--text);}
+.mov-date{margin-top:2px;color:var(--muted);font-size:11px;}
+.bottom-nav{position:absolute;right:0;bottom:0;left:0;z-index:10;display:flex;align-items:flex-start;justify-content:space-around;height:calc(80px + env(safe-area-inset-bottom));padding:10px 4px env(safe-area-inset-bottom);border-top:1px solid var(--border);background:rgba(0,0,0,.95);backdrop-filter:blur(20px);}
+:root.light-mode .bottom-nav{background:rgba(255,255,255,.95);}
+.bottom-nav .nav-item{display:flex;flex:1;flex-direction:column;align-items:center;gap:4px;padding:6px 5px;border-radius:12px;color:var(--muted);font-size:inherit;text-decoration:none;transition:all .2s;}
+.bottom-nav .nav-item.active{color:var(--accent);}
+.bottom-nav .nav-item.active .nav-icon-wrap{background:var(--accent-soft);}
+.nav-icon-wrap{display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:10px;transition:background .2s;}
+.nav-label{font-size:10px;font-weight:600;}
+.fab{position:absolute;bottom:44px;left:50%;z-index:11;display:flex;align-items:center;justify-content:center;width:56px;height:56px;transform:translateX(-50%);border:3px solid var(--bg);border-radius:50%;background:linear-gradient(135deg,var(--accent),#4A145A);color:#fff;cursor:pointer;box-shadow:0 8px 24px rgba(74,20,90,.6);transition:transform .2s,box-shadow .2s;}
+.fab:hover{transform:translateX(-50%) scale(1.08);box-shadow:0 10px 30px rgba(74,20,90,.72);}
+.tab-filters{display:flex;gap:8px;overflow-x:auto;padding:0 16px 14px;scrollbar-width:none;}
+.tab-filters::-webkit-scrollbar{display:none;}
+.tab-btn{padding:7px 14px;border:1px solid var(--border);border-radius:20px;background:var(--card);color:var(--muted);font-size:12px;font-weight:600;white-space:nowrap;cursor:pointer;transition:all .2s;}
+.tab-btn.active{border-color:var(--accent);background:var(--accent);color:#fff;}
+.wallet-view{padding:20px 16px 28px;}
+.wallet-view-title{margin:0 4px 18px;color:var(--text);font-size:22px;font-weight:700;}
+.wallet-view-subtitle{margin:0 4px 20px;color:var(--muted);font-size:13px;}
+.wallet-card{margin-bottom:12px;padding:18px;border:1px solid var(--border);border-radius:16px;background:var(--card);}
+.wallet-card h4{margin:0 0 6px;color:var(--text);font-size:15px;}
+.wallet-card p{margin:0;color:var(--muted);font-size:12px;line-height:1.5;}
+.wallet-card-row{display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.wallet-card-action{padding:9px 12px;border:0;border-radius:10px;background:var(--accent);color:#fff;font:600 12px 'Public Sans',sans-serif;cursor:pointer;}
+.wallet-card-action:active{transform:scale(.97);}
+.profile-hero{margin-bottom:24px;padding:18px;border:1px solid var(--border);border-radius:18px;background:linear-gradient(140deg,var(--accent-soft),var(--card) 68%);}
+.profile-hero-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px;}
+.profile-kicker{color:var(--muted);font-size:10px;font-weight:700;}
+.profile-status{display:flex;align-items:center;gap:6px;color:var(--success);font-size:11px;font-weight:700;}
+.profile-status-dot{width:7px;height:7px;border-radius:50%;background:var(--success);}
+.wallet-profile{display:flex;align-items:center;gap:14px;}
+.profile-avatar-shell{position:relative;width:72px;height:72px;flex-shrink:0;}
+.profile-avatar-shell .avatar{width:72px;height:72px;overflow:hidden;font-size:22px;}
+.wallet-profile-details{flex:1;min-width:0;}
+.wallet-profile-name{color:var(--text);font-size:17px;font-weight:700;}
+.wallet-profile-email{margin-top:4px;color:var(--muted);font-size:12px;overflow-wrap:anywhere;}
+.profile-photo-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px solid var(--border);}
+.profile-photo-remove{padding:8px 4px;border:0;background:transparent;color:var(--muted);font:600 12px 'Public Sans',sans-serif;cursor:pointer;}
+.profile-photo-status{width:100%;color:var(--muted);font-size:11px;}
+.profile-section-title{margin:0 4px 10px;color:var(--muted);font-size:11px;font-weight:700;}
+.profile-settings{overflow:hidden;margin-bottom:12px;border:1px solid var(--border);border-radius:14px;background:var(--card);}
+.profile-setting-row{display:flex;align-items:center;gap:12px;padding:14px;}
+.profile-setting-row+.profile-setting-row{border-top:1px solid var(--border);}
+.profile-setting-icon{display:flex;align-items:center;justify-content:center;width:36px;height:36px;flex-shrink:0;border-radius:11px;background:var(--accent-soft);color:var(--accent);}
+.profile-setting-copy{flex:1;min-width:0;}
+.profile-setting-copy strong{display:block;color:var(--text);font-size:13px;}
+.profile-setting-copy span{display:block;margin-top:3px;color:var(--muted);font-size:11px;line-height:1.4;}
+.profile-protected{color:var(--success);font-size:11px;font-weight:700;white-space:nowrap;}
+.movement-overview{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 16px 14px;padding:14px 16px;border:1px solid var(--border);border-radius:14px;background:linear-gradient(135deg,var(--card),var(--card2));}
+.movement-overview-label{display:block;margin-bottom:4px;color:var(--muted);font-size:11px;}
+.movement-overview strong{display:block;color:var(--text);font-size:14px;}
+.movement-overview-count{color:var(--accent);font-size:12px;font-weight:700;white-space:nowrap;}
+.promo-banner{display:flex;align-items:center;gap:14px;margin:0 0 20px;padding:16px;border:1px solid var(--border);border-radius:16px;background:linear-gradient(90deg,var(--card),var(--card2));text-decoration:none;}
+.promo-icon{display:flex;align-items:center;justify-content:center;width:48px;height:48px;flex-shrink:0;border-radius:12px;background:linear-gradient(135deg,var(--accent),#4A145A);}
+.promo-text h4{margin:0 0 3px;color:var(--text);font-size:14px;font-weight:700;}
+.promo-text p{margin:0;color:var(--muted);font-size:12px;}
+.wallet-ad-card{overflow:hidden;margin-bottom:12px;border:1px solid var(--border);border-radius:14px;background:var(--card);}
+.wallet-ad-card img{display:block;width:100%;max-height:320px;object-fit:cover;}
+.wallet-ad-label{padding:10px 12px;color:var(--text);font-size:11px;font-weight:600;}
+.filter-container{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin:0 0 14px;padding:12px;border:1px solid var(--border);border-radius:14px;background:var(--card);}
+.filter-label{display:block;margin-bottom:4px;color:var(--muted);font-size:11px;font-weight:600;}
+.filter-select,.date-input{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--bg2);color:var(--text);font-size:13px;}
+.filter-btn{padding:9px 12px;border:1px solid var(--border);border-radius:10px;background:var(--card2);color:var(--muted);font-size:11px;font-weight:600;white-space:nowrap;cursor:pointer;}
+.filter-btn.active{border-color:var(--accent);background:var(--accent);color:#fff;}
+.filter-btn.reset-btn{color:var(--danger);}.filter-btn.download-btn{color:var(--success);}
+.mobile-modal-content{background:var(--card);color:var(--text);}
+.mobile-modal-title{color:var(--text);}
+.mobile-modal-close{color:var(--muted);}
+.mobile-input{border-color:var(--border);background:var(--card2);color:var(--text);}
+.mobile-input:focus{border-color:var(--accent);background:var(--card);}
+.mobile-btn-primary{background:var(--accent);color:#fff;}.mobile-btn-secondary{background:var(--card2);color:var(--text);}
+.wallet-ad-empty{padding:30px 16px;color:var(--muted);text-align:center;}
+@media(max-width:380px){.header-top{padding:14px}.greeting{gap:9px}.avatar{width:42px;height:42px;font-size:15px}.header-actions{gap:7px}.icon-btn{width:37px;height:37px}.balance-card{margin-right:12px;margin-left:12px;padding:18px;border-radius:18px}.balance-label{align-items:flex-start;flex-wrap:wrap;gap:5px}.balance-amount,.balance-hidden{font-size:29px}.balance-actions{gap:7px}.eye-btn,.add-btn{padding-right:9px;padding-left:9px;font-size:11px}.quick-actions{gap:2px;padding-right:8px;padding-left:8px}.action-item{padding-right:2px;padding-left:2px}.action-icon{width:46px;height:46px}.movimientos{padding-right:12px;padding-left:12px}.mov-item{gap:9px;padding-top:12px;padding-bottom:12px}.mov-icon{width:38px;height:38px}.mov-title,.mov-val{font-size:13px}.mov-date{font-size:10px}.bottom-nav .nav-item{padding-right:3px;padding-left:3px}.nav-label{font-size:9px}.wallet-view{padding:16px 12px 24px}.wallet-view-title{font-size:20px}.wallet-card{padding:15px;}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important;}}
 </style>
 </head>
-<body class="min-h-screen bg-gray-50">
+<body>
 
 <div id="ad-modal" class="ad-modal" style="display:none;">
   <div class="ad-modal-content">
@@ -202,122 +323,100 @@ main{padding-left:0;padding-right:0;}
 </div>
 
 <!-- MOBILE -->
-<div class="mobile-only mobile-app-container">
-  <div class="mobile-header">
-    <div class="mobile-header-title" id="mobile-header-title">Inicio</div>
-    <div class="mobile-header-actions">
-      <button id="mobile-logout-btn" class="text-purple-600"><i class="fas fa-sign-out-alt"></i></button>
-    </div>
-  </div>
-
-  <div class="mobile-content" id="mobile-content">
+<div class="mobile-only app-container">
+  <div class="app-content" id="mobile-content">
     <div id="mobile-home-view">
-      <div class="mobile-balance-card">
-        <div class="mobile-card-top">
-          <div class="mobile-card-chip-area">
-            <div class="mobile-card-chip-icon"><i class="fas fa-microchip"></i></div>
-            <i class="fas fa-wifi mobile-card-contactless"></i>
-          </div>
-          <div class="mobile-card-brand">TokTok</div>
+      <div class="header-top">
+        <div class="greeting">
+          <div id="mobile-home-avatar" class="avatar">TT</div>
+          <div class="greet-text"><div class="hello">Buenos días,</div><div id="mobile-home-user-name" class="name">Usuario</div></div>
         </div>
-        <div class="mobile-card-middle">
-          <div class="mobile-card-balance-label">Saldo disponible</div>
-          <div class="mobile-card-balance-amount" id="mobile-balance">Bs 0.00</div>
-        </div>
-        <div class="mobile-card-bottom">
-          <div class="mobile-card-user-name" id="mobile-card-user-name">USUARIO</div>
-          <div class="mobile-card-expiry">MIEMBRO<span>Activo</span></div>
-        </div>
-        <button id="mobile-recharge-balance-btn" class="mobile-card-recharge-btn">
-          <i class="fas fa-plus-circle"></i> Recargar saldo
-        </button>
-      </div>
-
-      <div class="mobile-section-title">Acciones rápidas</div>
-      <div class="quick-actions-grid">
-        <button id="mobile-send-money-btn" class="modern-action-btn" style="background:linear-gradient(135deg,#ede9fe,#f5f3ff);">
-          <div class="modern-action-icon icon-send"><i class="fas fa-paper-plane"></i></div>
-          <span>Enviar</span>
-        </button>
-        <a href="tienda.html" class="modern-action-btn" style="background:linear-gradient(135deg,#dbeafe,#eff6ff);"><div class="modern-action-icon icon-store"><i class="fas fa-store"></i></div><span>Tienda</span></a>
-        <a href="recargas movil.html" class="modern-action-btn" style="background:linear-gradient(135deg,#dcfce7,#ecfdf5);"><div class="modern-action-icon icon-recharge"><i class="fas fa-phone"></i></div><span>Recargas</span></a>
-        <a href="juegos.html" class="modern-action-btn" style="background:linear-gradient(135deg,#fef3c7,#fffbeb);"><div class="modern-action-icon icon-games"><i class="fas fa-gamepad"></i></div><span>Juegos</span></a>
-        <a href="plan hogar.html" class="modern-action-btn" style="background:linear-gradient(135deg,#dbeafe,#f0f9ff);"><div class="modern-action-icon icon-home-plan"><i class="fas fa-home"></i></div><span>Plan Hogar</span></a>
-        <a href="yape promo.html" class="modern-action-btn" style="background:linear-gradient(135deg,#2e1065,#4c1d95);border-color:rgba(167,139,250,.8);box-shadow:0 30px 40px -26px rgba(76,29,149,.72);"><div class="modern-action-icon" style="background:linear-gradient(145deg,#4c1d95,#6d28d9);"><i class="fas fa-percent"></i></div><span style="color:#fff;">Yape Promo</span></a>
-      </div>
-
-      <div class="mobile-section-title">Últimas transacciones</div>
-      <div class="mobile-card">
-        <div id="mobile-transactions-list">
-          <div class="mobile-transaction-item"><div class="w-full text-center py-8"><i class="fas fa-spinner fa-spin text-gray-400"></i></div></div>
-        </div>
-      </div>
-    </div>
-
-    <div id="mobile-transactions-view" class="hidden">
-      <div class="mobile-tabs"><div class="mobile-tab active" data-tab="transactions">Transacciones</div></div>
-      <div id="mobile-transactions-tab" class="tab-content">
-        <div class="mobile-card mt-2">
-          <div class="p-3 border-b border-gray-100">
-            <div class="filter-container">
-              <div class="filter-group" style="min-width:100%;">
-                <label class="filter-label">Tipo de transacción</label>
-                <select id="mobile-transactions-filter" class="filter-select">
-                  <option value="all">📋 Todos los tipos</option>
-                  <option value="deposit">🟢 Ingresos</option>
-                  <option value="withdrawal">🔴 Retiros</option>
-                  <option value="transfer">🔵 Transferencias</option>
-                </select>
-              </div>
-              <div class="filter-row-mobile" style="display:flex;gap:8px;width:100%;">
-                <div class="filter-group" style="flex:1;"><label class="filter-label">Desde</label><input type="date" id="mobile-date-from" class="date-input"></div>
-                <div class="filter-group" style="flex:1;"><label class="filter-label">Hasta</label><input type="date" id="mobile-date-to" class="date-input"></div>
-              </div>
-              <div class="filter-buttons" style="display:flex;gap:6px;width:100%;flex-wrap:wrap;">
-                <button id="mobile-filter-7days" class="filter-btn" style="flex:1;">7 días</button>
-                <button id="mobile-filter-30days" class="filter-btn" style="flex:1;">30 días</button>
-                <button id="mobile-filter-all" class="filter-btn active" style="flex:1;">Todo</button>
-                <button id="mobile-reset-filters" class="filter-btn reset-btn">✕</button>
-              </div>
-              <button id="mobile-download-pdf-btn" class="filter-btn download-btn" style="width:100%;">
-                <i class="fas fa-file-pdf"></i> Descargar PDF
-              </button>
-            </div>
-          </div>
-          <div id="mobile-transactions-full-list">
-            <div class="mobile-transaction-item"><div class="w-full text-center py-8"><i class="fas fa-spinner fa-spin text-gray-400"></i></div></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="mobile-profile-view" class="hidden">
-      <div class="mobile-card mt-4">
-        <div class="p-6 flex flex-col items-center">
-          <div id="mobile-user-avatar" class="mobile-avatar"><span id="mobile-user-initials"></span></div>
-          <h2 id="mobile-user-name" class="text-lg font-semibold text-center text-gray-800"></h2>
-          <p id="mobile-user-email" class="text-gray-500 text-sm mt-1 text-center"></p>
-          <button id="mobile-edit-profile-btn" class="mt-6 w-full py-3 px-4 rounded-xl flex items-center justify-center space-x-2 text-purple-600 border border-purple-100 font-medium">
-            <i class="fas fa-user-edit"></i><span>Editar perfil</span>
+        <div class="header-actions">
+          <button class="icon-btn" id="themeToggle" type="button" title="Cambiar tema" aria-label="Cambiar tema">
+            <svg id="themeIcon" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          </button>
+          <button class="icon-btn" id="mobile-open-announcements-btn" type="button" title="Anuncios" aria-label="Abrir anuncios" style="position:relative;">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <span style="position:absolute;top:7px;right:9px;width:7px;height:7px;background:var(--danger);border-radius:50%;border:2px solid var(--bg)"></span>
           </button>
         </div>
-        <div class="p-4">
-          <div class="mobile-profile-item"><span class="mobile-profile-label">Teléfono</span><span id="mobile-profile-phone" class="mobile-profile-value"></span></div>
-          <div class="mobile-profile-item"><span class="mobile-profile-label">Miembro desde</span><span id="mobile-profile-created-at" class="mobile-profile-value"></span></div>
+        <span id="mobile-header-title" class="sr-only">Inicio</span>
+      </div>
+
+      <div class="balance-card">
+        <div class="balance-label">Saldo disponible <span>Cuenta TokTok</span></div>
+        <div id="mobile-balance" class="balance-amount">Bs 0.00</div>
+        <div class="balance-sub">Saldo de tu cuenta</div>
+        <div class="balance-actions">
+          <button class="eye-btn" id="mobile-toggle-balance" type="button" aria-label="Ocultar saldo">
+            <svg id="eyeIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><span id="eyeText">Ocultar</span>
+          </button>
+          <button class="add-btn" id="mobile-recharge-balance-btn" type="button"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Agregar dinero</button>
         </div>
       </div>
-      <div class="mobile-card mt-4 p-4">
-        <a href="seguridad.html" class="w-full py-3 text-left flex items-center justify-between block"><span class="font-medium">Seguridad</span><i class="fas fa-chevron-right text-gray-400"></i></a>
-        <a href="ayuda.html" class="w-full py-3 text-left flex items-center justify-between block"><span class="font-medium">Ayuda</span><i class="fas fa-chevron-right text-gray-400"></i></a>
-        <a href="acerca.html" class="w-full py-3 text-left flex items-center justify-between block"><span class="font-medium">Acerca de</span><i class="fas fa-chevron-right text-gray-400"></i></a>
+
+      <div class="quick-actions">
+        <button id="mobile-send-money-btn" class="action-item" type="button"><span class="action-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg></span><span class="action-label">Enviar</span></button>
+        <a href="tienda.html" class="action-item"><span class="action-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 5h18v14H3z"/><path d="M7 9h10M7 13h6"/></svg></span><span class="action-label">Tienda</span></a>
+        <a href="juegos.html" class="action-item"><span class="action-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 8h8l1 4H7l1-4z"/><path d="M7 12v5h10v-5M9 17v3M15 17v3M5 8h14"/></svg></span><span class="action-label">Juegos</span></a>
+        <a href="recargas movil.html" class="action-item"><span class="action-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span><span class="action-label">Recargas</span></a>
+        <a href="plan hogar.html" class="action-item"><span class="action-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span><span class="action-label">Plan Hogar</span></a>
+        <a href="yape promo.html" class="action-item"><span class="action-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l18-5-5 18-4-8-9-5z"/><path d="M12 16l5-6"/></svg></span><span class="action-label">Yape Promo</span></a>
+      </div>
+
+      <div class="section-title"><h3>Movimientos recientes</h3><button id="mobile-open-transactions-btn" type="button">Historial completo</button></div>
+      <div id="mobile-transactions-list" class="movimientos"><div class="mov-item"><div class="mov-info"><div class="mov-sub">Cargando movimientos...</div></div></div></div>
+    </div>
+
+    <div id="mobile-transactions-view" class="wallet-view hidden">
+      <h2 class="wallet-view-title">Todos los movimientos</h2>
+      <p class="wallet-view-subtitle">Consulta los movimientos de tu cuenta.</p>
+      <div class="movement-overview"><div><span class="movement-overview-label">Actividad de cuenta</span><strong>Historial completo</strong></div><span id="mobile-transaction-count" class="movement-overview-count">0 registros</span></div>
+      <div class="filter-container">
+        <div class="filter-group" style="min-width:100%;"><label class="filter-label">Tipo de transacción</label><select id="mobile-transactions-filter" class="filter-select"><option value="all">Todos los tipos</option><option value="deposit">Ingresos</option><option value="withdrawal">Retiros</option><option value="transfer">Transferencias</option><option value="recharge">Recargas</option></select></div>
+        <div class="filter-row-mobile" style="display:flex;gap:8px;width:100%;"><div class="filter-group" style="flex:1;"><label class="filter-label">Desde</label><input type="date" id="mobile-date-from" class="date-input"></div><div class="filter-group" style="flex:1;"><label class="filter-label">Hasta</label><input type="date" id="mobile-date-to" class="date-input"></div></div>
+        <div class="filter-buttons" style="display:flex;gap:6px;width:100%;flex-wrap:wrap;"><button id="mobile-filter-7days" class="filter-btn" style="flex:1;">7 días</button><button id="mobile-filter-30days" class="filter-btn" style="flex:1;">30 días</button><button id="mobile-filter-all" class="filter-btn active" style="flex:1;">Todo</button><button id="mobile-reset-filters" class="filter-btn reset-btn">Reset</button></div>
+        <button id="mobile-download-pdf-btn" class="filter-btn download-btn" style="width:100%;"><i class="fas fa-file-pdf"></i> Descargar PDF</button>
+      </div>
+      <div id="mobile-transactions-full-list" class="movimientos"><div class="mov-item"><div class="mov-info"><div class="mov-sub">Cargando movimientos...</div></div></div></div>
+    </div>
+
+    <div id="mobile-announcements-view" class="wallet-view hidden">
+      <h2 class="wallet-view-title">Anuncios</h2><p class="wallet-view-subtitle">Promociones y novedades disponibles para ti.</p>
+      <div id="mobile-announcements-list"></div>
+      <a href="yape promo.html" class="promo-banner"><span class="promo-icon"><i class="fas fa-percent text-white"></i></span><span class="promo-text"><h4>Yape Promo</h4><p>Ver promociones disponibles</p></span></a>
+    </div>
+
+    <div id="mobile-profile-view" class="wallet-view hidden">
+      <h2 class="wallet-view-title">Mi perfil</h2>
+      <div class="profile-hero">
+        <div class="profile-hero-top"><span class="profile-kicker">CUENTA PERSONAL</span><span class="profile-status"><span class="profile-status-dot"></span>Activa</span></div>
+        <div class="wallet-profile"><div class="profile-avatar-shell"><div id="mobile-user-avatar" class="avatar"><span id="mobile-user-initials"></span></div></div><div class="wallet-profile-details"><div id="mobile-user-name" class="wallet-profile-name"></div><div id="mobile-user-email" class="wallet-profile-email"></div></div></div>
+        <div class="profile-photo-actions"><button id="mobile-edit-profile-btn" class="wallet-card-action" type="button"><i class="fas fa-user-edit"></i> Editar perfil</button><div class="profile-photo-status">La foto de perfil se guarda en este navegador.</div></div>
+      </div>
+      <h3 class="profile-section-title">CUENTA Y PREFERENCIAS</h3>
+      <div class="profile-settings">
+        <div class="profile-setting-row"><div class="profile-setting-icon"><i class="fas fa-phone"></i></div><div class="profile-setting-copy"><strong>Teléfono</strong><span id="mobile-profile-phone"></span></div></div>
+        <div class="profile-setting-row"><div class="profile-setting-icon"><i class="fas fa-calendar-alt"></i></div><div class="profile-setting-copy"><strong>Miembro desde</strong><span id="mobile-profile-created-at"></span></div></div>
+      </div>
+      <div class="profile-settings">
+        <a href="seguridad.html" class="profile-setting-row"><div class="profile-setting-icon"><i class="fas fa-shield-alt"></i></div><div class="profile-setting-copy"><strong>Seguridad</strong><span>Protege el acceso a tu cuenta</span></div><i class="fas fa-chevron-right" style="color:var(--muted);"></i></a>
+        <a href="ayuda.html" class="profile-setting-row"><div class="profile-setting-icon"><i class="fas fa-circle-question"></i></div><div class="profile-setting-copy"><strong>Ayuda</strong><span>Centro de ayuda TokTok</span></div><i class="fas fa-chevron-right" style="color:var(--muted);"></i></a>
+        <button id="mobile-logout-btn" class="profile-setting-row" type="button" style="width:100%;border:0;background:transparent;text-align:left;"><div class="profile-setting-icon"><i class="fas fa-sign-out-alt"></i></div><div class="profile-setting-copy"><strong>Cerrar sesión</strong><span>Salir de tu cuenta TokTok</span></div><i class="fas fa-chevron-right" style="color:var(--muted);"></i></button>
       </div>
     </div>
   </div>
 
-  <div class="mobile-bottom-nav">
-    <a href="#" class="nav-item active" data-view="home"><i class="fas fa-home"></i><span>Inicio</span></a>
-    <a href="#" class="nav-item" data-view="transactions"><i class="fas fa-exchange-alt"></i><span>Transacciones</span></a>
-    <a href="#" class="nav-item" data-view="profile"><i class="fas fa-user"></i><span>Perfil</span></a>
+  <button class="fab" id="mobile-wallet-fab" type="button" title="Recargar saldo" aria-label="Recargar saldo">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM20 14h1v1h-1zM14 20h1v1h-1zM20 20h1v1h-1zM17 17h4M17 17v4"/></svg>
+  </button>
+
+  <div class="bottom-nav">
+    <a href="#" class="nav-item active" data-view="home"><span class="nav-icon-wrap"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg></span><span class="nav-label">Inicio</span></a>
+    <a href="#" class="nav-item" data-view="transactions"><span class="nav-icon-wrap"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h5"/></svg></span><span class="nav-label">Movimientos</span></a>
+    <div style="width:54px;flex-shrink:0;"></div>
+    <a href="#" class="nav-item" data-view="announcements"><span class="nav-icon-wrap"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11v2a2 2 0 0 0 2 2h2l4 5V4l-4 5H5a2 2 0 0 0-2 2z"/><path d="M16 9a5 5 0 0 1 0 6M19 6a9 9 0 0 1 0 12"/></svg></span><span class="nav-label">Anuncios</span></a>
+    <a href="#" class="nav-item" data-view="profile"><span class="nav-icon-wrap"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span><span class="nav-label">Perfil</span></a>
   </div>
 
   <div id="mobile-profile-modal" class="mobile-modal">
@@ -542,6 +641,7 @@ main{padding-left:0;padding-right:0;}
                     <option value="deposit">🟢 Ingresos</option>
                     <option value="withdrawal">🔴 Retiros</option>
                     <option value="transfer">🔵 Transferencias</option>
+                    <option value="recharge">📱 Recargas</option>
                   </select>
                 </div>
                 <div class="filter-group" style="min-width:130px;"><label class="filter-label">Desde</label><input type="date" id="date-from" class="date-input"></div>
@@ -669,32 +769,6 @@ main{padding-left:0;padding-right:0;}
   </div>
 </div>
 
-<div id="roulette-modal" class="fixed inset-0 z-50 flex items-center justify-center opacity-0 invisible transition-all duration-300" style="background-color:rgba(0,0,0,.7);backdrop-filter:blur(5px);">
-  <div class="bg-gradient-to-br from-gray-900 to-purple-900 rounded-3xl w-11/12 max-w-md p-5 shadow-2xl border border-purple-400 relative">
-    <button id="close-roulette-modal" class="absolute top-2 right-2 text-gray-300 text-xl z-10"><i class="fas fa-times"></i></button>
-    <div class="text-center mb-4">
-      <h2 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-purple-300">✨ Ruleta TokTok ✨</h2>
-      <p class="text-xs text-purple-200">Ingresa código o compra giro por 1 Bs</p>
-    </div>
-    <div class="relative w-48 h-48 mx-auto mb-5">
-      <div id="wheel" class="absolute inset-0 rounded-full border-8 border-yellow-400" style="transform:rotate(0deg);background:conic-gradient(#f87171 0deg 36deg,#fbbf24 36deg 72deg,#4ade80 72deg 108deg,#60a5fa 108deg 144deg,#c084fc 144deg 180deg,#f472b6 180deg 216deg,#fb923c 216deg 252deg,#a78bfa 252deg 288deg,#facc15 288deg 324deg,#6ee7b7 324deg 360deg);">
-        <div class="absolute inset-0 flex items-center justify-center text-white font-black text-sm">TOKTOK</div>
-      </div>
-      <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-3 text-4xl" style="color:#fde047;">▼</div>
-    </div>
-    <div class="grid grid-cols-5 gap-1 text-center text-white text-xs font-semibold mb-4 bg-black/30 p-2 rounded-xl">
-      <div class="bg-red-400/50 p-1 rounded">0</div><div class="bg-yellow-400/50 p-1 rounded">1</div><div class="bg-green-400/50 p-1 rounded">2</div><div class="bg-blue-400/50 p-1 rounded">5</div><div class="bg-purple-400/50 p-1 rounded">8</div>
-      <div class="bg-pink-400/50 p-1 rounded">10</div><div class="bg-orange-400/50 p-1 rounded">20</div><div class="bg-amber-400/50 p-1 rounded">50</div><div class="bg-emerald-400/50 p-1 rounded">80</div><div class="bg-teal-400/50 p-1 rounded">100</div>
-    </div>
-    <input type="text" id="roulette-code" placeholder="Ej: TOKTOK-8A3F" class="w-full px-4 py-3 rounded-xl bg-gray-800 text-white border border-purple-500 text-center uppercase" maxlength="12">
-    <div class="flex gap-2 mt-4">
-      <button id="spin-roulette-btn" class="flex-1 bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-bold py-3 px-2 rounded-xl text-sm"><i class="fas fa-spinner"></i> CÓDIGO</button>
-      <button id="buy-spin-btn" class="flex-1 bg-gradient-to-r from-green-500 to-teal-500 text-white font-bold py-3 px-2 rounded-xl text-sm"><i class="fas fa-shopping-cart"></i> COMPRAR 1 BS</button>
-    </div>
-    <p id="roulette-message" class="text-center text-sm text-yellow-300 mt-2 min-h-[20px]"></p>
-  </div>
-</div>
-
 <div id="pdf-date-modal" class="modal fixed inset-0 z-50 flex items-center justify-center opacity-0 invisible transition-all duration-300">
   <div class="modal-overlay absolute inset-0 bg-black bg-opacity-50"></div>
   <div class="modal-content w-full max-w-sm p-6 bg-white rounded-2xl shadow-xl relative z-10">
@@ -733,6 +807,7 @@ let userProfile = null;
 let currentBalance = 0;
 let currentInvoiceData = null;
 let allTransactions = [];
+let isBalanceHidden = false;
 let pendingPdfCallback = null;
 let allAds = [];
 let currentAdIndex = 0;
@@ -763,7 +838,7 @@ function getElementsToLock() {
     'mobile-cancel-profile-edit', 'cancel-profile-edit',
     'mobile-cancel-send', 'cancel-send',
     'mobile-recharge-done-btn', 'recharge-done-btn',
-    'mobile-change-avatar-btn'
+    'mobile-change-avatar-btn', 'mobile-open-announcements-btn', 'mobile-wallet-fab'
   ];
 }
 
@@ -841,20 +916,26 @@ const setLocalAvatar = (dataUrl) => { try { localStorage.setItem('toktok_local_a
 const getEffectiveAvatar = () => getLocalAvatar();
 const renderProfileAvatars = () => {
   const avatarUrl = getEffectiveAvatar();
+  const homeAvatar = document.getElementById('mobile-home-avatar');
   const avs = document.querySelectorAll('#user-avatar, #mobile-user-avatar, #mobile-avatar-preview, #avatar-preview');
-  const inits = document.querySelectorAll('#user-initials, #mobile-user-initials');
-  avs.forEach((a, i) => {
+  const initials = getInitials(userProfile?.full_name || currentUser?.email || 'Usuario');
+  avs.forEach((a) => {
     if (avatarUrl) {
       a.innerHTML = `<img src="${avatarUrl}" alt="Avatar" style="width:100%;height:100%;object-fit:cover;">`;
-      if (inits[i]) inits[i].textContent = '';
-    } else if (inits[i]) {
-      inits[i].textContent = getInitials(userProfile?.full_name || currentUser?.email || 'Usuario');
-      a.innerHTML = '';
+    } else if (a.id === 'mobile-user-avatar' || a.id === 'user-avatar') {
+      const initialsId = a.id === 'mobile-user-avatar' ? 'mobile-user-initials' : 'user-initials';
+      a.innerHTML = `<span id="${initialsId}">${initials}</span>`;
+    } else {
+      a.textContent = initials;
     }
   });
+  if (homeAvatar) {
+    if (avatarUrl) homeAvatar.innerHTML = `<img src="${avatarUrl}" alt="Avatar">`;
+    else homeAvatar.textContent = initials;
+  }
 };
 
-const isMobileDevice = () => window.innerWidth <= 768;
+const isMobileDevice = () => true;
 
 // ============ ADS ============
 const loadAds = async () => {
@@ -863,6 +944,34 @@ const loadAds = async () => {
     if (error) return [];
     return data || [];
   } catch { return []; }
+};
+
+const renderDashboardAnnouncements = (ads) => {
+  const container = document.getElementById('mobile-announcements-list');
+  if (!container) return;
+  container.innerHTML = '';
+  if (!ads || ads.length === 0) {
+    const empty = document.createElement('div');
+    empty.className = 'wallet-ad-empty';
+    empty.textContent = 'No hay anuncios disponibles.';
+    container.appendChild(empty);
+    return;
+  }
+  ads.forEach((ad, index) => {
+    if (!ad || typeof ad.imagen_url !== 'string' || !/^https?:\/\//i.test(ad.imagen_url)) return;
+    const card = document.createElement('article');
+    card.className = 'wallet-ad-card';
+    const image = document.createElement('img');
+    image.src = ad.imagen_url;
+    image.alt = `Anuncio ${index + 1} de TokTok`;
+    image.loading = 'lazy';
+    const label = document.createElement('div');
+    label.className = 'wallet-ad-label';
+    label.textContent = 'Promoción TokTok';
+    card.append(image, label);
+    container.appendChild(card);
+  });
+  if (!container.childElementCount) renderDashboardAnnouncements([]);
 };
 
 const showAdModal = (ads) => {
@@ -939,11 +1048,11 @@ function closeInvoiceModal(){
 
 function showTransactionInvoice(transaction, transactionType='general'){
   if (!transaction) return;
-  const isPositive = transaction.type === 'deposit';
+  const isPositive = transaction.type === 'deposit' || (transaction.type === 'transfer' && transaction.metadata?.type === 'receive');
   const amountClass = isPositive ? 'text-emerald-600' : 'text-rose-600';
   const amountSign = isPositive ? '+' : '-';
   const invoiceId = 'INV-' + (transaction.id ? transaction.id.substring(0,8).toUpperCase() : 'TEMP') + '-' + Date.now().toString().slice(-6);
-  const typeNames = {deposit:'Ingreso',withdrawal:'Retiro',transfer:'Transferencia'};
+  const typeNames = {deposit:'Ingreso',withdrawal:'Retiro',transfer:'Transferencia',recharge:'Recarga'};
   const transactionTypeName = typeNames[transaction.type] || transaction.type;
   const createdDate = transaction.created_at ? new Date(transaction.created_at).toLocaleString('es-ES', { dateStyle:'medium', timeStyle:'short' }) : new Date().toLocaleString('es-ES');
   const invoiceHTML = `
@@ -1038,26 +1147,49 @@ const uploadAvatar = async (userId, file) => {
     reader.readAsDataURL(file);
   });
 };
+const transactionTypeToDb = { deposit:'deposito', withdrawal:'retiro', transfer:'transferencia', recharge:'recarga' };
+const transactionTypeFromDb = { deposito:'deposit', retiro:'withdrawal', transferencia:'transfer', recarga:'recharge' };
+const normalizeTransaction = (transaction) => ({
+  ...transaction,
+  user_id: transaction.usuario_id,
+  amount: Number(transaction.monto),
+  type: transactionTypeFromDb[transaction.tipo] || transaction.tipo,
+  description: transaction.descripcion,
+  status: transaction.estado,
+  created_at: transaction.creado_en,
+});
+
 const calculateBalance = async (userId) => {
-  const { data, error } = await supabase.from('transactions').select('amount, type').eq('user_id', userId).eq('status','completed');
+  const { data, error } = await supabase.from('transacciones').select('monto, tipo, metadata').eq('usuario_id', userId).eq('estado','completado');
   if (error) return 0;
   let balance = 0;
-  data.forEach(t => { if (t.type === 'deposit') balance += t.amount; else balance -= t.amount; });
+  (data || []).forEach(t => {
+    const incoming = t.tipo === 'deposito' || (t.tipo === 'transferencia' && t.metadata?.type === 'receive');
+    balance += (incoming ? 1 : -1) * Number(t.monto);
+  });
   return balance;
 };
 const loadTransactions = async (userId, filter='all', dateFrom=null, dateTo=null) => {
-  let q = supabase.from('transactions').select('*').eq('user_id', userId).eq('status','completed').order('created_at',{ascending:false});
-  if (filter !== 'all') q = q.eq('type', filter);
-  if (dateFrom) q = q.gte('created_at', dateFrom);
-  if (dateTo) { const e = new Date(dateTo); e.setHours(23,59,59,999); q = q.lte('created_at', e.toISOString()); }
+  let q = supabase.from('transacciones').select('*').eq('usuario_id', userId).eq('estado','completado').order('creado_en',{ascending:false});
+  if (filter !== 'all') q = q.eq('tipo', transactionTypeToDb[filter] || filter);
+  if (dateFrom) q = q.gte('creado_en', dateFrom);
+  if (dateTo) { const e = new Date(dateTo); e.setHours(23,59,59,999); q = q.lte('creado_en', e.toISOString()); }
   const { data, error } = await q;
   if (error) return [];
-  return data;
+  return (data || []).map(normalizeTransaction);
 };
-const createTransaction = async (userId, amount, type, description='', metadata={}) => {
-  const { data, error } = await supabase.from('transactions').insert([{ user_id:userId, amount, type, description, metadata, status:'completed' }]).select().single();
+const createTransaction = async (userId, amount, type, description='', metadata={}, status='completed') => {
+  const statusToDb = { completed:'completado', pending:'pendiente', failed:'fallido' };
+  const { data, error } = await supabase.from('transacciones').insert([{
+    usuario_id:userId,
+    monto:amount,
+    tipo:transactionTypeToDb[type] || type,
+    descripcion:description,
+    metadata,
+    estado:statusToDb[status] || status,
+  }]).select().single();
   if (error) return null;
-  return data;
+  return normalizeTransaction(data);
 };
 
 // ============ FILTERS ============
@@ -1156,13 +1288,13 @@ async function downloadTransactionsPDF(dateFrom, dateTo){
     doc.text(`Período: ${range}`,14,54);
     doc.text(`Total: ${tx.length}`,14,60);
     let ti = 0, te = 0;
-    tx.forEach(t => { if (t.type==='deposit') ti += t.amount; else te += t.amount; });
+    tx.forEach(t => { if (t.type==='deposit' || (t.type==='transfer' && t.metadata?.type==='receive')) ti += t.amount; else te += t.amount; });
     doc.setFontSize(10); doc.setFont('helvetica','bold');
     doc.setTextColor(...greenc); doc.text(`Ingresos: +Bs ${ti.toFixed(2)}`,14,68);
     doc.setTextColor(...redc); doc.text(`Egresos: -Bs ${te.toFixed(2)}`,90,68);
     doc.setTextColor(...dc); doc.text(`Balance: Bs ${(ti-te).toFixed(2)}`,14,76);
-    const typeNames = {deposit:'Ingreso',withdrawal:'Retiro',transfer:'Transferencia'};
-    const rows = tx.map(t => [typeNames[t.type]||t.type, t.description||'-', formatDateShort(t.created_at), t.type==='deposit' ? `+Bs ${t.amount.toFixed(2)}` : `-Bs ${t.amount.toFixed(2)}`]);
+    const typeNames = {deposit:'Ingreso',withdrawal:'Retiro',transfer:'Transferencia',recharge:'Recarga'};
+    const rows = tx.map(t => [typeNames[t.type]||t.type, t.description||'-', formatDateShort(t.created_at), t.type==='deposit' || (t.type==='transfer' && t.metadata?.type==='receive') ? `+Bs ${t.amount.toFixed(2)}` : `-Bs ${t.amount.toFixed(2)}`]);
     doc.autoTable({ startY:82, head:[['Tipo','Descripción','Fecha','Monto']], body:rows,
       headStyles:{fillColor:pc,textColor:[255,255,255],fontStyle:'bold',fontSize:9},
       bodyStyles:{fontSize:8,textColor:dc,cellPadding:3},
@@ -1213,42 +1345,53 @@ const renderTransactions = (transactions) => {
   const c = document.getElementById('transactions-list');
   const mc = document.getElementById('mobile-transactions-list');
   const mfc = document.getElementById('mobile-transactions-full-list');
+  const transactionCount = document.getElementById('mobile-transaction-count');
+  if (transactionCount) transactionCount.textContent = `${transactions.length} registros`;
   if (transactions.length === 0) {
-    const empty = `<div class="mobile-empty-state"><div class="mobile-empty-icon"><i class="fas fa-exchange-alt"></i></div><h3 class="font-medium text-gray-800">No hay transacciones</h3><p class="mobile-empty-text">No se encontraron transacciones</p></div>`;
+    const empty = '<div class="wallet-ad-empty">No hay movimientos para mostrar.</div>';
     if (c) c.innerHTML = `<tr><td colspan="4" class="px-6 py-8 text-center text-gray-400"><i class="fas fa-exchange-alt fa-2x mb-2"></i><p>No hay transacciones</p></td></tr>`;
     if (mc) mc.innerHTML = empty;
     if (mfc) mfc.innerHTML = empty;
     return;
   }
-  const tn = {deposit:'Ingreso',withdrawal:'Retiro',transfer:'Transferencia'};
+  const tn = {deposit:'Ingreso',withdrawal:'Retiro',transfer:'Transferencia',recharge:'Recarga'};
   if (c) c.innerHTML = transactions.map(t => {
-    const ip = t.type === 'deposit'; const tc = ip ? 'text-green-600' : 'text-red-600'; const s = ip ? '+' : '-';
+    const ip = t.type === 'deposit' || (t.type === 'transfer' && t.metadata?.type === 'receive'); const tc = ip ? 'text-green-600' : 'text-red-600'; const s = ip ? '+' : '-';
     return `<tr class="transaction-item cursor-pointer hover:bg-gray-50" data-transaction-id="${t.id}"><td class="px-6 py-4 whitespace-nowrap capitalize"><div class="flex items-center"><span class="w-2 h-2 rounded-full ${ip?'bg-green-500':'bg-red-500'} mr-2"></span>${tn[t.type]||t.type}</div></td><td class="px-6 py-4 whitespace-nowrap">${t.description||'Sin descripción'}</td><td class="px-6 py-4 whitespace-nowrap text-gray-500 text-sm">${formatDate(t.created_at)}</td><td class="px-6 py-4 whitespace-nowrap text-right ${tc} font-semibold">${s}${t.amount.toFixed(2)}</td></tr>`;
   }).join('');
-  if (mc) mc.innerHTML = transactions.slice(0,3).map(t => {
-    const ip = t.type === 'deposit'; const ic = ip ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'; const tc = ip ? 'text-green-600' : 'text-red-600'; const s = ip ? '+' : '-';
-    return `<div class="mobile-transaction-item cursor-pointer" data-transaction-id="${t.id}"><div class="mobile-transaction-icon ${ic}"><i class="fas ${ip?'fa-arrow-down':'fa-arrow-up'}"></i></div><div class="mobile-transaction-details"><div class="mobile-transaction-title">${tn[t.type]||t.type}</div><div class="mobile-transaction-date">${formatDate(t.created_at)}</div></div><div class="mobile-transaction-amount ${tc}">${s}${t.amount.toFixed(2)}</div></div>`;
+  const renderWalletRows = (items) => items.map(t => {
+    const incoming = t.type === 'deposit' || (t.type === 'transfer' && t.metadata?.type === 'receive');
+    const iconType = incoming ? 'in' : (t.type === 'recharge' ? 'pay' : 'out');
+    const icon = incoming
+      ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>'
+      : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>';
+    const sign = incoming ? '+' : '-';
+    const description = t.description || tn[t.type] || t.type;
+    return `<div class="mov-item" data-transaction-id="${t.id}"><div class="mov-icon ${iconType}">${icon}</div><div class="mov-info"><div class="mov-title">${description}</div><div class="mov-sub">${tn[t.type] || t.type}</div></div><div class="mov-amount"><div class="mov-val ${incoming ? 'in' : 'out'}">${sign} ${formatCurrency(t.amount)}</div><div class="mov-date">${formatDate(t.created_at)}</div></div></div>`;
   }).join('');
-  if (mfc) mfc.innerHTML = transactions.map(t => {
-    const ip = t.type === 'deposit'; const ic = ip ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'; const tc = ip ? 'text-green-600' : 'text-red-600'; const s = ip ? '+' : '-';
-    return `<div class="mobile-transaction-item cursor-pointer" data-transaction-id="${t.id}"><div class="mobile-transaction-icon ${ic}"><i class="fas ${ip?'fa-arrow-down':'fa-arrow-up'}"></i></div><div class="mobile-transaction-details"><div class="mobile-transaction-title">${t.description||tn[t.type]||t.type}</div><div class="mobile-transaction-date">${formatDate(t.created_at)}</div></div><div class="mobile-transaction-amount ${tc}">${s}${t.amount.toFixed(2)}</div></div>`;
-  }).join('');
+  if (mc) mc.innerHTML = renderWalletRows(transactions.slice(0,3));
+  if (mfc) mfc.innerHTML = renderWalletRows(transactions);
   bindTransactionClicks();
 };
 
 const updateCardUserName = () => {
   const n = userProfile?.full_name || currentUser?.email?.split('@')[0] || 'USUARIO';
   const short = n.length > 18 ? n.substring(0,18).toUpperCase() : n.toUpperCase();
-  const m = document.getElementById('mobile-card-user-name');
   const d = document.getElementById('desktop-card-user-name');
-  if (m) m.textContent = short;
+  const homeName = document.getElementById('mobile-home-user-name');
   if (d) d.textContent = short;
+  if (homeName) homeName.textContent = n;
 };
 
 const updateUI = async () => {
   if (!currentUser) return;
   currentBalance = await calculateBalance(currentUser.id);
-  document.querySelectorAll('#balance, #mobile-balance').forEach(el => { if (el) el.textContent = formatCurrency(currentBalance); });
+  document.querySelectorAll('#balance, #mobile-balance').forEach(el => {
+    if (!el) return;
+    el.textContent = isBalanceHidden ? 'Bs ••••••' : formatCurrency(currentBalance);
+    el.classList.toggle('balance-hidden', isBalanceHidden);
+    el.classList.toggle('balance-amount', !isBalanceHidden);
+  });
   updateCardUserName();
   await applyFilters();
 };
@@ -1310,11 +1453,12 @@ function startRechargeCountdown(){
   rechargeSecondsLeft = 600;
   const el = document.getElementById(`${rechargePrefix()}-countdown`);
   clearInterval(rechargeCountdownTimer);
-  rechargeCountdownTimer = setInterval(() => {
+  rechargeCountdownTimer = setInterval(async () => {
     rechargeSecondsLeft--;
     if (rechargeSecondsLeft <= 0) {
       clearInterval(rechargeCountdownTimer);
       stopRechargePolling();
+      if (rechargeQrId) await markRechargeFailed(rechargeQrId);
       if (el) el.textContent = 'Expirado';
       unlockTransaction();
       showToast('El QR expiró. Intenta de nuevo.','error');
@@ -1346,6 +1490,14 @@ function startRechargePolling(){
   }, RECHARGE_POLL_INTERVAL_MS);
 }
 
+async function markRechargeFailed(qrId){
+  const { error } = await supabase.from('transacciones')
+    .update({ estado:'fallido' })
+    .filter('metadata->>qr_id','eq',qrId)
+    .eq('estado','pendiente');
+  if (error) console.error('Error marcando QR fallido:', error);
+}
+
 async function verifyRechargeStatus(){
   if (!rechargeQrId) return;
   try {
@@ -1363,6 +1515,7 @@ async function verifyRechargeStatus(){
       await updateUI();
     } else if (data.status === 'cancelled' || data.status === 'expired') {
       stopRechargePolling();
+      await markRechargeFailed(rechargeQrId);
       showToast('El QR expiró o fue cancelado','error');
       unlockTransaction();
       closeRechargeFlow(true);
@@ -1386,6 +1539,11 @@ async function generateRechargeQR(){
     const data = await banecoFetch('/create', { method:'POST', body: JSON.stringify({ amount }) });
     if (data.error) throw new Error(data.error);
     rechargeQrId = data.qrId;
+    const transaction = await createTransaction(currentUser.id, amount, 'deposit', `Recarga QR Baneco ${data.qrId}`, { source:'baneco_qr', qr_id:data.qrId }, 'pending');
+    if (!transaction) {
+      try { await banecoFetch('/cancel', { method:'POST', body: JSON.stringify({ qrId:data.qrId }) }); } catch (cancelError) { console.error(cancelError); }
+      throw new Error('No se pudo guardar la recarga pendiente');
+    }
     document.getElementById(`${p}-qr-image`).src = 'data:image/png;base64,' + data.qrImage;
     document.getElementById(`${p}-qr-id`).textContent = data.qrId;
     switchRechargeStep('qr');
@@ -1401,7 +1559,10 @@ async function generateRechargeQR(){
 async function cancelRechargeQR(){
   if (!rechargeQrId) return closeRechargeFlow();
   unlockTransaction();
-  try { await banecoFetch('/cancel', { method:'POST', body: JSON.stringify({ qrId: rechargeQrId }) }); }
+  try {
+    await banecoFetch('/cancel', { method:'POST', body: JSON.stringify({ qrId: rechargeQrId }) });
+    await markRechargeFailed(rechargeQrId);
+  }
   catch (err) { console.error(err); }
   closeRechargeFlow(true);
 }
@@ -1427,6 +1588,18 @@ document.addEventListener('DOMContentLoaded', async () => {
   const setVh = () => { document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`); };
   setVh(); window.addEventListener('resize', setVh);
 
+  const themeIcon = document.getElementById('themeIcon');
+  const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+  let isLightTheme = false;
+  try{
+    isLightTheme = localStorage.getItem('toktok_wallet_theme') === 'light';
+    if (isLightTheme) {
+      document.documentElement.classList.add('light-mode');
+      if (themeIcon) themeIcon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+    }
+  }catch(error){}
+  if (themeColorMeta) themeColorMeta.content = isLightTheme ? '#ffffff' : '#000000';
+
   const { data: { session } } = await supabase.auth.getSession();
   if (!session) { window.location.href = 'index.html'; return; }
   currentUser = session.user;
@@ -1434,6 +1607,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (!userProfile) { window.location.href = 'index.html'; return; }
 
   const ads = await loadAds();
+  allAds = ads || [];
+  renderDashboardAnnouncements(allAds);
   if (ads && ads.length > 0) showAdModal(ads);
 
   document.querySelectorAll('#user-name, #mobile-user-name').forEach(el => { if (el) el.textContent = userProfile?.full_name || currentUser.email.split('@')[0]; });
@@ -1452,12 +1627,47 @@ document.addEventListener('DOMContentLoaded', async () => {
       const view = item.dataset.view;
       document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
       item.classList.add('active');
-      ['home','transactions','profile'].forEach(v => { const el = document.getElementById(`mobile-${v}-view`); if (el) el.classList.add('hidden'); });
+      ['home','transactions','announcements','profile'].forEach(v => { const el = document.getElementById(`mobile-${v}-view`); if (el) el.classList.add('hidden'); });
       document.getElementById(`mobile-${view}-view`)?.classList.remove('hidden');
-      const titles = { home:'Inicio', transactions:'Transacciones', profile:'Perfil' };
+      const titles = { home:'Inicio', transactions:'Movimientos', announcements:'Anuncios', profile:'Perfil' };
       const t = document.getElementById('mobile-header-title');
       if (t) t.textContent = titles[view];
+      if (view === 'announcements') renderDashboardAnnouncements(allAds);
     });
+  });
+
+  document.getElementById('mobile-open-announcements-btn')?.addEventListener('click', () => {
+    document.querySelector('.bottom-nav [data-view="announcements"]')?.click();
+  });
+  document.getElementById('mobile-open-transactions-btn')?.addEventListener('click', () => {
+    document.querySelector('.bottom-nav [data-view="transactions"]')?.click();
+  });
+  document.getElementById('themeToggle')?.addEventListener('click', function(){
+    const isLight = document.documentElement.classList.toggle('light-mode');
+    try{ localStorage.setItem('toktok_wallet_theme', isLight ? 'light' : 'dark'); }catch(error){}
+    if (themeColorMeta) themeColorMeta.content = isLight ? '#ffffff' : '#000000';
+    if (themeIcon) themeIcon.innerHTML = isLight
+      ? '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>'
+      : '<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>';
+  });
+  document.getElementById('mobile-toggle-balance')?.addEventListener('click', function(){
+    isBalanceHidden = !isBalanceHidden;
+    const balance = document.getElementById('mobile-balance');
+    if (balance) {
+      balance.textContent = isBalanceHidden ? 'Bs ••••••' : formatCurrency(currentBalance);
+      balance.classList.toggle('balance-hidden', isBalanceHidden);
+      balance.classList.toggle('balance-amount', !isBalanceHidden);
+    }
+    const eyeText = document.getElementById('eyeText');
+    const eyeIcon = document.getElementById('eyeIcon');
+    if (eyeText) eyeText.textContent = isBalanceHidden ? 'Mostrar' : 'Ocultar';
+    if (eyeIcon) eyeIcon.innerHTML = isBalanceHidden
+      ? '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19M1 1l22 22"/>'
+      : '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+    this.setAttribute('aria-label', isBalanceHidden ? 'Mostrar saldo' : 'Ocultar saldo');
+  });
+  document.getElementById('mobile-wallet-fab')?.addEventListener('click', () => {
+    document.getElementById('mobile-recharge-balance-btn')?.click();
   });
 
   const fch = () => { if (isTxLocked) return; syncFilters(isMobileDevice() ? 'mobile' : 'desktop'); applyFilters(); };
@@ -1517,12 +1727,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     const fn = document.getElementById(isM ? 'mobile-full-name' : 'full-name').value;
     const upd = { full_name: fn };
     const fi = document.getElementById(isM ? 'mobile-avatar-input' : 'avatar-input');
+    const updated = await updateUserProfile(currentUser.id, upd);
+    if (!updated) { showToast('No se pudo guardar el perfil','error'); return; }
     if (fi.files.length > 0) {
       const localUrl = await uploadAvatar(currentUser.id, fi.files[0]);
       if (localUrl) setLocalAvatar(localUrl);
     }
-    const updated = await updateUserProfile(currentUser.id, upd);
-    userProfile = { ...(userProfile || {}), ...upd };
+    userProfile = updated;
     document.querySelectorAll('#user-name, #mobile-user-name').forEach(el => { if (el) el.textContent = userProfile.full_name; });
     renderProfileAvatars();
     updateCardUserName();
@@ -1582,95 +1793,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   await updateUI();
 });
 
-// ============ RULETA ============
-const VALID_CODES = new Set([
-  'TOKTOK-X8P9','TOKTOK-M3N2','TOKTOK-K7J4','TOKTOK-R5T6','TOKTOK-W2Z1','TOKTOK-Q9L0','TOKTOK-F4D5','TOKTOK-H6G7','TOKTOK-V8C3','TOKTOK-B1N9',
-  'TOKTOK-A1B2','TOKTOK-C3D4','TOKTOK-E5F6','TOKTOK-G7H8','TOKTOK-I9J0','TOKTOK-K1L2','TOKTOK-M3N4','TOKTOK-O5P6','TOKTOK-Q7R8','TOKTOK-S9T0'
-]);
-const PRIZES = [0,1,2,5,8,10,20,50,80,100];
-let usedCodes = new Set();
-try { const s = localStorage.getItem('toktok_used_codes'); if (s) usedCodes = new Set(JSON.parse(s)); } catch {}
-function saveUsedCodes(){ try { localStorage.setItem('toktok_used_codes', JSON.stringify(Array.from(usedCodes))); } catch {} }
-
-const rm = document.getElementById('roulette-modal');
-const rcb = document.getElementById('close-roulette-modal');
-const rsb = document.getElementById('spin-roulette-btn');
-const rbb = document.getElementById('buy-spin-btn');
-const rci = document.getElementById('roulette-code');
-const rw = document.getElementById('wheel');
-const rmsg = document.getElementById('roulette-message');
-let isSpinning = false;
-
-function closeRoulette(){ rm.classList.remove('opacity-100','visible'); rm.classList.add('opacity-0','invisible'); }
-rcb.addEventListener('click', closeRoulette);
-rm.addEventListener('click', (e) => { if (e.target === rm) closeRoulette(); });
-
-async function addPrizeToBalance(amount){
-  if (!currentUser) { rmsg.textContent = '❌ Inicia sesión'; return false; }
-  try {
-    const tx = await createTransaction(currentUser.id, amount, 'deposit', `🎉 Premio ruleta: Bs ${amount}`, { source:'roulette' });
-    if (!tx) throw new Error();
-    currentBalance = (currentBalance || 0) + amount;
-    document.querySelectorAll('#balance, #mobile-balance').forEach(el => { if (el) el.textContent = formatCurrency(currentBalance); });
-    const tx2 = await loadTransactions(currentUser.id);
-    renderTransactions(tx2);
-    rmsg.textContent = `✅ ¡Ganaste Bs ${amount}!`;
-    return true;
-  } catch { rmsg.textContent = '❌ Error al acreditar'; return false; }
-}
-
-async function performSpin(prizeIndex){
-  const prize = PRIZES[prizeIndex];
-  const seg = 360 / PRIZES.length;
-  const fr = 360 * 5 + (360 - (prizeIndex * seg + seg/2));
-  rw.style.transform = `rotate(${fr}deg)`;
-  return new Promise(res => setTimeout(async () => { const ok = await addPrizeToBalance(prize); res(ok); }, 3000));
-}
-
-function getPrizeIndex(){
-  const r = Math.random() * 100;
-  if (r < 0.1) return PRIZES.indexOf(100);
-  if (r < 0.3) return PRIZES.indexOf(80);
-  if (r < 0.7) return PRIZES.indexOf(50);
-  if (r < 1.8) return PRIZES.indexOf(20);
-  if (r < 2.5) return PRIZES.indexOf(10);
-  if (r < 3.3) return PRIZES.indexOf(8);
-  if (r < 4.3) return PRIZES.indexOf(5);
-  if (r < 24.3) return PRIZES.indexOf(2);
-  if (r < 64.3) return PRIZES.indexOf(1);
-  return PRIZES.indexOf(0);
-}
-
-rsb.addEventListener('click', async () => {
-  if (isSpinning || isTxLocked) return;
-  const code = rci.value.trim().toUpperCase();
-  if (!code) { rmsg.textContent = '⚠️ Ingresa un código'; return; }
-  if (!VALID_CODES.has(code)) { rmsg.textContent = '❌ Código inválido'; return; }
-  if (usedCodes.has(code)) { rmsg.textContent = '⛔ Ya usado'; return; }
-  if (!currentUser) { rmsg.textContent = '❌ Sin sesión'; return; }
-  isSpinning = true; rsb.disabled = true; rbb.disabled = true;
-  rmsg.textContent = '🎡 Girando...';
-  const idx = getPrizeIndex();
-  usedCodes.add(code); saveUsedCodes();
-  const ok = await performSpin(idx);
-  if (!ok) { usedCodes.delete(code); saveUsedCodes(); }
-  rsb.disabled = false; rbb.disabled = false; isSpinning = false;
-});
-
-rbb.addEventListener('click', async () => {
-  if (isSpinning || isTxLocked) return;
-  if (!currentUser) { rmsg.textContent = '❌ Sin sesión'; return; }
-  if (currentBalance < 1) { rmsg.textContent = '❌ Saldo insuficiente'; return; }
-  isSpinning = true; rsb.disabled = true; rbb.disabled = true;
-  rmsg.textContent = '🎡 Comprando giro...';
-  const pt = await createTransaction(currentUser.id, 1, 'withdrawal', '🎰 Compra de giro', { source:'roulette_purchase' });
-  if (!pt) { rmsg.textContent = '❌ Error'; rsb.disabled = false; rbb.disabled = false; isSpinning = false; return; }
-  currentBalance -= 1;
-  document.querySelectorAll('#balance, #mobile-balance').forEach(el => { if (el) el.textContent = formatCurrency(currentBalance); });
-  rmsg.textContent = '🎡 Girando...';
-  await performSpin(getPrizeIndex());
-  rsb.disabled = false; rbb.disabled = false; isSpinning = false;
-});
 </script>
 </body>
 </html>
