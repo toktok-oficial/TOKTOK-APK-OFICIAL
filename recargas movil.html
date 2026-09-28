@@ -7,47 +7,47 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Roboto+Mono:wght@500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=DM+Mono:wght@500;600;700&display=swap');
 
         :root {
-            --app-max-width: 460px;
-            --primary: #6D28D9;
-            --primary-dark: #4C1D95;
-            --primary-darker: #3B0F73;
-            --primary-light: #F1EBFC;
-            --primary-soft: #E4D9F9;
-            --gradient-primary: linear-gradient(135deg, #7C3AED 0%, #5B21B6 100%);
-            --accent: #C08A1E;
-            --accent-light: #FBF0DA;
-            --accent-dark: #8A6112;
-            --success: #0F8A5F;
-            --success-light: #E1F6ED;
+            --app-max-width: 860px;
+            --primary: #087E78;
+            --primary-dark: #075B57;
+            --primary-darker: #064743;
+            --primary-light: #E3F5F1;
+            --primary-soft: #B8E5DC;
+            --gradient-primary: linear-gradient(135deg, #0A9287 0%, #08716D 100%);
+            --accent: #E99A38;
+            --accent-light: #FFF2DF;
+            --accent-dark: #9A5811;
+            --success: #16815C;
+            --success-light: #E5F5EC;
             --danger: #C0362C;
             --danger-light: #FBE9E7;
-            --bg: #F7F5FC;
+            --bg: #F1F6F4;
             --surface: #FFFFFF;
             --surface-alt: #FBFAFE;
-            --border: #ECE7F7;
-            --border-strong: #DED4F3;
-            --text: #241A3D;
-            --text-secondary: #746C8A;
-            --text-faint: #A79FBF;
+            --border: #E2EBE8;
+            --border-strong: #C9DAD5;
+            --text: #172B2A;
+            --text-secondary: #647875;
+            --text-faint: #91A39F;
             --shape-xs: 8px;
             --shape-s: 12px;
             --shape-m: 16px;
             --shape-l: 22px;
             --shape-xl: 28px;
             --shape-full: 999px;
-            --shadow-sm: 0 1px 2px rgba(76, 29, 149, 0.06), 0 1px 3px rgba(76, 29, 149, 0.08);
-            --shadow-md: 0 4px 10px rgba(76, 29, 149, 0.08), 0 2px 4px rgba(76, 29, 149, 0.06);
-            --shadow-lg: 0 12px 28px rgba(76, 29, 149, 0.14), 0 4px 10px rgba(76, 29, 149, 0.08);
+            --shadow-sm: 0 2px 8px rgba(21, 70, 63, 0.06);
+            --shadow-md: 0 8px 20px rgba(21, 70, 63, 0.10);
+            --shadow-lg: 0 18px 44px rgba(21, 70, 63, 0.18);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         html, body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg);
+            font-family: 'Manrope', sans-serif;
+            background: radial-gradient(ellipse at 50% 0%, #E0F1EC 0%, var(--bg) 58%);
             color: var(--text);
             min-height: 100vh;
         }
@@ -62,7 +62,7 @@
             display: flex;
             flex-direction: column;
             position: relative;
-            box-shadow: 0 0 40px rgba(76, 29, 149, 0.06);
+            box-shadow: 0 0 48px rgba(21, 70, 63, 0.08);
         }
 
         .screen {
@@ -70,7 +70,7 @@
             width: 100%;
             overflow-y: auto;
             overflow-x: hidden;
-            padding: 0 20px;
+            padding: 0 32px;
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
         }
@@ -328,9 +328,9 @@
         }
 
         .package-header {
-            padding: 16px 12px 12px;
+            padding: 16px 14px 12px;
             background: var(--primary-light);
-            text-align: center;
+            text-align: left;
         }
 
         .package-amount {
@@ -342,7 +342,7 @@
             margin-bottom: 2px;
         }
 
-        .package-name { font-size: 12px; font-weight: 600; color: var(--primary); }
+        .package-name { font-size: 14px; line-height: 1.35; font-weight: 800; color: var(--primary-dark); }
 
         .package-body { padding: 14px 12px; background: var(--surface); }
 
@@ -357,14 +357,35 @@
         }
         .package-feature i { color: var(--success); font-size: 11px; }
 
-        .package-price {
+        .package-prices {
             margin-top: 10px;
             padding-top: 10px;
             border-top: 1px dashed var(--border-strong);
-            text-align: center;
-            font-weight: 800;
-            font-size: 15px;
+            display: grid;
+            gap: 8px;
+        }
+        .package-price-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+        .package-price-row strong {
             color: var(--text);
+            font-family: 'DM Mono', monospace;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+        .package-price-row.final {
+            color: var(--primary-dark);
+            font-size: 12px;
+            font-weight: 800;
+        }
+        .package-price-row.final strong {
+            color: var(--primary-dark);
+            font-size: 16px;
         }
 
         .paso-container-nativo {
@@ -724,38 +745,6 @@
             outline-offset: 2px;
         }
 
-        .whatsapp-float {
-            position: fixed;
-            bottom: 24px;
-            left: calc(50% + (min(100vw, var(--app-max-width)) / 2) - 66px);
-            z-index: 300;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .whatsapp-float .wa-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, #25D366, #128C7E);
-            color: white;
-            border-radius: var(--shape-l);
-            text-align: center;
-            box-shadow: var(--shadow-md);
-            font-size: 21px;
-            transition: all 0.15s ease;
-        }
-        .whatsapp-float .wa-button.mayorista {
-            background: var(--gradient-primary);
-            width: 44px;
-            height: 44px;
-            border-radius: var(--shape-m);
-            font-size: 18px;
-        }
-        .whatsapp-float .wa-button:active { transform: scale(0.92); }
-
         .spinner {
             width: 18px;
             height: 18px;
@@ -773,8 +762,436 @@
             .balance-chip { padding: 7px 12px; font-size: 12px; }
             .back-button { width: 40px; height: 40px; min-width: 40px; }
             .section-headline { font-size: 22px; }
+        }
+
+        :root { --app-max-width: 540px; }
+
+        html, body {
+            min-height: 100%;
+            background: #EAF1EE;
+        }
+
+        body {
+            min-height: 100dvh;
+            align-items: stretch;
+        }
+
+        .app-shell {
+            max-width: 540px;
+            min-height: 100dvh;
+            background: var(--bg);
+            box-shadow: 0 0 48px rgba(21, 70, 63, 0.10);
+        }
+
+        .screen {
+            padding: 0 22px calc(24px + env(safe-area-inset-bottom));
+            scrollbar-width: none;
+        }
+        .screen::-webkit-scrollbar { display: none; }
+
+        .app-bar {
+            margin: 0 -22px 20px;
+            padding: calc(12px + env(safe-area-inset-top)) 18px 12px;
+            background: rgba(255, 255, 255, 0.96);
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 3px 12px rgba(21, 70, 63, 0.04);
+        }
+
+        .app-bar-title {
+            font-size: 16px;
+            color: var(--text);
+            background: none;
+            -webkit-text-fill-color: currentColor;
+            text-align: left;
+        }
+
+        .balance-chip {
+            padding: 9px 12px;
+            border-radius: 12px;
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            box-shadow: none;
+            font-size: 12px;
+        }
+
+        .balance-chip i { color: var(--primary); }
+
+        .back-button {
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            border: 0;
+            border-radius: 12px;
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            font-size: 15px;
+        }
+
+        .step-indicator {
+            display: flex;
+            align-items: flex-start;
+            gap: 0;
+            margin: 6px 0 28px;
+        }
+
+        .step-dot {
+            height: auto;
+            min-width: 0;
+            flex: 1;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 7px;
+            background: transparent;
+            border-radius: 0;
+        }
+
+        .step-dot::after {
+            content: '';
+            position: absolute;
+            top: 14px;
+            left: calc(50% + 15px);
+            width: calc(100% - 30px);
+            height: 2px;
+            background: var(--border-strong);
+        }
+
+        .step-dot:last-child::after { display: none; }
+        .step-dot.active,
+        .step-dot.completed { background: transparent; opacity: 1; }
+
+        .step-dot span {
+            width: 29px;
+            height: 29px;
+            display: grid;
+            place-items: center;
+            border: 1px solid var(--border-strong);
+            border-radius: 50%;
+            background: white;
+            color: var(--text-secondary);
+            font-size: 11px;
+            font-weight: 800;
+            z-index: 1;
+        }
+
+        .step-dot small {
+            color: var(--text-faint);
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .step-dot.active span,
+        .step-dot.completed span {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .step-dot.active small,
+        .step-dot.completed small { color: var(--primary-dark); }
+        .step-dot.completed::after { background: var(--primary); }
+
+        .section-eyebrow {
+            margin-bottom: 7px;
+            color: var(--primary);
+            font-size: 10px;
+            letter-spacing: 0;
+        }
+
+        .section-headline {
+            margin-bottom: 5px;
+            font-size: 25px;
+            line-height: 1.2;
+            letter-spacing: 0;
+        }
+
+        .section-support {
+            max-width: 34ch;
+            margin-bottom: 20px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .operators-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+            padding: 0 0 24px;
+        }
+
+        .operator-card {
+            min-height: 122px;
+            padding: 16px 8px 14px;
+            position: relative;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: none;
+            transition: border-color 0.16s ease, background 0.16s ease, transform 0.16s ease;
+        }
+
+        .operator-card:active { transform: scale(0.97); }
+
+        .operator-card.selected {
+            border: 1.5px solid var(--primary);
+            background: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(8, 126, 120, 0.08);
+        }
+
+        .operator-card.selected::after {
+            content: '\f00c';
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 19px;
+            height: 19px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: var(--primary);
+            color: #fff;
+            font-family: 'Font Awesome 6 Free';
+            font-size: 9px;
+            font-weight: 900;
+        }
+
+        .operator-logo {
+            width: 52px;
+            height: 52px;
+            margin-bottom: 10px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: #fff;
+            box-shadow: none;
+        }
+
+        .operator-logo img { object-fit: contain; padding: 4px; }
+        .operator-card .op-name { font-size: 12px; }
+
+        .categories-list {
+            gap: 8px;
+            padding: 0 0 24px;
+        }
+
+        .category-chip {
+            min-height: 66px;
+            padding: 11px 13px;
+            gap: 12px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: none;
+        }
+
+        .category-chip::before {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+        }
+
+        .category-chip::after { font-size: 13px; }
+        .category-chip span { font-size: 13px; }
+
+        .category-chip.active {
+            border-color: var(--primary);
+            background: #F5FBF9;
+            box-shadow: inset 3px 0 0 var(--primary);
+        }
+
+        .step3-context {
+            min-height: 58px;
+            padding: 10px 13px;
+            margin: 0 0 22px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: white;
+        }
+
+        .packages-grid {
+            grid-template-columns: 1fr;
+            gap: 10px;
+            padding: 0 0 30px;
+        }
+
+        .package-card {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: none;
+            transition: border-color 0.16s ease, transform 0.16s ease;
+        }
+
+        .package-card:active { transform: scale(0.985); }
+        .package-card:hover { border-color: var(--primary-soft); box-shadow: none; }
+
+        .package-header {
+            padding: 14px 15px 7px;
+            background: transparent;
+        }
+
+        .package-name { color: var(--text); font-size: 14px; }
+        .package-body { padding: 0 15px 14px; }
+
+        .package-feature {
+            align-items: flex-start;
+            margin: 2px 0 9px;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .package-feature i { margin-top: 3px; }
+
+        .package-prices {
+            margin-top: 0;
+            padding-top: 10px;
+            gap: 7px;
+        }
+
+        .package-price-row { font-size: 11px; }
+        .package-price-row.final {
+            margin: 1px -8px -6px;
+            padding: 9px 8px;
+            border-radius: 8px;
+            background: var(--primary-light);
+        }
+
+        .paso-container-nativo {
+            margin: 0 0 30px;
+            padding: 18px 16px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: none;
+        }
+
+        .paso-header-nativo { margin-bottom: 16px; }
+        .paso-title-nativo { font-size: 18px; letter-spacing: 0; }
+        .operator-badge-nativo { border-radius: 10px; }
+        .phone-field-nativo, .phone-input, .monto-custom-input { border-radius: 10px; }
+        .monto-btn-nativo { border-radius: 10px; }
+
+        .total-bar-nativo {
+            margin: 16px 0;
+            border-radius: 12px;
+            box-shadow: none;
+        }
+
+        .btn-paso-nativo,
+        .ios-button,
+        .ios-button-secondary {
+            min-height: 48px;
+            border-radius: 12px;
+            letter-spacing: 0;
+        }
+
+        .ios-button { box-shadow: none; }
+        .ios-button-secondary { padding: 13px; }
+
+        .bottom-sheet {
+            max-height: 88dvh;
+            overflow-y: auto;
+            padding: 10px 20px calc(20px + env(safe-area-inset-bottom));
+            border: 1px solid var(--border);
+            border-bottom: 0;
+            border-radius: 18px 18px 0 0;
+            box-shadow: 0 -12px 40px rgba(21, 70, 63, 0.18);
+        }
+
+        .sheet-handle { width: 36px; height: 4px; margin-bottom: 14px; }
+        .sheet-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+        .sheet-title { margin-bottom: 0; font-size: 17px; }
+        .sheet-close {
+            width: 36px;
+            height: 36px;
+            flex: 0 0 36px;
+            display: grid;
+            place-items: center;
+            border: 0;
+            border-radius: 10px;
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            cursor: pointer;
+        }
+
+        .summary-row {
+            gap: 12px;
+            padding: 9px 0;
+            font-size: 12px;
+        }
+
+        .summary-row span:last-child { text-align: right; }
+
+        .ios-modal {
+            left: 0;
+            width: 100%;
+            max-width: none;
+            height: 100dvh;
+            padding: 0;
+            align-items: flex-end;
+            transform: none;
+            background: rgba(11, 37, 35, 0.46);
+            backdrop-filter: blur(3px);
+        }
+
+        .modal-content-ios {
+            width: 100%;
+            max-width: 540px;
+            max-height: 90dvh;
+            overflow-y: auto;
+            margin: 0 auto;
+            padding: 24px 22px calc(24px + env(safe-area-inset-bottom));
+            border-radius: 18px 18px 0 0;
+            box-shadow: 0 -12px 40px rgba(21, 70, 63, 0.18);
+            transform: translateY(18px);
+        }
+
+        .ios-modal.active .modal-content-ios { transform: translateY(0); }
+
+        .success-animation {
+            width: 52px;
+            height: 52px;
+            margin-bottom: 16px;
+            border-radius: 14px;
+            box-shadow: none;
+        }
+
+        .step-screen:not(.hidden) { animation: native-screen-enter 0.22s ease both; }
+
+        @keyframes native-screen-enter {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (min-width: 700px) {
+            body { align-items: center; }
+            .app-shell {
+                height: min(900px, calc(100dvh - 32px));
+                min-height: 600px;
+                border: 1px solid var(--border);
+                border-radius: 22px;
+                overflow: hidden;
+            }
+            .app-bar { margin-top: 0; }
+            .operators-grid { gap: 14px; }
+            .packages-grid { grid-template-columns: 1fr; }
+            .ios-modal { align-items: center; padding: 24px; }
+            .modal-content-ios { border-radius: 16px; padding-bottom: 24px; }
+        }
+
+        @media (max-width: 380px) {
+            .screen { padding-right: 16px; padding-left: 16px; }
+            .app-bar { margin-right: -16px; margin-left: -16px; padding-right: 14px; padding-left: 14px; }
+            .balance-chip { padding: 8px 9px; font-size: 11px; }
+            .section-headline { font-size: 23px; }
             .operators-grid { gap: 8px; }
-            .operator-logo { width: 52px; height: 52px; }
+            .operator-card { min-height: 114px; }
+            .operator-logo { width: 48px; height: 48px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
         }
     </style>
 </head>
@@ -793,13 +1210,14 @@
             </div>
 
             <div class="step-indicator" id="step-indicators">
-                <div class="step-dot active" data-step="1"></div>
-                <div class="step-dot" data-step="2"></div>
-                <div class="step-dot" data-step="3"></div>
+                <div class="step-dot active" data-step="1"><span>1</span><small>Operador</small></div>
+                <div class="step-dot" data-step="2"><span>2</span><small>Servicio</small></div>
+                <div class="step-dot" data-step="3"><span>3</span><small>Paquete</small></div>
             </div>
 
             <!-- PASO 1: OPERADOR -->
             <div id="step-1" class="step-screen">
+                <div class="section-eyebrow">Recargas móviles</div>
                 <div class="section-headline">¿Qué operador?</div>
                 <div class="section-support">Selecciona tu compañía para ver sus recargas disponibles</div>
                 <div class="operators-grid" id="operators-container"></div>
@@ -807,6 +1225,7 @@
 
             <!-- PASO 2: CATEGORÍA -->
             <div id="step-2" class="step-screen hidden">
+                <div class="section-eyebrow">Paso 2 · Servicio</div>
                 <div class="section-headline" id="selected-operator-name">Entel</div>
                 <div class="section-support">Elige el tipo de recarga que necesitas</div>
                 <div class="categories-list" id="recharge-types-container"></div>
@@ -891,7 +1310,12 @@
 
             <div id="summary-sheet" class="bottom-sheet">
                 <div class="sheet-handle"></div>
-                <h3 class="sheet-title">Resumen de recarga</h3>
+                <div class="sheet-heading">
+                    <h3 class="sheet-title">Resumen de recarga</h3>
+                    <button id="close-summary-sheet" class="sheet-close" type="button" aria-label="Cerrar resumen" title="Cerrar">
+                        <i class="fas fa-times" aria-hidden="true"></i>
+                    </button>
+                </div>
 
                 <div class="summary-row">
                     <span>Operador</span>
@@ -911,9 +1335,13 @@
                 </div>
 
                 <div class="mt-5 pt-4" style="border-top:1px solid var(--border)">
+                    <div class="flex justify-between items-center mb-2">
+                        <span style="color:var(--text-secondary); font-weight:500;">Precio de referencia</span>
+                        <span class="font-bold" style="color:var(--text-secondary); font-family:'DM Mono',monospace;" id="sheet-reference">Bs 0</span>
+                    </div>
                     <div class="flex justify-between items-center mb-5">
-                        <span style="color:var(--text-secondary); font-weight:500;">Total a pagar</span>
-                        <span class="font-bold" style="font-size:24px; color:var(--primary); font-family:'Roboto Mono',monospace;" id="sheet-total">Bs 0</span>
+                        <span style="color:var(--primary-dark); font-weight:800;">Precio final</span>
+                        <span class="font-bold" style="font-size:24px; color:var(--primary); font-family:'DM Mono',monospace;" id="sheet-total">Bs 0</span>
                     </div>
 
                     <button id="btn-continue" class="ios-button">
@@ -1015,7 +1443,11 @@
                         <span id="confirm-package" class="font-bold" style="color:var(--text)">-</span>
                     </div>
                     <div class="flex justify-between">
-                        <span style="color:var(--text-secondary)" class="font-medium">Total:</span>
+                        <span style="color:var(--text-secondary)" class="font-medium">Precio de referencia:</span>
+                        <span id="confirm-reference" class="font-bold" style="color:var(--text)">-</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span style="color:var(--primary-dark)" class="font-bold">Precio final:</span>
                         <span id="confirm-total" class="font-bold" style="color:var(--primary)">-</span>
                     </div>
                 </div>
@@ -1055,12 +1487,6 @@
                 viva: { packages: [{ token: '8794091027:AAG36PsetBQY3oqGQzGw39rZhbOaBAaE41A', chatId: '-1003760488575' },{ token: '8794091027:AAG36PsetBQY3oqGQzGw39rZhbOaBAaE41A', chatId: '-1003331710456' }], paso: { token: '8794091027:AAG36PsetBQY3oqGQzGw39rZhbOaBAaE41A', chatId: '-1003982922759' } }
             };
 
-            const OPERATOR_IMAGES = {
-                entel: 'https://mir-s3-cdn-cf.behance.net/project_modules/1400/591606143398369.627a1936bea3a.png',
-                tigo: 'https://dplnews.com/wp-content/uploads/2020/06/dplnews_tigo_mc090620.jpg',
-                viva: 'https://cdn.bitrefill.com/primg/i1w800h800/viva-bolivia.webp'
-            };
-
             let currentUser = null;
             let currentBalance = 0;
             let operators = [];
@@ -1073,6 +1499,8 @@
             let currentStep = 1;
 
             const formatCurrency = (amount) => 'Bs ' + parseFloat(amount).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            const escapeHTML = (value) => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
+            const getPackageCharge = (pkg) => Number(pkg.precio_final ?? pkg.precio ?? 0);
 
             const showErrorInternet = () => {
                 document.getElementById('result-icon').innerHTML = '📡';
@@ -1159,15 +1587,16 @@
             });
 
             async function loadBalance() {
-                const { data } = await supabase.from('transactions').select('amount, type').eq('user_id', currentUser.id).eq('status', 'completed');
+                const { data } = await supabase.from('transacciones').select('monto, tipo, metadata').eq('usuario_id', currentUser.id).eq('estado', 'completado');
                 let balance = 0;
-                data?.forEach(t => { if (t.type === 'deposit') balance += t.amount; else balance -= t.amount; });
+                data?.forEach(t => { balance += (t.tipo === 'deposito' || (t.tipo === 'transferencia' && t.metadata?.type === 'receive') ? 1 : -1) * Number(t.monto); });
                 currentBalance = balance;
                 document.getElementById('current-balance').textContent = formatCurrency(balance);
             }
 
             async function loadOperators() {
-                const { data } = await supabase.from('mobile_operators').select('*').eq('is_active', true).order('display_order');
+                const { data, error } = await supabase.from('operadores_moviles').select('*').eq('activo', true).order('orden_visual');
+                if (error) throw error;
                 operators = data || [];
                 renderOperators();
             }
@@ -1175,12 +1604,12 @@
             function renderOperators() {
                 const container = document.getElementById('operators-container');
                 container.innerHTML = operators.map(op => {
-                    const imgUrl = OPERATOR_IMAGES[op.code?.toLowerCase()] || '';
-                    return `<div class="operator-card" data-id="${op.id}" data-code="${op.code}">
+                    const imgUrl = op.logo_url || '';
+                    return `<div class="operator-card" data-id="${escapeHTML(op.id)}" data-code="${escapeHTML(op.codigo)}">
                         <div class="operator-logo">
-                            ${imgUrl ? `<img src="${imgUrl}" alt="${op.name}" loading="lazy" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\'fas fa-sim-card\' style=\'font-size:24px;color:var(--primary);\'></i>'">` : '<i class="fas fa-sim-card" style="font-size:24px;color:var(--primary);"></i>'}
+                            ${imgUrl ? `<img src="${escapeHTML(imgUrl)}" alt="${escapeHTML(op.nombre)}" loading="lazy" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\'fas fa-sim-card\' style=\'font-size:24px;color:var(--primary);\'></i>'">` : '<i class="fas fa-sim-card" style="font-size:24px;color:var(--primary);"></i>'}
                         </div>
-                        <div class="op-name">${op.name}</div>
+                        <div class="op-name">${escapeHTML(op.nombre)}</div>
                     </div>`;
                 }).join('');
                 document.querySelectorAll('.operator-card').forEach(card => card.addEventListener('click', () => selectOperator(card.dataset.id)));
@@ -1188,7 +1617,7 @@
 
             async function selectOperator(id) {
                 selectedOperator = operators.find(op => op.id === id);
-                document.getElementById('selected-operator-name').textContent = selectedOperator.name;
+                document.getElementById('selected-operator-name').textContent = selectedOperator.nombre;
                 showStep(2);
                 await loadRechargeTypes(id);
             }
@@ -1234,8 +1663,9 @@
             }
 
             async function loadRechargeTypes(operatorId) {
-                const { data } = await supabase.from('recharge_types').select('*').eq('operator_id', operatorId).eq('is_active', true).order('display_order');
-                const pasoType = { id: 'recarga-paso', name: '⚡ Recarga al paso', is_permanent: true };
+                const { data, error } = await supabase.from('tipos_recarga').select('*').eq('operador_id', operatorId).eq('activo', true).order('orden_visual');
+                if (error) throw error;
+                const pasoType = { id: 'recarga-paso', nombre: 'Recarga al paso', is_permanent: true };
                 rechargeTypes = [...(data || []), pasoType];
                 selectedType = null;
                 renderTypes();
@@ -1243,7 +1673,7 @@
 
             function renderTypes() {
                 const container = document.getElementById('recharge-types-container');
-                container.innerHTML = rechargeTypes.map(type => `<div class="category-chip ${type.id === 'recarga-paso' ? 'paso' : ''} ${selectedType?.id === type.id ? 'active' : ''}" data-id="${type.id}"><span>${type.name}</span></div>`).join('');
+                container.innerHTML = rechargeTypes.map(type => `<div class="category-chip ${type.id === 'recarga-paso' ? 'paso' : ''} ${selectedType?.id === type.id ? 'active' : ''}" data-id="${escapeHTML(type.id)}"><span>${type.id === 'recarga-paso' ? '<i class="fas fa-bolt" aria-hidden="true"></i> ' : ''}${escapeHTML(type.nombre)}</span></div>`).join('');
                 document.querySelectorAll('.category-chip').forEach(chip => chip.addEventListener('click', () => selectType(chip.dataset.id)));
             }
 
@@ -1253,8 +1683,8 @@
                 document.getElementById('summary-sheet').classList.remove('active');
                 renderTypes();
 
-                document.getElementById('step3-operator-label').textContent = selectedOperator.name;
-                document.getElementById('step3-type-label').textContent = selectedType.name.replace('⚡ ', '');
+                document.getElementById('step3-operator-label').textContent = selectedOperator.nombre;
+                document.getElementById('step3-type-label').textContent = selectedType.nombre;
 
                 showStep(3);
 
@@ -1272,9 +1702,9 @@
             }
 
             function updatePasoUI() {
-                const operatorCode = selectedOperator.code.toLowerCase();
+                const operatorCode = selectedOperator.codigo.toLowerCase();
                 const descuento = getDescuentoPorcentaje(operatorCode);
-                document.getElementById('paso-operator-name').textContent = selectedOperator.name.toUpperCase();
+                document.getElementById('paso-operator-name').textContent = selectedOperator.nombre.toUpperCase();
                 document.getElementById('paso-descuento-info').textContent = `${descuento}%`;
 
                 const montos = [10, 20, 30, 50, 100];
@@ -1319,7 +1749,7 @@
                     return;
                 }
 
-                const operatorCode = selectedOperator.code.toLowerCase();
+                const operatorCode = selectedOperator.codigo.toLowerCase();
                 const precioPagar = getPrecioConDescuento(operatorCode, monto);
                 const descuento = getDescuentoPorcentaje(operatorCode);
 
@@ -1332,7 +1762,8 @@
             }
 
             async function loadPackages(operatorId, typeId) {
-                const { data } = await supabase.from('mobile_packages').select('*').eq('operator_id', operatorId).eq('recharge_type_id', typeId).eq('is_active', true).order('amount');
+                const { data, error } = await supabase.from('paquetes_moviles').select('*').eq('operador_id', operatorId).eq('tipo_recarga_id', typeId).eq('activo', true);
+                if (error) throw error;
                 packages = data || [];
                 renderPackages();
             }
@@ -1343,37 +1774,33 @@
                 if (!packages.length) { container.innerHTML = ''; noPackages?.classList.remove('hidden'); return; }
                 noPackages?.classList.add('hidden');
                 container.innerHTML = packages.map(pkg => {
-                    const features = [];
-                    if(pkg.data_mb) features.push(`📱 ${pkg.data_mb} MB`);
-                    if(pkg.minutes) features.push(`📞 ${pkg.minutes} min`);
-                    if(pkg.sms) features.push(`✉️ ${pkg.sms} SMS`);
-                    if(pkg.social_data_mb) features.push(`📱 Social ${pkg.social_data_mb} MB`);
-                    if(pkg.duration_days) features.push(`⏱️ ${pkg.duration_days} días`);
-                    return `<div class="package-card ${pkg.is_hot ? 'hot' : ''}" data-id="${pkg.id}">${pkg.is_hot ? '<div class="hot-badge">🔥 HOT</div>' : ''}<div class="package-header"><div class="package-amount">${formatCurrency(pkg.amount)}</div><div class="package-name">${pkg.name}</div></div><div class="package-body">${features.map(f => `<div class="package-feature"><i class="fas fa-check-circle"></i> ${f}</div>`).join('')}<div class="package-price">${formatCurrency(pkg.price)}</div></div></div>`;
+                    const description = pkg.descripcion ? `<div class="package-feature"><i class="fas fa-check-circle"></i> ${escapeHTML(pkg.descripcion)}</div>` : '';
+                    return `<div class="package-card" data-id="${escapeHTML(pkg.id)}"><div class="package-header"><div class="package-name">${escapeHTML(pkg.nombre)}</div></div><div class="package-body">${description}<div class="package-prices"><div class="package-price-row"><span>Precio de referencia</span><strong>${formatCurrency(pkg.precio)}</strong></div><div class="package-price-row final"><span>Precio final</span><strong>${formatCurrency(getPackageCharge(pkg))}</strong></div></div></div></div>`;
                 }).join('');
                 document.querySelectorAll('.package-card').forEach(card => card.addEventListener('click', () => { selectedPackage = packages.find(p => p.id === card.dataset.id); showSummarySheet(); }));
             }
 
             function showSummarySheet() {
-                document.getElementById('sheet-operator').textContent = selectedOperator?.name || '-';
-                document.getElementById('sheet-type').textContent = selectedType?.name || '-';
-                document.getElementById('sheet-package').textContent = selectedPackage?.name || '-';
-                const features = [];
-                if(selectedPackage?.data_mb) features.push(`${selectedPackage.data_mb} MB`);
-                if(selectedPackage?.minutes) features.push(`${selectedPackage.minutes} min`);
-                if(selectedPackage?.sms) features.push(`${selectedPackage.sms} SMS`);
-                document.getElementById('sheet-features').textContent = features.join(' + ') || 'Sin beneficios';
-                document.getElementById('sheet-total').textContent = formatCurrency(selectedPackage?.price || 0);
+                document.getElementById('sheet-operator').textContent = selectedOperator?.nombre || '-';
+                document.getElementById('sheet-type').textContent = selectedType?.nombre || '-';
+                document.getElementById('sheet-package').textContent = selectedPackage?.nombre || '-';
+                document.getElementById('sheet-features').textContent = selectedPackage?.descripcion || 'Sin detalles adicionales';
+                document.getElementById('sheet-reference').textContent = formatCurrency(selectedPackage?.precio || 0);
+                document.getElementById('sheet-total').textContent = formatCurrency(selectedPackage ? getPackageCharge(selectedPackage) : 0);
                 const btn = document.getElementById('btn-continue');
-                if(currentBalance < (selectedPackage?.price || 0)){ btn.disabled=true; btn.innerHTML='<i class="fas fa-exclamation-circle mr-2"></i> Saldo insuficiente'; }
+                if(currentBalance < getPackageCharge(selectedPackage || {})){ btn.disabled=true; btn.innerHTML='<i class="fas fa-exclamation-circle mr-2"></i> Saldo insuficiente'; }
                 else { btn.disabled=false; btn.innerHTML='<i class="fas fa-arrow-right mr-2"></i> Continuar'; }
                 document.getElementById('summary-sheet').classList.add('active');
             }
 
             function setupEventListeners() {
+                document.getElementById('close-summary-sheet')?.addEventListener('click', () => {
+                    document.getElementById('summary-sheet').classList.remove('active');
+                });
+
                 document.getElementById('btn-continue')?.addEventListener('click', () => {
                     if(!selectedPackage) return;
-                    if(currentBalance < selectedPackage.price){ showToast('Saldo insuficiente'); return; }
+                    if(currentBalance < getPackageCharge(selectedPackage)){ showToast('Saldo insuficiente'); return; }
                     showPhoneModal();
                 });
 
@@ -1406,7 +1833,7 @@
                         return;
                     }
 
-                    const operatorCode = selectedOperator.code.toLowerCase();
+                    const operatorCode = selectedOperator.codigo.toLowerCase();
                     const descuento = getDescuentoPorcentaje(operatorCode);
 
                     window._tempPasoData = {
@@ -1449,12 +1876,13 @@
                     const phone = document.getElementById('phone-number').value;
                     const notes = document.getElementById('recharge-notes').value;
 
-                    if(currentBalance < selectedPackage.price) throw new Error('Saldo insuficiente');
+                    const chargeAmount = getPackageCharge(selectedPackage);
+                    if(currentBalance < chargeAmount) throw new Error('Saldo insuficiente');
 
                     const userName = currentUser?.user_metadata?.full_name || currentUser?.user_metadata?.name || currentUser?.email || 'N/A';
 
                     // PASO 1: Enviar a Telegram
-                    const operatorCode = selectedOperator.code.toLowerCase();
+                    const operatorCode = selectedOperator.codigo.toLowerCase();
                     const botConfig = getNextTelegramBot(operatorCode, false);
 
                     if (!botConfig) {
@@ -1465,12 +1893,12 @@
                     const telegramMessage = `
 🔔 <b>NUEVA RECARGA - PAQUETE</b> 🔔
 ───────────────────
-📱 <b>Operador:</b> ${selectedOperator.name}
+📱 <b>Operador:</b> ${selectedOperator.nombre}
 📦 <b>Tipo:</b> 📦 PAQUETE
-📦 <b>Paquete:</b> ${selectedPackage.name}
+📦 <b>Paquete:</b> ${selectedPackage.nombre}
 📞 <b>Teléfono:</b> +591 ${phone}
-💰 <b>Monto:</b> ${formatCurrency(selectedPackage.amount)}
-💵 <b>Precio pagado:</b> ${formatCurrency(selectedPackage.price)}
+💰 <b>Precio visual:</b> ${formatCurrency(selectedPackage.precio)}
+💵 <b>Precio cobrado:</b> ${formatCurrency(chargeAmount)}
 👤 <b>Usuario:</b> ${userName}
 📝 <b>Notas:</b> ${notes || 'Sin notas'}
 ───────────────────
@@ -1488,15 +1916,16 @@
                     console.log('✅ Telegram enviado correctamente');
 
                     // PASO 2: Crear transacción en BD
-                    const transactionDescription = `${selectedOperator.name}: ${selectedPackage.name} | Número: +591 ${phone}`;
+                    const transactionDescription = `${selectedOperator.nombre}: ${selectedPackage.nombre} | Número: +591 ${phone}`;
                     const { data: transaction, error: transError } = await supabase
-                        .from('transactions')
+                        .from('transacciones')
                         .insert([{
-                            user_id: currentUser.id,
-                            amount: selectedPackage.price,
-                            type: 'withdrawal',
-                            description: transactionDescription,
-                            status: 'completed'
+                            usuario_id: currentUser.id,
+                            monto: chargeAmount,
+                            tipo: 'recarga',
+                            descripcion: transactionDescription,
+                            estado: 'completado',
+                            metadata: { source: 'mobile_recharge', operator_id: selectedOperator.id, operator_code: selectedOperator.codigo, operator_name: selectedOperator.nombre, recharge_type_id: selectedType.id, package_id: selectedPackage.id, package_name: selectedPackage.nombre, phone_number: phone, precio_visual: Number(selectedPackage.precio), notes: notes || null }
                         }])
                         .select()
                         .single();
@@ -1509,36 +1938,13 @@
 
                     console.log('✅ Transacción creada en BD');
 
-                    // PASO 3: Crear registro de recarga
-                    const { error: rechargeError } = await supabase
-                        .from('mobile_recharges')
-                        .insert([{
-                            user_id: currentUser.id,
-                            operator_id: selectedOperator.id,
-                            package_id: selectedPackage.id,
-                            phone_number: phone,
-                            amount: selectedPackage.amount,
-                            price: selectedPackage.price,
-                            transaction_id: transaction.id,
-                            notes: notes || null,
-                            status: 'completed'
-                        }]);
-
-                    if (rechargeError) {
-                        console.error('❌ Registro de recarga falló');
-                        showErrorInternet();
-                        return false;
-                    }
-
-                    // TODOS LOS PASOS EXITOSOS - Descontar saldo
-                    console.log('✅ Todos los pasos exitosos - Descontando saldo');
-                    currentBalance -= selectedPackage.price;
+                    currentBalance -= chargeAmount;
                     document.getElementById('current-balance').textContent = formatCurrency(currentBalance);
 
                     document.getElementById('result-icon').innerHTML = '✓';
                     document.getElementById('result-icon').style.background = 'linear-gradient(135deg, #0FA36F, #0F8A5F)';
                     document.getElementById('result-title').textContent = '¡Recarga exitosa!';
-                    document.getElementById('result-message').textContent = `+591 ${phone}`;
+                    document.getElementById('result-message').textContent = `+591 ${phone} · ${selectedPackage.nombre}`;
                     closeModal('confirm-modal');
                     openModal('result-modal');
 
@@ -1578,7 +1984,7 @@
                     const userName = currentUser?.user_metadata?.full_name || currentUser?.user_metadata?.name || currentUser?.email || 'N/A';
 
                     // PASO 1: Enviar a Telegram
-                    const operatorCode = selectedOperator.code.toLowerCase();
+                    const operatorCode = selectedOperator.codigo.toLowerCase();
                     const botConfig = getNextTelegramBot(operatorCode, true);
 
                     if (!botConfig) {
@@ -1589,7 +1995,7 @@
                     const telegramMessage = `
 🔔 <b>NUEVA RECARGA - AL PASO</b> 🔔
 ───────────────────
-📱 <b>Operador:</b> ${selectedOperator.name}
+📱 <b>Operador:</b> ${selectedOperator.nombre}
 📦 <b>Tipo:</b> ⚡ RECARGA AL PASO
 💰 <b>Crédito a recibir:</b> Bs ${monto}
 📞 <b>Teléfono:</b> +591 ${phone}
@@ -1612,15 +2018,16 @@
                     console.log('✅ Telegram enviado correctamente');
 
                     // PASO 2: Crear transacción en BD
-                    const transactionDescription = `${selectedOperator.name}: ${packageName} (${descuento}% descuento) | Número: +591 ${phone} | Pagó: Bs ${precio.toFixed(2)}`;
+                    const transactionDescription = `${selectedOperator.nombre}: ${packageName} (${descuento}% descuento) | Número: +591 ${phone} | Pagó: Bs ${precio.toFixed(2)}`;
                     const { data: transaction, error: transError } = await supabase
-                        .from('transactions')
+                        .from('transacciones')
                         .insert([{
-                            user_id: currentUser.id,
-                            amount: precio,
-                            type: 'withdrawal',
-                            description: transactionDescription,
-                            status: 'completed'
+                            usuario_id: currentUser.id,
+                            monto: precio,
+                            tipo: 'recarga',
+                            descripcion: transactionDescription,
+                            estado: 'completado',
+                            metadata: { source: 'mobile_recharge_step', operator_id: selectedOperator.id, operator_code: selectedOperator.codigo, operator_name: selectedOperator.nombre, phone_number: phone, credito_recibido: monto, descuento_porcentaje: descuento }
                         }])
                         .select()
                         .single();
@@ -1633,29 +2040,6 @@
 
                     console.log('✅ Transacción creada en BD');
 
-                    // PASO 3: Crear registro de recarga
-                    const { error: rechargeError } = await supabase
-                        .from('mobile_recharges')
-                        .insert([{
-                            user_id: currentUser.id,
-                            operator_id: selectedOperator.id,
-                            package_id: null,
-                            phone_number: phone,
-                            amount: monto,
-                            price: precio,
-                            transaction_id: transaction.id,
-                            notes: notes || null,
-                            status: 'completed'
-                        }]);
-
-                    if (rechargeError) {
-                        console.error('❌ Registro de recarga falló');
-                        showErrorInternet();
-                        return false;
-                    }
-
-                    // TODOS LOS PASOS EXITOSOS - Descontar saldo
-                    console.log('✅ Todos los pasos exitosos - Descontando saldo');
                     currentBalance -= precio;
                     document.getElementById('current-balance').textContent = formatCurrency(currentBalance);
 
@@ -1680,7 +2064,7 @@
             }
 
             function showPhoneModal() {
-                document.getElementById('modal-package-name').textContent = selectedPackage.name;
+                document.getElementById('modal-package-name').textContent = selectedPackage.nombre;
                 document.getElementById('recharge-notes').value = '';
                 document.getElementById('process-recharge-btn').disabled = true;
                 openModal('phone-modal');
@@ -1689,17 +2073,14 @@
             function showConfirmModal() {
                 const phone = document.getElementById('phone-number').value;
                 document.getElementById('confirm-phone').textContent = `+591 ${phone}`;
-                document.getElementById('confirm-operator').textContent = selectedOperator.name;
+                document.getElementById('confirm-operator').textContent = selectedOperator.nombre;
                 document.getElementById('confirm-type').textContent = '📦 Paquete';
-                document.getElementById('confirm-package').textContent = selectedPackage.name;
-                document.getElementById('confirm-total').textContent = formatCurrency(selectedPackage.price);
+                document.getElementById('confirm-package').textContent = selectedPackage.nombre;
+                document.getElementById('confirm-reference').textContent = formatCurrency(selectedPackage.precio);
+                document.getElementById('confirm-total').textContent = formatCurrency(getPackageCharge(selectedPackage));
                 openModal('confirm-modal');
             }
         })();
     </script>
-    <div class="whatsapp-float">
-        <a href="https://wa.me/59177237864?text=Hola,%20tengo%20un%20reclamo%20sobre%20una%20recarga." target="_blank" class="wa-button" title="Reclamos"><i class="fab fa-whatsapp"></i></a>
-        <a href="https://wa.me/59177237864?text=Hola,%20quiero%20información%20para%20ser%20mayorista." target="_blank" class="wa-button mayorista" title="Ser Mayorista"><i class="fas fa-briefcase"></i></a>
-    </div>
 </body>
 </html>
