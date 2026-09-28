@@ -6,18 +6,18 @@
     <title>GAMES - Recargas de Juegos</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <meta name="theme-color" content="#8b5cf6" id="theme-color">
+    <meta name="theme-color" content="#080808" id="theme-color">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap');
 
         :root {
-            --primary: #8b5cf6;
-            --primary-dark: #7c3aed;
-            --primary-light: #a78bfa;
-            --accent: #f59e0b;
-            --bg-dark: #1a1a2e;
-            --bg-card: #16213e;
+            --primary: #ef233c;
+            --primary-dark: #c1121f;
+            --primary-light: #ff4d5e;
+            --accent: #ef233c;
+            --bg-dark: #080808;
+            --bg-card: #151515;
             --text-light: #e2e8f0;
             --text-muted: #94a3b8;
         }
@@ -26,7 +26,7 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 50%, #16213e 100%);
+            background: #080808;
             color: var(--text-light);
             padding-bottom: env(safe-area-inset-bottom);
             max-width: 480px;
@@ -72,14 +72,14 @@
             font-weight: 900;
             color: #fff;
             letter-spacing: 0.15em;
-            background: linear-gradient(135deg, #8b5cf6, #f59e0b);
+            background: #ef233c;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
         .header-balance {
-            background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+            background: #e51c32;
             padding: 8px 12px;
             border-radius: 20px;
             display: flex;
@@ -100,7 +100,7 @@
             border: 2px solid rgba(139, 92, 246, 0.3);
             border-radius: 25px;
             font-size: 13px;
-            background: rgba(26, 26, 46, 0.8) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%238b5cf6'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'%3E%3C/path%3E%3C/svg%3E") no-repeat 12px center;
+            background: rgba(26, 26, 46, 0.8) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ef233c'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'%3E%3C/path%3E%3C/svg%3E") no-repeat 12px center;
             background-size: 18px;
             color: var(--text-light);
             transition: border-color 0.15s;
@@ -162,7 +162,7 @@
             width: 100%;
             aspect-ratio: 1/1;
             object-fit: cover;
-            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            background: #151515;
             display: block;
         }
         .badge-discount {
@@ -174,8 +174,8 @@
         }
         .badge-featured {
             position: absolute; top: 4px; right: 4px;
-            background: #f59e0b;
-            color: #78350f;
+            background: #e51c32;
+            color: #fff;
             font-size: 7px; font-weight: 800;
             padding: 2px 6px; border-radius: 6px;
         }
@@ -190,18 +190,18 @@
         .product-info { padding: 8px; }
         .product-name {
             font-weight: 700; font-size: 10px; color: #fff;
-            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+            display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical;
             overflow: hidden;
             margin-bottom: 2px;
         }
         .product-description {
             font-size: 8px; color: var(--text-muted); margin: 2px 0 4px;
-            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+            display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical;
             overflow: hidden;
         }
         .price-row { display: flex; align-items: baseline; gap: 4px; }
         .product-price { 
-            color: #f59e0b; 
+            color: #ef233c;
             font-weight: 800; 
             font-size: 12px;
         }
@@ -218,7 +218,7 @@
         }
         .modal.active { opacity: 1; visibility: visible; }
         .modal-content {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            background: #111;
             width: 100%; max-width: 480px;
             border-radius: 20px 20px 0 0;
             padding: 16px;
@@ -281,7 +281,7 @@
             width: 100%;
             height: 160px;
             object-fit: cover;
-            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            background: #151515;
             border-radius: 12px;
             margin-bottom: 12px;
             border: 2px solid rgba(139, 92, 246, 0.3);
@@ -325,6 +325,135 @@
         .dynamic-form-textarea {
             min-height: 60px;
             resize: vertical;
+        }
+
+        :root {
+            --primary: #ef233c;
+            --primary-dark: #c1121f;
+            --primary-light: #ff4d5e;
+            --accent: #ef233c;
+            --bg-dark: #080808;
+            --bg-card: #151515;
+            --text-light: #f5f5f5;
+            --text-muted: #a3a3a3;
+            color-scheme: dark;
+        }
+
+        body {
+            max-width: 760px;
+            background: #080808;
+            color: var(--text-light);
+        }
+
+        body::before {
+            background: radial-gradient(ellipse at 50% -20%, rgba(239, 35, 60, 0.14), transparent 58%);
+        }
+
+        .mobile-header {
+            background: rgba(8, 8, 8, 0.96);
+            border-bottom: 1px solid #292929;
+            padding: 14px 18px;
+        }
+
+        .mobile-header-title {
+            background: none;
+            color: #fff;
+            -webkit-text-fill-color: currentColor;
+        }
+
+        .header-balance, .category-btn.active, .btn-primary,
+        #confirm-purchase, #close-result-modal {
+            background: #e51c32 !important;
+            color: #fff !important;
+        }
+
+        .header-balance { border-radius: 10px; }
+        .search-container { padding: 18px 16px 12px; }
+        .search-input, .input-field, .dynamic-form-input,
+        .dynamic-form-select, .dynamic-form-textarea {
+            border: 1px solid #333;
+            border-radius: 10px;
+            background-color: #141414;
+        }
+
+        .search-input:focus, .input-field:focus, .dynamic-form-input:focus,
+        .dynamic-form-select:focus, .dynamic-form-textarea:focus {
+            border-color: var(--primary);
+            outline: 2px solid rgba(239, 35, 60, 0.18);
+        }
+
+        .category-filters { padding-bottom: 16px; }
+        .category-btn {
+            border: 1px solid #333;
+            border-radius: 9px;
+            background: #141414;
+            color: #c5c5c5;
+        }
+
+        .products-container { padding: 4px 14px 28px; }
+        .products-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+        .product-card {
+            border: 1px solid #292929;
+            border-radius: 10px;
+            background: #141414;
+            content-visibility: auto;
+            contain-intrinsic-size: 230px;
+            transition: border-color 0.15s ease, transform 0.15s ease;
+        }
+
+        .product-card:active { transform: scale(0.985); }
+        .product-image { background: #1b1b1b; }
+        .badge-discount, .stock-out { background: #c1121f; color: #fff; }
+        .badge-featured { background: #e51c32; color: #fff; }
+        .stock-available, .stock-low { background: #292929; color: #f5f5f5; }
+        .product-info { padding: 10px; }
+        .product-name { font-size: 12px; }
+        .product-description { font-size: 10px; }
+        .product-price, #package-detail-price, #total-price { color: #ff4d5e !important; }
+
+        .modal-content {
+            border: 1px solid #333;
+            background: #111;
+        }
+
+        #result-modal .modal-content {
+            padding: 24px 20px calc(22px + env(safe-area-inset-bottom));
+        }
+
+        .result-icon-badge {
+            width: 56px;
+            height: 56px;
+            margin: 0 auto 16px;
+            display: grid;
+            place-items: center;
+            border: 1px solid rgba(239, 35, 60, 0.35);
+            border-radius: 16px;
+            background: rgba(239, 35, 60, 0.12);
+            color: #ff4d5e;
+            font-size: 22px;
+        }
+
+        #result-message { max-width: 34ch; margin: 0 auto 16px; line-height: 1.55; }
+
+        .product-detail-image { border: 1px solid #333; background: #1b1b1b; }
+        #cancel-purchase { background: #252525; }
+        .loading-spinner { border-top-color: #ef233c; }
+
+        @media (min-width: 560px) {
+            .products-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            .product-card:hover { border-color: #e51c32; }
+        }
+
+        @media (min-width: 720px) {
+            .products-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                scroll-behavior: auto !important;
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
         }
     </style>
 </head>
@@ -381,13 +510,13 @@
                 </div>
                 <div class="text-right">
                     <div class="text-xs text-gray-500">Precio:</div>
-                    <div id="package-detail-price" class="text-lg font-bold text-yellow-500"></div>
+                    <div id="package-detail-price" class="text-lg font-bold"></div>
                 </div>
             </div>
 
             <div class="text-center mb-4">
                 <div class="text-xs text-gray-500">Total a pagar:</div>
-                <div id="total-price" class="text-xl font-bold text-yellow-500"></div>
+                <div id="total-price" class="text-xl font-bold"></div>
             </div>
 
             <!-- Formulario dinámico de requisitos -->
@@ -414,7 +543,7 @@
             <div class="mb-3"><p id="confirmation-text" class="text-gray-300 text-sm"></p></div>
             <div class="flex space-x-3">
                 <button id="cancel-purchase" class="flex-1 py-3 px-4 rounded-lg bg-gray-700 hover:bg-gray-600 text-white font-bold text-sm">Cancelar</button>
-                <button id="confirm-purchase" class="flex-1 py-3 px-4 rounded-lg text-white font-bold flex items-center justify-center text-sm bg-purple-600 hover:bg-purple-700">
+                <button id="confirm-purchase" class="flex-1 py-3 px-4 rounded-lg text-white font-bold flex items-center justify-center text-sm">
                     <span id="confirm-purchase-text">Confirmar</span>
                     <div id="confirm-purchase-spinner" class="loading-spinner ml-2 hidden"></div>
                 </button>
@@ -426,15 +555,15 @@
     <div id="result-modal" class="modal">
         <div class="modal-content">
             <div class="flex justify-center mb-3">
-                <div id="result-icon" class="w-16 h-16 rounded-full flex items-center justify-center text-2xl">
-                    <i class="fas fa-check-circle text-green-500"></i>
+                <div id="result-icon" class="result-icon-badge">
+                    <i class="fas fa-check-circle text-red-500"></i>
                 </div>
             </div>
             <div class="text-center mb-3">
                 <h3 id="result-title" class="text-lg font-bold text-white mb-2">¡Recarga exitosa!</h3>
                 <p id="result-message" class="text-gray-400 text-sm">Tu recarga se ha procesado correctamente.</p>
             </div>
-            <button id="close-result-modal" class="w-full py-3 px-4 rounded-lg text-white font-bold text-sm bg-purple-600 hover:bg-purple-700">Aceptar</button>
+            <button id="close-result-modal" class="w-full py-3 px-4 rounded-lg text-white font-bold text-sm">Aceptar</button>
         </div>
     </div>
 
@@ -461,11 +590,14 @@
         let formData = {};
 
         // ---------- Utilidades ----------
-        const formatCurrency = (amount) => 'Bs ' + parseFloat(amount).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        const formatCurrency = (amount) => 'Bs ' + (Number(amount) || 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        const escapeHTML = (value) => String(value ?? '').replace(/[&<>"']/g, (character) => ({
+            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        })[character]);
 
         const showToast = (message, type = 'success') => {
             const toast = document.createElement('div');
-            toast.className = `fixed top-4 right-4 px-4 py-2 rounded-md shadow-lg z-50 ${type === 'success' ? 'bg-green-600' : 'bg-red-600'} text-white font-medium text-sm`;
+            toast.className = 'fixed top-4 right-4 px-4 py-2 rounded-md shadow-lg z-50 bg-red-700 text-white font-medium text-sm';
             toast.textContent = message;
             document.body.appendChild(toast);
             setTimeout(() => toast.remove(), 3000);
@@ -511,13 +643,22 @@
             document.body.style.overflow = '';
         };
 
+        function showConnectionError() {
+            document.getElementById('result-icon').innerHTML = '<i class="fas fa-wifi" aria-hidden="true"></i>';
+            document.getElementById('result-title').textContent = 'Error de conexión';
+            document.getElementById('result-message').textContent = 'No se pudo completar la recarga. Verifica tu conexión a internet e inténtalo más tarde.';
+            closeModal('confirmation-modal');
+            closeModal('package-detail-modal');
+            openModal('result-modal');
+        }
+
         // ---------- Categorías y paquetes ----------
         async function loadCategories() {
             const { data, error } = await supabase
-                .from('game_categories')
+                .from('categorias_juegos')
                 .select('*')
-                .eq('is_active', true)
-                .order('name', { ascending: true });
+                .eq('activo', true)
+                .order('nombre', { ascending: true });
 
             if (error) {
                 console.error('Error loading categories:', error);
@@ -532,8 +673,8 @@
             const container = document.getElementById('category-filters');
             
             const categoriesHtml = categories.map(cat => `
-                <button class="category-btn" data-category="${cat.id}">
-                    <i class="fas ${cat.icon || 'fa-gamepad'} mr-1"></i> ${cat.name}
+                <button class="category-btn" data-category="${escapeHTML(cat.id)}">
+                    <i class="fas ${escapeHTML(cat.icono || 'fa-gamepad')} mr-1"></i> ${escapeHTML(cat.nombre)}
                 </button>
             `).join('');
 
@@ -549,28 +690,37 @@
                     container.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
                     currentCategory = btn.dataset.category;
-                    const searchTerm = document.getElementById('game-search').value;
-                    loadPackages(searchTerm, currentCategory);
+                    filterPackages(document.getElementById('game-search').value, currentCategory);
                 });
             });
         }
 
-        async function loadPackages(searchTerm = '', category = 'all') {
+        async function loadPackages() {
             try {
-                let query = supabase.from('game_packages').select('*').eq('is_active', true);
-                if (searchTerm) query = query.or(`name.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%`);
-                if (category !== 'all') query = query.eq('category_id', category);
-                query = query.order('is_featured', { ascending: false }).order('created_at', { ascending: false });
-
-                const { data, error } = await query;
+                const { data, error } = await supabase
+                    .from('paquetes_juegos')
+                    .select('*')
+                    .eq('activo', true)
+                    .order('destacado', { ascending: false })
+                    .order('creado_en', { ascending: false });
                 if (error) throw error;
 
                 packages = data || [];
-                renderPackages(packages);
+                filterPackages(document.getElementById('game-search').value, currentCategory);
             } catch (error) {
                 console.error('Error loading packages:', error);
                 showToast('Error al cargar paquetes', 'error');
             }
+        }
+
+        function filterPackages(searchTerm = '', category = 'all') {
+            const normalizedSearch = searchTerm.trim().toLocaleLowerCase('es');
+            const filteredPackages = packages.filter(pkg => {
+                const matchesCategory = category === 'all' || pkg.categoria_id === category;
+                const searchableText = `${pkg.nombre || ''} ${pkg.descripcion || ''}`.toLocaleLowerCase('es');
+                return matchesCategory && (!normalizedSearch || searchableText.includes(normalizedSearch));
+            });
+            renderPackages(filteredPackages);
         }
 
         function renderPackages(packagesToRender) {
@@ -585,25 +735,28 @@
             noPackages.classList.add('hidden');
 
             packagesList.innerHTML = packagesToRender.map(pkg => {
-                const stockClass = pkg.stock > 0 ? 'stock-available' : 'stock-out';
-                const stockText = pkg.stock > 0 ? 'Disponible' : 'Agotado';
-                const hasDiscount = pkg.discount_percentage > 0;
-                const finalPrice = hasDiscount ? pkg.price * (1 - pkg.discount_percentage / 100) : pkg.price;
+                const stock = Number(pkg.stock) || 0;
+                const stockClass = stock > 0 ? 'stock-available' : 'stock-out';
+                const stockText = stock > 0 ? 'Disponible' : 'Agotado';
+                const discount = Number(pkg.porcentaje_descuento) || 0;
+                const finalPrice = Number(pkg.precio) || 0;
+                const originalPrice = Number(pkg.precio_original) || (discount > 0 ? finalPrice / (1 - discount / 100) : 0);
+                const hasDiscount = discount > 0;
 
                 return `
-                    <div class="product-card" data-package-id="${pkg.id}">
+                    <div class="product-card" data-package-id="${escapeHTML(pkg.id)}">
                         <div class="product-image-wrap">
-                            <img src="${pkg.image_url || 'https://via.placeholder.com/400x400/1a1a2e/8b5cf6?text=GAMES'}" alt="${pkg.name}" class="product-image" loading="lazy">
-                            ${hasDiscount ? `<span class="badge-discount">-${pkg.discount_percentage}%</span>` : ''}
-                            ${pkg.is_featured ? `<span class="badge-featured">★ Destacado</span>` : ''}
+                            <img src="${escapeHTML(pkg.imagen_url || 'https://placehold.co/400x400/141414/ef233c?text=GAMES')}" alt="${escapeHTML(pkg.nombre)}" class="product-image" loading="lazy">
+                            ${hasDiscount ? `<span class="badge-discount">-${discount}%</span>` : ''}
+                            ${pkg.destacado ? `<span class="badge-featured">★ Destacado</span>` : ''}
                             <span class="stock-badge ${stockClass}">${stockText}</span>
                         </div>
                         <div class="product-info">
-                            <div class="product-name">${pkg.name}</div>
-                            <div class="product-description">${pkg.description || ''}</div>
+                            <div class="product-name">${escapeHTML(pkg.nombre)}</div>
+                            <div class="product-description">${escapeHTML(pkg.descripcion || '')}</div>
                             <div class="price-row">
                                 <span class="product-price">${formatCurrency(finalPrice)}</span>
-                                ${hasDiscount ? `<span class="product-price-old">${formatCurrency(pkg.price)}</span>` : ''}
+                                ${hasDiscount ? `<span class="product-price-old">${formatCurrency(originalPrice)}</span>` : ''}
                             </div>
                         </div>
                     </div>`;
@@ -612,7 +765,7 @@
             document.querySelectorAll('.product-card').forEach(card => {
                 card.addEventListener('click', () => {
                     const pkg = packages.find(p => p.id === card.dataset.packageId);
-                    if (pkg && pkg.stock > 0) openPackageDetail(pkg);
+                    if (pkg && Number(pkg.stock) > 0) openPackageDetail(pkg);
                     else if (pkg) showToast('Este paquete está agotado', 'error');
                 });
             });
@@ -624,24 +777,23 @@
 
             document.getElementById('delivery-notes').value = '';
 
-            const hasDiscount = pkg.discount_percentage > 0;
-            const finalPrice = hasDiscount ? pkg.price * (1 - pkg.discount_percentage / 100) : pkg.price;
+            const finalPrice = Number(pkg.precio) || 0;
             currentPackage._finalPrice = finalPrice;
 
-            document.getElementById('package-detail-title').textContent = pkg.name;
-            document.getElementById('package-detail-description').textContent = pkg.description || 'Sin descripción';
+            document.getElementById('package-detail-title').textContent = pkg.nombre;
+            document.getElementById('package-detail-description').textContent = pkg.descripcion || 'Sin descripción';
             document.getElementById('package-detail-price').textContent = formatCurrency(finalPrice);
             document.getElementById('total-price').textContent = formatCurrency(finalPrice);
 
             const stockElement = document.getElementById('package-detail-stock');
-            stockElement.textContent = pkg.stock > 0 ? 'Disponible' : 'Agotado';
-            stockElement.className = `text-base font-semibold ${pkg.stock > 0 ? 'text-green-500' : 'text-red-500'}`;
+            stockElement.textContent = Number(pkg.stock) > 0 ? 'Disponible' : 'Agotado';
+            stockElement.className = `text-base font-semibold ${Number(pkg.stock) > 0 ? 'text-red-400' : 'text-red-500'}`;
 
             const imgElement = document.getElementById('package-detail-image');
-            imgElement.src = pkg.image_url || 'https://via.placeholder.com/400x300/1a1a2e/8b5cf6?text=GAMES';
-            imgElement.alt = pkg.name;
+            imgElement.src = pkg.imagen_url || 'https://placehold.co/800x500/141414/ef233c?text=GAMES';
+            imgElement.alt = pkg.nombre;
 
-            await loadDynamicForm(pkg.category_id);
+            await loadDynamicForm(pkg.categoria_id);
             updateBuyButton();
             openModal('package-detail-modal');
         }
@@ -651,11 +803,11 @@
             formContainer.innerHTML = '<p class="text-xs text-gray-500">Cargando formulario...</p>';
 
             const { data, error } = await supabase
-                .from('game_category_requirements')
+                .from('requisitos_categorias_juegos')
                 .select('*')
-                .eq('category_id', categoryId)
-                .eq('is_active', true)
-                .order('sort_order', { ascending: true });
+                .eq('categoria_id', categoryId)
+                .eq('activo', true)
+                .order('orden', { ascending: true });
 
             if (error) {
                 console.error('Error loading requirements:', error);
@@ -672,53 +824,56 @@
             }
 
             formContainer.innerHTML = dynamicRequirements.map(req => {
-                const fieldId = `field-${req.field_name}`;
+                const fieldId = `field-${req.nombre_campo}`;
                 let inputHtml = '';
 
-                switch (req.field_type) {
+                switch (req.tipo_campo) {
                     case 'select':
-                        const options = req.field_options || [];
+                        const options = Array.isArray(req.opciones_campo) ? req.opciones_campo : [];
                         inputHtml = `
-                            <select id="${fieldId}" class="dynamic-form-select" ${req.is_required ? 'required' : ''}>
+                            <select id="${escapeHTML(fieldId)}" class="dynamic-form-select" ${req.es_requerido ? 'required' : ''}>
                                 <option value="">Selecciona una opción</option>
-                                ${options.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
+                                ${options.map(option => {
+                                    const value = typeof option === 'object' && option !== null ? option.value ?? option.id ?? option.label : option;
+                                    const label = typeof option === 'object' && option !== null ? option.label ?? option.nombre ?? value : option;
+                                    return `<option value="${escapeHTML(value)}">${escapeHTML(label)}</option>`;
+                                }).join('')}
                             </select>
                         `;
                         break;
                     case 'textarea':
                         inputHtml = `
-                            <textarea id="${fieldId}" class="dynamic-form-textarea" placeholder="${req.placeholder || ''}" ${req.is_required ? 'required' : ''}></textarea>
+                            <textarea id="${escapeHTML(fieldId)}" class="dynamic-form-textarea" placeholder="${escapeHTML(req.placeholder || '')}" ${req.es_requerido ? 'required' : ''}></textarea>
                         `;
                         break;
-                    case 'number':
+                    case 'number': case 'email': case 'tel': case 'url': case 'password':
                         inputHtml = `
-                            <input type="number" id="${fieldId}" class="dynamic-form-input" placeholder="${req.placeholder || ''}" ${req.is_required ? 'required' : ''}>
-                        `;
-                        break;
-                    case 'email':
-                        inputHtml = `
-                            <input type="email" id="${fieldId}" class="dynamic-form-input" placeholder="${req.placeholder || ''}" ${req.is_required ? 'required' : ''}>
+                            <input type="${req.tipo_campo}" id="${escapeHTML(fieldId)}" class="dynamic-form-input" placeholder="${escapeHTML(req.placeholder || '')}" ${req.es_requerido ? 'required' : ''}>
                         `;
                         break;
                     default:
                         inputHtml = `
-                            <input type="text" id="${fieldId}" class="dynamic-form-input" placeholder="${req.placeholder || ''}" ${req.is_required ? 'required' : ''}>
+                            <input type="text" id="${escapeHTML(fieldId)}" class="dynamic-form-input" placeholder="${escapeHTML(req.placeholder || '')}" ${req.es_requerido ? 'required' : ''}>
                         `;
                 }
 
                 return `
                     <div class="dynamic-form-field">
-                        <label class="dynamic-form-label">${req.field_label} ${req.is_required ? '*' : ''}</label>
+                        <label for="${escapeHTML(fieldId)}" class="dynamic-form-label">${escapeHTML(req.etiqueta_campo)} ${req.es_requerido ? '*' : ''}</label>
                         ${inputHtml}
-                        ${req.help_text ? `<p class="text-xs text-gray-500 mt-1">${req.help_text}</p>` : ''}
+                        ${req.texto_ayuda ? `<p class="text-xs text-gray-500 mt-1">${escapeHTML(req.texto_ayuda)}</p>` : ''}
                     </div>
                 `;
             }).join('');
 
             dynamicRequirements.forEach(req => {
-                const fieldId = `field-${req.field_name}`;
+                const fieldId = `field-${req.nombre_campo}`;
                 document.getElementById(fieldId)?.addEventListener('input', () => {
-                    formData[req.field_name] = document.getElementById(fieldId).value;
+                    formData[req.nombre_campo] = document.getElementById(fieldId).value;
+                    updateBuyButton();
+                });
+                document.getElementById(fieldId)?.addEventListener('change', () => {
+                    formData[req.nombre_campo] = document.getElementById(fieldId).value;
                     updateBuyButton();
                 });
             });
@@ -732,13 +887,13 @@
                 return;
             }
 
-            const hasStock = currentPackage.stock > 0;
+            const hasStock = Number(currentPackage.stock) > 0;
             const hasBalance = currentBalance >= currentPackage._finalPrice;
             
             let hasValidForm = true;
             dynamicRequirements.forEach(req => {
-                if (req.is_required) {
-                    const value = formData[req.field_name];
+                if (req.es_requerido) {
+                    const value = formData[req.nombre_campo];
                     if (!value || value.trim() === '') {
                         hasValidForm = false;
                     }
@@ -766,17 +921,17 @@
         };
 
         const calculateBalance = async (userId) => {
-            const { data, error } = await supabase.from('transactions').select('amount, type').eq('user_id', userId).eq('status', 'completed');
+            const { data, error } = await supabase.from('transacciones').select('monto, tipo, metadata').eq('usuario_id', userId).eq('estado', 'completado');
             if (error) { console.error('Error calculating balance:', error); return 0; }
             let balance = 0;
-            data.forEach(t => { balance += (t.type === 'deposit' ? t.amount : -t.amount); });
+            (data || []).forEach(t => { balance += (t.tipo === 'deposito' || (t.tipo === 'transferencia' && t.metadata?.type === 'receive') ? 1 : -1) * Number(t.monto); });
             return balance;
         };
 
         const createPurchaseTransaction = async (userId, amount, description, metadata) => {
             const { data, error } = await supabase
-                .from('transactions')
-                .insert([{ user_id: userId, amount, type: 'withdrawal', description, metadata, status: 'completed' }])
+                .from('transacciones')
+                .insert([{ usuario_id: userId, monto: amount, tipo: 'retiro', descripcion: description, metadata, estado: 'completado' }])
                 .select()
                 .single();
             if (error) { console.error('Error creating transaction:', error); return null; }
@@ -784,13 +939,13 @@
         };
 
         const decreasePackageStock = async (packageId) => {
-            const { data: packageData, error: packageError } = await supabase.from('game_packages').select('stock').eq('id', packageId).single();
+            const { data: packageData, error: packageError } = await supabase.from('paquetes_juegos').select('stock').eq('id', packageId).single();
             if (packageError) throw packageError;
             if (packageData.stock < 1) throw new Error('Stock insuficiente');
 
             const { error: updateError } = await supabase
-                .from('game_packages')
-                .update({ stock: packageData.stock - 1, updated_at: new Date().toISOString() })
+                .from('paquetes_juegos')
+                .update({ stock: packageData.stock - 1, actualizado_en: new Date().toISOString() })
                 .eq('id', packageId);
             if (updateError) throw updateError;
         };
@@ -802,7 +957,7 @@
         // Función para obtener el nombre de la categoría
         async function getCategoryName(categoryId) {
             const category = categories.find(cat => cat.id === categoryId);
-            return category ? category.name : 'Sin categoría';
+            return category ? category.nombre : 'Sin categoría';
         }
 
         // ---------- Inicialización ----------
@@ -822,7 +977,7 @@
 
             // Search
             document.getElementById('game-search').addEventListener('input', (e) => {
-                loadPackages(e.target.value, currentCategory);
+                filterPackages(e.target.value, currentCategory);
             });
 
             // Modals
@@ -847,19 +1002,19 @@
                 formDetailsHtml = `
                     <div class="mb-2">
                         <strong>Datos del formulario:</strong><br>
-                        ${Object.entries(formData).map(([key, value]) => `${key}: ${value}`).join('<br>')}
+                        ${Object.entries(formData).map(([key, value]) => `${escapeHTML(key)}: ${escapeHTML(value)}`).join('<br>')}
                     </div>
                 `;
             }
 
             document.getElementById('confirmation-text').innerHTML = `
                 <div class="bg-gray-800 p-3 rounded-lg mb-3 text-sm">
-                    <strong>${currentPackage.name}</strong><br>
-                    Total: <strong style="color: #f59e0b">${formatCurrency(totalPrice)}</strong>
+                    <strong>${escapeHTML(currentPackage.nombre)}</strong><br>
+                    Total: <strong style="color: #ef233c">${formatCurrency(totalPrice)}</strong>
                 </div>
                 <div class="text-xs">
                     ${formDetailsHtml}
-                    ${notes ? `<div><strong>Notas:</strong><br>${notes}</div>` : ''}
+                    ${notes ? `<div><strong>Notas:</strong><br>${escapeHTML(notes)}</div>` : ''}
                 </div>
             `;
             openModal('confirmation-modal');
@@ -877,12 +1032,12 @@
             try {
                 const totalPrice = currentPackage._finalPrice;
                 const notes = document.getElementById('delivery-notes').value.trim();
-                const categoryName = await getCategoryName(currentPackage.category_id);
+                const categoryName = await getCategoryName(currentPackage.categoria_id);
 
                 let metadata = {
                     package_id: currentPackage.id,
-                    package_name: currentPackage.name,
-                    category_id: currentPackage.category_id,
+                    package_name: currentPackage.nombre,
+                    category_id: currentPackage.categoria_id,
                     category_name: categoryName,
                     unit_price: currentPackage._finalPrice,
                     total_price: totalPrice,
@@ -903,7 +1058,7 @@
 
 📦 <b>INFORMACIÓN DEL PAQUETE</b>
 ━━━━━━━━━━━━━━━━━━━━━━━━━━
-🏷️ <b>Nombre:</b> ${currentPackage.name}
+🏷️ <b>Nombre:</b> ${currentPackage.nombre}
 📂 <b>Categoría:</b> ${categoryName}
 💰 <b>Total:</b> Bs ${totalPrice.toFixed(2)}
 ${formTelegramBlock}
@@ -919,10 +1074,7 @@ ${notes ? `\n📝 <b>NOTAS ADICIONALES</b>\n━━━━━━━━━━━━
 
                 const telegramSent = await sendTelegramMessage(telegramMessage);
                 if (!telegramSent) {
-                    showToast('Error al enviar a Telegram', 'error');
-                    confirmBtn.disabled = false;
-                    confirmText.textContent = 'Confirmar';
-                    confirmSpinner.classList.add('hidden');
+                    showConnectionError();
                     return;
                 }
 
@@ -931,7 +1083,7 @@ ${notes ? `\n📝 <b>NOTAS ADICIONALES</b>\n━━━━━━━━━━━━
                 const transaction = await createPurchaseTransaction(
                     currentUser.id,
                     totalPrice,
-                    `Recarga: ${currentPackage.name}`,
+                    `Recarga: ${currentPackage.nombre}`,
                     metadata
                 );
                 if (!transaction) throw new Error('Error al registrar la recarga');
@@ -941,7 +1093,7 @@ ${notes ? `\n📝 <b>NOTAS ADICIONALES</b>\n━━━━━━━━━━━━
 
                 document.getElementById('result-title').textContent = '¡Recarga exitosa!';
                 document.getElementById('result-message').textContent = `Se ha descontado ${formatCurrency(totalPrice)} de tu saldo.`;
-                document.getElementById('result-icon').innerHTML = '<i class="fas fa-check-circle text-green-500"></i>';
+                document.getElementById('result-icon').innerHTML = '<i class="fas fa-check-circle text-red-500"></i>';
 
                 closeModal('confirmation-modal');
                 closeModal('package-detail-modal');
@@ -949,11 +1101,7 @@ ${notes ? `\n📝 <b>NOTAS ADICIONALES</b>\n━━━━━━━━━━━━
 
             } catch (error) {
                 console.error('Error en la recarga:', error);
-                document.getElementById('result-title').textContent = 'Error';
-                document.getElementById('result-message').textContent = error.message || 'Error al procesar recarga';
-                document.getElementById('result-icon').innerHTML = '<i class="fas fa-times-circle text-red-500"></i>';
-                closeModal('confirmation-modal');
-                openModal('result-modal');
+                showConnectionError();
             } finally {
                 confirmBtn.disabled = false;
                 confirmText.textContent = 'Confirmar';
