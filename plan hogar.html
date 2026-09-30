@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>plan hogar</title>
+    <title>Plan Hogar - Revendedor</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -12,62 +12,48 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         :root { --primary: #2563eb; --primary-dark: #1d4ed8; }
         * { -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; padding-bottom: env(safe-area-inset-bottom); max-width: 480px; margin: 0 auto; }
 
-        .mobile-header { position: sticky; top: 0; z-index: 40; background: white; padding: 12px 16px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between; }
+        /* ✅ 120 FPS - Optimizaciones globales */
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            padding-bottom: env(safe-area-inset-bottom);
+            max-width: 480px;
+            margin: 0 auto;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+            overflow-x: hidden;
+        }
+        /* Aceleración por GPU en todos los elementos animados */
+        .product-card, .category-chip, .tab-btn, .history-item, .modal, .modal-content,
+        .btn-contract, .btn-primary, .upload-area, .step-dot, .reward-box {
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+
+        .mobile-header { position: sticky; top: 0; z-index: 40; background: white; padding: 12px 16px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between; will-change: transform; }
         .mobile-header-title { font-size: 17px; font-weight: 800; color: #1e293b; letter-spacing: -0.02em; }
         .mobile-header-title span { color: var(--primary); }
 
-        .balance-bubble { width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; border: 2px solid #93c5fd; box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2); }
-        .balance-bubble:active { transform: scale(0.95); }
-        .balance-bubble i { font-size: 10px; color: #2563eb; margin-bottom: 1px; }
-        .balance-bubble .bubble-amount { font-size: 9px; font-weight: 800; color: #1e40af; line-height: 1; }
-        .balance-bubble .bubble-label { font-size: 6.5px; font-weight: 700; color: #3b82f6; text-transform: uppercase; letter-spacing: 0.5px; }
-
         .tabs-container { display: flex; border-bottom: 1px solid #e2e8f0; background: white; padding: 0 12px; }
-        .tab-btn { flex: 1; padding: 10px 8px; background: none; border: none; font-size: 13px; font-weight: 600; color: #94a3b8; cursor: pointer; transition: all 0.2s; border-bottom: 2px solid transparent; }
+        .tab-btn { flex: 1; padding: 10px 8px; background: none; border: none; font-size: 13px; font-weight: 600; color: #94a3b8; cursor: pointer; transition: color 0.15s ease, border-color 0.15s ease; border-bottom: 2px solid transparent; will-change: color, border-color; }
         .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
 
-        /* CATEGORÍAS */
-        .categories-scroll {
-            display: flex;
-            gap: 8px;
-            padding: 10px 12px;
-            overflow-x: auto;
-            scrollbar-width: none;
-            background: white;
-            border-bottom: 1px solid #f1f5f9;
-        }
+        .categories-scroll { display: flex; gap: 8px; padding: 10px 12px; overflow-x: auto; scrollbar-width: none; background: white; border-bottom: 1px solid #f1f5f9; -webkit-overflow-scrolling: touch; }
         .categories-scroll::-webkit-scrollbar { display: none; }
-        .category-chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 7px 14px;
-            border-radius: 20px;
-            background: #f1f5f9;
-            color: #64748b;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: all 0.15s;
-            border: 1px solid transparent;
-            flex-shrink: 0;
-        }
+        .category-chip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 20px; background: #f1f5f9; color: #64748b; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: transform 0.12s ease, background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease; border: 1px solid transparent; flex-shrink: 0; will-change: transform, background; }
         .category-chip i { font-size: 11px; }
         .category-chip:active { transform: scale(0.96); }
-        .category-chip.active {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            border-color: var(--primary);
-            box-shadow: 0 4px 10px rgba(37,99,235,0.25);
-        }
+        .category-chip.active { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border-color: var(--primary); box-shadow: 0 4px 10px rgba(37,99,235,0.25); }
         .category-chip.active i { color: white; }
 
         .products-container { padding: 4px 12px 24px; }
         .products-grid { display: grid; grid-template-columns: repeat(1, 1fr); gap: 10px; }
-        .product-card { border-radius: 12px; overflow: hidden; background: white; border: 1px solid #eef1f5; box-shadow: 0 1px 4px rgba(0,0,0,0.04); position: relative; cursor: pointer; transition: transform .2s, box-shadow .2s; padding: 16px; }
+        .product-card { border-radius: 12px; overflow: hidden; background: white; border: 1px solid #eef1f5; box-shadow: 0 1px 4px rgba(0,0,0,0.04); position: relative; cursor: pointer; transition: transform 0.15s cubic-bezier(0.4,0,0.2,1), box-shadow 0.2s ease; padding: 16px; will-change: transform; }
         .product-card:active { transform: scale(0.98); }
         .plan-image { width: 100%; height: 140px; object-fit: cover; border-radius: 10px; margin-bottom: 12px; background: #f1f5f9; }
         .badge-discount { position: absolute; top: 10px; right: 10px; background: #ef4444; color: #fff; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 6px; z-index: 2; }
@@ -82,79 +68,96 @@
         .features-list { list-style: none; padding: 0; margin: 0 0 12px 0; }
         .features-list li { font-size: 11px; color: #64748b; padding: 2px 0; display: flex; align-items: center; gap: 6px; }
         .features-list li i { color: #10b981; font-size: 10px; }
-        .btn-contract { width: 100%; padding: 10px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border: none; border-radius: 10px; font-weight: 700; font-size: 13px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px; }
-        .btn-contract:active { transform: scale(0.98); }
+        .btn-contract { width: 100%; padding: 10px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border: none; border-radius: 10px; font-weight: 700; font-size: 13px; cursor: pointer; transition: transform 0.12s cubic-bezier(0.4,0,0.2,1), box-shadow 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 6px; will-change: transform; }
+        .btn-contract:active { transform: scale(0.97); }
 
-        .history-item { background: white; border-radius: 10px; padding: 12px; margin-bottom: 8px; border: 1px solid #e2e8f0; }
+        .history-item { background: white; border-radius: 10px; padding: 12px; margin-bottom: 8px; border: 1px solid #e2e8f0; animation: fadeInUp 0.25s cubic-bezier(0.4,0,0.2,1); }
         .history-item-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 6px; }
         .history-product-name { font-weight: 600; font-size: 13px; color: #1e293b; }
         .history-detail { font-size: 11px; color: #64748b; margin-bottom: 3px; }
-        .history-amount { font-weight: 700; color: #dc2626; font-size: 13px; }
 
         .status-badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 12px; font-size: 10px; font-weight: 700; }
         .status-pending { background: #fef3c7; color: #92400e; }
         .status-confirmed { background: #d1fae5; color: #065f46; }
         .status-cancelled { background: #fee2e2; color: #991b1b; }
         .status-no-coverage { background: #e5e7eb; color: #374151; }
+        .status-rewarded { background: #dbeafe; color: #1e40af; }
 
-        .modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.55); z-index: 100; display: flex; align-items: flex-end; justify-content: center; opacity: 0; visibility: hidden; transition: all 0.25s; }
+        .reward-box { background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 1px solid #6ee7b7; border-radius: 10px; padding: 10px; margin-top: 8px; }
+        .reward-box .reward-title { font-size: 11px; font-weight: 700; color: #065f46; display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+        .reward-box .reward-list { list-style: none; padding: 0; margin: 6px 0 0 0; }
+        .reward-box .reward-list li { font-size: 11px; color: #064e3b; padding: 3px 0; display: flex; justify-content: space-between; border-bottom: 1px dashed #a7f3d0; }
+        .reward-box .reward-list li:last-child { border-bottom: none; }
+        .reward-total-line { display: flex; justify-content: space-between; margin-top: 8px; padding-top: 8px; border-top: 1px solid #6ee7b7; font-size: 12px; font-weight: 800; color: #065f46; }
+
+        .modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.55); z-index: 100; display: flex; align-items: flex-end; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 0.22s cubic-bezier(0.4,0,0.2,1), visibility 0.22s; will-change: opacity; }
         .modal.active { opacity: 1; visibility: visible; }
-        .modal-content { background: white; width: 100%; max-width: 480px; border-radius: 20px 20px 0 0; padding: 18px; transform: translateY(24px); transition: all 0.3s; max-height: 92vh; overflow-y: auto; position: relative; }
+        .modal-content { background: white; width: 100%; max-width: 480px; border-radius: 20px 20px 0 0; padding: 18px; transform: translateY(24px); transition: transform 0.28s cubic-bezier(0.34, 1.2, 0.64, 1); max-height: 92vh; overflow-y: auto; position: relative; will-change: transform; -webkit-overflow-scrolling: touch; }
         .modal.active .modal-content { transform: translateY(0); }
         @media (min-width: 560px) { .modal { align-items: center; } .modal-content { border-radius: 18px; } }
 
-        .btn-primary { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; padding: 12px 16px; border-radius: 12px; font-weight: 700; transition: all 0.3s; display: flex; align-items: center; justify-content: center; border: none; font-size: 14.5px; width: 100%; cursor: pointer; }
-        .btn-primary:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(37,99,235,0.25); }
+        .btn-primary { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; padding: 12px 16px; border-radius: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; border: none; font-size: 14.5px; width: 100%; cursor: pointer; transition: transform 0.12s cubic-bezier(0.4,0,0.2,1), box-shadow 0.2s ease, opacity 0.2s ease; will-change: transform; }
+        .btn-primary:active:not(:disabled) { transform: scale(0.98); }
         .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        .loading-spinner { width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: white; animation: spin 1s ease-in-out infinite; }
+        .loading-spinner { width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: white; animation: spin 0.8s linear infinite; will-change: transform; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        .input-field { width: 100%; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 14px; margin-bottom: 12px; background: white; font-family: 'Inter', sans-serif; }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .input-field { width: 100%; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 14px; margin-bottom: 12px; background: white; font-family: 'Inter', sans-serif; transition: border-color 0.15s ease, box-shadow 0.15s ease; }
         .input-field:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
 
-        .upload-area { border: 2px dashed #cbd5e1; border-radius: 10px; padding: 20px; text-align: center; cursor: pointer; background: #f8fafc; margin-bottom: 12px; transition: all 0.2s; }
+        .upload-area { border: 2px dashed #cbd5e1; border-radius: 10px; padding: 20px; text-align: center; cursor: pointer; background: #f8fafc; margin-bottom: 12px; transition: border-color 0.15s ease, background 0.15s ease; }
         .upload-area:active { border-color: var(--primary); background: #eff6ff; }
         .upload-area.has-photo { border-color: #10b981; background: #f0fdf4; }
         .upload-area img { max-width: 100%; max-height: 180px; border-radius: 8px; margin-top: 8px; }
 
         .step-indicator { display: flex; align-items: center; gap: 6px; margin-bottom: 16px; }
-        .step-dot { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; background: #e2e8f0; color: #94a3b8; flex-shrink: 0; }
-        .step-dot.active { background: var(--primary); color: white; }
+        .step-dot { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; background: #e2e8f0; color: #94a3b8; flex-shrink: 0; transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease; }
+        .step-dot.active { background: var(--primary); color: white; transform: scale(1.05); }
         .step-dot.done { background: #10b981; color: white; }
-        .step-line { flex: 1; height: 2px; background: #e2e8f0; }
+        .step-line { flex: 1; height: 2px; background: #e2e8f0; transition: background 0.3s ease; }
         .step-line.done { background: var(--primary); }
 
         .no-history { text-align: center; padding: 30px; color: #94a3b8; }
-
         #location-map { width: 100%; height: 260px; border-radius: 12px; overflow: hidden; margin-bottom: 10px; border: 1px solid #e2e8f0; z-index: 1; }
+
+        /* Optimización para pantallas táctiles */
+        @media (hover: none) {
+            .product-card:hover { box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+            .btn-contract:hover { transform: none; }
+        }
+
+        /* Reduce motion si el usuario lo prefiere */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
     </style>
 </head>
 <body>
 
     <div class="mobile-header">
-        <div class="mobile-header-title">PLAN <span>HOGAR</span></div>
-        <div class="balance-bubble" id="balance-bubble" onclick="toggleBalanceDetail()">
-            <i class="fas fa-wallet"></i>
-            <div class="bubble-amount" id="bubble-amount">Carg...</div>
-            <div class="bubble-label">Saldo</div>
-        </div>
+        <div class="mobile-header-title">PLAN <span>HOGAR</span> <small style="font-size:10px; color:#64748b; font-weight:600;">· Revendedor</small></div>
+        <i class="fas fa-user-tie" style="color: var(--primary); font-size: 18px;"></i>
     </div>
 
     <div class="tabs-container">
         <button class="tab-btn active" data-tab="plans"><i class="fas fa-box mr-1"></i> Paquetes</button>
         <button class="tab-btn" data-tab="history"><i class="fas fa-history mr-1"></i> Historial</button>
+        <button class="tab-btn" data-tab="rewards"><i class="fas fa-gift mr-1"></i> Recompensas</button>
     </div>
 
     <div id="plans-section">
-        <!-- CATEGORÍAS -->
         <div class="categories-scroll" id="categories-scroll">
-            <div class="category-chip active" data-category="all">
-                <i class="fas fa-th-large"></i> Todas
-            </div>
-            <!-- se llenan dinámicamente -->
+            <div class="category-chip active" data-category="all"><i class="fas fa-th-large"></i> Todas</div>
         </div>
-
         <div class="products-container">
             <div class="products-grid" id="plans-list"></div>
         </div>
@@ -173,24 +176,21 @@
         </div>
     </div>
 
-    <div id="balance-modal" class="modal">
-        <div class="modal-content text-center">
-            <div class="flex justify-between items-center mb-3">
-                <h3 class="text-lg font-semibold text-gray-800">Tu Saldo</h3>
-                <button id="close-balance-modal" class="text-gray-400 hover:text-gray-500"><i class="fas fa-times"></i></button>
-            </div>
-            <div style="width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, #2563eb, #1d4ed8); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
-                <i class="fas fa-wallet text-2xl text-white"></i>
-            </div>
-            <p class="text-sm text-gray-500 mb-1">Saldo disponible</p>
-            <p id="detail-balance" class="text-3xl font-extrabold mb-4" style="color: var(--primary);"></p>
-            <button id="close-balance-btn" class="btn-primary"><i class="fas fa-check mr-2"></i> Cerrar</button>
+    <div id="rewards-section" class="hidden px-3 py-3">
+        <div style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); border-radius: 14px; padding: 16px; color: white; margin-bottom: 12px;">
+            <p style="font-size: 11px; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Total Recompensas</p>
+            <p id="total-rewards" style="font-size: 28px; font-weight: 800; margin-top: 4px;">Bs 0.00</p>
+            <p id="rewards-count" style="font-size: 11px; opacity: 0.85; margin-top: 4px;">0 solicitudes confirmadas</p>
+        </div>
+        <div id="rewards-list"></div>
+        <div id="no-rewards" class="no-history hidden">
+            <i class="fas fa-gift text-3xl mb-3"></i>
+            <p class="font-medium text-sm">Sin recompensas aún</p>
+            <p class="text-xs mt-1">Cuando se confirme una solicitud aparecerán aquí</p>
         </div>
     </div>
 
-    <div id="contract-modal" class="modal">
-        <div class="modal-content" id="contract-modal-content"></div>
-    </div>
+    <div id="contract-modal" class="modal"><div class="modal-content" id="contract-modal-content"></div></div>
 
     <div id="confirmation-modal" class="modal">
         <div class="modal-content">
@@ -200,8 +200,8 @@
             </div>
             <div class="mb-3"><p id="confirmation-text" class="text-gray-600 text-sm"></p></div>
             <div class="flex space-x-2">
-                <button id="cancel-request" class="flex-1 py-2 px-3 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-800 transition-colors font-medium text-sm">Cancelar</button>
-                <button id="confirm-request" class="flex-1 py-2 px-3 rounded-lg text-white transition-colors font-medium flex items-center justify-center text-sm" style="background:var(--primary)">
+                <button id="cancel-request" class="flex-1 py-2 px-3 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium text-sm">Cancelar</button>
+                <button id="confirm-request" class="flex-1 py-2 px-3 rounded-lg text-white font-medium flex items-center justify-center text-sm" style="background:var(--primary)">
                     <span id="confirm-request-text">Enviar solicitud</span>
                     <div id="confirm-request-spinner" class="loading-spinner ml-2 hidden"></div>
                 </button>
@@ -218,9 +218,9 @@
             </div>
             <div class="text-center mb-4">
                 <h3 id="result-title" class="text-lg font-semibold text-gray-800 mb-1">¡Solicitud enviada!</h3>
-                <p id="result-message" class="text-gray-600 text-sm">Tu solicitud se ha enviado correctamente.</p>
+                <p id="result-message" class="text-gray-600 text-sm"></p>
             </div>
-            <button id="close-result-modal" class="w-full py-2 px-3 rounded-lg text-white transition-colors font-medium text-sm" style="background:var(--primary)">Aceptar</button>
+            <button id="close-result-modal" class="w-full py-2 px-3 rounded-lg text-white font-medium text-sm" style="background:var(--primary)">Aceptar</button>
         </div>
     </div>
 
@@ -231,19 +231,17 @@
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFsZWFkYWRpc2F6b2Nqb3ZpYmVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk0NDE5NjMsImV4cCI6MjA3NTAxNzk2M30.z82tP0C-UiiNuzP_jqrQf4LBusFqrDi1WYbdnuTh47E';
         window.supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-        const TELEGRAM_BOT_TOKEN = '8794091027:AAG36PsetBQY3oqGQzGw39rZhbOaBAaE41A';
-        const TELEGRAM_CHAT_ID = '-1004402512559';
+        // ✅ CREDENCIALES TELEGRAM
+        const TELEGRAM_BOT_TOKEN = '8762023946:AAHj3eFemFUnckXHCifjUo33ExCzt4Niv-Y';
+        const TELEGRAM_CHAT_ID = '-1003563558473';
 
         let currentUser = null;
         let userProfile = null;
-        let currentBalance = 0;
         let currentPlan = null;
         let currentStep = 1;
         let currentTab = 'plans';
         let contractMap = null;
         let contractMapMarker = null;
-
-        // Categorías
         let allCategories = [];
         let allPlans = [];
         let selectedCategory = 'all';
@@ -255,7 +253,7 @@
             location: null
         };
 
-        const formatCurrency = (amount) => 'Bs ' + parseFloat(amount).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        const formatCurrency = (amount) => 'Bs ' + parseFloat(amount || 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
         const showToast = (msg, type = 'success') => {
             const t = document.createElement('div');
@@ -274,38 +272,15 @@
             document.querySelector(`.tab-btn[data-tab="${tab}"]`).classList.add('active');
             document.getElementById('plans-section').classList.toggle('hidden', tab !== 'plans');
             document.getElementById('history-section').classList.toggle('hidden', tab !== 'history');
+            document.getElementById('rewards-section').classList.toggle('hidden', tab !== 'rewards');
             if (tab === 'history') loadHistory();
+            if (tab === 'rewards') loadRewards();
         }
 
-        async function calculateBalance() {
-            const { data, error } = await supabase.from('transactions').select('amount, type').eq('user_id', currentUser.id).eq('status', 'completed');
-            if (error) { console.error(error); return 0; }
-            let bal = 0;
-            (data || []).forEach(t => { bal += (t.type === 'deposit' ? t.amount : -t.amount); });
-            return bal;
-        }
-
-        function updateBalanceDisplay() {
-            const f = formatCurrency(currentBalance);
-            const parts = f.split('.');
-            document.getElementById('bubble-amount').innerHTML = parts[0] + '.<small style="font-size:7px">' + (parts[1] || '00') + '</small>';
-            document.getElementById('detail-balance').textContent = f;
-        }
-
-        function toggleBalanceDetail() { updateBalanceDisplay(); openModal('balance-modal'); }
-
-        // ---------- CARGAR CATEGORÍAS + PLANES ----------
         async function loadPlans() {
-            // 1) Categorías activas
-            const { data: cats, error: catErr } = await supabase
-                .from('package_categories')
-                .select('*')
-                .eq('is_active', true)
-                .order('display_order', { ascending: true });
-            if (catErr) { console.error(catErr); }
+            const { data: cats } = await supabase.from('package_categories').select('*').eq('is_active', true).order('display_order', { ascending: true });
             allCategories = cats || [];
 
-            // 2) Planes activos
             const { data, error } = await supabase.from('internet_packages').select('*').eq('is_active', true)
                 .order('is_featured', { ascending: false }).order('price', { ascending: true });
             if (error) { showToast('Error al cargar planes', 'error'); return; }
@@ -319,10 +294,7 @@
             const wrap = document.getElementById('categories-scroll');
             const html = [`<div class="category-chip active" data-category="all"><i class="fas fa-th-large"></i> Todas</div>`];
             allCategories.forEach(cat => {
-                html.push(`
-                    <div class="category-chip" data-category="${cat.id}">
-                        <i class="fas ${cat.icon || 'fa-tag'}"></i> ${cat.name}
-                    </div>`);
+                html.push(`<div class="category-chip" data-category="${cat.id}"><i class="fas ${cat.icon || 'fa-tag'}"></i> ${cat.name}</div>`);
             });
             wrap.innerHTML = html.join('');
 
@@ -337,9 +309,7 @@
         }
 
         function applyCategoryFilter() {
-            const filtered = selectedCategory === 'all'
-                ? allPlans
-                : allPlans.filter(p => p.category_id === selectedCategory);
+            const filtered = selectedCategory === 'all' ? allPlans : allPlans.filter(p => p.category_id === selectedCategory);
             renderPlans(filtered);
         }
 
@@ -353,11 +323,12 @@
                 const finalPrice = plan.discount_percentage > 0 ? plan.price * (1 - plan.discount_percentage / 100) : plan.price;
                 const totalFirstPayment = finalPrice + (plan.installation_fee || 0);
                 const hasDiscount = plan.discount_percentage > 0;
+                const features = Array.isArray(plan.features) ? plan.features : [];
                 return `
                     <div class="product-card" data-plan-id="${plan.id}">
                         ${plan.is_featured && !hasDiscount ? '<span class="badge-featured">★ Destacado</span>' : ''}
                         ${hasDiscount ? `<span class="badge-discount">-${plan.discount_percentage}%</span>` : ''}
-                        ${plan.image_url ? `<img src="${plan.image_url}" class="plan-image" alt="${plan.name}">` : ''}
+                        ${plan.image_url ? `<img src="${plan.image_url}" class="plan-image" alt="${plan.name}" loading="lazy">` : ''}
                         <div class="plan-speed-display">${plan.speed_mbps} <span>Mbps</span></div>
                         <div class="product-name">${plan.name}</div>
                         <div class="product-description">${plan.description || ''}</div>
@@ -368,9 +339,9 @@
                         </div>
                         ${plan.installation_fee > 0 ? `<p style="font-size: 12px; color: #d97706; font-weight: 600; margin-bottom: 8px;">+ Instalación: ${formatCurrency(plan.installation_fee)}</p>` : `<p style="font-size: 12px; color: #059669; font-weight: 600; margin-bottom: 8px;">¡Instalación GRATIS!</p>`}
                         <p style="font-size: 11px; color: #64748b; margin-bottom: 8px;">Primer pago: <strong>${formatCurrency(totalFirstPayment)}</strong></p>
-                        ${plan.features && plan.features.length ? `<ul class="features-list">${plan.features.map(f => `<li><i class="fas fa-check-circle"></i> ${f}</li>`).join('')}</ul>` : ''}
+                        ${features.length ? `<ul class="features-list">${features.map(f => `<li><i class="fas fa-check-circle"></i> ${f}</li>`).join('')}</ul>` : ''}
                         <button class="btn-contract" onclick="event.stopPropagation(); startContract('${plan.id}')">
-                            <i class="fas fa-wifi"></i> Contratar Plan
+                            <i class="fas fa-wifi"></i> Solicitar Plan
                         </button>
                     </div>`;
             }).join('');
@@ -383,11 +354,6 @@
         async function startContract(planId) {
             const { data: plan } = await supabase.from('internet_packages').select('*').eq('id', planId).single();
             if (!plan) { showToast('Plan no encontrado', 'error'); return; }
-
-            currentBalance = await calculateBalance();
-            const finalPrice = plan.discount_percentage > 0 ? plan.price * (1 - plan.discount_percentage / 100) : plan.price;
-            const totalFirstPayment = finalPrice + (plan.installation_fee || 0);
-            if (currentBalance < totalFirstPayment) { showToast(`Saldo insuficiente. Necesitas ${formatCurrency(totalFirstPayment)}`, 'error'); return; }
 
             currentPlan = plan;
             currentStep = 1;
@@ -424,7 +390,6 @@
             else contentHTML = renderDataStep();
 
             container.innerHTML = stepsHTML + contentHTML;
-
             if (currentStep === 1) setTimeout(() => initLocationMap(), 120);
             setTimeout(() => updateNextButton(), 100);
         }
@@ -433,7 +398,7 @@
             return `
                 <div class="text-center py-2">
                     <h4 class="font-bold text-base mb-1"><i class="fas fa-map-marker-alt" style="color: var(--primary);"></i> Ubicación de instalación</h4>
-                    <p class="text-gray-600 text-xs mb-3">Confirma tu ubicación actual o toca el mapa / arrastra el marcador para elegir otra</p>
+                    <p class="text-gray-600 text-xs mb-3">Confirma tu ubicación actual o toca el mapa / arrastra el marcador</p>
                     <div id="location-map"></div>
                     <p id="location-status" style="font-size: 12px; color: #64748b; margin-bottom: 14px; min-height: 16px;">Obteniendo tu ubicación actual...</p>
                     <div class="flex gap-3 mt-2">
@@ -451,7 +416,7 @@
             if (contractMap) { contractMap.remove(); contractMap = null; contractMapMarker = null; }
 
             const defaultCenter = [-16.5, -68.15];
-            contractMap = L.map('location-map').setView(defaultCenter, 13);
+            contractMap = L.map('location-map', { zoomControl: false }).setView(defaultCenter, 13);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap', maxZoom: 19 }).addTo(contractMap);
 
             const statusEl = document.getElementById('location-status');
@@ -496,7 +461,7 @@
                     <div class="mb-3">
                         <label style="font-size: 12px; font-weight: 600; color: #475569; display: block; margin-bottom: 4px;">ANVERSO del Carnet</label>
                         <div class="upload-area ${formData.idFrontPhoto ? 'has-photo' : ''}" onclick="document.getElementById('id-front-input').click()">
-                            ${formData.idFrontPhoto ? `<img src="${formData.idFrontPhoto}">` : '<i class="fas fa-id-card text-2xl text-gray-400"></i><p style="font-size: 12px; font-weight: 600; color: #64748b;">Tocar para subir foto</p><p style="font-size: 10px; color: #94a3b8;">Galería o cámara</p>'}
+                            ${formData.idFrontPhoto ? `<img src="${formData.idFrontPhoto}">` : '<i class="fas fa-id-card text-2xl text-gray-400"></i><p style="font-size: 12px; font-weight: 600; color: #64748b;">Tocar para subir foto</p>'}
                         </div>
                         <input type="file" id="id-front-input" accept="image/*" style="display: none;" onchange="handlePhoto(event, 'idFrontPhoto')">
                     </div>
@@ -504,7 +469,7 @@
                     <div class="mb-3">
                         <label style="font-size: 12px; font-weight: 600; color: #475569; display: block; margin-bottom: 4px;">REVERSO del Carnet</label>
                         <div class="upload-area ${formData.idBackPhoto ? 'has-photo' : ''}" onclick="document.getElementById('id-back-input').click()">
-                            ${formData.idBackPhoto ? `<img src="${formData.idBackPhoto}">` : '<i class="fas fa-id-card text-2xl text-gray-400"></i><p style="font-size: 12px; font-weight: 600; color: #64748b;">Tocar para subir foto</p><p style="font-size: 10px; color: #94a3b8;">Galería o cámara</p>'}
+                            ${formData.idBackPhoto ? `<img src="${formData.idBackPhoto}">` : '<i class="fas fa-id-card text-2xl text-gray-400"></i><p style="font-size: 12px; font-weight: 600; color: #64748b;">Tocar para subir foto</p>'}
                         </div>
                         <input type="file" id="id-back-input" accept="image/*" style="display: none;" onchange="handlePhoto(event, 'idBackPhoto')">
                     </div>
@@ -512,7 +477,7 @@
                     <div class="mb-3">
                         <label style="font-size: 12px; font-weight: 600; color: #475569; display: block; margin-bottom: 4px;">Selfie SOSTENIENDO tu Carnet</label>
                         <div class="upload-area ${formData.selfiePhoto ? 'has-photo' : ''}" onclick="document.getElementById('selfie-input').click()">
-                            ${formData.selfiePhoto ? `<img src="${formData.selfiePhoto}">` : '<i class="fas fa-camera text-2xl text-gray-400"></i><p style="font-size: 12px; font-weight: 600; color: #64748b;">Tocar para selfie</p><p style="font-size: 10px; color: #94a3b8;">Galería o cámara frontal</p>'}
+                            ${formData.selfiePhoto ? `<img src="${formData.selfiePhoto}">` : '<i class="fas fa-camera text-2xl text-gray-400"></i><p style="font-size: 12px; font-weight: 600; color: #64748b;">Tocar para selfie</p>'}
                         </div>
                         <input type="file" id="selfie-input" accept="image/*" style="display: none;" onchange="handlePhoto(event, 'selfiePhoto')">
                     </div>
@@ -581,6 +546,10 @@
                         ${formData.location ? `<p style="font-size: 11px; color: #64748b; margin-top: 4px;">📍 Ubicación: ${formData.location.lat.toFixed(6)}, ${formData.location.lng.toFixed(6)}</p>` : ''}
                     </div>
 
+                    <p style="font-size: 11px; color: #2563eb; background: #eff6ff; padding: 8px; border-radius: 8px; margin-bottom: 12px;">
+                        <i class="fas fa-info-circle mr-1"></i> Esto es una solicitud, no se te descuenta nada. El admin la revisará.
+                    </p>
+
                     <div class="flex gap-3 mt-5">
                         <button onclick="currentStep=2; renderContractStep();" style="flex: 1; padding: 10px; background: #f1f5f9; border: none; border-radius: 10px; font-weight: 600; font-size: 13px; cursor: pointer;"><i class="fas fa-arrow-left mr-1"></i> Atrás</button>
                         <button onclick="confirmSubmit()" style="flex: 1; padding: 10px; background: #059669; color: white; border: none; border-radius: 10px; font-weight: 600; font-size: 13px; cursor: pointer;" id="step3-next" disabled><i class="fas fa-paper-plane mr-1"></i> Enviar Solicitud</button>
@@ -632,18 +601,20 @@
                     <p><strong>Ciudad:</strong> ${formData.city}${formData.zone ? ' - ' + formData.zone : ''}</p>
                     <p><strong>Ubicación (mapa):</strong> ${locationText}</p>
                 </div>
-                <p style="font-size: 11px; color: #dc2626; margin-top: 8px;"><i class="fas fa-info-circle mr-1"></i>Se descontará ${formatCurrency(totalFirstPayment)} de tu saldo.</p>
+                <p style="font-size: 11px; color: #2563eb; margin-top: 8px;"><i class="fas fa-info-circle mr-1"></i>No se descuenta nada. Solo se envía la solicitud.</p>
             `;
 
             closeModal('contract-modal');
             openModal('confirmation-modal');
         }
 
+        // ✅ FUNCIÓN CORREGIDA - resetea el botón ANTES de mostrar el modal de resultado
         async function submitRequest() {
             const confirmBtn = document.getElementById('confirm-request');
             const confirmText = document.getElementById('confirm-request-text');
             const confirmSpinner = document.getElementById('confirm-request-spinner');
 
+            // Bloquear botón mientras se procesa
             confirmBtn.disabled = true;
             confirmText.textContent = 'Enviando...';
             confirmSpinner.classList.remove('hidden');
@@ -652,18 +623,11 @@
                 const finalPrice = currentPlan.discount_percentage > 0 ? currentPlan.price * (1 - currentPlan.discount_percentage / 100) : currentPlan.price;
                 const totalFirstPayment = finalPrice + (currentPlan.installation_fee || 0);
 
-                currentBalance = await calculateBalance();
-                if (currentBalance < totalFirstPayment) throw new Error('Saldo insuficiente');
-
+                // 1) Insertar SOLO lo esencial en Supabase
                 const { data: request, error } = await supabase
                     .from('request_status')
                     .insert([{
                         user_id: currentUser.id,
-                        package_id: currentPlan.id,
-                        package_name: currentPlan.name,
-                        monthly_price: finalPrice,
-                        installation_fee: currentPlan.installation_fee || 0,
-                        total_first_payment: totalFirstPayment,
                         status: 'pending',
                         status_message: 'Solicitud en revisión'
                     }])
@@ -671,29 +635,20 @@
                     .single();
                 if (error) throw error;
 
-                const { error: txError } = await supabase
-                    .from('transactions')
-                    .insert([{
-                        user_id: currentUser.id,
-                        amount: totalFirstPayment,
-                        type: 'withdrawal',
-                        description: `Contratación ${currentPlan.name} - Solicitud #${request.id.slice(0, 8)}`,
-                        status: 'completed',
-                        metadata: { request_id: request.id, package_id: currentPlan.id, package_name: currentPlan.name, speed_mbps: currentPlan.speed_mbps }
-                    }]);
-                if (txError) throw txError;
+                const shortId = request.id.slice(0, 8);
 
-                const mapLink = (formData.location)
+                // 2) Enviar TODO a Telegram
+                const mapLink = formData.location
                     ? `https://www.openstreetmap.org/?mlat=${formData.location.lat}&mlon=${formData.location.lng}#map=17/${formData.location.lat}/${formData.location.lng}`
                     : 'No especificada';
 
-                const telegramMessage = `
-🔔 <b>NUEVA SOLICITUD DE INTERNET</b>
+                const fullText = `🔔 <b>NUEVA SOLICITUD #${shortId}</b>
 
 📦 <b>PLAN:</b> ${currentPlan.name}
 ⚡ Velocidad: ${currentPlan.speed_mbps} Mbps
-💰 Precio: ${formatCurrency(finalPrice)}/mes
+💰 Precio mensual: ${formatCurrency(finalPrice)}
 💵 Primer pago: ${formatCurrency(totalFirstPayment)}
+📅 ${new Date().toLocaleString('es-BO')}
 
 👤 <b>CLIENTE</b>
 Nombre: ${formData.fullName}
@@ -708,23 +663,29 @@ Beneficiario: ${formData.phoneBeneficiary}
 📍 <b>DIRECCIÓN</b>
 ${formData.installationAddress}
 ${formData.city}${formData.zone ? ', ' + formData.zone : ''}
-🗺️ Coordenadas: ${formData.location ? formData.location.lat.toFixed(6) + ', ' + formData.location.lng.toFixed(6) : 'No'}
+🗺️ ${formData.location ? formData.location.lat.toFixed(6) + ', ' + formData.location.lng.toFixed(6) : 'No'}
 <a href="${mapLink}">Ver en el mapa</a>
 
-📄 <b>ESTADO:</b> Pendiente de revisión
-🆔 ID: ${request.id.slice(0, 8)}
-⏰ ${new Date().toLocaleString('es-BO')}`;
+📄 <b>ESTADO:</b> ⏳ Pendiente
+🆔 ID: #${shortId}`;
 
-                await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                const tgResp = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: telegramMessage, parse_mode: 'HTML' })
+                    body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: fullText, parse_mode: 'HTML' })
                 });
+                const tgData = await tgResp.json();
+                if (!tgData.ok) throw new Error('Telegram: ' + (tgData.description || 'Error desconocido'));
 
-                if (formData.idFrontPhoto) await sendPhotoToTelegram(formData.idFrontPhoto, `📸 ANVERSO CI - ${formData.fullName}`);
-                if (formData.idBackPhoto) await sendPhotoToTelegram(formData.idBackPhoto, `📸 REVERSO CI - ${formData.fullName}`);
-                if (formData.selfiePhoto) await sendPhotoToTelegram(formData.selfiePhoto, `🤳 SELFIE CON CI - ${formData.fullName}`);
+                // 3) Fotos en un solo álbum
+                const photos = [];
+                if (formData.idFrontPhoto) photos.push({ base64: formData.idFrontPhoto, caption: `📸 ANVERSO - ${formData.fullName} - #${shortId}` });
+                if (formData.idBackPhoto) photos.push({ base64: formData.idBackPhoto, caption: `📸 REVERSO - ${formData.fullName} - #${shortId}` });
+                if (formData.selfiePhoto) photos.push({ base64: formData.selfiePhoto, caption: `🤳 SELFIE - ${formData.fullName} - #${shortId}` });
 
+                if (photos.length > 0) await sendPhotosAsAlbum(photos);
+
+                // 4) Ubicación GPS
                 if (formData.location) {
                     await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendLocation`, {
                         method: 'POST',
@@ -733,12 +694,15 @@ ${formData.city}${formData.zone ? ', ' + formData.zone : ''}
                     });
                 }
 
-                currentBalance -= totalFirstPayment;
-                updateBalanceDisplay();
+                // ✅ RESETEAR BOTÓN PRIMERO (para que no se quede "Enviando...")
+                confirmBtn.disabled = false;
+                confirmText.textContent = 'Enviar solicitud';
+                confirmSpinner.classList.add('hidden');
 
+                // ✅ MOSTRAR RESULTADO EXITOSO
                 document.getElementById('result-title').textContent = '¡Solicitud enviada!';
                 document.getElementById('result-message').innerHTML = `
-                    Tu solicitud <strong>#${request.id.slice(0, 8)}</strong> ha sido enviada.<br>
+                    Tu solicitud <strong>#${shortId}</strong> ha sido enviada.<br>
                     <span class="status-badge status-pending" style="display: inline-flex; margin-top: 8px;">⏳ Pendiente</span><br>
                     <small style="color: #64748b; display: block; margin-top: 8px;">Te contactaremos al ${formData.phonePrimary}</small>`;
                 document.getElementById('result-icon').innerHTML = '<i class="fas fa-check-circle text-green-500"></i>';
@@ -748,15 +712,39 @@ ${formData.city}${formData.zone ? ', ' + formData.zone : ''}
 
             } catch (error) {
                 console.error(error);
+
+                // ✅ RESETEAR BOTÓN EN CASO DE ERROR
+                confirmBtn.disabled = false;
+                confirmText.textContent = 'Enviar solicitud';
+                confirmSpinner.classList.add('hidden');
+
                 document.getElementById('result-title').textContent = 'Error';
                 document.getElementById('result-message').textContent = error.message || 'No se pudo enviar la solicitud.';
                 document.getElementById('result-icon').innerHTML = '<i class="fas fa-times-circle text-red-500"></i>';
                 closeModal('confirmation-modal');
                 openModal('result-modal');
-            } finally {
-                confirmBtn.disabled = false;
-                confirmText.textContent = 'Enviar solicitud';
-                confirmSpinner.classList.add('hidden');
+            }
+        }
+
+        async function sendPhotosAsAlbum(photos) {
+            try {
+                const media = [];
+                const fd = new FormData();
+                fd.append('chat_id', TELEGRAM_CHAT_ID);
+
+                for (let i = 0; i < photos.length; i++) {
+                    const res = await fetch(photos[i].base64);
+                    const blob = await res.blob();
+                    const fieldName = `photo${i}`;
+                    fd.append(fieldName, blob, `doc_${i}.jpg`);
+                    media.push({ type: 'photo', media: `attach://${fieldName}`, caption: photos[i].caption });
+                }
+                fd.append('media', JSON.stringify(media));
+
+                await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMediaGroup`, { method: 'POST', body: fd });
+            } catch (err) {
+                console.error('Error álbum:', err);
+                for (const p of photos) await sendPhotoToTelegram(p.base64, p.caption);
             }
         }
 
@@ -769,9 +757,10 @@ ${formData.city}${formData.zone ? ', ' + formData.zone : ''}
                 fd.append('photo', blob, 'documento.jpg');
                 fd.append('caption', caption);
                 await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, { method: 'POST', body: fd });
-            } catch (err) { console.error('Error photo:', err); }
+            } catch (err) { console.error('Error foto:', err); }
         }
 
+        // ---------- HISTORIAL ----------
         async function loadHistory() {
             const { data: requests, error } = await supabase.from('request_status').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false });
             const list = document.getElementById('history-list');
@@ -784,7 +773,8 @@ ${formData.city}${formData.zone ? ', ' + formData.zone : ''}
                 'pending': { class: 'status-pending', label: '⏳ Pendiente' },
                 'confirmed': { class: 'status-confirmed', label: '✅ Confirmado' },
                 'cancelled': { class: 'status-cancelled', label: '❌ Cancelado' },
-                'no_coverage': { class: 'status-no-coverage', label: '📡 Sin Cobertura' }
+                'no_coverage': { class: 'status-no-coverage', label: '📡 Sin Cobertura' },
+                'rewarded': { class: 'status-rewarded', label: '🎁 Recompensado' }
             };
 
             list.innerHTML = requests.map(req => {
@@ -792,14 +782,75 @@ ${formData.city}${formData.zone ? ', ' + formData.zone : ''}
                 return `
                     <div class="history-item">
                         <div class="history-item-header">
-                            <div class="history-product-name">${req.package_name || 'Paquete'}</div>
+                            <div class="history-product-name">Solicitud #${req.id.slice(0, 8)}</div>
                             <span class="status-badge ${st.class}">${st.label}</span>
                         </div>
-                        <div class="history-detail">${formatCurrency(req.monthly_price)}/mes</div>
                         <div class="history-detail">${new Date(req.created_at).toLocaleDateString('es-BO', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
-                        <div class="history-amount">Primer pago: ${formatCurrency(req.total_first_payment || 0)}</div>
                         ${req.status_message ? `<div style="background: #f1f5f9; padding: 8px; border-radius: 6px; margin-top: 6px; font-size: 11px; color: #475569;"><i class="fas fa-info-circle mr-1"></i>${req.status_message}</div>` : ''}
-                        <div style="font-size: 10px; color: #94a3b8; margin-top: 4px;">ID: #${req.id.slice(0, 8)}</div>
+                    </div>`;
+            }).join('');
+        }
+
+        // ---------- RECOMPENSAS ----------
+        async function loadRewards() {
+            const { data: requests } = await supabase
+                .from('request_status')
+                .select('*')
+                .eq('user_id', currentUser.id)
+                .in('status', ['confirmed', 'rewarded'])
+                .order('created_at', { ascending: false });
+
+            const { data: txs } = await supabase
+                .from('transacciones')
+                .select('*')
+                .eq('usuario_id', currentUser.id)
+                .eq('tipo', 'deposito')
+                .eq('estado', 'completado')
+                .order('creado_en', { ascending: false });
+
+            const list = document.getElementById('rewards-list');
+            const noRewards = document.getElementById('no-rewards');
+            const totalEl = document.getElementById('total-rewards');
+            const countEl = document.getElementById('rewards-count');
+
+            const total = (txs || []).reduce((s, t) => s + Number(t.monto || 0), 0);
+            totalEl.textContent = formatCurrency(total);
+            countEl.textContent = `${(requests || []).length} solicitudes confirmadas`;
+
+            if (!requests || !requests.length) {
+                list.innerHTML = '';
+                noRewards.classList.remove('hidden');
+                return;
+            }
+            noRewards.classList.add('hidden');
+
+            list.innerHTML = requests.map(req => {
+                const rewardsOfReq = (txs || []).filter(t => t.request_id === req.id);
+                const subTotal = rewardsOfReq.reduce((s, r) => s + Number(r.monto || 0), 0);
+                const isRewarded = req.status === 'rewarded';
+                const badge = isRewarded
+                    ? '<span class="status-badge status-rewarded">🎁 Recompensado</span>'
+                    : '<span class="status-badge status-confirmed">✅ Recompensas disponibles</span>';
+
+                return `
+                    <div class="history-item">
+                        <div class="history-item-header">
+                            <div class="history-product-name">Solicitud #${req.id.slice(0, 8)}</div>
+                            ${badge}
+                        </div>
+                        <div class="history-detail">${new Date(req.created_at).toLocaleDateString('es-BO', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
+                        ${rewardsOfReq.length ? `
+                            <div class="reward-box">
+                                <div class="reward-title"><i class="fas fa-gift"></i> Recompensas recibidas (${rewardsOfReq.length})</div>
+                                <ul class="reward-list">
+                                    ${rewardsOfReq.map(r => `<li><span>${new Date(r.creado_en).toLocaleDateString('es-BO', {day:'numeric',month:'short'})} ${new Date(r.creado_en).toLocaleTimeString('es-BO',{hour:'2-digit',minute:'2-digit'})}</span><strong>+ ${formatCurrency(r.monto)}</strong></li>`).join('')}
+                                </ul>
+                                <div class="reward-total-line">
+                                    <span>Subtotal:</span>
+                                    <span>${formatCurrency(subTotal)}</span>
+                                </div>
+                            </div>
+                        ` : (isRewarded ? `<div class="reward-box"><div class="reward-title"><i class="fas fa-check-circle"></i> Recompensado</div></div>` : `<div class="reward-box"><div class="reward-title"><i class="fas fa-hourglass-half"></i> Esperando recompensas del admin</div></div>`)}
                     </div>`;
             }).join('');
         }
@@ -812,14 +863,9 @@ ${formData.city}${formData.zone ? ', ' + formData.zone : ''}
             const { data: profile } = await supabase.from('user_profiles').select('*').eq('id', currentUser.id).single();
             userProfile = profile || null;
 
-            currentBalance = await calculateBalance();
-            updateBalanceDisplay();
-
             await loadPlans();
 
             document.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click', () => switchTab(btn.dataset.tab)));
-            document.getElementById('close-balance-modal').addEventListener('click', () => closeModal('balance-modal'));
-            document.getElementById('close-balance-btn').addEventListener('click', () => closeModal('balance-modal'));
             document.getElementById('close-confirmation-modal').addEventListener('click', () => closeModal('confirmation-modal'));
             document.getElementById('cancel-request').addEventListener('click', () => closeModal('confirmation-modal'));
             document.getElementById('confirm-request').addEventListener('click', submitRequest);
