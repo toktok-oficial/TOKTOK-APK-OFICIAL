@@ -195,6 +195,15 @@
             box-shadow: 0 0 0 3px rgba(46, 92, 246, 0.25);
         }
 
+        .input-pin {
+            letter-spacing: 12px;
+            text-align: center;
+            padding-left: 46px;
+            padding-right: 46px;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
         .password-toggle {
             position: absolute;
             right: 18px;
@@ -604,7 +613,7 @@
     <div id="password-recovery-modal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="text-2xl font-bold">Recuperación de Contraseña</h2>
+                <h2 class="text-2xl font-bold">Recuperación de PIN</h2>
                 <div class="close-modal" id="close-recovery-modal">
                     <i class="fas fa-times"></i>
                 </div>
@@ -630,7 +639,7 @@
                     </div>
                 </div>
 
-                <!-- Paso 1: Descripción de la situación -->
+                <!-- Paso 1 -->
                 <div id="step-1" class="step-content active">
                     <h3 class="text-lg font-semibold mb-4">Describe tu situación</h3>
                     <p class="text-gray-600 mb-6 text-sm">Por favor, describe detalladamente lo que ocurrió con tu cuenta y por qué necesitas recuperar el acceso.</p>
@@ -638,7 +647,7 @@
                     <div class="form-group">
                         <label class="form-label">Descripción de tu situación *</label>
                         <textarea id="situation-description" class="form-control" rows="4"
-                                  placeholder="Ej: Olvidé mi contraseña y no tengo acceso al correo de recuperación..."
+                                  placeholder="Ej: Olvidé mi PIN y no tengo acceso al correo de recuperación..."
                                   required></textarea>
                     </div>
 
@@ -655,7 +664,7 @@
                     </div>
                 </div>
 
-                <!-- Paso 2: Términos y condiciones -->
+                <!-- Paso 2 -->
                 <div id="step-2" class="step-content">
                     <h3 class="text-lg font-semibold mb-4">Términos del proceso de recuperación</h3>
 
@@ -666,7 +675,7 @@
                                 <li>Se evaluará tu situación mediante el mensaje proporcionado.</li>
                                 <li>Una vez aprobada la solicitud, se procederá a eliminar la cuenta existente asociada al correo electrónico proporcionado.</li>
                                 <li>Podrás crear una nueva cuenta utilizando el mismo correo electrónico.</li>
-                                <li>Durante la creación de la nueva cuenta, establecerás una nueva contraseña.</li>
+                                <li>Durante la creación de la nueva cuenta, establecerás un nuevo PIN de 4 dígitos.</li>
                                 <li>Una vez creada la nueva cuenta, se transferirá automáticamente el saldo registrado anteriormente en la aplicación.</li>
                                 <li>Todo el proceso será monitoreado y asistido por nuestro equipo de soporte vía WhatsApp.</li>
                                 <li>El tiempo de respuesta puede variar entre 2 a 24 horas hábiles.</li>
@@ -694,7 +703,7 @@
                     </div>
                 </div>
 
-                <!-- Paso 3: Información de contacto -->
+                <!-- Paso 3 -->
                 <div id="step-3" class="step-content">
                     <h3 class="text-lg font-semibold mb-4">Información de contacto</h3>
                     <p class="text-gray-600 mb-6 text-sm">Proporciona tus datos para que nuestro equipo pueda contactarte vía WhatsApp.</p>
@@ -744,7 +753,7 @@
                     </div>
                 </div>
 
-                <!-- Paso 4: Confirmación -->
+                <!-- Paso 4 -->
                 <div id="step-4" class="step-content">
                     <div class="confirmation-message">
                         <div class="confirmation-icon">
@@ -789,21 +798,27 @@
 
             <!-- Contenido de pestañas -->
             <div id="auth-container">
-                <!-- Formulario de Login -->
+                <!-- Formulario de Login (Teléfono + PIN) -->
                 <div id="login-form-container">
                     <form id="login-form">
                         <div class="field">
-                            <i class="field-icon fas fa-user"></i>
-                            <input type="email" id="login-email" required
+                            <i class="field-icon fas fa-phone"></i>
+                            <input type="tel" id="login-phone" required
+                                   pattern="[0-9]{8}"
+                                   inputmode="numeric"
+                                   maxlength="8"
                                    class="input-field"
-                                   placeholder="Usuario">
+                                   placeholder="Número de celular">
                         </div>
                         <div class="field">
-                            <i class="field-icon fas fa-lock"></i>
-                            <input type="password" id="login-password" required
-                                   class="input-field"
-                                   placeholder="Contraseña">
-                            <i class="password-toggle fas fa-eye" id="toggle-login-password"></i>
+                            <i class="field-icon fas fa-key"></i>
+                            <input type="password" id="login-pin" required
+                                   inputmode="numeric"
+                                   maxlength="4"
+                                   pattern="[0-9]{4}"
+                                   class="input-field input-pin"
+                                   placeholder="••••">
+                            <i class="password-toggle fas fa-eye" id="toggle-login-pin"></i>
                         </div>
                         <div class="remember-row">
                             <input type="checkbox" id="remember-session" class="mr-2" style="accent-color:var(--accent-blue);">
@@ -811,7 +826,7 @@
                         </div>
                         <button type="submit" class="btn-primary">Ingresar</button>
                         <button type="button" id="forgot-password-btn" class="forgot-password-btn">
-                            ¿Olvidaste tu contraseña?
+                            ¿Olvidaste tu PIN?
                         </button>
                     </form>
 
@@ -820,7 +835,7 @@
                     </div>
                 </div>
 
-                <!-- Formulario de Registro -->
+                <!-- Formulario de Registro (PIN de 4 dígitos) -->
                 <div id="signup-form-container" class="hidden">
                     <form id="signup-form">
                         <div class="field">
@@ -838,6 +853,8 @@
                         <div class="field">
                             <i class="field-icon fas fa-phone"></i>
                             <input type="tel" id="signup-phone" pattern="[0-9]{8}" required
+                                   inputmode="numeric"
+                                   maxlength="8"
                                    class="input-field"
                                    placeholder="Número de celular">
                         </div>
@@ -848,13 +865,18 @@
                                    placeholder="Código de creador (opcional)">
                         </div>
                         <div class="field">
-                            <i class="field-icon fas fa-lock"></i>
-                            <input type="password" id="signup-password" required
-                                   class="input-field"
-                                   placeholder="Crear contraseña">
-                            <i class="password-toggle fas fa-eye" id="toggle-signup-password"></i>
+                            <i class="field-icon fas fa-key"></i>
+                            <input type="password" id="signup-pin" required
+                                   inputmode="numeric"
+                                   maxlength="4"
+                                   pattern="[0-9]{4}"
+                                   class="input-field input-pin"
+                                   placeholder="••••">
+                            <i class="password-toggle fas fa-eye" id="toggle-signup-pin"></i>
                         </div>
-                        <p class="helper-text" style="color: rgba(255,255,255,0.6); margin: -10px 0 18px;">Mínimo 8 caracteres con números y letras</p>
+                        <p class="helper-text" style="color: rgba(255,255,255,0.6); margin: -10px 0 18px;">
+                            Tu PIN debe tener exactamente 4 dígitos numéricos
+                        </p>
                         <button type="submit" class="btn-primary">Crear Cuenta</button>
                     </form>
 
@@ -874,32 +896,57 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // Configuración de Supabase
-        const supabaseUrl = 'https://aleadadisazocjovibeh.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFsZWFkYWRpc2F6b2Nqb3ZpYmVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk0NDE5NjMsImV4cCI6MjA3NTAxNzk2M30.z82tP0C-UiiNuzP_jqrQf4LBusFqrDi1WYbdnuTh47E';
+        // ============================================================
+        // CONFIGURACIÓN SUPABASE
+        // ============================================================
+        const supabaseUrl = 'https://fmhjuisoibynjgfrqvgj.supabase.co';
+        const supabaseKey = 'sb_publishable_M7yramCIWbPyxnH3xwJNEQ_p77ModBz';
         window.supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-        // Verificar sesión al cargar la página
+        // Secreto interno para derivar la contraseña interna de Supabase Auth.
+        // El usuario NUNCA ve esta contraseña. Solo se usa para que Supabase Auth
+        // tenga una credencial válida mientras el usuario real usa su PIN de 4 dígitos.
+        const INTERNAL_SECRET = 'TokTok_Internal_v1_#2025$Secure_Key';
+
+        // ============================================================
+        // UTILIDADES
+        // ============================================================
+        async function sha256Hex(text) {
+            const enc = new TextEncoder().encode(text);
+            const buf = await crypto.subtle.digest('SHA-256', enc);
+            return Array.from(new Uint8Array(buf))
+                .map(b => b.toString(16).padStart(2, '0'))
+                .join('');
+        }
+
+        // Deriva la contraseña interna que se usará en Supabase Auth
+        // a partir del email + teléfono + PIN. Así, si el PIN cambia,
+        // la contraseña interna también, y solo el usuario puede iniciar sesión.
+        async function deriveInternalPassword(email, phone, pin) {
+            const raw = `${email.toLowerCase().trim()}|${phone.trim()}|${pin}|${INTERNAL_SECRET}`;
+            const hash = await sha256Hex(raw);
+            // Supabase requiere mínimo 6 caracteres; esto da 64 hex.
+            return `Tk_${hash}`;
+        }
+
+        // ============================================================
+        // VERIFICAR SESIÓN AL CARGAR
+        // ============================================================
         async function checkSession() {
             try {
                 const { data: { session }, error } = await window.supabase.auth.getSession();
-
                 if (error) {
                     console.error('Error al verificar sesión:', error);
                     return false;
                 }
-
                 if (session) {
                     console.log('Sesión activa encontrada, redirigiendo al dashboard...');
                     showToast('info', 'Sesión activa', 'Redirigiendo al dashboard...');
-
                     setTimeout(() => {
                         window.location.href = 'dashboard.html';
                     }, 1000);
-
                     return true;
                 }
-
                 return false;
             } catch (error) {
                 console.error('Error inesperado al verificar sesión:', error);
@@ -907,7 +954,9 @@
             }
         }
 
-        // Función para validar si el nombre ya existe
+        // ============================================================
+        // VALIDACIONES DE UNICIDAD
+        // ============================================================
         async function checkNameExists(name) {
             try {
                 const { data, error } = await window.supabase
@@ -915,7 +964,6 @@
                     .select('full_name')
                     .eq('full_name', name)
                     .maybeSingle();
-
                 if (error) throw error;
                 return !!data;
             } catch (error) {
@@ -924,7 +972,6 @@
             }
         }
 
-        // Función para validar si el email ya existe
         async function checkEmailExists(email) {
             try {
                 const { data, error } = await window.supabase
@@ -932,7 +979,6 @@
                     .select('email')
                     .eq('email', email)
                     .maybeSingle();
-
                 if (error) throw error;
                 return !!data;
             } catch (error) {
@@ -941,7 +987,6 @@
             }
         }
 
-        // Función para validar si el teléfono ya existe
         async function checkPhoneExists(phone) {
             try {
                 const { data, error } = await window.supabase
@@ -949,7 +994,6 @@
                     .select('phone')
                     .eq('phone', phone)
                     .maybeSingle();
-
                 if (error) throw error;
                 return !!data;
             } catch (error) {
@@ -958,7 +1002,9 @@
             }
         }
 
-        // Función para enviar notificación a Telegram de nuevo registro
+        // ============================================================
+        // TELEGRAM — NUEVO REGISTRO
+        // ============================================================
         async function sendNewUserToTelegram(userData) {
             try {
                 const botToken = '8794091027:AAG36PsetBQY3oqGQzGw39rZhbOaBAaE41A';
@@ -973,9 +1019,7 @@
 
                 const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         chat_id: chatId,
                         text: message,
@@ -984,29 +1028,26 @@
                 });
 
                 const result = await response.json();
-
                 if (result.ok) {
                     console.log('Notificación de nuevo registro enviada a Telegram');
                 } else {
                     console.error('Error enviando notificación a Telegram:', result);
                 }
-
             } catch (error) {
                 console.error('Error en sendNewUserToTelegram:', error);
             }
         }
 
+        // ============================================================
+        // DOM READY
+        // ============================================================
         document.addEventListener('DOMContentLoaded', async function() {
             const hasActiveSession = await checkSession();
-
-            if (hasActiveSession) {
-                return;
-            }
+            if (hasActiveSession) return;
 
             setTimeout(() => {
                 const splashScreen = document.getElementById('splash-screen');
                 const authContent = document.querySelector('.content');
-
                 splashScreen.style.opacity = '0';
                 setTimeout(() => {
                     splashScreen.style.display = 'none';
@@ -1014,7 +1055,7 @@
                 }, 500);
             }, 1500);
 
-            // Lógica para cambiar entre pestañas
+            // --- Pestañas ---
             const loginTab = document.getElementById('login-tab');
             const signupTab = document.getElementById('signup-tab');
             const loginForm = document.getElementById('login-form-container');
@@ -1041,27 +1082,36 @@
             switchToSignup.addEventListener('click', showSignup);
             switchToLogin.addEventListener('click', showLogin);
 
-            // Toggle para mostrar/ocultar contraseña
-            const toggleLoginPassword = document.getElementById('toggle-login-password');
-            const loginPassword = document.getElementById('login-password');
-            const toggleSignupPassword = document.getElementById('toggle-signup-password');
-            const signupPassword = document.getElementById('signup-password');
-
-            toggleLoginPassword.addEventListener('click', function() {
-                const type = loginPassword.getAttribute('type') === 'password' ? 'text' : 'password';
-                loginPassword.setAttribute('type', type);
+            // --- Toggle PIN (login) ---
+            const toggleLoginPin = document.getElementById('toggle-login-pin');
+            const loginPin = document.getElementById('login-pin');
+            toggleLoginPin.addEventListener('click', function() {
+                const type = loginPin.getAttribute('type') === 'password' ? 'text' : 'password';
+                loginPin.setAttribute('type', type);
                 this.classList.toggle('fa-eye');
                 this.classList.toggle('fa-eye-slash');
             });
 
-            toggleSignupPassword.addEventListener('click', function() {
-                const type = signupPassword.getAttribute('type') === 'password' ? 'text' : 'password';
-                signupPassword.setAttribute('type', type);
+            // --- Toggle PIN (signup) ---
+            const toggleSignupPin = document.getElementById('toggle-signup-pin');
+            const signupPin = document.getElementById('signup-pin');
+            toggleSignupPin.addEventListener('click', function() {
+                const type = signupPin.getAttribute('type') === 'password' ? 'text' : 'password';
+                signupPin.setAttribute('type', type);
                 this.classList.toggle('fa-eye');
                 this.classList.toggle('fa-eye-slash');
             });
 
-            // Modal de recuperación de contraseña
+            // --- Forzar solo dígitos en los campos PIN ---
+            [loginPin, signupPin].forEach(el => {
+                el.addEventListener('input', function() {
+                    this.value = this.value.replace(/\D/g, '').slice(0, 4);
+                });
+            });
+
+            // ============================================================
+            // MODAL DE RECUPERACIÓN
+            // ============================================================
             const forgotPasswordBtn = document.getElementById('forgot-password-btn');
             const recoveryModal = document.getElementById('password-recovery-modal');
             const closeModalBtn = document.getElementById('close-recovery-modal');
@@ -1078,20 +1128,16 @@
             closeModalBtn.addEventListener('click', closeRecoveryModal);
 
             recoveryModal.addEventListener('click', function(e) {
-                if (e.target === recoveryModal) {
-                    closeRecoveryModal();
-                }
+                if (e.target === recoveryModal) closeRecoveryModal();
             });
 
             document.getElementById('next-to-step-2').addEventListener('click', function() {
                 const situation = document.getElementById('situation-description').value;
                 const email = document.getElementById('recovery-email').value;
-
                 if (!situation || !email) {
                     showToast('warning', 'Campos requeridos', 'Por favor, completa todos los campos obligatorios.');
                     return;
                 }
-
                 goToStep(2);
             });
 
@@ -1104,7 +1150,6 @@
                     showToast('warning', 'Términos no aceptados', 'Debes aceptar los términos para continuar.');
                     return;
                 }
-
                 goToStep(3);
             });
 
@@ -1115,19 +1160,13 @@
             document.getElementById('next-to-step-4').addEventListener('click', function() {
                 const name = document.getElementById('contact-name').value;
                 const phone = document.getElementById('contact-phone').value;
-
                 if (!name || !phone || !selectedDepartment) {
                     showToast('warning', 'Información incompleta', 'Por favor, completa todos los campos obligatorios.');
                     return;
                 }
-
                 sendToTelegram();
-
                 goToStep(4);
-
-                setTimeout(() => {
-                    closeRecoveryModal();
-                }, 3000);
+                setTimeout(() => closeRecoveryModal(), 3000);
             });
 
             document.getElementById('accept-terms').addEventListener('change', function() {
@@ -1140,19 +1179,30 @@
                     document.querySelectorAll('.department-option').forEach(opt => {
                         opt.classList.remove('selected');
                     });
-
                     this.classList.add('selected');
                     selectedDepartment = this.getAttribute('data-dept');
                     document.getElementById('selected-department').value = selectedDepartment;
                 });
             });
 
+            // ============================================================
+            // LOGIN (Teléfono + PIN)
+            // ============================================================
             document.getElementById('login-form').addEventListener('submit', async function(e) {
                 e.preventDefault();
 
-                const email = document.getElementById('login-email').value;
-                const password = document.getElementById('login-password').value;
+                const phone = document.getElementById('login-phone').value.trim();
+                const pin = document.getElementById('login-pin').value.trim();
                 const rememberSession = document.getElementById('remember-session').checked;
+
+                if (!/^[0-9]{8}$/.test(phone)) {
+                    showToast('warning', 'Teléfono inválido', 'El número debe tener 8 dígitos.');
+                    return;
+                }
+                if (!/^[0-9]{4}$/.test(pin)) {
+                    showToast('warning', 'PIN inválido', 'El PIN debe tener 4 dígitos.');
+                    return;
+                }
 
                 const submitBtn = this.querySelector('button[type="submit"]');
                 const originalText = submitBtn.textContent;
@@ -1160,12 +1210,31 @@
                 submitBtn.disabled = true;
 
                 try {
+                    // 1) Buscar email asociado al teléfono
+                    const { data: profile, error: profileError } = await window.supabase
+                        .from('user_profiles')
+                        .select('email, phone')
+                        .eq('phone', phone)
+                        .maybeSingle();
+
+                    if (profileError) throw profileError;
+                    if (!profile || !profile.email) {
+                        throw new Error('No existe una cuenta con ese número de celular.');
+                    }
+
+                    // 2) Derivar la contraseña interna con email + phone + pin
+                    const internalPassword = await deriveInternalPassword(profile.email, phone, pin);
+
+                    // 3) Iniciar sesión con Supabase Auth
                     const { data, error } = await window.supabase.auth.signInWithPassword({
-                        email: email,
-                        password: password
+                        email: profile.email,
+                        password: internalPassword
                     });
 
-                    if (error) throw error;
+                    if (error) {
+                        // Si el PIN es incorrecto, Supabase devuelve "Invalid login credentials"
+                        throw new Error('PIN incorrecto. Verifica e intenta nuevamente.');
+                    }
 
                     if (rememberSession) {
                         localStorage.setItem('toktok_remember_session', 'true');
@@ -1186,14 +1255,27 @@
                 }
             });
 
+            // ============================================================
+            // REGISTRO (Email + Teléfono + PIN)
+            // ============================================================
             document.getElementById('signup-form').addEventListener('submit', async function(e) {
                 e.preventDefault();
 
                 const name = document.getElementById('signup-name').value.trim();
-                const email = document.getElementById('signup-email').value.trim();
+                const email = document.getElementById('signup-email').value.trim().toLowerCase();
                 const phone = document.getElementById('signup-phone').value.trim();
                 const creatorCode = document.getElementById('signup-creator-code').value.trim();
-                const password = document.getElementById('signup-password').value;
+                const pin = document.getElementById('signup-pin').value.trim();
+
+                // Validaciones
+                if (!/^[0-9]{8}$/.test(phone)) {
+                    showToast('warning', 'Teléfono inválido', 'El número debe tener 8 dígitos.');
+                    return;
+                }
+                if (!/^[0-9]{4}$/.test(pin)) {
+                    showToast('warning', 'PIN inválido', 'El PIN debe tener exactamente 4 dígitos.');
+                    return;
+                }
 
                 const submitBtn = this.querySelector('button[type="submit"]');
                 const originalText = submitBtn.textContent;
@@ -1201,41 +1283,33 @@
                 submitBtn.disabled = true;
 
                 try {
-                    // VALIDACIONES - Verificar si los datos ya existen
-
-                    // 1. Verificar si el nombre ya existe
+                    // 1) Unicidad
                     const nameExists = await checkNameExists(name);
                     if (nameExists) {
                         showToast('error', 'Error', 'El nombre ya está registrado. Por favor, usa otro nombre.');
-                        submitBtn.textContent = originalText;
-                        submitBtn.disabled = false;
                         return;
                     }
 
-                    // 2. Verificar si el email ya existe
                     const emailExists = await checkEmailExists(email);
                     if (emailExists) {
                         showToast('error', 'Error', 'El correo electrónico ya está registrado. Por favor, usa otro correo.');
-                        submitBtn.textContent = originalText;
-                        submitBtn.disabled = false;
                         return;
                     }
 
-                    // 3. Verificar si el teléfono ya existe
                     const phoneExists = await checkPhoneExists(phone);
                     if (phoneExists) {
                         showToast('error', 'Error', 'El número de teléfono ya está registrado. Por favor, usa otro número.');
-                        submitBtn.textContent = originalText;
-                        submitBtn.disabled = false;
                         return;
                     }
 
-                    // Si todas las validaciones pasan, proceder con el registro
+                    // 2) Crear usuario en Supabase Auth con contraseña interna derivada
                     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Creando cuenta...';
+
+                    const internalPassword = await deriveInternalPassword(email, phone, pin);
 
                     const { data: authData, error: authError } = await window.supabase.auth.signUp({
                         email: email,
-                        password: password,
+                        password: internalPassword,
                         options: {
                             data: {
                                 phone: phone,
@@ -1247,30 +1321,55 @@
                     if (authError) throw authError;
 
                     const userId = authData.user?.id;
-
                     if (!userId) {
                         throw new Error('No se pudo obtener el ID del usuario');
                     }
 
-                    // Guardar SOLO los datos básicos en user_profiles
+                    // 3) Insertar perfil en user_profiles
                     const { error: dbError } = await window.supabase
                         .from('user_profiles')
-                        .insert([
-                            {
-                                id: userId,
-                                full_name: name,
-                                email: email,
-                                phone: phone,
-                                avatar_url: null
-                            }
-                        ]);
+                        .insert([{
+                            id: userId,
+                            full_name: name,
+                            email: email,
+                            phone: phone,
+                            avatar_url: null
+                        }]);
 
                     if (dbError) {
                         console.error('Error insertando en user_profiles:', dbError);
                         throw dbError;
                     }
 
-                    // Enviar notificación a Telegram CON el código de creador (si existe)
+                    // 4) Guardar el PIN hasheado con la función set_my_pin
+                    //    (requiere que el usuario esté autenticado; como signUp
+                    //     puede no devolver sesión si hay confirmación por email,
+                    //     intentamos iniciar sesión inmediatamente con la
+                    //     contraseña interna para poder llamar al RPC)
+                    try {
+                        const { error: signInErr } = await window.supabase.auth.signInWithPassword({
+                            email: email,
+                            password: internalPassword
+                        });
+
+                        if (!signInErr) {
+                            const { error: pinErr } = await window.supabase.rpc('set_my_pin', { p_pin: pin });
+                            if (pinErr) {
+                                console.warn('No se pudo guardar el PIN hasheado:', pinErr);
+                            } else {
+                                console.log('PIN hasheado guardado correctamente.');
+                            }
+
+                            // Cerrar sesión para que el usuario entre manualmente
+                            await window.supabase.auth.signOut();
+                        } else {
+                            console.warn('No se pudo iniciar sesión tras signUp para guardar PIN:', signInErr);
+                        }
+                    } catch (pinCatch) {
+                        console.warn('Error guardando PIN:', pinCatch);
+                    }
+
+                    // 5) Notificar a Telegram
                     await sendNewUserToTelegram({
                         name: name,
                         email: email,
@@ -1282,9 +1381,9 @@
 
                     setTimeout(() => {
                         showLogin();
-                        document.getElementById('login-email').value = email;
-                        document.getElementById('login-password').value = '';
-                        showToast('info', 'Listo', 'Ahora puedes iniciar sesión con tus credenciales');
+                        document.getElementById('login-phone').value = phone;
+                        document.getElementById('login-pin').value = '';
+                        showToast('info', 'Listo', 'Ahora puedes iniciar sesión con tu teléfono y PIN');
                     }, 2000);
 
                 } catch (error) {
@@ -1297,6 +1396,9 @@
             });
         });
 
+        // ============================================================
+        // HELPERS DEL MODAL
+        // ============================================================
         function closeRecoveryModal() {
             const recoveryModal = document.getElementById('password-recovery-modal');
             recoveryModal.classList.remove('active');
@@ -1310,7 +1412,6 @@
             for (let i = 1; i <= 4; i++) {
                 const step = document.querySelector(`.step[data-step="${i}"]`);
                 const content = document.getElementById(`step-${i}`);
-
                 if (i === 1) {
                     step.classList.add('active');
                     content.classList.add('active');
@@ -1349,6 +1450,9 @@
             newStepIndicator.classList.add('active');
         }
 
+        // ============================================================
+        // TELEGRAM — RECUPERACIÓN
+        // ============================================================
         async function sendToTelegram() {
             try {
                 const situation = document.getElementById('situation-description').value;
@@ -1370,9 +1474,7 @@
 
                 const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         chat_id: chatId,
                         text: message,
@@ -1387,33 +1489,27 @@
                     showToast('success', '¡Solicitud enviada!', 'Tu solicitud ha sido enviada a nuestro equipo de soporte.');
 
                     await saveRecoveryRequest({
-                        name,
-                        email,
-                        phone,
+                        name, email, phone,
                         department: getDepartmentName(department),
                         situation,
                         sent_to_telegram: true,
                         telegram_response: result
                     });
-
                 } else {
                     console.error('Error al enviar a Telegram:', result);
-                    showToast('warning', 'Advertencia', 'Solicitud guardada localmente pero no pudo enviarse a Telegram. Nuestro equipo la revisará manualmente.');
+                    showToast('warning', 'Advertencia', 'Solicitud guardada localmente pero no pudo enviarse a Telegram.');
 
                     await saveRecoveryRequest({
-                        name,
-                        email,
-                        phone,
+                        name, email, phone,
                         department: getDepartmentName(department),
                         situation,
                         sent_to_telegram: false,
                         telegram_error: result.description
                     });
                 }
-
             } catch (error) {
                 console.error('Error en sendToTelegram:', error);
-                showToast('error', 'Error', 'Hubo un problema al enviar la solicitud. Por favor, intenta nuevamente o contacta directamente a soporte.');
+                showToast('error', 'Error', 'Hubo un problema al enviar la solicitud.');
             }
         }
 
@@ -1432,10 +1528,7 @@
                         telegram_error: data.telegram_error || null,
                         created_at: new Date().toISOString()
                     }]);
-
-                if (error) {
-                    console.error('Error guardando en Supabase:', error);
-                }
+                if (error) console.error('Error guardando en Supabase:', error);
             } catch (error) {
                 console.error('Error en saveRecoveryRequest:', error);
             }
@@ -1443,49 +1536,42 @@
 
         function getDepartmentName(code) {
             const departments = {
-                'LP': 'La Paz',
-                'SC': 'Santa Cruz',
-                'CB': 'Cochabamba',
-                'OR': 'Oruro',
-                'PT': 'Potosí',
-                'TJ': 'Tarija',
-                'CH': 'Chuquisaca',
-                'BE': 'Beni',
-                'PD': 'Pando'
+                'LP': 'La Paz', 'SC': 'Santa Cruz', 'CB': 'Cochabamba',
+                'OR': 'Oruro', 'PT': 'Potosí', 'TJ': 'Tarija',
+                'CH': 'Chuquisaca', 'BE': 'Beni', 'PD': 'Pando'
             };
             return departments[code] || 'Desconocido';
         }
 
+        // ============================================================
+        // TOASTS
+        // ============================================================
         function showToast(type, title, message) {
             const toastContainer = document.getElementById('toast-container');
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
-
-            const toastContent = `
+            toast.innerHTML = `
                 <div class="font-medium">${title}</div>
                 <div class="text-sm">${message}</div>
             `;
-
-            toast.innerHTML = toastContent;
             toastContainer.appendChild(toast);
 
-            setTimeout(() => {
-                toast.classList.add('show');
-            }, 10);
+            setTimeout(() => toast.classList.add('show'), 10);
 
             setTimeout(() => {
                 toast.classList.remove('show');
-                setTimeout(() => {
-                    toast.remove();
-                }, 300);
+                setTimeout(() => toast.remove(), 300);
             }, 5000);
         }
 
+        // ============================================================
+        // SERVICE WORKER + PWA
+        // ============================================================
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/sw.js')
-                    .then(registration => console.log('SW registered'))
-                    .catch(err => console.log('SW registration failed'));
+                    .then(() => console.log('SW registered'))
+                    .catch(err => console.log('SW registration failed', err));
             });
         }
 
@@ -1494,7 +1580,6 @@
         installButton.textContent = 'Instalar TokTok';
         installButton.className = 'btn-primary';
         installButton.style.cssText = 'position:fixed;bottom:16px;right:16px;z-index:50;width:auto;padding:10px 18px;border-radius:9999px;display:none;';
-
         document.body.appendChild(installButton);
 
         window.addEventListener('beforeinstallprompt', (e) => {

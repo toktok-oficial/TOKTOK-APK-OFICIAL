@@ -1090,8 +1090,8 @@
         // ============================================
         // CONFIGURACIÓN
         // ============================================
-        const supabaseUrl = 'https://aleadadisazocjovibeh.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFsZWFkYWRpc2F6b2Nqb3ZpYmVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk0NDE5NjMsImV4cCI6MjA3NTAxNzk2M30.z82tP0C-UiiNuzP_jqrQf4LBusFqrDi1WYbdnuTh47E';
+        const supabaseUrl = 'https://fmhjuisoibynjgfrqvgj.supabase.co';
+        const supabaseKey = 'sb_publishable_M7yramCIWbPyxnH3xwJNEQ_p77ModBz';
         window.supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
         // ============================================
@@ -1664,10 +1664,10 @@
 
         const calculateBalance = async (userId) => {
             const { data, error } = await window.supabase
-                .from('transactions')
-                .select('amount, type')
-                .eq('user_id', userId)
-                .eq('status', 'completed');
+                .from('transacciones')
+                .select('monto, tipo, metadata')
+                .eq('usuario_id', userId)
+                .eq('estado', 'completado');
 
             if (error) {
                 console.error('Error calculating balance:', error);
@@ -1676,11 +1676,7 @@
 
             let balance = 0;
             data.forEach(transaction => {
-                if (transaction.type === 'deposit') {
-                    balance += transaction.amount;
-                } else {
-                    balance -= transaction.amount;
-                }
+                balance += (transaction.tipo === 'deposito' || (transaction.tipo === 'transferencia' && transaction.metadata?.type === 'receive') ? 1 : -1) * Number(transaction.monto);
             });
 
             return balance;
@@ -1688,15 +1684,15 @@
 
         const createTransaction = async (userId, amount, type, description = '', metadata = {}) => {
             const { data, error } = await window.supabase
-                .from('transactions')
+                .from('transacciones')
                 .insert([
                     {
-                        user_id: userId,
-                        amount,
-                        type,
-                        description,
+                        usuario_id: userId,
+                        monto: amount,
+                        tipo: { deposit:'deposito', withdrawal:'retiro', transfer:'transferencia', recharge:'recarga' }[type] || type,
+                        descripcion: description,
                         metadata,
-                        status: 'completed'
+                        estado: 'completado'
                     }
                 ])
                 .select()
@@ -2067,8 +2063,8 @@
 
                 if (!purchase) {
                     await window.supabase
-                        .from('transactions')
-                        .update({ status: 'failed' })
+                        .from('transacciones')
+                        .update({ estado: 'fallido' })
                         .eq('id', transaction.id);
                     await updateProductStock(currentProduct.id, -selectedQuantity);
                     throw new Error('Error al registrar la compra');
