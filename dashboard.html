@@ -140,25 +140,33 @@ main{padding-left:0;padding-right:0;}
 }
 .mobile-only{display:flex!important;}
 .desktop-only{display:none!important;}
-.invoice-shell{background:linear-gradient(135deg,#ffffff 0%,#f8f5ff 100%);border-radius:24px;padding:18px;border:1px solid #e9d5ff;box-shadow:0 20px 50px rgba(109,40,217,.14);position:relative;overflow:hidden;}
-.invoice-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;position:relative;z-index:1;}
-.invoice-brand{font-size:16px;font-weight:800;color:#6d28d9;letter-spacing:.14em;text-transform:uppercase;}
-.invoice-badge{background:linear-gradient(135deg,#10b981,#059669);color:white;font-size:11px;font-weight:700;padding:6px 10px;border-radius:999px;}
-.invoice-title{font-size:12px;font-weight:700;margin-bottom:6px;color:#475569;text-transform:uppercase;letter-spacing:.12em;}
-.invoice-amount{text-align:center;font-size:24px;font-weight:800;margin:12px 0 8px;padding:12px;background:rgba(255,255,255,.92);border-radius:16px;border:1px solid #ede9fe;}
-.invoice-subtitle{font-size:12px;color:#64748b;margin-bottom:12px;}
-.invoice-card{background:white;border-radius:16px;padding:12px;border:1px solid #f3e8ff;}
-.invoice-row{display:flex;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:1px dashed #e2e8f0;font-size:12px;color:#334155;}
-.invoice-row:last-child{border-bottom:none;}
-.invoice-row span{color:#64748b;}
-.invoice-row strong{color:#0f172a;font-weight:700;text-align:right;}
-.invoice-footer{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
-.invoice-chip{background:#f5f3ff;color:#6d28d9;padding:6px 10px;border-radius:999px;font-size:11px;font-weight:700;}
-.invoice-action-btn{width:100%;border:none;border-radius:14px;padding:11px 12px;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;cursor:pointer;position:relative;z-index:30;pointer-events:auto;}
-.invoice-action-btn:active{transform:scale(.98);}
-.invoice-action-btn.primary{background:linear-gradient(135deg,#6d28d9,#8b5cf6);color:white;}
-.invoice-action-btn.secondary{background:linear-gradient(135deg,#0f766e,#14b8a6);color:white;}
-.invoice-action-btn.ghost{background:#f8fafc;color:#334155;border:1px solid #e2e8f0;}
+.invoice-dialog{overflow:hidden;border:1px solid #e2e8f0;border-radius:20px;background:#fff;box-shadow:0 24px 64px rgba(15,23,42,.2);}
+.invoice-dialog-header{display:flex;align-items:center;justify-content:space-between;padding:17px 20px;border-bottom:1px solid #e8edef;background:#fff;}
+.invoice-dialog-title{margin:0;color:#172b2a;font-size:16px;font-weight:700;}
+.invoice-close-btn{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border:1px solid #e2e8f0;border-radius:10px;background:#fff;color:#64748b;cursor:pointer;transition:background .16s,color .16s;}
+.invoice-close-btn:hover{background:#f1f5f5;color:#172b2a;}
+.invoice-content{max-height:62vh;overflow-y:auto;padding:16px;background:#f6f8f8;}
+.invoice-paper{overflow:hidden;border:1px solid #e1e8e7;border-radius:16px;background:#fff;box-shadow:0 3px 12px rgba(15,23,42,.04);}
+.invoice-total{position:relative;padding:58px 18px 22px;border-bottom:1px solid #d8eeea;background:#eff8f6;text-align:center;}
+.invoice-stamp{position:absolute;top:14px;right:16px;display:flex;flex-direction:column;align-items:center;gap:1px;padding:5px 8px;border:1px solid #0f766e;outline:1px solid rgba(15,118,110,.35);outline-offset:2px;border-radius:3px;background:rgba(255,255,255,.72);color:#0f766e;font-size:8px;font-weight:800;line-height:1.1;text-align:center;transform:rotate(7deg);}
+.invoice-stamp small{font-size:7px;font-weight:700;}
+.invoice-total-label{color:#607674;font-size:11px;font-weight:700;text-transform:uppercase;}
+.invoice-total-value{display:block;margin-top:8px;font-size:34px;font-weight:800;line-height:1.15;font-variant-numeric:tabular-nums;overflow-wrap:anywhere;}
+.invoice-total-value.positive{color:#047857;}
+.invoice-total-value.negative{color:#be123c;}
+.invoice-details{padding:0 18px;}
+.invoice-row{display:grid;grid-template-columns:minmax(68px,88px) minmax(0,1fr);align-items:start;gap:12px;padding:14px 0;border-bottom:1px solid #edf1f0;font-size:13px;line-height:1.45;}
+.invoice-row:last-child{border-bottom:0;}
+.invoice-label{color:#647674;font-weight:500;}
+.invoice-value{min-width:0;color:#243331;font-weight:600;text-align:right;overflow-wrap:anywhere;}
+.invoice-status{display:inline-flex;justify-content:center;padding:4px 10px;border-radius:999px;background:#eaf7f1;color:#087443;font-size:11px;font-weight:700;}
+.invoice-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:14px 18px 18px;border-top:1px solid #e8edef;background:#fff;}
+.invoice-action-btn{width:100%;min-height:44px;border:1px solid transparent;border-radius:12px;padding:11px 12px;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;margin:0;cursor:pointer;transition:transform .14s,background .14s;}
+.invoice-action-btn:active{transform:translateY(1px);}
+.invoice-action-btn.primary{background:#0f766e;color:white;}
+.invoice-action-btn.primary:hover{background:#115e59;}
+.invoice-action-btn.secondary{border-color:#dce6e4;background:#f7f9f9;color:#334744;}
+.invoice-action-btn.secondary:hover{background:#edf3f2;}
 .filter-container{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-bottom:16px;padding:12px;background:#f8fafc;border-radius:14px;border:1px solid #e2e8f0;}
 .filter-group{flex:1;min-width:100px;}
 .filter-label{font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px;display:block;text-transform:uppercase;letter-spacing:.3px;}
@@ -207,6 +215,8 @@ body{font-family:'Public Sans',sans-serif;background:var(--bg);color:var(--text)
 .header-actions{display:flex;flex-shrink:0;gap:10px;}
 .icon-btn{position:relative;display:flex;align-items:center;justify-content:center;width:40px;height:40px;border:1px solid var(--border);border-radius:50%;background:var(--card);color:var(--text);cursor:pointer;transition:background .2s,transform .2s;}
 .icon-btn:hover{transform:scale(1.05);background:var(--card2);}
+.icon-btn:disabled{cursor:wait;opacity:.65;}
+.icon-btn.is-refreshing svg{animation:dashboardLoadingSpin .8s linear infinite;}
 .balance-card{position:relative;overflow:hidden;margin:0 16px 20px;padding:22px;border-radius:22px;background:linear-gradient(135deg,#4A145A 0%,#6F2A82 55%,#8A3A9B 100%);box-shadow:0 10px 35px rgba(74,20,90,.42);}
 .balance-card::before{position:absolute;top:-50px;right:-30px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.12);content:'';}
 .balance-card::after{position:absolute;bottom:-70px;left:-20px;width:160px;height:160px;border-radius:50%;background:rgba(0,0,0,.08);content:'';}
@@ -349,9 +359,8 @@ body{font-family:'Public Sans',sans-serif;background:var(--bg);color:var(--text)
           <button class="icon-btn" id="themeToggle" type="button" title="Cambiar tema" aria-label="Cambiar tema">
             <svg id="themeIcon" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
           </button>
-          <button class="icon-btn" id="mobile-open-announcements-btn" type="button" title="Anuncios" aria-label="Abrir anuncios" style="position:relative;">
-            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-            <span style="position:absolute;top:7px;right:9px;width:7px;height:7px;background:var(--danger);border-radius:50%;border:2px solid var(--bg)"></span>
+          <button class="icon-btn" id="mobile-refresh-btn" type="button" title="Actualizar datos" aria-label="Actualizar datos">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 7v5h-5"/><path d="M4 17v-5h5"/><path d="M5.64 5.64A9 9 0 0 1 20 12"/><path d="M4 12a9 9 0 0 0 14.36 6.36"/></svg>
           </button>
         </div>
         <span id="mobile-header-title" class="sr-only">Inicio</span>
@@ -521,18 +530,15 @@ body{font-family:'Public Sans',sans-serif;background:var(--bg);color:var(--text)
 
 <div id="invoice-modal" class="modal fixed inset-0 z-50 flex items-center justify-center opacity-0 invisible transition-all duration-300">
   <div class="modal-overlay absolute inset-0"></div>
-  <div class="modal-content w-full max-w-md mx-4">
-    <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
-      <div class="flex justify-between items-center p-4 border-b border-gray-200">
-        <div class="text-lg font-semibold text-gray-800">Factura</div>
-        <button id="close-invoice-modal" class="text-gray-400"><i class="fas fa-times"></i></button>
-      </div>
-      <div id="invoice-content" class="p-4 max-h-[62vh] overflow-y-auto"></div>
-      <div class="p-4 border-t border-gray-200 bg-gray-50 grid grid-cols-2 gap-2">
-        <button id="download-invoice" class="invoice-action-btn primary"><i class="fas fa-download"></i><span>Guardar</span></button>
-        <button id="share-invoice" class="invoice-action-btn secondary"><i class="fas fa-share-alt"></i><span>Compartir</span></button>
-        <button id="close-invoice" class="invoice-action-btn ghost col-span-2">Cerrar</button>
-      </div>
+  <div class="modal-content invoice-dialog w-full max-w-md mx-4">
+    <div class="invoice-dialog-header">
+      <h2 class="invoice-dialog-title">Factura digital</h2>
+      <button id="close-invoice-modal" class="invoice-close-btn" type="button" aria-label="Cerrar factura"><i class="fas fa-times" aria-hidden="true"></i></button>
+    </div>
+    <div id="invoice-content" class="invoice-content"></div>
+    <div class="invoice-actions">
+      <button id="download-invoice" class="invoice-action-btn primary"><i class="fas fa-download" aria-hidden="true"></i><span>Guardar</span></button>
+      <button id="share-invoice" class="invoice-action-btn secondary"><i class="fas fa-share-alt" aria-hidden="true"></i><span>Compartir</span></button>
     </div>
   </div>
 </div>
@@ -854,7 +860,7 @@ function getElementsToLock() {
     'mobile-cancel-profile-edit', 'cancel-profile-edit',
     'mobile-cancel-send', 'cancel-send',
     'mobile-recharge-done-btn', 'recharge-done-btn',
-    'mobile-change-avatar-btn', 'mobile-open-announcements-btn', 'mobile-wallet-fab'
+    'mobile-change-avatar-btn', 'mobile-refresh-btn', 'mobile-wallet-fab'
   ];
 }
 
@@ -1065,34 +1071,26 @@ function closeInvoiceModal(){
 function showTransactionInvoice(transaction, transactionType='general'){
   if (!transaction) return;
   const isPositive = transaction.type === 'deposit' || (transaction.type === 'transfer' && transaction.metadata?.type === 'receive');
-  const amountClass = isPositive ? 'text-emerald-600' : 'text-rose-600';
+  const amountClass = isPositive ? 'positive' : 'negative';
   const amountSign = isPositive ? '+' : '-';
   const invoiceId = 'INV-' + (transaction.id ? transaction.id.substring(0,8).toUpperCase() : 'TEMP') + '-' + Date.now().toString().slice(-6);
   const typeNames = {deposit:'Ingreso',withdrawal:'Retiro',transfer:'Transferencia',recharge:'Recarga'};
   const transactionTypeName = typeNames[transaction.type] || transaction.type;
+  const displayType = transactionType === 'transfer' ? 'Transferencia' : transactionTypeName;
   const createdDate = transaction.created_at ? new Date(transaction.created_at).toLocaleString('es-ES', { dateStyle:'medium', timeStyle:'short' }) : new Date().toLocaleString('es-ES');
   const invoiceHTML = `
-    <div class="rounded-2xl border border-violet-100 bg-gradient-to-br from-white to-violet-50 p-4 shadow-sm">
-      <div class="flex items-center justify-between mb-4">
-        <div>
-          <div class="text-xs font-bold uppercase tracking-[0.2em] text-violet-600">TokTok</div>
-          <div class="text-[10px] text-gray-500">Factura digital</div>
-        </div>
-        <span class="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-1 text-[10px] font-semibold text-emerald-700">
-          <i class="fas fa-check-circle"></i> Confirmado
-        </span>
+    <div class="invoice-paper">
+      <div class="invoice-total">
+        <div class="invoice-stamp" aria-label="TokTok Digital"><span>TOKTOK</span><small>DIGITAL</small></div>
+        <span class="invoice-total-label">Monto</span>
+        <strong class="invoice-total-value ${amountClass}">${amountSign} ${formatCurrency(transaction.amount).replace(/^Bs/, 'Bs ')}</strong>
       </div>
-      <div class="rounded-2xl bg-white border border-violet-100 p-4 text-center mb-4">
-        <div class="text-[10px] uppercase tracking-[0.2em] text-gray-500">${transactionType==='transfer' ? 'Transferencia' : transactionTypeName}</div>
-        <div class="mt-2 text-3xl font-extrabold ${amountClass}">${amountSign}${formatCurrency(transaction.amount).replace('Bs','')}</div>
-      </div>
-      <div class="space-y-2 text-sm">
-        <div class="flex justify-between gap-3 border-b border-gray-100 pb-2"><span class="text-gray-500">Fecha</span><strong class="text-right text-gray-800">${createdDate}</strong></div>
-        <div class="flex justify-between gap-3 border-b border-gray-100 pb-2"><span class="text-gray-500">Tipo</span><strong class="text-right text-gray-800">${transactionTypeName}</strong></div>
-        <div class="flex justify-between gap-3 border-b border-gray-100 pb-2"><span class="text-gray-500">Estado</span><strong class="text-right text-gray-800">Procesada</strong></div>
-        <div class="flex justify-between gap-3 border-b border-gray-100 pb-2"><span class="text-gray-500">ID</span><strong class="text-right text-gray-800 font-mono text-[11px]">${transaction.id || invoiceId}</strong></div>
-        <div class="flex justify-between gap-3 border-b border-gray-100 pb-2"><span class="text-gray-500">Usuario</span><strong class="text-right text-gray-800">${userProfile?.full_name || currentUser?.email || 'Usuario'}</strong></div>
-        ${transaction.description ? `<div class="flex justify-between gap-3"><span class="text-gray-500">Detalle</span><strong class="text-right text-gray-800 max-w-[55%]">${transaction.description}</strong></div>` : ''}
+      <div class="invoice-details">
+        <div class="invoice-row"><span class="invoice-label">Fecha</span><strong class="invoice-value">${createdDate}</strong></div>
+        <div class="invoice-row"><span class="invoice-label">Tipo</span><strong class="invoice-value">${displayType}</strong></div>
+        <div class="invoice-row"><span class="invoice-label">Usuario</span><strong class="invoice-value">${userProfile?.full_name || currentUser?.email || 'Usuario'}</strong></div>
+        <div class="invoice-row"><span class="invoice-label">Estado</span><strong class="invoice-value"><span class="invoice-status">Procesada</span></strong></div>
+        <div class="invoice-row"><span class="invoice-label">Detalle</span><strong class="invoice-value">${transaction.description || 'Sin detalle'}</strong></div>
       </div>
     </div>`;
   document.getElementById('invoice-content').innerHTML = invoiceHTML;
@@ -1412,6 +1410,25 @@ const updateUI = async () => {
   await applyFilters();
 };
 
+const refreshDashboard = async () => {
+  const button = document.getElementById('mobile-refresh-btn');
+  if (!currentUser || isTxLocked || !button || button.disabled) return;
+  button.disabled = true;
+  button.classList.add('is-refreshing');
+  try {
+    const [ads] = await Promise.all([loadAds(), updateUI()]);
+    allAds = ads || [];
+    renderDashboardAnnouncements(allAds);
+    showToast('Datos actualizados');
+  } catch (error) {
+    console.error('Error actualizando el dashboard:', error);
+    showToast('No se pudieron actualizar los datos', 'error');
+  } finally {
+    button.disabled = false;
+    button.classList.remove('is-refreshing');
+  }
+};
+
 // ============ SEND ============
 const confirmSend = async function(btn){
   if (isTxLocked) return;
@@ -1708,9 +1725,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   updateNavIndicator(document.querySelector('.bottom-nav .nav-item.active'));
   window.addEventListener('resize', () => updateNavIndicator(document.querySelector('.bottom-nav .nav-item.active')));
 
-  document.getElementById('mobile-open-announcements-btn')?.addEventListener('click', () => {
-    document.querySelector('.bottom-nav [data-view="announcements"]')?.click();
-  });
+  document.getElementById('mobile-refresh-btn')?.addEventListener('click', refreshDashboard);
   document.getElementById('mobile-open-transactions-btn')?.addEventListener('click', () => {
     document.querySelector('.bottom-nav [data-view="transactions"]')?.click();
   });
@@ -1843,7 +1858,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     b.classList.add('active');
   }));
 
-  ['close-invoice-modal','close-invoice'].forEach(id => document.getElementById(id)?.addEventListener('click', (e) => {
+  ['close-invoice-modal'].forEach(id => document.getElementById(id)?.addEventListener('click', (e) => {
     e.preventDefault();
     e.stopPropagation();
     closeInvoiceModal();
