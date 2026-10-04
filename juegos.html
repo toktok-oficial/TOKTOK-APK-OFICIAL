@@ -916,7 +916,6 @@
                     const msg = result.message || 'Error al procesar';
                     const msgLower = msg.toLowerCase();
 
-                    // Solo detectar errores ESPECÍFICOS de ID de jugador
                     if (msgLower.includes('user_name') ||
                         msgLower.includes('user name') ||
                         msgLower.includes('player not found') ||
@@ -927,7 +926,6 @@
                         throw new Error('El ID de jugador no es válido o no existe. Verifica e intenta de nuevo. No se descontó saldo.');
                     }
 
-                    // Cualquier otro error, mostrar el mensaje REAL de Razer
                     throw new Error(msg);
                 }
 
