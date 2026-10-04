@@ -1,874 +1,898 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TOKTOK - Recargas de Juegos</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <meta name="theme-color" content="#080808">
-    <meta http-equiv="Content-Security-Policy" 
-          content="default-src 'self'; 
-                   script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; 
-                   style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://fonts.googleapis.com; 
-                   font-src 'self' https://fonts.gstatic.com; 
-                   img-src 'self' data: https:; 
-                   connect-src 'self' https://*.supabase.co https://games-razer-proxy.fly.dev https://api.ipify.org;">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TOKTOK - Recargas de Juegos</title>
+<meta name="theme-color" content="#0a0a0a">
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
 
-        :root {
-            --primary: #e51c32;
-            --bg-dark: #080808;
-            --text-light: #e2e8f0;
-            --text-muted: #94a3b8;
-            color-scheme: dark;
-        }
+  :root {
+    --green: #10b981;
+    --green-dark: #059669;
+    --green-light: #34d399;
+    --bg-dark: #0a0a0a;
+    --bg-card: #141414;
+    --border: #262626;
+    --text: #f5f5f5;
+    --text-muted: #a3a3a3;
+    --text-dim: #737373;
+    color-scheme: dark;
+  }
 
-        * { 
-            -webkit-tap-highlight-color: transparent; 
-            box-sizing: border-box; 
-            margin: 0;
-            padding: 0;
-        }
+  html { scroll-behavior: auto; }
 
-        html { scroll-behavior: auto; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: var(--bg-dark);
+    color: var(--text);
+    max-width: 760px;
+    margin: 0 auto;
+    min-height: 100vh;
+    padding-bottom: env(safe-area-inset-bottom);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    font-size: 14px;
+    line-height: 1.5;
+  }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #080808;
-            color: var(--text-light);
-            max-width: 760px;
-            margin: 0 auto;
-            min-height: 100vh;
-            padding-bottom: env(safe-area-inset-bottom);
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
+  /* SVG helper */
+  .icon { width: 1em; height: 1em; display: inline-block; vertical-align: -0.125em; fill: currentColor; }
 
-        /* HEADER - Sin transiciones */
-        .mobile-header {
-            position: sticky; top: 0; z-index: 40;
-            background: #080808;
-            border-bottom: 1px solid #292929;
-            padding: 14px 18px;
-            display: flex; align-items: center; justify-content: space-between;
-        }
-        .mobile-header-title {
-            font-size: 20px; font-weight: 900; color: #fff;
-            letter-spacing: 0.1em;
-        }
-        .header-balance {
-            background: #e51c32;
-            padding: 8px 12px; border-radius: 10px;
-            display: flex; align-items: center; gap: 6px;
-            font-size: 13px; font-weight: 700; color: white;
-        }
+  /* ===== HEADER ===== */
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: var(--bg-dark);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .header-title {
+    font-size: 20px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 0.08em;
+  }
+  .header-balance {
+    background: var(--green);
+    padding: 8px 12px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #0a0a0a;
+  }
 
-        /* BÚSQUEDA */
-        .search-container { padding: 18px 16px 12px; }
-        .search-input {
-            width: 100%;
-            padding: 10px 16px 10px 40px;
-            border: 1px solid #333;
-            border-radius: 10px;
-            font-size: 13px;
-            background: #141414 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ef233c'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'%3E%3C/path%3E%3C/svg%3E") no-repeat 12px center;
-            background-size: 18px;
-            color: var(--text-light);
-            outline: none;
-        }
-        .search-input:focus { border-color: var(--primary); }
-        .search-input::placeholder { color: var(--text-muted); }
+  /* ===== SEARCH ===== */
+  .search-wrap { padding: 16px 16px 12px; }
+  .search {
+    width: 100%;
+    padding: 11px 16px 11px 42px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 13px;
+    background: var(--bg-card);
+    color: var(--text);
+    outline: none;
+    font-family: inherit;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2310b981' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: 14px center;
+    background-size: 18px;
+  }
+  .search:focus { border-color: var(--green); }
+  .search::placeholder { color: var(--text-dim); }
 
-        /* CATEGORÍAS */
-        .category-filters {
-            display: flex; gap: 8px;
-            padding: 4px 16px 16px;
-            overflow-x: auto; scrollbar-width: none;
-            -webkit-overflow-scrolling: touch;
-        }
-        .category-filters::-webkit-scrollbar { display: none; }
-        .category-btn {
-            flex-shrink: 0; padding: 8px 16px;
-            border: 1px solid #333;
-            border-radius: 9px;
-            background: #141414;
-            color: #c5c5c5;
-            font-size: 11px; font-weight: 700;
-            white-space: nowrap; cursor: pointer;
-            font-family: inherit;
-        }
-        .category-btn.active {
-            background: #e51c32; color: #fff; border-color: #e51c32;
-        }
+  /* ===== CATEGORIES ===== */
+  .cats {
+    display: flex;
+    gap: 8px;
+    padding: 4px 16px 16px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .cats::-webkit-scrollbar { display: none; }
+  .cat-btn {
+    flex-shrink: 0;
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg-card);
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .cat-btn.active {
+    background: var(--green);
+    color: #0a0a0a;
+    border-color: var(--green);
+  }
 
-        /* PRODUCTOS - Optimizado para 120fps */
-        .products-container { padding: 4px 14px 28px; }
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 12px;
-        }
-        @media (min-width: 560px) {
-            .products-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-        }
-        @media (min-width: 720px) {
-            .products-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-        }
+  /* ===== PRODUCTS ===== */
+  .products {
+    padding: 4px 14px 28px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  @media (min-width: 560px) { .products { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (min-width: 720px) { .products { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 
-        .product-card {
-            border: 1px solid #292929;
-            border-radius: 10px;
-            background: #141414;
-            overflow: hidden;
-            cursor: pointer;
-            /* Optimizaciones de render */
-            content-visibility: auto;
-            contain-intrinsic-size: 230px;
-            contain: layout style paint;
-        }
-        .product-card:active { border-color: #e51c32; }
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg-card);
+    overflow: hidden;
+    cursor: pointer;
+    content-visibility: auto;
+    contain-intrinsic-size: 230px;
+    contain: layout style paint;
+  }
+  .card:active { border-color: var(--green); }
 
-        .product-image-wrap { position: relative; overflow: hidden; }
-        .product-image {
-            width: 100%; aspect-ratio: 1/1;
-            object-fit: cover; background: #1b1b1b;
-            display: block;
-        }
-        .badge-discount {
-            position: absolute; top: 6px; left: 6px;
-            background: #c1121f; color: #fff;
-            font-size: 9px; font-weight: 800;
-            padding: 3px 8px; border-radius: 6px;
-        }
-        .badge-featured {
-            position: absolute; top: 6px; right: 6px;
-            background: #e51c32; color: #fff;
-            font-size: 8px; font-weight: 800;
-            padding: 3px 8px; border-radius: 6px;
-        }
-        .stock-badge {
-            position: absolute; bottom: 6px; left: 6px;
-            padding: 3px 8px; border-radius: 6px;
-            font-size: 8px; font-weight: 700;
-        }
-        .stock-available { background: #292929; color: #f5f5f5; }
-        .stock-out { background: #c1121f; color: #fff; }
+  .card-img-wrap { position: relative; overflow: hidden; }
+  .card-img {
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    background: #1b1b1b;
+    display: block;
+  }
+  .badge-off {
+    position: absolute; top: 6px; left: 6px;
+    background: var(--green); color: #0a0a0a;
+    font-size: 10px; font-weight: 800;
+    padding: 3px 8px; border-radius: 6px;
+  }
+  .badge-star {
+    position: absolute; top: 6px; right: 6px;
+    background: rgba(16, 185, 129, 0.95); color: #0a0a0a;
+    font-size: 10px; font-weight: 800;
+    padding: 3px 6px; border-radius: 6px;
+    display: flex; align-items: center; gap: 3px;
+  }
+  .badge-stock {
+    position: absolute; bottom: 6px; left: 6px;
+    padding: 3px 8px; border-radius: 6px;
+    font-size: 9px; font-weight: 700;
+  }
+  .stock-in { background: rgba(16, 185, 129, 0.95); color: #0a0a0a; }
+  .stock-out { background: rgba(120, 20, 20, 0.9); color: #fff; }
 
-        .product-info { padding: 10px; }
-        .product-name {
-            font-weight: 700; font-size: 12px; color: #fff;
-            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-            overflow: hidden;
-            margin-bottom: 4px;
-        }
-        .product-description {
-            font-size: 10px; color: var(--text-muted); margin: 2px 0 6px;
-            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        .price-row { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
-        .product-price { color: #ff4d5e; font-weight: 800; font-size: 13px; }
-        .product-price-old { color: #6b7280; font-size: 9px; text-decoration: line-through; }
+  .card-info { padding: 10px; }
+  .card-name {
+    font-weight: 700; font-size: 12px; color: #fff;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    overflow: hidden; margin-bottom: 4px;
+    line-height: 1.3;
+  }
+  .card-desc {
+    font-size: 10px; color: var(--text-muted);
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    overflow: hidden; margin-bottom: 6px;
+  }
+  .price-row { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+  .price { color: var(--green-light); font-weight: 800; font-size: 13px; }
+  .price-old { color: var(--text-dim); font-size: 9px; text-decoration: line-through; }
 
-        /* MODALES */
-        .modal {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 100;
-            display: flex; align-items: flex-end; justify-content: center;
-            opacity: 0; visibility: hidden;
-        }
-        .modal.active { opacity: 1; visibility: visible; }
-        .modal-content {
-            background: #111;
-            width: 100%; max-width: 480px;
-            border-radius: 20px 20px 0 0;
-            padding: 20px 16px calc(20px + env(safe-area-inset-bottom));
-            max-height: 88vh;
-            overflow-y: auto;
-            border: 1px solid #333;
-        }
-        @media (min-width: 560px) {
-            .modal { align-items: center; }
-            .modal-content { border-radius: 16px; }
-        }
+  /* ===== EMPTY ===== */
+  .empty {
+    text-align: center;
+    padding: 50px 20px;
+    color: var(--text-dim);
+  }
+  .empty svg { width: 56px; height: 56px; margin-bottom: 12px; stroke: var(--green); opacity: 0.6; }
+  .empty p { font-size: 14px; }
+  .empty small { font-size: 12px; color: var(--text-dim); }
 
-        /* BOTONES */
-        .btn-primary {
-            background: #e51c32;
-            color: white;
-            padding: 14px 16px;
-            border-radius: 10px;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: none;
-            font-size: 14px;
-            width: 100%;
-            letter-spacing: 0.03em;
-            cursor: pointer;
-            font-family: inherit;
-        }
-        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+  /* ===== MODALES ===== */
+  .modal {
+    position: fixed; inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 100;
+    display: flex; align-items: flex-end; justify-content: center;
+    opacity: 0; visibility: hidden;
+  }
+  .modal.active { opacity: 1; visibility: visible; }
+  .modal-body {
+    background: #111;
+    width: 100%; max-width: 480px;
+    border-radius: 20px 20px 0 0;
+    padding: 20px 16px calc(20px + env(safe-area-inset-bottom));
+    max-height: 90vh;
+    overflow-y: auto;
+    border: 1px solid var(--border);
+    border-bottom: none;
+  }
+  @media (min-width: 560px) {
+    .modal { align-items: center; }
+    .modal-body { border-radius: 16px; border-bottom: 1px solid var(--border); }
+  }
 
-        .btn-secondary {
-            background: #252525;
-            color: white;
-            padding: 14px 16px;
-            border-radius: 10px;
-            font-weight: 700;
-            border: none;
-            font-size: 14px;
-            cursor: pointer;
-            font-family: inherit;
-        }
+  .modal-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 14px;
+  }
+  .modal-title { font-size: 17px; font-weight: 700; color: #fff; }
+  .modal-close {
+    background: none; border: none; color: var(--text-muted);
+    cursor: pointer; padding: 4px; display: flex;
+    border-radius: 6px;
+  }
+  .modal-close:hover { color: #fff; background: #1a1a1a; }
+  .modal-close svg { width: 20px; height: 20px; }
 
-        .loading-spinner {
-            width: 18px; height: 18px;
-            border: 2px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            border-top-color: #ef233c;
-            animation: spin 0.6s linear infinite;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
+  .detail-img {
+    width: 100%; height: 160px;
+    object-fit: cover; background: #1b1b1b;
+    border-radius: 12px; margin-bottom: 12px;
+    border: 1px solid var(--border);
+  }
+  .detail-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 14px; }
 
-        /* INPUTS */
-        .input-field {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid #333;
-            border-radius: 10px;
-            font-size: 14px;
-            background: #141414;
-            color: var(--text-light);
-            outline: none;
-            font-family: inherit;
-        }
-        .input-field:focus { border-color: var(--primary); }
-        .input-field::placeholder { color: var(--text-muted); }
+  .detail-row {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 14px;
+  }
+  .detail-label { font-size: 11px; color: var(--text-dim); }
+  .detail-value { font-size: 15px; font-weight: 700; color: #fff; }
+  .detail-value.green { color: var(--green-light); }
 
-        .product-detail-image {
-            width: 100%; height: 160px;
-            object-fit: cover; background: #1b1b1b;
-            border-radius: 12px; margin-bottom: 12px;
-            border: 1px solid #333;
-        }
+  .total-box {
+    text-align: center;
+    padding: 12px;
+    background: #0d1a16;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    border-radius: 10px;
+    margin-bottom: 16px;
+  }
+  .total-box .label { font-size: 11px; color: var(--text-dim); }
+  .total-box .amount { font-size: 22px; font-weight: 800; color: var(--green-light); margin-top: 4px; }
 
-        .field-error { color: #ef4444; font-size: 11px; margin-top: 4px; }
-        .field-valid { color: #10b981; font-size: 11px; margin-top: 4px; }
+  .field-label {
+    display: block;
+    font-size: 12px; font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 15px;
+    background: var(--bg-card);
+    color: var(--text);
+    outline: none;
+    font-family: inherit;
+  }
+  .input:focus { border-color: var(--green); }
+  .input::placeholder { color: var(--text-dim); }
 
-        .result-icon-badge {
-            width: 56px; height: 56px;
-            margin: 0 auto 16px;
-            display: grid; place-items: center;
-            border: 1px solid rgba(239, 35, 60, 0.35);
-            border-radius: 16px;
-            background: rgba(239, 35, 60, 0.12);
-            color: #ff4d5e; font-size: 22px;
-        }
+  .feedback-err { color: #ef4444; font-size: 11px; margin-top: 6px; }
+  .feedback-ok { color: var(--green); font-size: 11px; margin-top: 6px; }
+  .hint { font-size: 11px; color: var(--text-dim); margin-top: 6px; }
 
-        .access-blocked {
-            min-height: 100vh;
-            display: flex; align-items: center; justify-content: center;
-            padding: 40px 20px; text-align: center;
-        }
-        .access-blocked-icon { font-size: 64px; margin-bottom: 20px; }
+  /* ===== BUTTONS ===== */
+  .btn {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 10px;
+    font-weight: 800;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    letter-spacing: 0.02em;
+  }
+  .btn-green {
+    background: var(--green);
+    color: #0a0a0a;
+  }
+  .btn-green:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-gray {
+    background: #262626;
+    color: #fff;
+  }
+  .btn svg { width: 16px; height: 16px; }
 
-        .toast {
-            position: fixed; top: 16px; right: 16px;
-            padding: 12px 16px; border-radius: 10px;
-            background: #e51c32; color: white;
-            font-weight: 600; font-size: 13px;
-            z-index: 200;
-        }
+  .btn-row { display: flex; gap: 12px; }
+  .btn-row .btn { flex: 1; }
 
-        /* Tailwind helpers (por si el CDN tarda) */
-        .flex { display: flex; }
-        .justify-between { justify-content: space-between; }
-        .justify-center { justify-content: center; }
-        .items-center { align-items: center; }
-        .text-center { text-align: center; }
-        .text-right { text-align: right; }
-        .hidden { display: none; }
-        .mb-2 { margin-bottom: 8px; }
-        .mb-3 { margin-bottom: 12px; }
-        .mb-4 { margin-bottom: 16px; }
-        .mt-1 { margin-top: 4px; }
-        .mr-1 { margin-right: 4px; }
-        .mr-2 { margin-right: 8px; }
-        .ml-2 { margin-left: 8px; }
-        .space-x-3 > * + * { margin-left: 12px; }
-        .flex-1 { flex: 1; }
-        .text-white { color: #fff; }
-        .text-gray-300 { color: #d1d5db; }
-        .text-gray-400 { color: #9ca3af; }
-        .text-gray-500 { color: #6b7280; }
-        .text-xs { font-size: 12px; }
-        .text-sm { font-size: 14px; }
-        .text-lg { font-size: 18px; }
-        .text-xl { font-size: 20px; }
-        .font-bold { font-weight: 700; }
-        .font-medium { font-weight: 500; }
-        .py-10 { padding-top: 40px; padding-bottom: 40px; }
-        .px-4 { padding-left: 16px; padding-right: 16px; }
-        .text-4xl { font-size: 36px; }
-        .w-full { width: 100%; }
-        .py-3 { padding-top: 12px; padding-bottom: 12px; }
-        .px-4 { padding-left: 16px; padding-right: 16px; }
-        .rounded-lg { border-radius: 8px; }
-        .bg-gray-700 { background-color: #374151; }
-    </style>
+  .spinner {
+    width: 16px; height: 16px;
+    border: 2px solid rgba(0,0,0,0.2);
+    border-top-color: #0a0a0a;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ===== RESULT ===== */
+  .result-icon {
+    width: 60px; height: 60px;
+    margin: 0 auto 16px;
+    display: grid; place-items: center;
+    border-radius: 16px;
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--green);
+  }
+  .result-icon svg { width: 32px; height: 32px; }
+  .result-icon.error { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+
+  .result-title {
+    font-size: 18px; font-weight: 700; color: #fff;
+    text-align: center; margin-bottom: 8px;
+  }
+  .result-msg {
+    font-size: 13px; color: var(--text-muted);
+    text-align: center; line-height: 1.5;
+    max-width: 300px; margin: 0 auto 20px;
+  }
+
+  /* ===== TOAST ===== */
+  .toast {
+    position: fixed; top: 16px; right: 16px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    background: var(--green);
+    color: #0a0a0a;
+    font-weight: 700; font-size: 13px;
+    z-index: 200;
+    max-width: calc(100vw - 32px);
+  }
+
+  /* ===== BLOCKED ===== */
+  .blocked {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+  }
+  .blocked-icon { font-size: 64px; margin-bottom: 20px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
 </head>
 <body>
 
-    <div class="mobile-header">
-        <div class="mobile-header-title">TOKTOK</div>
-        <div class="header-balance">
-            <i class="fas fa-coins"></i>
-            <span id="current-balance">Cargando...</span>
-        </div>
+<!-- HEADER -->
+<div class="header">
+  <div class="header-title">TOKTOK</div>
+  <div class="header-balance">
+    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18M7 6h1v4M16.71 13.88l.7.71-2.82 2.82"/>
+    </svg>
+    <span id="balance">Cargando...</span>
+  </div>
+</div>
+
+<!-- GAMES SECTION -->
+<div id="games-section">
+  <div class="search-wrap">
+    <input type="text" id="search" class="search" placeholder="Buscar juegos o paquetes..." autocomplete="off">
+  </div>
+
+  <div class="cats" id="cats">
+    <button class="cat-btn active" data-cat="all">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+      </svg>
+      Todos
+    </button>
+  </div>
+
+  <div class="products" id="products"></div>
+
+  <div id="empty" class="empty" style="display:none;">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2" y="6" width="20" height="12" rx="2"/>
+      <path d="M6 12h4M8 10v4M15 13h.01M18 11h.01"/>
+    </svg>
+    <p>No se encontraron paquetes</p>
+    <small>Intenta con otra búsqueda</small>
+  </div>
+</div>
+
+<!-- MODAL DETALLE -->
+<div id="modal-detail" class="modal">
+  <div class="modal-body">
+    <div class="modal-header">
+      <h3 class="modal-title" id="detail-title"></h3>
+      <button class="modal-close" id="close-detail">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6 6 18M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+    <img id="detail-img" class="detail-img" src="" alt="">
+    <p id="detail-desc" class="detail-desc"></p>
+    <div class="detail-row">
+      <div>
+        <div class="detail-label">Stock:</div>
+        <div class="detail-value" id="detail-stock"></div>
+      </div>
+      <div style="text-align:right;">
+        <div class="detail-label">Precio:</div>
+        <div class="detail-value green" id="detail-price"></div>
+      </div>
+    </div>
+    <div class="total-box">
+      <div class="label">Total a pagar</div>
+      <div class="amount" id="total-price"></div>
     </div>
 
-    <div id="games-section">
-        <div class="search-container">
-            <input type="text" id="game-search" class="search-input" placeholder="Buscar juegos o paquetes...">
-        </div>
-
-        <div class="category-filters" id="category-filters">
-            <button class="category-btn active" data-category="all">
-                <i class="fas fa-th mr-1"></i> Todos
-            </button>
-        </div>
-
-        <div class="products-container">
-            <div class="products-grid" id="packages-list"></div>
-        </div>
-
-        <div id="no-packages" class="hidden text-center py-10 px-4">
-            <i class="fas fa-gamepad text-4xl mb-3" style="color: #e51c32;"></i>
-            <p class="text-gray-400 font-medium text-sm">No se encontraron paquetes</p>
-            <p class="text-xs text-gray-500 mt-1">Intenta con otra búsqueda</p>
-        </div>
+    <div style="margin-bottom:16px;">
+      <label class="field-label">ID DE JUGADOR *</label>
+      <input type="text" id="player-id" class="input" placeholder="Ej: 123456789" inputmode="numeric" autocomplete="off">
+      <div id="player-feedback"></div>
+      <p class="hint">Solo números, entre 8 y 12 dígitos</p>
     </div>
 
-    <!-- Modal detalle -->
-    <div id="package-detail-modal" class="modal">
-        <div class="modal-content">
-            <div class="flex justify-between items-center mb-3">
-                <h3 class="text-lg font-bold text-white" id="package-detail-title"></h3>
-                <button id="close-package-detail" class="text-gray-400" style="background:none;border:none;cursor:pointer;font-size:20px;">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <img id="package-detail-image" class="product-detail-image" src="" alt="">
-            <p id="package-detail-description" class="text-gray-400 mb-3 text-sm"></p>
-            <div class="flex justify-between items-center mb-3">
-                <div>
-                    <div class="text-xs text-gray-500">Stock:</div>
-                    <div id="package-detail-stock" class="text-lg font-bold"></div>
-                </div>
-                <div class="text-right">
-                    <div class="text-xs text-gray-500">Precio:</div>
-                    <div id="package-detail-price" class="text-lg font-bold" style="color: #ff4d5e;"></div>
-                </div>
-            </div>
-            <div class="text-center mb-4">
-                <div class="text-xs text-gray-500">Total a pagar:</div>
-                <div id="total-price" class="text-xl font-bold" style="color: #ff4d5e;"></div>
-            </div>
+    <button id="buy-btn" class="btn btn-green" disabled>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>
+      </svg>
+      Recargar ahora
+    </button>
+  </div>
+</div>
 
-            <div class="mb-3">
-                <label class="block text-xs font-bold text-gray-400 mb-2">ID de Jugador *</label>
-                <input type="text" id="player-id-input" class="input-field" placeholder="Ej: 123456789" inputmode="numeric" autocomplete="off">
-                <div id="player-id-feedback"></div>
-                <p class="text-xs text-gray-500 mt-1">Ingresá tu ID de jugador (solo números, 8-12 dígitos)</p>
-            </div>
-
-            <button id="buy-package-btn" class="btn-primary" disabled>
-                <i class="fas fa-bolt mr-2"></i> Recargar ahora
-            </button>
-        </div>
+<!-- MODAL CONFIRMACION -->
+<div id="modal-confirm" class="modal">
+  <div class="modal-body">
+    <div class="modal-header">
+      <h3 class="modal-title">Confirmar recarga</h3>
+      <button class="modal-close" id="close-confirm">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6 6 18M6 6l12 12"/>
+        </svg>
+      </button>
     </div>
-
-    <!-- Confirmación -->
-    <div id="confirmation-modal" class="modal">
-        <div class="modal-content">
-            <div class="flex justify-between items-center mb-3">
-                <h3 class="text-lg font-bold text-white">Confirmar recarga</h3>
-                <button id="close-confirmation-modal" class="text-gray-400" style="background:none;border:none;cursor:pointer;font-size:20px;"><i class="fas fa-times"></i></button>
-            </div>
-            <div class="mb-4"><div id="confirmation-text" class="text-gray-300 text-sm"></div></div>
-            <div class="flex space-x-3">
-                <button id="cancel-purchase" class="flex-1 btn-secondary">Cancelar</button>
-                <button id="confirm-purchase" class="flex-1 btn-primary">
-                    <span id="confirm-purchase-text">Confirmar</span>
-                    <div id="confirm-purchase-spinner" class="loading-spinner ml-2 hidden"></div>
-                </button>
-            </div>
-        </div>
+    <div id="confirm-text" style="font-size:14px; margin-bottom:20px;"></div>
+    <div class="btn-row">
+      <button id="cancel-btn" class="btn btn-gray">Cancelar</button>
+      <button id="confirm-btn" class="btn btn-green">
+        <span id="confirm-txt">Confirmar</span>
+        <div id="confirm-spin" class="spinner" style="display:none;"></div>
+      </button>
     </div>
+  </div>
+</div>
 
-    <!-- Resultado -->
-    <div id="result-modal" class="modal">
-        <div class="modal-content">
-            <div class="flex justify-center mb-3">
-                <div id="result-icon" class="result-icon-badge">
-                    <i class="fas fa-check-circle"></i>
-                </div>
-            </div>
-            <div class="text-center mb-3">
-                <h3 id="result-title" class="text-lg font-bold text-white mb-2">¡Recarga exitosa!</h3>
-                <p id="result-message" class="text-gray-400 text-sm">Tu recarga se ha procesado correctamente.</p>
-            </div>
-            <button id="close-result-modal" class="w-full btn-primary">Aceptar</button>
-        </div>
+<!-- MODAL RESULTADO -->
+<div id="modal-result" class="modal">
+  <div class="modal-body">
+    <div id="result-icon" class="result-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 6 9 17l-5-5"/>
+      </svg>
     </div>
+    <h3 id="result-title" class="result-title">¡Recarga exitosa!</h3>
+    <p id="result-msg" class="result-msg">Tu recarga se ha procesado correctamente.</p>
+    <button id="close-result" class="btn btn-green">Aceptar</button>
+  </div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-        const SUPABASE_URL = 'https://fmhjuisoibynjgfrqvgj.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_M7yramCIWbPyxnH3xwJNEQ_p77ModBz';
-        const PROXY_URL = 'https://games-razer-proxy.fly.dev';
-        const PROXY_SECRET = 'toktok_bolivia_secret_xyz123abc456';
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function() {
+  'use strict';
 
-        window.supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  const SUPABASE_URL = 'https://fmhjuisoibynjgfrqvgj.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_M7yramCIWbPyxnH3xwJNEQ_p77ModBz';
+  const PROXY_URL = 'https://games-razer-proxy.fly.dev';
+  const PROXY_SECRET = 'toktok_bolivia_secret_xyz123abc456';
 
-        let currentUser = null;
-        let userProfile = null;
-        let currentBalance = 0;
-        let currentPackage = null;
-        let packages = [];
-        let categories = [];
-        let currentCategory = 'all';
-        let playerId = '';
-        let clientIP = null;
-        let searchTimeout = null;
+  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        const formatCurrency = (amount) => 'Bs ' + (Number(amount) || 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        const escapeHTML = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => ({
-            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-        })[c]);
+  let currentUser = null;
+  let userProfile = null;
+  let balance = 0;
+  let currentPkg = null;
+  let packages = [];
+  let cats = [];
+  let currentCat = 'all';
+  let playerId = '';
+  let clientIP = null;
+  let searchTimer = null;
 
-        function showToast(message) {
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.textContent = message;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
-        }
+  const fmt = (n) => 'Bs ' + (Number(n) || 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  const esc = (v) => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-        async function getClientIP() {
-            try {
-                const res = await fetch('https://api.ipify.org?format=json');
-                const data = await res.json();
-                return data.ip;
-            } catch { return null; }
-        }
+  function toast(msg) {
+    const t = document.createElement('div');
+    t.className = 'toast';
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 3000);
+  }
 
-        function generarTokenCompra() {
-            return crypto.randomUUID() + '-' + Date.now();
-        }
+  async function getIP() {
+    try {
+      const r = await fetch('https://api.ipify.org?format=json');
+      return (await r.json()).ip;
+    } catch { return null; }
+  }
 
-        function bloquearAcceso(razon) {
-            document.body.innerHTML = `
-                <div class="access-blocked" style="background:#080808;color:#fff;font-family:Inter,sans-serif;">
-                    <div>
-                        <div class="access-blocked-icon">⛔</div>
-                        <h2 style="color:#ef233c;margin-bottom:12px;font-size:22px;font-weight:800;">Acceso bloqueado</h2>
-                        <p style="color:#94a3b8;margin-bottom:8px;font-size:14px;">${escapeHTML(razon || 'Tu conexión ha sido bloqueada.')}</p>
-                        <p style="color:#64748b;font-size:12px;margin-top:16px;">Contacta al soporte si crees que es un error.</p>
-                    </div>
-                </div>`;
-        }
+  function token() {
+    return crypto.randomUUID() + '-' + Date.now();
+  }
 
-        async function verificarIP(userId) {
-            try {
-                clientIP = await getClientIP();
-                if (!clientIP) return { permitido: true };
+  function block(razon) {
+    document.body.innerHTML = `
+      <div class="blocked" style="background:#0a0a0a;color:#fff;">
+        <div>
+          <div class="blocked-icon">⛔</div>
+          <h2 style="color:#ef4444;margin-bottom:12px;font-size:22px;font-weight:800;">Acceso bloqueado</h2>
+          <p style="color:#a3a3a3;margin-bottom:8px;font-size:14px;">${esc(razon || 'Conexión bloqueada.')}</p>
+          <p style="color:#737373;font-size:12px;margin-top:16px;">Contacta al soporte.</p>
+        </div>
+      </div>`;
+  }
 
-                const { data, error } = await supabase.rpc('registrar_ip_usuario', {
-                    p_user_id: userId,
-                    p_ip: clientIP,
-                    p_user_agent: navigator.userAgent
-                });
+  async function checkIP(userId) {
+    try {
+      clientIP = await getIP();
+      if (!clientIP) return { permitido: true };
+      const { data, error } = await sb.rpc('registrar_ip_usuario', {
+        p_user_id: userId, p_ip: clientIP, p_user_agent: navigator.userAgent
+      });
+      if (error) return { permitido: true };
+      if (!data.permitido) { block(data.razon_ip); return data; }
+      return data;
+    } catch { return { permitido: true }; }
+  }
 
-                if (error) return { permitido: true };
-                if (!data.permitido) {
-                    bloquearAcceso(data.razon_ip);
-                    return data;
-                }
-                return data;
-            } catch (e) {
-                return { permitido: true };
-            }
-        }
+  function open(id) {
+    document.getElementById(id).classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function close(id) {
+    document.getElementById(id).classList.remove('active');
+    document.body.style.overflow = '';
+  }
 
-        const openModal = (id) => {
-            const m = document.getElementById(id);
-            m.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        };
+  function showError(msg) {
+    document.getElementById('result-icon').className = 'result-icon error';
+    document.getElementById('result-icon').innerHTML = `
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/>
+      </svg>`;
+    document.getElementById('result-title').textContent = 'No se pudo procesar';
+    document.getElementById('result-msg').textContent = msg || 'Operación no completada.';
+    close('modal-confirm');
+    close('modal-detail');
+    open('modal-result');
+  }
 
-        const closeModal = (id) => {
-            const m = document.getElementById(id);
-            m.classList.remove('active');
-            document.body.style.overflow = '';
-        };
+  function validId(v) {
+    if (!v || v.trim() === '') return { ok: false, err: 'El ID es obligatorio' };
+    if (!/^\d+$/.test(v.trim())) return { ok: false, err: 'Solo números' };
+    const len = v.trim().length;
+    if (len < 8 || len > 12) return { ok: false, err: `Debe tener 8-12 dígitos (actual: ${len})` };
+    return { ok: true, msg: '✓ Formato válido' };
+  }
 
-        function showError(mensaje) {
-            const icon = document.getElementById('result-icon');
-            if (icon) icon.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
-            const title = document.getElementById('result-title');
-            if (title) title.textContent = 'No se pudo procesar';
-            const msg = document.getElementById('result-message');
-            if (msg) msg.textContent = mensaje || 'No se pudo completar la operación.';
-            closeModal('confirmation-modal');
-            closeModal('package-detail-modal');
-            openModal('result-modal');
-        }
+  async function loadCats() {
+    const { data, error } = await sb.from('categorias_juegos')
+      .select('id,nombre,icono,activo')
+      .eq('activo', true)
+      .order('nombre');
+    if (error) return;
+    cats = data || [];
+    const box = document.getElementById('cats');
+    let html = `<button class="cat-btn active" data-cat="all">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+      </svg>Todos</button>`;
+    for (const c of cats) {
+      html += `<button class="cat-btn" data-cat="${esc(c.id)}">${esc(c.nombre)}</button>`;
+    }
+    box.innerHTML = html;
+    box.querySelectorAll('.cat-btn').forEach(b => {
+      b.addEventListener('click', () => {
+        box.querySelectorAll('.cat-btn').forEach(x => x.classList.remove('active'));
+        b.classList.add('active');
+        currentCat = b.dataset.cat;
+        filterPkgs(document.getElementById('search').value, currentCat);
+      });
+    });
+  }
 
-        function validarID(valor) {
-            if (!valor || valor.trim() === '') {
-                return { valido: false, error: 'El ID es obligatorio' };
-            }
-            if (!/^\d+$/.test(valor.trim())) {
-                return { valido: false, error: 'El ID debe contener solo números' };
-            }
-            const len = valor.trim().length;
-            if (len < 8 || len > 12) {
-                return { valido: false, error: `El ID debe tener entre 8 y 12 dígitos (actual: ${len})` };
-            }
-            return { valido: true, mensaje: '✓ Formato válido' };
-        }
+  async function loadPkgs() {
+    try {
+      const { data, error } = await sb.from('paquetes_juegos')
+        .select('id,nombre,descripcion,precio,precio_original,porcentaje_descuento,stock,imagen_url,sku_razer,destacado,categoria_id')
+        .eq('activo', true)
+        .order('destacado', { ascending: false })
+        .order('creado_en', { ascending: false });
+      if (error) throw error;
+      packages = data || [];
+      filterPkgs('', currentCat);
+    } catch { toast('Error al cargar paquetes'); }
+  }
 
-        async function loadCategories() {
-            const { data, error } = await supabase
-                .from('categorias_juegos')
-                .select('id,nombre,icono,activo')
-                .eq('activo', true)
-                .order('nombre', { ascending: true });
-            if (error) return;
-            categories = data || [];
-            renderCategories();
-        }
+  function filterPkgs(q, cat) {
+    q = (q || '').trim().toLowerCase();
+    const out = [];
+    for (const p of packages) {
+      if (cat !== 'all' && p.categoria_id !== cat) continue;
+      if (q) {
+        const t = (p.nombre + ' ' + (p.descripcion || '')).toLowerCase();
+        if (!t.includes(q)) continue;
+      }
+      out.push(p);
+    }
+    renderPkgs(out);
+  }
 
-        function renderCategories() {
-            const container = document.getElementById('category-filters');
-            let html = '<button class="category-btn active" data-category="all"><i class="fas fa-th mr-1"></i> Todos</button>';
-            
-            for (const cat of categories) {
-                html += `<button class="category-btn" data-category="${escapeHTML(cat.id)}"><i class="fas ${escapeHTML(cat.icono || 'fa-gamepad')} mr-1"></i> ${escapeHTML(cat.nombre)}</button>`;
-            }
-            
-            container.innerHTML = html;
+  function renderPkgs(list) {
+    const cont = document.getElementById('products');
+    const empty = document.getElementById('empty');
+    if (!list || list.length === 0) {
+      cont.innerHTML = '';
+      empty.style.display = 'block';
+      return;
+    }
+    empty.style.display = 'none';
 
-            container.querySelectorAll('.category-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    container.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    currentCategory = btn.dataset.category;
-                    filterPackages(document.getElementById('game-search').value, currentCategory);
-                });
-            });
-        }
+    let html = '';
+    for (const p of list) {
+      const stock = Number(p.stock) || 0;
+      const discount = Number(p.porcentaje_descuento) || 0;
+      const price = Number(p.precio) || 0;
+      const orig = Number(p.precio_original) || (discount > 0 ? price / (1 - discount / 100) : 0);
 
-        async function loadPackages() {
-            try {
-                const { data, error } = await supabase
-                    .from('paquetes_juegos')
-                    .select('id,nombre,descripcion,precio,precio_original,porcentaje_descuento,stock,imagen_url,sku_razer,destacado,categoria_id')
-                    .eq('activo', true)
-                    .order('destacado', { ascending: false })
-                    .order('creado_en', { ascending: false });
-                if (error) throw error;
-                packages = data || [];
-                filterPackages('', currentCategory);
-            } catch (error) {
-                showToast('Error al cargar paquetes');
-            }
-        }
+      html += `
+        <div class="card" data-id="${esc(p.id)}">
+          <div class="card-img-wrap">
+            <img src="${esc(p.imagen_url || 'https://placehold.co/400x400/141414/10b981?text=TOKTOK')}" alt="${esc(p.nombre)}" class="card-img" loading="lazy" decoding="async">
+            ${discount > 0 ? `<span class="badge-off">-${discount}%</span>` : ''}
+            ${p.destacado ? `<span class="badge-star">
+              <svg style="width:9px;height:9px;" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              ★</span>` : ''}
+            <span class="badge-stock ${stock > 0 ? 'stock-in' : 'stock-out'}">${stock > 0 ? 'Disponible' : 'Agotado'}</span>
+          </div>
+          <div class="card-info">
+            <div class="card-name">${esc(p.nombre)}</div>
+            <div class="card-desc">${esc(p.descripcion || '')}</div>
+            <div class="price-row">
+              <span class="price">${fmt(price)}</span>
+              ${discount > 0 ? `<span class="price-old">${fmt(orig)}</span>` : ''}
+            </div>
+          </div>
+        </div>`;
+    }
+    cont.innerHTML = html;
 
-        function filterPackages(searchTerm = '', category = 'all') {
-            const q = searchTerm.trim().toLocaleLowerCase('es');
-            const filtered = [];
-            
-            for (const pkg of packages) {
-                if (category !== 'all' && pkg.categoria_id !== category) continue;
-                if (q) {
-                    const text = (pkg.nombre + ' ' + (pkg.descripcion || '')).toLocaleLowerCase('es');
-                    if (!text.includes(q)) continue;
-                }
-                filtered.push(pkg);
-            }
-            renderPackages(filtered);
-        }
+    cont.querySelectorAll('.card').forEach(c => {
+      c.addEventListener('click', () => {
+        const p = packages.find(x => x.id === c.dataset.id);
+        if (p && Number(p.stock) > 0) openDetail(p);
+        else if (p) toast('Paquete agotado');
+      });
+    });
+  }
 
-        function renderPackages(list) {
-            const cont = document.getElementById('packages-list');
-            const empty = document.getElementById('no-packages');
+  function openDetail(p) {
+    currentPkg = p;
+    playerId = '';
+    document.getElementById('player-id').value = '';
+    document.getElementById('player-feedback').innerHTML = '';
 
-            if (!list || list.length === 0) {
-                cont.innerHTML = '';
-                empty.classList.remove('hidden');
-                return;
-            }
-            empty.classList.add('hidden');
+    const price = Number(p.precio) || 0;
+    currentPkg._final = price;
 
-            let html = '';
-            for (const pkg of list) {
-                const stock = Number(pkg.stock) || 0;
-                const stockClass = stock > 0 ? 'stock-available' : 'stock-out';
-                const stockText = stock > 0 ? 'Disponible' : 'Agotado';
-                const discount = Number(pkg.porcentaje_descuento) || 0;
-                const finalPrice = Number(pkg.precio) || 0;
-                const originalPrice = Number(pkg.precio_original) || (discount > 0 ? finalPrice / (1 - discount / 100) : 0);
-                const hasDiscount = discount > 0;
+    document.getElementById('detail-title').textContent = p.nombre;
+    document.getElementById('detail-desc').textContent = p.descripcion || '';
+    document.getElementById('detail-price').textContent = fmt(price);
+    document.getElementById('total-price').textContent = fmt(price);
 
-                html += `
-                    <div class="product-card" data-package-id="${escapeHTML(pkg.id)}">
-                        <div class="product-image-wrap">
-                            <img src="${escapeHTML(pkg.imagen_url || 'https://placehold.co/400x400/141414/ef233c?text=TOKTOK')}" alt="${escapeHTML(pkg.nombre)}" class="product-image" loading="lazy" decoding="async">
-                            ${hasDiscount ? `<span class="badge-discount">-${discount}%</span>` : ''}
-                            ${pkg.destacado ? `<span class="badge-featured">★</span>` : ''}
-                            <span class="stock-badge ${stockClass}">${stockText}</span>
-                        </div>
-                        <div class="product-info">
-                            <div class="product-name">${escapeHTML(pkg.nombre)}</div>
-                            <div class="product-description">${escapeHTML(pkg.descripcion || '')}</div>
-                            <div class="price-row">
-                                <span class="product-price">${formatCurrency(finalPrice)}</span>
-                                ${hasDiscount ? `<span class="product-price-old">${formatCurrency(originalPrice)}</span>` : ''}
-                            </div>
-                        </div>
-                    </div>`;
-            }
-            cont.innerHTML = html;
+    const se = document.getElementById('detail-stock');
+    se.textContent = Number(p.stock) > 0 ? 'Disponible' : 'Agotado';
+    se.style.color = Number(p.stock) > 0 ? 'var(--green)' : '#ef4444';
 
-            cont.querySelectorAll('.product-card').forEach(card => {
-                card.addEventListener('click', () => {
-                    const pkg = packages.find(p => p.id === card.dataset.packageId);
-                    if (pkg && Number(pkg.stock) > 0) openPackageDetail(pkg);
-                    else if (pkg) showToast('Este paquete está agotado');
-                });
-            });
-        }
+    const img = document.getElementById('detail-img');
+    img.src = p.imagen_url || 'https://placehold.co/800x500/141414/10b981?text=TOKTOK';
+    img.alt = p.nombre;
 
-        function openPackageDetail(pkg) {
-            currentPackage = pkg;
-            playerId = '';
-            document.getElementById('player-id-input').value = '';
-            document.getElementById('player-id-feedback').innerHTML = '';
+    updateBtn();
+    open('modal-detail');
+  }
 
-            const finalPrice = Number(pkg.precio) || 0;
-            currentPackage._finalPrice = finalPrice;
+  function updateBtn() {
+    const btn = document.getElementById('buy-btn');
+    if (!currentPkg) return;
+    const hasStock = Number(currentPkg.stock) > 0;
+    const hasBalance = balance >= currentPkg._final;
+    const idOk = validId(playerId).ok;
+    btn.disabled = !hasStock || !hasBalance || !idOk;
 
-            document.getElementById('package-detail-title').textContent = pkg.nombre;
-            document.getElementById('package-detail-description').textContent = pkg.descripcion || 'Sin descripción';
-            document.getElementById('package-detail-price').textContent = formatCurrency(finalPrice);
-            document.getElementById('total-price').textContent = formatCurrency(finalPrice);
+    if (!hasStock) btn.innerHTML = 'Sin stock';
+    else if (!idOk) btn.innerHTML = 'Completa el ID';
+    else if (!hasBalance) btn.innerHTML = 'Saldo insuficiente';
+    else btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>Recargar ahora`;
+  }
 
-            const stockEl = document.getElementById('package-detail-stock');
-            stockEl.textContent = Number(pkg.stock) > 0 ? 'Disponible' : 'Agotado';
-            stockEl.style.color = Number(pkg.stock) > 0 ? '#10b981' : '#ef4444';
+  document.addEventListener('input', (e) => {
+    if (e.target.id === 'player-id') {
+      playerId = e.target.value;
+      const fb = document.getElementById('player-feedback');
+      const v = validId(playerId);
+      if (playerId.trim() === '') fb.innerHTML = '';
+      else if (v.ok) fb.innerHTML = `<div class="feedback-ok">${v.msg}</div>`;
+      else fb.innerHTML = `<div class="feedback-err">${v.err}</div>`;
+      updateBtn();
+    }
+  });
 
-            const imgEl = document.getElementById('package-detail-image');
-            imgEl.src = pkg.imagen_url || 'https://placehold.co/800x500/141414/ef233c?text=TOKTOK';
-            imgEl.alt = pkg.nombre;
+  async function loadProfile(userId) {
+    const { data, error } = await sb.from('user_profiles').select('*').eq('id', userId).single();
+    if (error && error.code !== 'PGRST116') return null;
+    return data;
+  }
 
-            updateBuyButton();
-            openModal('package-detail-modal');
-        }
+  async function calcBalance(userId) {
+    const { data, error } = await sb.from('transacciones')
+      .select('monto,tipo,metadata')
+      .eq('usuario_id', userId)
+      .eq('estado', 'completado');
+    if (error) return 0;
+    let b = 0;
+    for (const t of (data || [])) {
+      b += (t.tipo === 'deposito' || (t.tipo === 'transferencia' && t.metadata?.type === 'receive') ? 1 : -1) * Number(t.monto);
+    }
+    return b;
+  }
 
-        function updateBuyButton() {
-            const btn = document.getElementById('buy-package-btn');
-            if (!btn || !currentPackage) return;
+  function updateBalance() {
+    const el = document.getElementById('balance');
+    if (el) el.textContent = fmt(balance);
+  }
 
-            const hasStock = Number(currentPackage.stock) > 0;
-            const hasBalance = currentBalance >= currentPackage._finalPrice;
-            const validID = validarID(playerId).valido;
+  document.addEventListener('DOMContentLoaded', async () => {
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) { window.location.href = 'index.html'; return; }
 
-            btn.disabled = !hasStock || !hasBalance || !validID;
+    currentUser = session.user;
+    userProfile = await loadProfile(currentUser.id);
+    if (!userProfile) { window.location.href = 'index.html'; return; }
 
-            if (!hasStock) btn.innerHTML = '<i class="fas fa-times-circle mr-2"></i>Sin stock';
-            else if (!validID) btn.innerHTML = '<i class="fas fa-edit mr-2"></i>Completa el ID';
-            else if (!hasBalance) btn.innerHTML = '<i class="fas fa-wallet mr-2"></i>Saldo insuficiente';
-            else btn.innerHTML = '<i class="fas fa-bolt mr-2"></i>Recargar ahora';
-        }
+    const ipR = await checkIP(currentUser.id);
+    if (!ipR.permitido) return;
 
-        // Event listener para el ID (una sola vez)
-        document.addEventListener('input', (e) => {
-            if (e.target.id === 'player-id-input') {
-                const valor = e.target.value;
-                playerId = valor;
-                const feedback = document.getElementById('player-id-feedback');
-                const validacion = validarID(valor);
-                
-                if (valor.trim() === '') {
-                    feedback.innerHTML = '';
-                } else if (validacion.valido) {
-                    feedback.innerHTML = `<div class="field-valid">${validacion.mensaje}</div>`;
-                } else {
-                    feedback.innerHTML = `<div class="field-error">${validacion.error}</div>`;
-                }
-                updateBuyButton();
-            }
-        });
+    balance = await calcBalance(currentUser.id);
+    updateBalance();
 
-        async function loadUserProfile(userId) {
-            const { data, error } = await supabase.from('user_profiles').select('*').eq('id', userId).single();
-            if (error && error.code !== 'PGRST116') return null;
-            return data;
-        }
+    await loadCats();
+    await loadPkgs();
 
-        async function calculateBalance(userId) {
-            const { data, error } = await supabase
-                .from('transacciones')
-                .select('monto, tipo, metadata')
-                .eq('usuario_id', userId)
-                .eq('estado', 'completado');
-            if (error) return 0;
-            let balance = 0;
-            for (const t of (data || [])) {
-                balance += (t.tipo === 'deposito' || (t.tipo === 'transferencia' && t.metadata?.type === 'receive') ? 1 : -1) * Number(t.monto);
-            }
-            return balance;
-        }
+    document.getElementById('search').addEventListener('input', (e) => {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(() => filterPkgs(e.target.value, currentCat), 200);
+    });
 
-        function updateBalanceDisplay() {
-            const el = document.getElementById('current-balance');
-            if (el) el.textContent = formatCurrency(currentBalance);
-        }
+    document.getElementById('close-detail').onclick = () => close('modal-detail');
+    document.getElementById('buy-btn').onclick = startBuy;
+    document.getElementById('close-confirm').onclick = () => close('modal-confirm');
+    document.getElementById('cancel-btn').onclick = () => close('modal-confirm');
+    document.getElementById('confirm-btn').onclick = doBuy;
+    document.getElementById('close-result').onclick = () => {
+      close('modal-result');
+      window.location.reload();
+    };
+  });
 
-        document.addEventListener('DOMContentLoaded', async () => {
-            const { data: { session } } = await supabase.auth.getSession();
-            if (!session) { window.location.href = 'index.html'; return; }
+  function startBuy() {
+    const total = currentPkg._final;
+    document.getElementById('confirm-text').innerHTML = `
+      <div style="background:#0d1a16;padding:14px;border-radius:10px;border:1px solid rgba(16,185,129,0.2);">
+        <div style="font-weight:700;margin-bottom:8px;color:#fff;">${esc(currentPkg.nombre)}</div>
+        <div style="font-size:13px;color:#a3a3a3;">ID: <strong style="color:#10b981;">${esc(playerId)}</strong></div>
+        <div style="font-size:13px;color:#a3a3a3;margin-top:4px;">Total: <strong style="color:#10b981;">${fmt(total)}</strong></div>
+      </div>`;
+    open('modal-confirm');
+  }
 
-            currentUser = session.user;
-            userProfile = await loadUserProfile(currentUser.id);
-            if (!userProfile) { window.location.href = 'index.html'; return; }
+  async function doBuy() {
+    const btn = document.getElementById('confirm-btn');
+    const txt = document.getElementById('confirm-txt');
+    const spin = document.getElementById('confirm-spin');
 
-            const ipResult = await verificarIP(currentUser.id);
-            if (!ipResult.permitido) return;
+    btn.disabled = true;
+    txt.textContent = 'Procesando...';
+    spin.style.display = 'block';
 
-            currentBalance = await calculateBalance(currentUser.id);
-            updateBalanceDisplay();
+    try {
+      const tries = JSON.parse(localStorage.getItem('intentos_compra') || '[]');
+      const now = Date.now();
+      const rec = tries.filter(t => now - t < 60000);
+      if (rec.length >= 3) { toast('Demasiados intentos. Espera 1 minuto.'); return; }
+      rec.push(now);
+      localStorage.setItem('intentos_compra', JSON.stringify(rec));
 
-            await loadCategories();
-            await loadPackages();
+      const total = currentPkg._final;
+      const tk = token();
 
-            // Búsqueda con debounce (más rápido)
-            document.getElementById('game-search').addEventListener('input', (e) => {
-                clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(() => {
-                    filterPackages(e.target.value, currentCategory);
-                }, 200);
-            });
+      const { error: tErr } = await sb.from('compras_tokens').insert([{ user_id: currentUser.id, token: tk }]);
+      if (tErr) throw new Error('No se pudo iniciar la compra');
 
-            document.getElementById('close-package-detail').addEventListener('click', () => closeModal('package-detail-modal'));
-            document.getElementById('buy-package-btn').addEventListener('click', initiatePurchase);
-            document.getElementById('close-confirmation-modal').addEventListener('click', () => closeModal('confirmation-modal'));
-            document.getElementById('cancel-purchase').addEventListener('click', () => closeModal('confirmation-modal'));
-            document.getElementById('confirm-purchase').addEventListener('click', processPurchase);
-            document.getElementById('close-result-modal').addEventListener('click', () => {
-                closeModal('result-modal');
-                window.location.reload();
-            });
-        });
+      const res = await fetch(PROXY_URL + '/process-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-proxy-secret': PROXY_SECRET },
+        body: JSON.stringify({
+          user_id: currentUser.id,
+          package_id: currentPkg.id,
+          package_sku: currentPkg.sku_razer,
+          price: total,
+          token: tk,
+          custom_value: { userName: playerId },
+          ip: clientIP,
+          user_agent: navigator.userAgent
+        })
+      });
 
-        function initiatePurchase() {
-            const totalPrice = currentPackage._finalPrice;
+      const result = await res.json();
 
-            document.getElementById('confirmation-text').innerHTML = `
-                <div style="background:#1a1a1a;padding:12px;border-radius:8px;" class="text-sm">
-                    <strong>${escapeHTML(currentPackage.nombre)}</strong><br>
-                    Total: <strong style="color:#ff4d5e;">${formatCurrency(totalPrice)}</strong><br>
-                    ID: <strong>${escapeHTML(playerId)}</strong>
-                </div>`;
-            openModal('confirmation-modal');
-        }
+      if (!res.ok) throw new Error(result.message || 'Error al procesar');
 
-        async function processPurchase() {
-            const btn = document.getElementById('confirm-purchase');
-            const txt = document.getElementById('confirm-purchase-text');
-            const spin = document.getElementById('confirm-purchase-spinner');
+      balance = Number(result.saldo_restante);
+      updateBalance();
 
-            btn.disabled = true;
-            txt.textContent = 'Procesando...';
-            spin.classList.remove('hidden');
+      document.getElementById('result-icon').className = 'result-icon';
+      document.getElementById('result-icon').innerHTML = `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 6 9 17l-5-5"/>
+        </svg>`;
+      document.getElementById('result-title').textContent = '¡Recarga exitosa!';
+      document.getElementById('result-msg').textContent = `Se descontó ${fmt(result.precio_cobrado)} de tu saldo.`;
 
-            try {
-                const intentos = JSON.parse(localStorage.getItem('intentos_compra') || '[]');
-                const ahora = Date.now();
-                const recientes = intentos.filter(t => ahora - t < 60000);
-                if (recientes.length >= 3) {
-                    showToast('Demasiados intentos. Espera 1 minuto.');
-                    return;
-                }
-                recientes.push(ahora);
-                localStorage.setItem('intentos_compra', JSON.stringify(recientes));
+      close('modal-confirm');
+      close('modal-detail');
+      open('modal-result');
 
-                const totalPrice = currentPackage._finalPrice;
-                const purchaseToken = generarTokenCompra();
+    } catch (err) {
+      console.error(err);
+      const msg = err.message || 'No se pudo completar la recarga.';
+      if (msg.includes('bloqueada')) block(msg);
+      else showError(msg);
+    } finally {
+      btn.disabled = false;
+      txt.textContent = 'Confirmar';
+      spin.style.display = 'none';
+    }
+  }
 
-                const { error: tokenError } = await supabase
-                    .from('compras_tokens')
-                    .insert([{ user_id: currentUser.id, token: purchaseToken }]);
-
-                if (tokenError) throw new Error('No se pudo iniciar la compra');
-
-                const response = await fetch(`${PROXY_URL}/process-order`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-proxy-secret': PROXY_SECRET
-                    },
-                    body: JSON.stringify({
-                        user_id: currentUser.id,
-                        package_id: currentPackage.id,
-                        package_sku: currentPackage.sku_razer,
-                        price: totalPrice,
-                        token: purchaseToken,
-                        custom_value: { userName: playerId },
-                        ip: clientIP,
-                        user_agent: navigator.userAgent
-                    })
-                });
-
-                const result = await response.json();
-
-                if (!response.ok) {
-                    throw new Error(result.message || 'Error al procesar');
-                }
-
-                currentBalance = Number(result.saldo_restante);
-                updateBalanceDisplay();
-
-                document.getElementById('result-title').textContent = '¡Recarga exitosa!';
-                document.getElementById('result-message').textContent = 
-                    `Se descontó ${formatCurrency(result.precio_cobrado)} de tu saldo.`;
-                document.getElementById('result-icon').innerHTML = '<i class="fas fa-check-circle"></i>';
-
-                closeModal('confirmation-modal');
-                closeModal('package-detail-modal');
-                openModal('result-modal');
-
-            } catch (error) {
-                console.error('Error:', error);
-                const msg = error.message || 'No se pudo completar la recarga.';
-                if (msg.includes('bloqueada') || msg.includes('Acceso')) {
-                    bloquearAcceso(msg);
-                } else {
-                    showError(msg);
-                }
-            } finally {
-                btn.disabled = false;
-                txt.textContent = 'Confirmar';
-                spin.classList.add('hidden');
-            }
-        }
-    </script>
+})();
+</script>
 </body>
 </html>
