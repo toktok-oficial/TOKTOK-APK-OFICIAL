@@ -19,7 +19,8 @@
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap');
 
         :root {
-            --primary: #ef233c;
+            --primary: #e51c32;
+            --primary-dark: #c1121f;
             --bg-dark: #080808;
             --bg-card: #141414;
             --text-light: #e2e8f0;
@@ -509,15 +510,17 @@
         };
 
         function showError(mensaje) {
-            document.getElementById('result-icon').innerHTML = '<i class="fas fa-exclamation-circle"></i>';
-            document.getElementById('result-title').textContent = 'No se pudo procesar';
-            document.getElementById('result-message').textContent = mensaje || 'No se pudo completar la operación.';
+            const icon = document.getElementById('result-icon');
+            if (icon) icon.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
+            const title = document.getElementById('result-title');
+            if (title) title.textContent = 'No se pudo procesar';
+            const msg = document.getElementById('result-message');
+            if (msg) msg.textContent = mensaje || 'No se pudo completar la operación.';
             closeModal('confirmation-modal');
             closeModal('package-detail-modal');
             openModal('result-modal');
         }
 
-        // Validación de formato de ID
         function validarFormatoID(valor, tipo) {
             if (!valor || valor.trim() === '') {
                 return { valido: false, error: 'Este campo es obligatorio' };
@@ -759,6 +762,7 @@
 
         function updateBuyButton() {
             const btn = document.getElementById('buy-package-btn');
+            if (!btn) return;
             if (!currentPackage) { btn.disabled = true; return; }
 
             const hasStock = Number(currentPackage.stock) > 0;
@@ -806,7 +810,10 @@
         }
 
         function updateBalanceDisplay() {
-            document.getElementById('current-balance').textContent = formatCurrency(currentBalance);
+            const el = document.getElementById('current-balance');
+            if (el) {
+                el.textContent = formatCurrency(currentBalance);
+            }
         }
 
         async function getCategoryName(categoryId) {
