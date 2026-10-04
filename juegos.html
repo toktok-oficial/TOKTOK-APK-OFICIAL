@@ -68,7 +68,7 @@
             border: 1px solid #333;
             border-radius: 10px;
             font-size: 13px;
-            background: #141414 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ef233c'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'%3E%3C/path%3E%3C/svg%3E") no-repeat 12px center;
+            background: #141414 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ef233c'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'%3E%3C/path%3E%3C/svg%3E") no-repeat 12px center;
             background-size: 18px;
             color: var(--text-light);
         }
@@ -243,30 +243,6 @@
             border: 1px solid #333;
         }
 
-        .dynamic-form-field { margin-bottom: 12px; }
-        .dynamic-form-label {
-            display: block; font-size: 11px; font-weight: 700;
-            color: var(--text-muted); margin-bottom: 6px;
-            letter-spacing: 0.05em;
-        }
-        .dynamic-form-input,
-        .dynamic-form-select,
-        .dynamic-form-textarea {
-            width: 100%; padding: 10px 12px;
-            border: 1px solid #333;
-            border-radius: 10px; font-size: 14px;
-            background: #141414;
-            color: var(--text-light);
-        }
-        .dynamic-form-input:focus,
-        .dynamic-form-select:focus,
-        .dynamic-form-textarea:focus {
-            border-color: var(--primary);
-            outline: 2px solid rgba(239, 35, 60, 0.18);
-        }
-        .dynamic-form-select { appearance: none; cursor: pointer; }
-        .dynamic-form-textarea { min-height: 60px; resize: vertical; }
-
         .field-error { color: #ef4444; font-size: 11px; margin-top: 4px; }
         .field-valid { color: #10b981; font-size: 11px; margin-top: 4px; }
 
@@ -360,7 +336,14 @@
                 <div class="text-xs text-gray-500">Total a pagar:</div>
                 <div id="total-price" class="text-xl font-bold" style="color: #ff4d5e;"></div>
             </div>
-            <div id="dynamic-form" class="mb-4"></div>
+
+            <div class="mb-3">
+                <label class="block text-xs font-bold text-gray-400 mb-2">ID de Jugador *</label>
+                <input type="text" id="player-id-input" class="input-field" placeholder="Ej: 123456789" inputmode="numeric">
+                <div id="player-id-feedback"></div>
+                <p class="text-xs text-gray-500 mt-1">Ingresá tu ID de jugador (solo números, 8-12 dígitos)</p>
+            </div>
+
             <div class="mb-3">
                 <label class="block text-xs font-bold text-gray-400 mb-2">Notas (opcional)</label>
                 <textarea id="delivery-notes" class="input-field" placeholder="Instrucciones especiales" rows="2"></textarea>
@@ -419,7 +402,6 @@
         let packages = [];
         let categories = [];
         let currentCategory = 'all';
-        let dynamicRequirements = [];
         let formData = {};
         let clientIP = null;
 
@@ -512,21 +494,18 @@
             openModal('result-modal');
         }
 
-        function validarFormatoID(valor, tipo) {
+        function validarID(valor) {
             if (!valor || valor.trim() === '') {
-                return { valido: false, error: 'Este campo es obligatorio' };
+                return { valido: false, error: 'El ID es obligatorio' };
             }
-            if (tipo === 'player_id' || tipo === 'user_id' || tipo === 'id') {
-                if (!/^\d+$/.test(valor.trim())) {
-                    return { valido: false, error: 'El ID debe contener solo números' };
-                }
-                const len = valor.trim().length;
-                if (len < 8 || len > 12) {
-                    return { valido: false, error: `El ID debe tener entre 8 y 12 dígitos (actual: ${len})` };
-                }
-                return { valido: true, mensaje: '✓ Formato válido' };
+            if (!/^\d+$/.test(valor.trim())) {
+                return { valido: false, error: 'El ID debe contener solo números' };
             }
-            return { valido: true };
+            const len = valor.trim().length;
+            if (len < 8 || len > 12) {
+                return { valido: false, error: `El ID debe tener entre 8 y 12 dígitos (actual: ${len})` };
+            }
+            return { valido: true, mensaje: '✓ Formato válido' };
         }
 
         async function loadCategories() {
@@ -642,8 +621,10 @@
 
         async function openPackageDetail(pkg) {
             currentPackage = pkg;
-            formData = {};
+            formData = { player_id: '' };
             document.getElementById('delivery-notes').value = '';
+            document.getElementById('player-id-input').value = '';
+            document.getElementById('player-id-feedback').innerHTML = '';
 
             const finalPrice = Number(pkg.precio) || 0;
             currentPackage._finalPrice = finalPrice;
@@ -661,92 +642,31 @@
             imgEl.src = pkg.imagen_url || 'https://placehold.co/800x500/141414/ef233c?text=TOKTOK';
             imgEl.alt = pkg.nombre;
 
-            await loadDynamicForm(pkg.categoria_id);
             updateBuyButton();
             openModal('package-detail-modal');
         }
 
-        async function loadDynamicForm(categoryId) {
-            const cont = document.getElementById('dynamic-form');
-            cont.innerHTML = '<p class="text-xs text-gray-500">Cargando formulario...</p>';
+        document.addEventListener('input', (e) => {
+            if (e.target.id === 'player-id-input') {
+                const valor = e.target.value;
+                const feedback = document.getElementById('player-id-feedback');
 
-            const { data, error } = await supabase
-                .from('requisitos_categorias_juegos')
-                .select('*')
-                .eq('categoria_id', categoryId)
-                .eq('activo', true)
-                .order('orden', { ascending: true });
+                formData.player_id = valor;
 
-            if (error) {
-                console.error('Error requisitos:', error);
-                cont.innerHTML = '';
-                dynamicRequirements = [];
-                return;
-            }
-
-            dynamicRequirements = data || [];
-
-            if (dynamicRequirements.length === 0) {
-                cont.innerHTML = '';
-                return;
-            }
-
-            cont.innerHTML = dynamicRequirements.map(req => {
-                const id = `field-${req.nombre_campo}`;
-                let input = '';
-
-                if (req.tipo_campo === 'select') {
-                    const opts = Array.isArray(req.opciones_campo) ? req.opciones_campo : [];
-                    input = `
-                        <select id="${escapeHTML(id)}" class="dynamic-form-select" ${req.es_requerido ? 'required' : ''}>
-                            <option value="">Selecciona una opción</option>
-                            ${opts.map(o => {
-                                const val = typeof o === 'object' && o !== null ? (o.value ?? o.id ?? o.label) : o;
-                                const lbl = typeof o === 'object' && o !== null ? (o.label ?? o.nombre ?? val) : o;
-                                return `<option value="${escapeHTML(val)}">${escapeHTML(lbl)}</option>`;
-                            }).join('')}
-                        </select>`;
-                } else if (req.tipo_campo === 'textarea') {
-                    input = `<textarea id="${escapeHTML(id)}" class="dynamic-form-textarea" placeholder="${escapeHTML(req.placeholder || '')}" ${req.es_requerido ? 'required' : ''}></textarea>`;
-                } else {
-                    const t = ['number', 'email', 'tel', 'url', 'password'].includes(req.tipo_campo) ? req.tipo_campo : 'text';
-                    input = `<input type="${t}" id="${escapeHTML(id)}" class="dynamic-form-input" placeholder="${escapeHTML(req.placeholder || '')}" ${req.es_requerido ? 'required' : ''}>`;
+                const validacion = validarID(valor);
+                if (feedback) {
+                    if (valor.trim() === '') {
+                        feedback.innerHTML = '';
+                    } else if (validacion.valido) {
+                        feedback.innerHTML = `<div class="field-valid">${validacion.mensaje}</div>`;
+                    } else {
+                        feedback.innerHTML = `<div class="field-error">${validacion.error}</div>`;
+                    }
                 }
 
-                return `
-                    <div class="dynamic-form-field">
-                        <label for="${escapeHTML(id)}" class="dynamic-form-label">${escapeHTML(req.etiqueta_campo)} ${req.es_requerido ? '*' : ''}</label>
-                        ${input}
-                        <div id="feedback-${escapeHTML(req.nombre_campo)}"></div>
-                        ${req.texto_ayuda ? `<p class="text-xs text-gray-500 mt-1">${escapeHTML(req.texto_ayuda)}</p>` : ''}
-                    </div>`;
-            }).join('');
-
-            dynamicRequirements.forEach(req => {
-                const el = document.getElementById(`field-${req.nombre_campo}`);
-                const feedback = document.getElementById(`feedback-${req.nombre_campo}`);
-                if (!el) return;
-
-                const handler = () => {
-                    formData[req.nombre_campo] = el.value;
-
-                    const validacion = validarFormatoID(el.value, req.nombre_campo);
-                    if (feedback) {
-                        if (el.value.trim() === '') {
-                            feedback.innerHTML = '';
-                        } else if (validacion.valido) {
-                            feedback.innerHTML = `<div class="field-valid">${validacion.mensaje || '✓ Formato válido'}</div>`;
-                        } else {
-                            feedback.innerHTML = `<div class="field-error">${validacion.error}</div>`;
-                        }
-                    }
-
-                    updateBuyButton();
-                };
-                el.addEventListener('input', handler);
-                el.addEventListener('change', handler);
-            });
-        }
+                updateBuyButton();
+            }
+        });
 
         function updateBuyButton() {
             const btn = document.getElementById('buy-package-btn');
@@ -756,20 +676,12 @@
             const hasStock = Number(currentPackage.stock) > 0;
             const hasBalance = currentBalance >= currentPackage._finalPrice;
 
-            let validForm = true;
-            dynamicRequirements.forEach(req => {
-                if (req.es_requerido) {
-                    const v = formData[req.nombre_campo];
-                    if (!v || v.trim() === '') { validForm = false; return; }
-                    const val = validarFormatoID(v, req.nombre_campo);
-                    if (!val.valido) validForm = false;
-                }
-            });
+            const validID = validarID(formData.player_id || '').valido;
 
-            btn.disabled = !hasStock || !hasBalance || !validForm;
+            btn.disabled = !hasStock || !hasBalance || !validID;
 
             if (!hasStock) btn.innerHTML = '<i class="fas fa-times-circle mr-2"></i>Sin stock';
-            else if (!validForm) btn.innerHTML = '<i class="fas fa-edit mr-2"></i>Completa el formulario';
+            else if (!validID) btn.innerHTML = '<i class="fas fa-edit mr-2"></i>Completa el ID';
             else if (!hasBalance) btn.innerHTML = '<i class="fas fa-wallet mr-2"></i>Saldo insuficiente';
             else btn.innerHTML = '<i class="fas fa-bolt mr-2"></i>Recargar ahora';
         }
@@ -799,11 +711,6 @@
             if (el) {
                 el.textContent = formatCurrency(currentBalance);
             }
-        }
-
-        async function getCategoryName(categoryId) {
-            const cat = categories.find(c => c.id === categoryId);
-            return cat ? cat.nombre : 'Sin categoría';
         }
 
         document.addEventListener('DOMContentLoaded', async () => {
@@ -842,24 +749,13 @@
             const totalPrice = currentPackage._finalPrice;
             const notes = document.getElementById('delivery-notes').value.trim();
 
-            let formHtml = '';
-            if (Object.keys(formData).length > 0) {
-                formHtml = `
-                    <div class="mb-2">
-                        <strong>Datos:</strong><br>
-                        ${Object.entries(formData).map(([k, v]) => `${escapeHTML(k)}: ${escapeHTML(v)}`).join('<br>')}
-                    </div>`;
-            }
-
             document.getElementById('confirmation-text').innerHTML = `
                 <div style="background:#1a1a1a;padding:12px;border-radius:8px;margin-bottom:12px;" class="text-sm">
                     <strong>${escapeHTML(currentPackage.nombre)}</strong><br>
-                    Total: <strong style="color:#ff4d5e;">${formatCurrency(totalPrice)}</strong>
+                    Total: <strong style="color:#ff4d5e;">${formatCurrency(totalPrice)}</strong><br>
+                    ID: <strong>${escapeHTML(formData.player_id)}</strong>
                 </div>
-                <div class="text-xs">
-                    ${formHtml}
-                    ${notes ? `<div><strong>Notas:</strong><br>${escapeHTML(notes)}</div>` : ''}
-                </div>`;
+                ${notes ? `<div class="text-xs"><strong>Notas:</strong><br>${escapeHTML(notes)}</div>` : ''}`;
             openModal('confirmation-modal');
         }
 
@@ -904,7 +800,7 @@
                         package_sku: currentPackage.sku_razer,
                         price: totalPrice,
                         token: purchaseToken,
-                        custom_value: formData,
+                        custom_value: { userName: formData.player_id },
                         ip: clientIP,
                         user_agent: navigator.userAgent
                     })
@@ -914,18 +810,6 @@
 
                 if (!response.ok) {
                     const msg = result.message || 'Error al procesar';
-                    const msgLower = msg.toLowerCase();
-
-                    if (msgLower.includes('user_name') ||
-                        msgLower.includes('user name') ||
-                        msgLower.includes('player not found') ||
-                        msgLower.includes('account not found') ||
-                        msgLower.includes('cuenta no encontrada') ||
-                        msgLower.includes('invalid user') ||
-                        msgLower.includes('id de jugador')) {
-                        throw new Error('El ID de jugador no es válido o no existe. Verifica e intenta de nuevo. No se descontó saldo.');
-                    }
-
                     throw new Error(msg);
                 }
 
