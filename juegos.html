@@ -15,20 +15,24 @@
                    img-src 'self' data: https:; 
                    connect-src 'self' https://*.supabase.co https://games-razer-proxy.fly.dev https://api.ipify.org;">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
 
         :root {
             --primary: #e51c32;
-            --primary-dark: #c1121f;
             --bg-dark: #080808;
-            --bg-card: #141414;
             --text-light: #e2e8f0;
             --text-muted: #94a3b8;
             color-scheme: dark;
         }
 
-        * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+        * { 
+            -webkit-tap-highlight-color: transparent; 
+            box-sizing: border-box; 
+            margin: 0;
+            padding: 0;
+        }
+
+        html { scroll-behavior: auto; }
 
         body {
             font-family: 'Inter', sans-serif;
@@ -42,17 +46,17 @@
             -webkit-font-smoothing: antialiased;
         }
 
+        /* HEADER - Sin transiciones */
         .mobile-header {
             position: sticky; top: 0; z-index: 40;
-            background: rgba(8, 8, 8, 0.96);
+            background: #080808;
             border-bottom: 1px solid #292929;
             padding: 14px 18px;
             display: flex; align-items: center; justify-content: space-between;
         }
         .mobile-header-title {
-            font-family: 'Orbitron', sans-serif;
             font-size: 20px; font-weight: 900; color: #fff;
-            letter-spacing: 0.15em;
+            letter-spacing: 0.1em;
         }
         .header-balance {
             background: #e51c32;
@@ -61,6 +65,7 @@
             font-size: 13px; font-weight: 700; color: white;
         }
 
+        /* BÚSQUEDA */
         .search-container { padding: 18px 16px 12px; }
         .search-input {
             width: 100%;
@@ -71,14 +76,17 @@
             background: #141414 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ef233c'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'%3E%3C/path%3E%3C/svg%3E") no-repeat 12px center;
             background-size: 18px;
             color: var(--text-light);
+            outline: none;
         }
-        .search-input:focus { border-color: var(--primary); outline: 2px solid rgba(239, 35, 60, 0.18); }
+        .search-input:focus { border-color: var(--primary); }
         .search-input::placeholder { color: var(--text-muted); }
 
+        /* CATEGORÍAS */
         .category-filters {
             display: flex; gap: 8px;
             padding: 4px 16px 16px;
             overflow-x: auto; scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
         }
         .category-filters::-webkit-scrollbar { display: none; }
         .category-btn {
@@ -89,11 +97,13 @@
             color: #c5c5c5;
             font-size: 11px; font-weight: 700;
             white-space: nowrap; cursor: pointer;
+            font-family: inherit;
         }
         .category-btn.active {
             background: #e51c32; color: #fff; border-color: #e51c32;
         }
 
+        /* PRODUCTOS - Optimizado para 120fps */
         .products-container { padding: 4px 14px 28px; }
         .products-grid {
             display: grid;
@@ -113,10 +123,12 @@
             background: #141414;
             overflow: hidden;
             cursor: pointer;
-            transition: border-color 0.15s ease, transform 0.15s ease;
+            /* Optimizaciones de render */
+            content-visibility: auto;
+            contain-intrinsic-size: 230px;
+            contain: layout style paint;
         }
-        .product-card:active { transform: scale(0.985); }
-        .product-card:hover { border-color: #e51c32; }
+        .product-card:active { border-color: #e51c32; }
 
         .product-image-wrap { position: relative; overflow: hidden; }
         .product-image {
@@ -160,13 +172,13 @@
         .product-price { color: #ff4d5e; font-weight: 800; font-size: 13px; }
         .product-price-old { color: #6b7280; font-size: 9px; text-decoration: line-through; }
 
+        /* MODALES */
         .modal {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0, 0, 0, 0.8);
             z-index: 100;
             display: flex; align-items: flex-end; justify-content: center;
             opacity: 0; visibility: hidden;
-            transition: opacity 0.2s, visibility 0.2s;
         }
         .modal.active { opacity: 1; visibility: visible; }
         .modal-content {
@@ -174,18 +186,16 @@
             width: 100%; max-width: 480px;
             border-radius: 20px 20px 0 0;
             padding: 20px 16px calc(20px + env(safe-area-inset-bottom));
-            transform: translateY(30px);
-            transition: transform 0.2s;
             max-height: 88vh;
             overflow-y: auto;
             border: 1px solid #333;
         }
-        .modal.active .modal-content { transform: translateY(0); }
         @media (min-width: 560px) {
             .modal { align-items: center; }
             .modal-content { border-radius: 16px; }
         }
 
+        /* BOTONES */
         .btn-primary {
             background: #e51c32;
             color: white;
@@ -200,6 +210,7 @@
             width: 100%;
             letter-spacing: 0.03em;
             cursor: pointer;
+            font-family: inherit;
         }
         .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 
@@ -212,6 +223,7 @@
             border: none;
             font-size: 14px;
             cursor: pointer;
+            font-family: inherit;
         }
 
         .loading-spinner {
@@ -219,21 +231,23 @@
             border: 2px solid rgba(255,255,255,0.3);
             border-radius: 50%;
             border-top-color: #ef233c;
-            animation: spin 1s linear infinite;
+            animation: spin 0.6s linear infinite;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
+        /* INPUTS */
         .input-field {
             width: 100%;
             padding: 10px 12px;
             border: 1px solid #333;
             border-radius: 10px;
             font-size: 14px;
-            margin-bottom: 10px;
             background: #141414;
             color: var(--text-light);
+            outline: none;
+            font-family: inherit;
         }
-        .input-field:focus { border-color: var(--primary); outline: 2px solid rgba(239, 35, 60, 0.18); }
+        .input-field:focus { border-color: var(--primary); }
         .input-field::placeholder { color: var(--text-muted); }
 
         .product-detail-image {
@@ -269,15 +283,43 @@
             background: #e51c32; color: white;
             font-weight: 600; font-size: 13px;
             z-index: 200;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
         }
 
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
+        /* Tailwind helpers (por si el CDN tarda) */
+        .flex { display: flex; }
+        .justify-between { justify-content: space-between; }
+        .justify-center { justify-content: center; }
+        .items-center { align-items: center; }
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
+        .hidden { display: none; }
+        .mb-2 { margin-bottom: 8px; }
+        .mb-3 { margin-bottom: 12px; }
+        .mb-4 { margin-bottom: 16px; }
+        .mt-1 { margin-top: 4px; }
+        .mr-1 { margin-right: 4px; }
+        .mr-2 { margin-right: 8px; }
+        .ml-2 { margin-left: 8px; }
+        .space-x-3 > * + * { margin-left: 12px; }
+        .flex-1 { flex: 1; }
+        .text-white { color: #fff; }
+        .text-gray-300 { color: #d1d5db; }
+        .text-gray-400 { color: #9ca3af; }
+        .text-gray-500 { color: #6b7280; }
+        .text-xs { font-size: 12px; }
+        .text-sm { font-size: 14px; }
+        .text-lg { font-size: 18px; }
+        .text-xl { font-size: 20px; }
+        .font-bold { font-weight: 700; }
+        .font-medium { font-weight: 500; }
+        .py-10 { padding-top: 40px; padding-bottom: 40px; }
+        .px-4 { padding-left: 16px; padding-right: 16px; }
+        .text-4xl { font-size: 36px; }
+        .w-full { width: 100%; }
+        .py-3 { padding-top: 12px; padding-bottom: 12px; }
+        .px-4 { padding-left: 16px; padding-right: 16px; }
+        .rounded-lg { border-radius: 8px; }
+        .bg-gray-700 { background-color: #374151; }
     </style>
 </head>
 <body>
@@ -312,12 +354,13 @@
         </div>
     </div>
 
+    <!-- Modal detalle -->
     <div id="package-detail-modal" class="modal">
         <div class="modal-content">
             <div class="flex justify-between items-center mb-3">
                 <h3 class="text-lg font-bold text-white" id="package-detail-title"></h3>
-                <button id="close-package-detail" class="text-gray-400 hover:text-white">
-                    <i class="fas fa-times text-xl"></i>
+                <button id="close-package-detail" class="text-gray-400" style="background:none;border:none;cursor:pointer;font-size:20px;">
+                    <i class="fas fa-times"></i>
                 </button>
             </div>
             <img id="package-detail-image" class="product-detail-image" src="" alt="">
@@ -325,7 +368,7 @@
             <div class="flex justify-between items-center mb-3">
                 <div>
                     <div class="text-xs text-gray-500">Stock:</div>
-                    <div id="package-detail-stock" class="text-base font-semibold"></div>
+                    <div id="package-detail-stock" class="text-lg font-bold"></div>
                 </div>
                 <div class="text-right">
                     <div class="text-xs text-gray-500">Precio:</div>
@@ -339,26 +382,23 @@
 
             <div class="mb-3">
                 <label class="block text-xs font-bold text-gray-400 mb-2">ID de Jugador *</label>
-                <input type="text" id="player-id-input" class="input-field" placeholder="Ej: 123456789" inputmode="numeric">
+                <input type="text" id="player-id-input" class="input-field" placeholder="Ej: 123456789" inputmode="numeric" autocomplete="off">
                 <div id="player-id-feedback"></div>
                 <p class="text-xs text-gray-500 mt-1">Ingresá tu ID de jugador (solo números, 8-12 dígitos)</p>
             </div>
 
-            <div class="mb-3">
-                <label class="block text-xs font-bold text-gray-400 mb-2">Notas (opcional)</label>
-                <textarea id="delivery-notes" class="input-field" placeholder="Instrucciones especiales" rows="2"></textarea>
-            </div>
             <button id="buy-package-btn" class="btn-primary" disabled>
                 <i class="fas fa-bolt mr-2"></i> Recargar ahora
             </button>
         </div>
     </div>
 
+    <!-- Confirmación -->
     <div id="confirmation-modal" class="modal">
         <div class="modal-content">
             <div class="flex justify-between items-center mb-3">
                 <h3 class="text-lg font-bold text-white">Confirmar recarga</h3>
-                <button id="close-confirmation-modal" class="text-gray-400 hover:text-white"><i class="fas fa-times text-xl"></i></button>
+                <button id="close-confirmation-modal" class="text-gray-400" style="background:none;border:none;cursor:pointer;font-size:20px;"><i class="fas fa-times"></i></button>
             </div>
             <div class="mb-4"><div id="confirmation-text" class="text-gray-300 text-sm"></div></div>
             <div class="flex space-x-3">
@@ -371,6 +411,7 @@
         </div>
     </div>
 
+    <!-- Resultado -->
     <div id="result-modal" class="modal">
         <div class="modal-content">
             <div class="flex justify-center mb-3">
@@ -402,8 +443,9 @@
         let packages = [];
         let categories = [];
         let currentCategory = 'all';
-        let formData = {};
+        let playerId = '';
         let clientIP = null;
+        let searchTimeout = null;
 
         const formatCurrency = (amount) => 'Bs ' + (Number(amount) || 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         const escapeHTML = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => ({
@@ -453,19 +495,13 @@
                     p_user_agent: navigator.userAgent
                 });
 
-                if (error) {
-                    console.warn('Error verificando IP:', error);
-                    return { permitido: true };
-                }
-
+                if (error) return { permitido: true };
                 if (!data.permitido) {
                     bloquearAcceso(data.razon_ip);
                     return data;
                 }
-
                 return data;
             } catch (e) {
-                console.warn('Error:', e);
                 return { permitido: true };
             }
         }
@@ -511,28 +547,23 @@
         async function loadCategories() {
             const { data, error } = await supabase
                 .from('categorias_juegos')
-                .select('*')
+                .select('id,nombre,icono,activo')
                 .eq('activo', true)
                 .order('nombre', { ascending: true });
-            if (error) { console.error('Error categorías:', error); return; }
+            if (error) return;
             categories = data || [];
             renderCategories();
         }
 
         function renderCategories() {
             const container = document.getElementById('category-filters');
-            const html = categories.map(cat => `
-                <button class="category-btn" data-category="${escapeHTML(cat.id)}">
-                    <i class="fas ${escapeHTML(cat.icono || 'fa-gamepad')} mr-1"></i> ${escapeHTML(cat.nombre)}
-                </button>
-            `).join('');
-
-            container.innerHTML = `
-                <button class="category-btn active" data-category="all">
-                    <i class="fas fa-th mr-1"></i> Todos
-                </button>
-                ${html}
-            `;
+            let html = '<button class="category-btn active" data-category="all"><i class="fas fa-th mr-1"></i> Todos</button>';
+            
+            for (const cat of categories) {
+                html += `<button class="category-btn" data-category="${escapeHTML(cat.id)}"><i class="fas ${escapeHTML(cat.icono || 'fa-gamepad')} mr-1"></i> ${escapeHTML(cat.nombre)}</button>`;
+            }
+            
+            container.innerHTML = html;
 
             container.querySelectorAll('.category-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -548,26 +579,30 @@
             try {
                 const { data, error } = await supabase
                     .from('paquetes_juegos')
-                    .select('*')
+                    .select('id,nombre,descripcion,precio,precio_original,porcentaje_descuento,stock,imagen_url,sku_razer,destacado,categoria_id')
                     .eq('activo', true)
                     .order('destacado', { ascending: false })
                     .order('creado_en', { ascending: false });
                 if (error) throw error;
                 packages = data || [];
-                filterPackages(document.getElementById('game-search').value, currentCategory);
+                filterPackages('', currentCategory);
             } catch (error) {
-                console.error('Error paquetes:', error);
                 showToast('Error al cargar paquetes');
             }
         }
 
         function filterPackages(searchTerm = '', category = 'all') {
             const q = searchTerm.trim().toLocaleLowerCase('es');
-            const filtered = packages.filter(pkg => {
-                const matchesCat = category === 'all' || pkg.categoria_id === category;
-                const text = `${pkg.nombre || ''} ${pkg.descripcion || ''}`.toLocaleLowerCase('es');
-                return matchesCat && (!q || text.includes(q));
-            });
+            const filtered = [];
+            
+            for (const pkg of packages) {
+                if (category !== 'all' && pkg.categoria_id !== category) continue;
+                if (q) {
+                    const text = (pkg.nombre + ' ' + (pkg.descripcion || '')).toLocaleLowerCase('es');
+                    if (!text.includes(q)) continue;
+                }
+                filtered.push(pkg);
+            }
             renderPackages(filtered);
         }
 
@@ -582,7 +617,8 @@
             }
             empty.classList.add('hidden');
 
-            cont.innerHTML = list.map(pkg => {
+            let html = '';
+            for (const pkg of list) {
                 const stock = Number(pkg.stock) || 0;
                 const stockClass = stock > 0 ? 'stock-available' : 'stock-out';
                 const stockText = stock > 0 ? 'Disponible' : 'Agotado';
@@ -591,10 +627,10 @@
                 const originalPrice = Number(pkg.precio_original) || (discount > 0 ? finalPrice / (1 - discount / 100) : 0);
                 const hasDiscount = discount > 0;
 
-                return `
+                html += `
                     <div class="product-card" data-package-id="${escapeHTML(pkg.id)}">
                         <div class="product-image-wrap">
-                            <img src="${escapeHTML(pkg.imagen_url || 'https://placehold.co/400x400/141414/ef233c?text=TOKTOK')}" alt="${escapeHTML(pkg.nombre)}" class="product-image" loading="lazy">
+                            <img src="${escapeHTML(pkg.imagen_url || 'https://placehold.co/400x400/141414/ef233c?text=TOKTOK')}" alt="${escapeHTML(pkg.nombre)}" class="product-image" loading="lazy" decoding="async">
                             ${hasDiscount ? `<span class="badge-discount">-${discount}%</span>` : ''}
                             ${pkg.destacado ? `<span class="badge-featured">★</span>` : ''}
                             <span class="stock-badge ${stockClass}">${stockText}</span>
@@ -608,9 +644,10 @@
                             </div>
                         </div>
                     </div>`;
-            }).join('');
+            }
+            cont.innerHTML = html;
 
-            document.querySelectorAll('.product-card').forEach(card => {
+            cont.querySelectorAll('.product-card').forEach(card => {
                 card.addEventListener('click', () => {
                     const pkg = packages.find(p => p.id === card.dataset.packageId);
                     if (pkg && Number(pkg.stock) > 0) openPackageDetail(pkg);
@@ -619,10 +656,9 @@
             });
         }
 
-        async function openPackageDetail(pkg) {
+        function openPackageDetail(pkg) {
             currentPackage = pkg;
-            formData = { player_id: '' };
-            document.getElementById('delivery-notes').value = '';
+            playerId = '';
             document.getElementById('player-id-input').value = '';
             document.getElementById('player-id-feedback').innerHTML = '';
 
@@ -646,37 +682,13 @@
             openModal('package-detail-modal');
         }
 
-        document.addEventListener('input', (e) => {
-            if (e.target.id === 'player-id-input') {
-                const valor = e.target.value;
-                const feedback = document.getElementById('player-id-feedback');
-
-                formData.player_id = valor;
-
-                const validacion = validarID(valor);
-                if (feedback) {
-                    if (valor.trim() === '') {
-                        feedback.innerHTML = '';
-                    } else if (validacion.valido) {
-                        feedback.innerHTML = `<div class="field-valid">${validacion.mensaje}</div>`;
-                    } else {
-                        feedback.innerHTML = `<div class="field-error">${validacion.error}</div>`;
-                    }
-                }
-
-                updateBuyButton();
-            }
-        });
-
         function updateBuyButton() {
             const btn = document.getElementById('buy-package-btn');
-            if (!btn) return;
-            if (!currentPackage) { btn.disabled = true; return; }
+            if (!btn || !currentPackage) return;
 
             const hasStock = Number(currentPackage.stock) > 0;
             const hasBalance = currentBalance >= currentPackage._finalPrice;
-
-            const validID = validarID(formData.player_id || '').valido;
+            const validID = validarID(playerId).valido;
 
             btn.disabled = !hasStock || !hasBalance || !validID;
 
@@ -686,9 +698,28 @@
             else btn.innerHTML = '<i class="fas fa-bolt mr-2"></i>Recargar ahora';
         }
 
+        // Event listener para el ID (una sola vez)
+        document.addEventListener('input', (e) => {
+            if (e.target.id === 'player-id-input') {
+                const valor = e.target.value;
+                playerId = valor;
+                const feedback = document.getElementById('player-id-feedback');
+                const validacion = validarID(valor);
+                
+                if (valor.trim() === '') {
+                    feedback.innerHTML = '';
+                } else if (validacion.valido) {
+                    feedback.innerHTML = `<div class="field-valid">${validacion.mensaje}</div>`;
+                } else {
+                    feedback.innerHTML = `<div class="field-error">${validacion.error}</div>`;
+                }
+                updateBuyButton();
+            }
+        });
+
         async function loadUserProfile(userId) {
             const { data, error } = await supabase.from('user_profiles').select('*').eq('id', userId).single();
-            if (error && error.code !== 'PGRST116') { console.error('Error perfil:', error); return null; }
+            if (error && error.code !== 'PGRST116') return null;
             return data;
         }
 
@@ -698,19 +729,17 @@
                 .select('monto, tipo, metadata')
                 .eq('usuario_id', userId)
                 .eq('estado', 'completado');
-            if (error) { console.error('Error saldo:', error); return 0; }
+            if (error) return 0;
             let balance = 0;
-            (data || []).forEach(t => {
+            for (const t of (data || [])) {
                 balance += (t.tipo === 'deposito' || (t.tipo === 'transferencia' && t.metadata?.type === 'receive') ? 1 : -1) * Number(t.monto);
-            });
+            }
             return balance;
         }
 
         function updateBalanceDisplay() {
             const el = document.getElementById('current-balance');
-            if (el) {
-                el.textContent = formatCurrency(currentBalance);
-            }
+            if (el) el.textContent = formatCurrency(currentBalance);
         }
 
         document.addEventListener('DOMContentLoaded', async () => {
@@ -730,8 +759,12 @@
             await loadCategories();
             await loadPackages();
 
+            // Búsqueda con debounce (más rápido)
             document.getElementById('game-search').addEventListener('input', (e) => {
-                filterPackages(e.target.value, currentCategory);
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    filterPackages(e.target.value, currentCategory);
+                }, 200);
             });
 
             document.getElementById('close-package-detail').addEventListener('click', () => closeModal('package-detail-modal'));
@@ -747,15 +780,13 @@
 
         function initiatePurchase() {
             const totalPrice = currentPackage._finalPrice;
-            const notes = document.getElementById('delivery-notes').value.trim();
 
             document.getElementById('confirmation-text').innerHTML = `
-                <div style="background:#1a1a1a;padding:12px;border-radius:8px;margin-bottom:12px;" class="text-sm">
+                <div style="background:#1a1a1a;padding:12px;border-radius:8px;" class="text-sm">
                     <strong>${escapeHTML(currentPackage.nombre)}</strong><br>
                     Total: <strong style="color:#ff4d5e;">${formatCurrency(totalPrice)}</strong><br>
-                    ID: <strong>${escapeHTML(formData.player_id)}</strong>
-                </div>
-                ${notes ? `<div class="text-xs"><strong>Notas:</strong><br>${escapeHTML(notes)}</div>` : ''}`;
+                    ID: <strong>${escapeHTML(playerId)}</strong>
+                </div>`;
             openModal('confirmation-modal');
         }
 
@@ -800,7 +831,7 @@
                         package_sku: currentPackage.sku_razer,
                         price: totalPrice,
                         token: purchaseToken,
-                        custom_value: { userName: formData.player_id },
+                        custom_value: { userName: playerId },
                         ip: clientIP,
                         user_agent: navigator.userAgent
                     })
@@ -809,8 +840,7 @@
                 const result = await response.json();
 
                 if (!response.ok) {
-                    const msg = result.message || 'Error al procesar';
-                    throw new Error(msg);
+                    throw new Error(result.message || 'Error al procesar');
                 }
 
                 currentBalance = Number(result.saldo_restante);
