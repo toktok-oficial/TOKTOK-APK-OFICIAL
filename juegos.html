@@ -405,9 +405,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // ============================================================
-        // CONFIGURACIÓN
-        // ============================================================
         const SUPABASE_URL = 'https://fmhjuisoibynjgfrqvgj.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_M7yramCIWbPyxnH3xwJNEQ_p77ModBz';
         const PROXY_URL = 'https://games-razer-proxy.fly.dev';
@@ -415,9 +412,6 @@
 
         window.supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // ============================================================
-        // ESTADO
-        // ============================================================
         let currentUser = null;
         let userProfile = null;
         let currentBalance = 0;
@@ -429,9 +423,6 @@
         let formData = {};
         let clientIP = null;
 
-        // ============================================================
-        // UTILIDADES
-        // ============================================================
         const formatCurrency = (amount) => 'Bs ' + (Number(amount) || 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         const escapeHTML = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => ({
             '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
@@ -538,9 +529,6 @@
             return { valido: true };
         }
 
-        // ============================================================
-        // CATEGORÍAS Y PAQUETES
-        // ============================================================
         async function loadCategories() {
             const { data, error } = await supabase
                 .from('categorias_juegos')
@@ -786,9 +774,6 @@
             else btn.innerHTML = '<i class="fas fa-bolt mr-2"></i>Recargar ahora';
         }
 
-        // ============================================================
-        // USUARIO / SALDO
-        // ============================================================
         async function loadUserProfile(userId) {
             const { data, error } = await supabase.from('user_profiles').select('*').eq('id', userId).single();
             if (error && error.code !== 'PGRST116') { console.error('Error perfil:', error); return null; }
@@ -821,9 +806,6 @@
             return cat ? cat.nombre : 'Sin categoría';
         }
 
-        // ============================================================
-        // INICIALIZACIÓN
-        // ============================================================
         document.addEventListener('DOMContentLoaded', async () => {
             const { data: { session } } = await supabase.auth.getSession();
             if (!session) { window.location.href = 'index.html'; return; }
@@ -856,9 +838,6 @@
             });
         });
 
-        // ============================================================
-        // FLUJO DE COMPRA
-        // ============================================================
         function initiatePurchase() {
             const totalPrice = currentPackage._finalPrice;
             const notes = document.getElementById('delivery-notes').value.trim();
@@ -935,13 +914,20 @@
 
                 if (!response.ok) {
                     const msg = result.message || 'Error al procesar';
-                    if (msg.toLowerCase().includes('id') || 
-                        msg.toLowerCase().includes('account') || 
-                        msg.toLowerCase().includes('not found') ||
-                        msg.toLowerCase().includes('invalid') ||
-                        msg.toLowerCase().includes('not exist')) {
+                    const msgLower = msg.toLowerCase();
+
+                    // Solo detectar errores ESPECÍFICOS de ID de jugador
+                    if (msgLower.includes('user_name') ||
+                        msgLower.includes('user name') ||
+                        msgLower.includes('player not found') ||
+                        msgLower.includes('account not found') ||
+                        msgLower.includes('cuenta no encontrada') ||
+                        msgLower.includes('invalid user') ||
+                        msgLower.includes('id de jugador')) {
                         throw new Error('El ID de jugador no es válido o no existe. Verifica e intenta de nuevo. No se descontó saldo.');
                     }
+
+                    // Cualquier otro error, mostrar el mensaje REAL de Razer
                     throw new Error(msg);
                 }
 
