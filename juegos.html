@@ -6,385 +6,103 @@
 <title>TOKTOK - Recargas de Juegos</title>
 <meta name="theme-color" content="#0a0a0a">
 <style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  :root{
+    --green:#10b981;--green-light:#34d399;
+    --bg:#0a0a0a;--card:#141414;--border:#262626;
+    --text:#f5f5f5;--muted:#a3a3a3;--dim:#737373;
+    color-scheme:dark;
   }
-
-  :root {
-    --green: #10b981;
-    --green-dark: #059669;
-    --green-light: #34d399;
-    --bg-dark: #0a0a0a;
-    --bg-card: #141414;
-    --border: #262626;
-    --text: #f5f5f5;
-    --text-muted: #a3a3a3;
-    --text-dim: #737373;
-    color-scheme: dark;
+  html{scroll-behavior:auto}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;
+    background:var(--bg);color:var(--text);
+    max-width:760px;margin:0 auto;min-height:100vh;
+    padding-bottom:env(safe-area-inset-bottom);
+    overflow-x:hidden;-webkit-font-smoothing:antialiased;
+    font-size:14px;line-height:1.5;
   }
-
-  html { scroll-behavior: auto; }
-
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background: var(--bg-dark);
-    color: var(--text);
-    max-width: 760px;
-    margin: 0 auto;
-    min-height: 100vh;
-    padding-bottom: env(safe-area-inset-bottom);
-    overflow-x: hidden;
-    -webkit-font-smoothing: antialiased;
-    font-size: 14px;
-    line-height: 1.5;
-  }
-
-  /* SVG helper */
-  .icon { width: 1em; height: 1em; display: inline-block; vertical-align: -0.125em; fill: currentColor; }
-
-  /* ===== HEADER ===== */
-  .header {
-    position: sticky;
-    top: 0;
-    z-index: 40;
-    background: var(--bg-dark);
-    border-bottom: 1px solid var(--border);
-    padding: 14px 18px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .header-title {
-    font-size: 20px;
-    font-weight: 900;
-    color: #fff;
-    letter-spacing: 0.08em;
-  }
-  .header-balance {
-    background: var(--green);
-    padding: 8px 12px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 13px;
-    font-weight: 700;
-    color: #0a0a0a;
-  }
-
-  /* ===== SEARCH ===== */
-  .search-wrap { padding: 16px 16px 12px; }
-  .search {
-    width: 100%;
-    padding: 11px 16px 11px 42px;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    font-size: 13px;
-    background: var(--bg-card);
-    color: var(--text);
-    outline: none;
-    font-family: inherit;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2310b981' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: 14px center;
-    background-size: 18px;
-  }
-  .search:focus { border-color: var(--green); }
-  .search::placeholder { color: var(--text-dim); }
-
-  /* ===== CATEGORIES ===== */
-  .cats {
-    display: flex;
-    gap: 8px;
-    padding: 4px 16px 16px;
-    overflow-x: auto;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-  }
-  .cats::-webkit-scrollbar { display: none; }
-  .cat-btn {
-    flex-shrink: 0;
-    padding: 8px 16px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: var(--bg-card);
-    color: var(--text-muted);
-    font-size: 12px;
-    font-weight: 700;
-    white-space: nowrap;
-    cursor: pointer;
-    font-family: inherit;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .cat-btn.active {
-    background: var(--green);
-    color: #0a0a0a;
-    border-color: var(--green);
-  }
-
-  /* ===== PRODUCTS ===== */
-  .products {
-    padding: 4px 14px 28px;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-  }
-  @media (min-width: 560px) { .products { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-  @media (min-width: 720px) { .products { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-
-  .card {
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    background: var(--bg-card);
-    overflow: hidden;
-    cursor: pointer;
-    content-visibility: auto;
-    contain-intrinsic-size: 230px;
-    contain: layout style paint;
-  }
-  .card:active { border-color: var(--green); }
-
-  .card-img-wrap { position: relative; overflow: hidden; }
-  .card-img {
-    width: 100%;
-    aspect-ratio: 1/1;
-    object-fit: cover;
-    background: #1b1b1b;
-    display: block;
-  }
-  .badge-off {
-    position: absolute; top: 6px; left: 6px;
-    background: var(--green); color: #0a0a0a;
-    font-size: 10px; font-weight: 800;
-    padding: 3px 8px; border-radius: 6px;
-  }
-  .badge-star {
-    position: absolute; top: 6px; right: 6px;
-    background: rgba(16, 185, 129, 0.95); color: #0a0a0a;
-    font-size: 10px; font-weight: 800;
-    padding: 3px 6px; border-radius: 6px;
-    display: flex; align-items: center; gap: 3px;
-  }
-  .badge-stock {
-    position: absolute; bottom: 6px; left: 6px;
-    padding: 3px 8px; border-radius: 6px;
-    font-size: 9px; font-weight: 700;
-  }
-  .stock-in { background: rgba(16, 185, 129, 0.95); color: #0a0a0a; }
-  .stock-out { background: rgba(120, 20, 20, 0.9); color: #fff; }
-
-  .card-info { padding: 10px; }
-  .card-name {
-    font-weight: 700; font-size: 12px; color: #fff;
-    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-    overflow: hidden; margin-bottom: 4px;
-    line-height: 1.3;
-  }
-  .card-desc {
-    font-size: 10px; color: var(--text-muted);
-    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-    overflow: hidden; margin-bottom: 6px;
-  }
-  .price-row { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
-  .price { color: var(--green-light); font-weight: 800; font-size: 13px; }
-  .price-old { color: var(--text-dim); font-size: 9px; text-decoration: line-through; }
-
-  /* ===== EMPTY ===== */
-  .empty {
-    text-align: center;
-    padding: 50px 20px;
-    color: var(--text-dim);
-  }
-  .empty svg { width: 56px; height: 56px; margin-bottom: 12px; stroke: var(--green); opacity: 0.6; }
-  .empty p { font-size: 14px; }
-  .empty small { font-size: 12px; color: var(--text-dim); }
-
-  /* ===== MODALES ===== */
-  .modal {
-    position: fixed; inset: 0;
-    background: rgba(0, 0, 0, 0.85);
-    z-index: 100;
-    display: flex; align-items: flex-end; justify-content: center;
-    opacity: 0; visibility: hidden;
-  }
-  .modal.active { opacity: 1; visibility: visible; }
-  .modal-body {
-    background: #111;
-    width: 100%; max-width: 480px;
-    border-radius: 20px 20px 0 0;
-    padding: 20px 16px calc(20px + env(safe-area-inset-bottom));
-    max-height: 90vh;
-    overflow-y: auto;
-    border: 1px solid var(--border);
-    border-bottom: none;
-  }
-  @media (min-width: 560px) {
-    .modal { align-items: center; }
-    .modal-body { border-radius: 16px; border-bottom: 1px solid var(--border); }
-  }
-
-  .modal-header {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 14px;
-  }
-  .modal-title { font-size: 17px; font-weight: 700; color: #fff; }
-  .modal-close {
-    background: none; border: none; color: var(--text-muted);
-    cursor: pointer; padding: 4px; display: flex;
-    border-radius: 6px;
-  }
-  .modal-close:hover { color: #fff; background: #1a1a1a; }
-  .modal-close svg { width: 20px; height: 20px; }
-
-  .detail-img {
-    width: 100%; height: 160px;
-    object-fit: cover; background: #1b1b1b;
-    border-radius: 12px; margin-bottom: 12px;
-    border: 1px solid var(--border);
-  }
-  .detail-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 14px; }
-
-  .detail-row {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 14px;
-  }
-  .detail-label { font-size: 11px; color: var(--text-dim); }
-  .detail-value { font-size: 15px; font-weight: 700; color: #fff; }
-  .detail-value.green { color: var(--green-light); }
-
-  .total-box {
-    text-align: center;
-    padding: 12px;
-    background: #0d1a16;
-    border: 1px solid rgba(16, 185, 129, 0.2);
-    border-radius: 10px;
-    margin-bottom: 16px;
-  }
-  .total-box .label { font-size: 11px; color: var(--text-dim); }
-  .total-box .amount { font-size: 22px; font-weight: 800; color: var(--green-light); margin-top: 4px; }
-
-  .field-label {
-    display: block;
-    font-size: 12px; font-weight: 700;
-    color: var(--text-muted);
-    margin-bottom: 8px;
-  }
-  .input {
-    width: 100%;
-    padding: 12px 14px;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    font-size: 15px;
-    background: var(--bg-card);
-    color: var(--text);
-    outline: none;
-    font-family: inherit;
-  }
-  .input:focus { border-color: var(--green); }
-  .input::placeholder { color: var(--text-dim); }
-
-  .feedback-err { color: #ef4444; font-size: 11px; margin-top: 6px; }
-  .feedback-ok { color: var(--green); font-size: 11px; margin-top: 6px; }
-  .hint { font-size: 11px; color: var(--text-dim); margin-top: 6px; }
-
-  /* ===== BUTTONS ===== */
-  .btn {
-    width: 100%;
-    padding: 14px 16px;
-    border-radius: 10px;
-    font-weight: 800;
-    font-size: 14px;
-    border: none;
-    cursor: pointer;
-    font-family: inherit;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    letter-spacing: 0.02em;
-  }
-  .btn-green {
-    background: var(--green);
-    color: #0a0a0a;
-  }
-  .btn-green:disabled { opacity: 0.4; cursor: not-allowed; }
-  .btn-gray {
-    background: #262626;
-    color: #fff;
-  }
-  .btn svg { width: 16px; height: 16px; }
-
-  .btn-row { display: flex; gap: 12px; }
-  .btn-row .btn { flex: 1; }
-
-  .spinner {
-    width: 16px; height: 16px;
-    border: 2px solid rgba(0,0,0,0.2);
-    border-top-color: #0a0a0a;
-    border-radius: 50%;
-    animation: spin 0.6s linear infinite;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  /* ===== RESULT ===== */
-  .result-icon {
-    width: 60px; height: 60px;
-    margin: 0 auto 16px;
-    display: grid; place-items: center;
-    border-radius: 16px;
-    background: rgba(16, 185, 129, 0.15);
-    color: var(--green);
-  }
-  .result-icon svg { width: 32px; height: 32px; }
-  .result-icon.error { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
-
-  .result-title {
-    font-size: 18px; font-weight: 700; color: #fff;
-    text-align: center; margin-bottom: 8px;
-  }
-  .result-msg {
-    font-size: 13px; color: var(--text-muted);
-    text-align: center; line-height: 1.5;
-    max-width: 300px; margin: 0 auto 20px;
-  }
-
-  /* ===== TOAST ===== */
-  .toast {
-    position: fixed; top: 16px; right: 16px;
-    padding: 12px 16px;
-    border-radius: 10px;
-    background: var(--green);
-    color: #0a0a0a;
-    font-weight: 700; font-size: 13px;
-    z-index: 200;
-    max-width: calc(100vw - 32px);
-  }
-
-  /* ===== BLOCKED ===== */
-  .blocked {
-    min-height: 100vh;
-    display: flex; align-items: center; justify-content: center;
-    padding: 40px 20px;
-    text-align: center;
-  }
-  .blocked-icon { font-size: 64px; margin-bottom: 20px; }
-
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      animation-duration: 0.01ms !important;
-      transition-duration: 0.01ms !important;
-    }
-  }
+  .icon{width:1em;height:1em;display:inline-block;vertical-align:-.125em;fill:currentColor}
+  .header{position:sticky;top:0;z-index:40;background:var(--bg);border-bottom:1px solid var(--border);padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+  .header-title{font-size:20px;font-weight:900;color:#fff;letter-spacing:.08em}
+  .header-balance{background:var(--green);padding:8px 12px;border-radius:8px;display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:#0a0a0a}
+  .search-wrap{padding:16px 16px 12px}
+  .search{width:100%;padding:11px 16px 11px 42px;border:1px solid var(--border);border-radius:10px;font-size:13px;background:var(--card);color:var(--text);outline:none;font-family:inherit;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2310b981' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:14px center;background-size:18px}
+  .search:focus{border-color:var(--green)}
+  .search::placeholder{color:var(--dim)}
+  .cats{display:flex;gap:8px;padding:4px 16px 16px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .cats::-webkit-scrollbar{display:none}
+  .cat-btn{flex-shrink:0;padding:8px 16px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--muted);font-size:12px;font-weight:700;white-space:nowrap;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px}
+  .cat-btn.active{background:var(--green);color:#0a0a0a;border-color:var(--green)}
+  .products{padding:4px 14px 28px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  @media (min-width:560px){.products{grid-template-columns:repeat(3,minmax(0,1fr))}}
+  @media (min-width:720px){.products{grid-template-columns:repeat(4,minmax(0,1fr))}}
+  .card{border:1px solid var(--border);border-radius:10px;background:var(--card);overflow:hidden;cursor:pointer;content-visibility:auto;contain-intrinsic-size:230px;contain:layout style paint}
+  .card:active{border-color:var(--green)}
+  .card-img-wrap{position:relative;overflow:hidden}
+  .card-img{width:100%;aspect-ratio:1/1;object-fit:cover;background:#1b1b1b;display:block}
+  .badge-off{position:absolute;top:6px;left:6px;background:var(--green);color:#0a0a0a;font-size:10px;font-weight:800;padding:3px 8px;border-radius:6px}
+  .badge-star{position:absolute;top:6px;right:6px;background:rgba(16,185,129,.95);color:#0a0a0a;font-size:10px;font-weight:800;padding:3px 6px;border-radius:6px;display:flex;align-items:center;gap:3px}
+  .badge-stock{position:absolute;bottom:6px;left:6px;padding:3px 8px;border-radius:6px;font-size:9px;font-weight:700}
+  .stock-in{background:rgba(16,185,129,.95);color:#0a0a0a}
+  .stock-out{background:rgba(120,20,20,.9);color:#fff}
+  .card-info{padding:10px}
+  .card-name{font-weight:700;font-size:12px;color:#fff;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:4px;line-height:1.3}
+  .card-desc{font-size:10px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:6px}
+  .price-row{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
+  .price-final{color:var(--green-light);font-weight:800;font-size:13px}
+  .price-ref{color:var(--dim);font-size:9px;text-decoration:line-through}
+  .empty{text-align:center;padding:50px 20px;color:var(--dim)}
+  .empty svg{width:56px;height:56px;margin-bottom:12px;stroke:var(--green);opacity:.6}
+  .empty p{font-size:14px}
+  .empty small{font-size:12px;color:var(--dim)}
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:100;display:flex;align-items:flex-end;justify-content:center;opacity:0;visibility:hidden}
+  .modal.active{opacity:1;visibility:visible}
+  .modal-body{background:#111;width:100%;max-width:480px;border-radius:20px 20px 0 0;padding:20px 16px calc(20px + env(safe-area-inset-bottom));max-height:90vh;overflow-y:auto;border:1px solid var(--border);border-bottom:none}
+  @media (min-width:560px){.modal{align-items:center}.modal-body{border-radius:16px;border-bottom:1px solid var(--border)}}
+  .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+  .modal-title{font-size:17px;font-weight:700;color:#fff}
+  .modal-close{background:none;border:none;color:var(--muted);cursor:pointer;padding:4px;display:flex;border-radius:6px}
+  .modal-close:hover{color:#fff;background:#1a1a1a}
+  .modal-close svg{width:20px;height:20px}
+  .detail-img{width:100%;height:160px;object-fit:cover;background:#1b1b1b;border-radius:12px;margin-bottom:12px;border:1px solid var(--border)}
+  .detail-desc{font-size:13px;color:var(--muted);margin-bottom:14px}
+  .detail-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+  .detail-label{font-size:11px;color:var(--dim)}
+  .detail-value{font-size:15px;font-weight:700;color:#fff}
+  .detail-value.green{color:var(--green-light)}
+  .total-box{text-align:center;padding:12px;background:#0d1a16;border:1px solid rgba(16,185,129,.2);border-radius:10px;margin-bottom:16px}
+  .total-box .label{font-size:11px;color:var(--dim)}
+  .total-box .amount{font-size:22px;font-weight:800;color:var(--green-light);margin-top:4px}
+  .field-label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:8px}
+  .input{width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:10px;font-size:15px;background:var(--card);color:var(--text);outline:none;font-family:inherit}
+  .input:focus{border-color:var(--green)}
+  .input::placeholder{color:var(--dim)}
+  .feedback-err{color:#ef4444;font-size:11px;margin-top:6px}
+  .feedback-ok{color:var(--green);font-size:11px;margin-top:6px}
+  .hint{font-size:11px;color:var(--dim);margin-top:6px}
+  .btn{width:100%;padding:14px 16px;border-radius:10px;font-weight:800;font-size:14px;border:none;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;letter-spacing:.02em}
+  .btn-green{background:var(--green);color:#0a0a0a}
+  .btn-green:disabled{opacity:.4;cursor:not-allowed}
+  .btn-gray{background:#262626;color:#fff}
+  .btn svg{width:16px;height:16px}
+  .btn-row{display:flex;gap:12px}
+  .btn-row .btn{flex:1}
+  .spinner{width:16px;height:16px;border:2px solid rgba(0,0,0,.2);border-top-color:#0a0a0a;border-radius:50%;animation:spin .6s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .result-icon{width:60px;height:60px;margin:0 auto 16px;display:grid;place-items:center;border-radius:16px;background:rgba(16,185,129,.15);color:var(--green)}
+  .result-icon svg{width:32px;height:32px}
+  .result-icon.error{background:rgba(239,68,68,.15);color:#ef4444}
+  .result-title{font-size:18px;font-weight:700;color:#fff;text-align:center;margin-bottom:8px}
+  .result-msg{font-size:13px;color:var(--muted);text-align:center;line-height:1.5;max-width:300px;margin:0 auto 20px}
+  .toast{position:fixed;top:16px;right:16px;padding:12px 16px;border-radius:10px;background:var(--green);color:#0a0a0a;font-weight:700;font-size:13px;z-index:200;max-width:calc(100vw - 32px)}
+  .blocked{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 20px;text-align:center}
+  .blocked-icon{font-size:64px;margin-bottom:20px}
+  @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <div class="header">
   <div class="header-title">TOKTOK</div>
   <div class="header-balance">
@@ -395,34 +113,27 @@
   </div>
 </div>
 
-<!-- GAMES SECTION -->
 <div id="games-section">
   <div class="search-wrap">
     <input type="text" id="search" class="search" placeholder="Buscar juegos o paquetes..." autocomplete="off">
   </div>
-
   <div class="cats" id="cats">
     <button class="cat-btn active" data-cat="all">
       <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
-      </svg>
-      Todos
+      </svg>Todos
     </button>
   </div>
-
   <div class="products" id="products"></div>
-
-  <div id="empty" class="empty" style="display:none;">
+  <div id="empty" class="empty" style="display:none">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-      <rect x="2" y="6" width="20" height="12" rx="2"/>
-      <path d="M6 12h4M8 10v4M15 13h.01M18 11h.01"/>
+      <rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4M8 10v4M15 13h.01M18 11h.01"/>
     </svg>
     <p>No se encontraron paquetes</p>
     <small>Intenta con otra búsqueda</small>
   </div>
 </div>
 
-<!-- MODAL DETALLE -->
 <div id="modal-detail" class="modal">
   <div class="modal-body">
     <div class="modal-header">
@@ -440,7 +151,7 @@
         <div class="detail-label">Stock:</div>
         <div class="detail-value" id="detail-stock"></div>
       </div>
-      <div style="text-align:right;">
+      <div style="text-align:right">
         <div class="detail-label">Precio:</div>
         <div class="detail-value green" id="detail-price"></div>
       </div>
@@ -449,14 +160,12 @@
       <div class="label">Total a pagar</div>
       <div class="amount" id="total-price"></div>
     </div>
-
-    <div style="margin-bottom:16px;">
+    <div style="margin-bottom:16px">
       <label class="field-label">ID DE JUGADOR *</label>
       <input type="text" id="player-id" class="input" placeholder="Ej: 123456789" inputmode="numeric" autocomplete="off">
       <div id="player-feedback"></div>
       <p class="hint">Solo números, entre 8 y 12 dígitos</p>
     </div>
-
     <button id="buy-btn" class="btn btn-green" disabled>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>
@@ -466,7 +175,6 @@
   </div>
 </div>
 
-<!-- MODAL CONFIRMACION -->
 <div id="modal-confirm" class="modal">
   <div class="modal-body">
     <div class="modal-header">
@@ -477,18 +185,17 @@
         </svg>
       </button>
     </div>
-    <div id="confirm-text" style="font-size:14px; margin-bottom:20px;"></div>
+    <div id="confirm-text" style="font-size:14px;margin-bottom:20px"></div>
     <div class="btn-row">
       <button id="cancel-btn" class="btn btn-gray">Cancelar</button>
       <button id="confirm-btn" class="btn btn-green">
         <span id="confirm-txt">Confirmar</span>
-        <div id="confirm-spin" class="spinner" style="display:none;"></div>
+        <div id="confirm-spin" class="spinner" style="display:none"></div>
       </button>
     </div>
   </div>
 </div>
 
-<!-- MODAL RESULTADO -->
 <div id="modal-result" class="modal">
   <div class="modal-body">
     <div id="result-icon" class="result-icon">
@@ -504,394 +211,331 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-(function() {
+(function(){
   'use strict';
-
   const SUPABASE_URL = 'https://fmhjuisoibynjgfrqvgj.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_M7yramCIWbPyxnH3xwJNEQ_p77ModBz';
   const PROXY_URL = 'https://games-razer-proxy.fly.dev';
   const PROXY_SECRET = 'toktok_bolivia_secret_xyz123abc456';
-
   const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  let currentUser = null;
-  let userProfile = null;
-  let balance = 0;
-  let currentPkg = null;
-  let packages = [];
-  let cats = [];
-  let currentCat = 'all';
-  let playerId = '';
-  let clientIP = null;
-  let searchTimer = null;
+  let currentUser=null, userProfile=null, balance=0, currentPkg=null;
+  let packages=[], cats=[], currentCat='all', playerId='', clientIP=null, searchTimer=null;
 
-  const fmt = (n) => 'Bs ' + (Number(n) || 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  const esc = (v) => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const fmt = n => 'Bs ' + (Number(n)||0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  const esc = v => String(v??'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-  function toast(msg) {
-    const t = document.createElement('div');
-    t.className = 'toast';
-    t.textContent = msg;
-    document.body.appendChild(t);
-    setTimeout(() => t.remove(), 3000);
+  function toast(msg){
+    const t=document.createElement('div');t.className='toast';t.textContent=msg;
+    document.body.appendChild(t);setTimeout(()=>t.remove(),3000);
   }
 
-  async function getIP() {
-    try {
-      const r = await fetch('https://api.ipify.org?format=json');
-      return (await r.json()).ip;
-    } catch { return null; }
+  async function getIP(){
+    try{const r=await fetch('https://api.ipify.org?format=json');return (await r.json()).ip;}
+    catch{return null;}
+  }
+  function token(){return crypto.randomUUID()+'-'+Date.now();}
+
+  function block(razon){
+    document.body.innerHTML=`<div class="blocked" style="background:#0a0a0a;color:#fff">
+      <div><div class="blocked-icon">⛔</div>
+      <h2 style="color:#ef4444;margin-bottom:12px;font-size:22px;font-weight:800">Acceso bloqueado</h2>
+      <p style="color:#a3a3a3;margin-bottom:8px;font-size:14px">${esc(razon||'Conexión bloqueada.')}</p>
+      <p style="color:#737373;font-size:12px;margin-top:16px">Contacta al soporte.</p>
+      </div></div>`;
   }
 
-  function token() {
-    return crypto.randomUUID() + '-' + Date.now();
-  }
-
-  function block(razon) {
-    document.body.innerHTML = `
-      <div class="blocked" style="background:#0a0a0a;color:#fff;">
-        <div>
-          <div class="blocked-icon">⛔</div>
-          <h2 style="color:#ef4444;margin-bottom:12px;font-size:22px;font-weight:800;">Acceso bloqueado</h2>
-          <p style="color:#a3a3a3;margin-bottom:8px;font-size:14px;">${esc(razon || 'Conexión bloqueada.')}</p>
-          <p style="color:#737373;font-size:12px;margin-top:16px;">Contacta al soporte.</p>
-        </div>
-      </div>`;
-  }
-
-  async function checkIP(userId) {
-    try {
-      clientIP = await getIP();
-      if (!clientIP) return { permitido: true };
-      const { data, error } = await sb.rpc('registrar_ip_usuario', {
-        p_user_id: userId, p_ip: clientIP, p_user_agent: navigator.userAgent
+  async function checkIP(userId){
+    try{
+      clientIP=await getIP();
+      if(!clientIP)return{permitido:true};
+      const{data,error}=await sb.rpc('registrar_ip_usuario',{
+        p_user_id:userId,p_ip:clientIP,p_user_agent:navigator.userAgent
       });
-      if (error) return { permitido: true };
-      if (!data.permitido) { block(data.razon_ip); return data; }
+      if(error)return{permitido:true};
+      if(!data.permitido){block(data.razon_ip);return data;}
       return data;
-    } catch { return { permitido: true }; }
+    }catch{return{permitido:true};}
   }
 
-  function open(id) {
-    document.getElementById(id).classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
-  function close(id) {
-    document.getElementById(id).classList.remove('active');
-    document.body.style.overflow = '';
+  function open(id){document.getElementById(id).classList.add('active');document.body.style.overflow='hidden';}
+  function close(id){document.getElementById(id).classList.remove('active');document.body.style.overflow='';}
+
+  function showError(msg){
+    document.getElementById('result-icon').className='result-icon error';
+    document.getElementById('result-icon').innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>`;
+    document.getElementById('result-title').textContent='No se pudo procesar';
+    document.getElementById('result-msg').textContent=msg||'Operación no completada.';
+    close('modal-confirm');close('modal-detail');open('modal-result');
   }
 
-  function showError(msg) {
-    document.getElementById('result-icon').className = 'result-icon error';
-    document.getElementById('result-icon').innerHTML = `
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/>
-      </svg>`;
-    document.getElementById('result-title').textContent = 'No se pudo procesar';
-    document.getElementById('result-msg').textContent = msg || 'Operación no completada.';
-    close('modal-confirm');
-    close('modal-detail');
-    open('modal-result');
+  function validId(v){
+    if(!v||v.trim()==='')return{ok:false,err:'El ID es obligatorio'};
+    if(!/^\d+$/.test(v.trim()))return{ok:false,err:'Solo números'};
+    const len=v.trim().length;
+    if(len<8||len>12)return{ok:false,err:`Debe tener 8-12 dígitos (actual: ${len})`};
+    return{ok:true,msg:'✓ Formato válido'};
   }
 
-  function validId(v) {
-    if (!v || v.trim() === '') return { ok: false, err: 'El ID es obligatorio' };
-    if (!/^\d+$/.test(v.trim())) return { ok: false, err: 'Solo números' };
-    const len = v.trim().length;
-    if (len < 8 || len > 12) return { ok: false, err: `Debe tener 8-12 dígitos (actual: ${len})` };
-    return { ok: true, msg: '✓ Formato válido' };
-  }
-
-  async function loadCats() {
-    const { data, error } = await sb.from('categorias_juegos')
-      .select('id,nombre,icono,activo')
-      .eq('activo', true)
-      .order('nombre');
-    if (error) return;
-    cats = data || [];
-    const box = document.getElementById('cats');
-    let html = `<button class="cat-btn active" data-cat="all">
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
-      </svg>Todos</button>`;
-    for (const c of cats) {
-      html += `<button class="cat-btn" data-cat="${esc(c.id)}">${esc(c.nombre)}</button>`;
-    }
-    box.innerHTML = html;
-    box.querySelectorAll('.cat-btn').forEach(b => {
-      b.addEventListener('click', () => {
-        box.querySelectorAll('.cat-btn').forEach(x => x.classList.remove('active'));
-        b.classList.add('active');
-        currentCat = b.dataset.cat;
-        filterPkgs(document.getElementById('search').value, currentCat);
+  async function loadCats(){
+    const{data,error}=await sb.from('categorias_juegos').select('id,nombre,icono,activo').eq('activo',true).order('nombre');
+    if(error)return;
+    cats=data||[];
+    const box=document.getElementById('cats');
+    let html=`<button class="cat-btn active" data-cat="all"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Todos</button>`;
+    for(const c of cats){html+=`<button class="cat-btn" data-cat="${esc(c.id)}">${esc(c.nombre)}</button>`;}
+    box.innerHTML=html;
+    box.querySelectorAll('.cat-btn').forEach(b=>{
+      b.addEventListener('click',()=>{
+        box.querySelectorAll('.cat-btn').forEach(x=>x.classList.remove('active'));
+        b.classList.add('active');currentCat=b.dataset.cat;
+        filterPkgs(document.getElementById('search').value,currentCat);
       });
     });
   }
 
-  async function loadPkgs() {
-    try {
-      const { data, error } = await sb.from('paquetes_juegos')
-        .select('id,nombre,descripcion,precio,precio_original,porcentaje_descuento,stock,imagen_url,sku_razer,destacado,categoria_id')
-        .eq('activo', true)
-        .order('destacado', { ascending: false })
-        .order('creado_en', { ascending: false });
-      if (error) throw error;
-      packages = data || [];
-      filterPkgs('', currentCat);
-    } catch { toast('Error al cargar paquetes'); }
+  async function loadPkgs(){
+    try{
+      const{data,error}=await sb.from('paquetes_juegos')
+        .select('id,nombre,descripcion,precio,precio_original,precio_referencia,precio_final,porcentaje_descuento,stock,imagen_url,sku_razer,destacado,categoria_id')
+        .eq('activo',true)
+        .order('destacado',{ascending:false})
+        .order('creado_en',{ascending:false});
+      if(error)throw error;
+      packages=data||[];
+      filterPkgs('',currentCat);
+    }catch{toast('Error al cargar paquetes');}
   }
 
-  function filterPkgs(q, cat) {
-    q = (q || '').trim().toLowerCase();
-    const out = [];
-    for (const p of packages) {
-      if (cat !== 'all' && p.categoria_id !== cat) continue;
-      if (q) {
-        const t = (p.nombre + ' ' + (p.descripcion || '')).toLowerCase();
-        if (!t.includes(q)) continue;
-      }
+  function filterPkgs(q,cat){
+    q=(q||'').trim().toLowerCase();
+    const out=[];
+    for(const p of packages){
+      if(cat!=='all'&&p.categoria_id!==cat)continue;
+      if(q){const t=(p.nombre+' '+(p.descripcion||'')).toLowerCase();if(!t.includes(q))continue;}
       out.push(p);
     }
     renderPkgs(out);
   }
 
-  function renderPkgs(list) {
-    const cont = document.getElementById('products');
-    const empty = document.getElementById('empty');
-    if (!list || list.length === 0) {
-      cont.innerHTML = '';
-      empty.style.display = 'block';
-      return;
-    }
-    empty.style.display = 'none';
+  function renderPkgs(list){
+    const cont=document.getElementById('products');
+    const empty=document.getElementById('empty');
+    if(!list||list.length===0){cont.innerHTML='';empty.style.display='block';return;}
+    empty.style.display='none';
 
-    let html = '';
-    for (const p of list) {
-      const stock = Number(p.stock) || 0;
-      const discount = Number(p.porcentaje_descuento) || 0;
-      const price = Number(p.precio) || 0;
-      const orig = Number(p.precio_original) || (discount > 0 ? price / (1 - discount / 100) : 0);
+    let html='';
+    for(const p of list){
+      const stock=Number(p.stock)||0;
+      const discount=Number(p.porcentaje_descuento)||0;
+      const priceFinal=Number(p.precio_final)||Number(p.precio)||0;
+      const priceRef=Number(p.precio_referencia)||Number(p.precio_original)||0;
+      const hasRef=priceRef>priceFinal&&priceRef>0;
 
-      html += `
+      html+=`
         <div class="card" data-id="${esc(p.id)}">
           <div class="card-img-wrap">
-            <img src="${esc(p.imagen_url || 'https://placehold.co/400x400/141414/10b981?text=TOKTOK')}" alt="${esc(p.nombre)}" class="card-img" loading="lazy" decoding="async">
-            ${discount > 0 ? `<span class="badge-off">-${discount}%</span>` : ''}
-            ${p.destacado ? `<span class="badge-star">
-              <svg style="width:9px;height:9px;" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              ★</span>` : ''}
-            <span class="badge-stock ${stock > 0 ? 'stock-in' : 'stock-out'}">${stock > 0 ? 'Disponible' : 'Agotado'}</span>
+            <img src="${esc(p.imagen_url||'https://placehold.co/400x400/141414/10b981?text=TOKTOK')}" alt="${esc(p.nombre)}" class="card-img" loading="lazy" decoding="async">
+            ${discount>0?`<span class="badge-off">-${discount}%</span>`:''}
+            ${p.destacado?`<span class="badge-star"><svg style="width:9px;height:9px" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>★</span>`:''}
+            <span class="badge-stock ${stock>0?'stock-in':'stock-out'}">${stock>0?'Disponible':'Agotado'}</span>
           </div>
           <div class="card-info">
             <div class="card-name">${esc(p.nombre)}</div>
-            <div class="card-desc">${esc(p.descripcion || '')}</div>
+            <div class="card-desc">${esc(p.descripcion||'')}</div>
             <div class="price-row">
-              <span class="price">${fmt(price)}</span>
-              ${discount > 0 ? `<span class="price-old">${fmt(orig)}</span>` : ''}
+              <span class="price-final">${fmt(priceFinal)}</span>
+              ${hasRef?`<span class="price-ref">${fmt(priceRef)}</span>`:''}
             </div>
           </div>
         </div>`;
     }
-    cont.innerHTML = html;
+    cont.innerHTML=html;
 
-    cont.querySelectorAll('.card').forEach(c => {
-      c.addEventListener('click', () => {
-        const p = packages.find(x => x.id === c.dataset.id);
-        if (p && Number(p.stock) > 0) openDetail(p);
-        else if (p) toast('Paquete agotado');
+    cont.querySelectorAll('.card').forEach(c=>{
+      c.addEventListener('click',()=>{
+        const p=packages.find(x=>x.id===c.dataset.id);
+        if(p&&Number(p.stock)>0)openDetail(p);
+        else if(p)toast('Paquete agotado');
       });
     });
   }
 
-  function openDetail(p) {
-    currentPkg = p;
-    playerId = '';
-    document.getElementById('player-id').value = '';
-    document.getElementById('player-feedback').innerHTML = '';
+  function openDetail(p){
+    currentPkg=p;playerId='';
+    document.getElementById('player-id').value='';
+    document.getElementById('player-feedback').innerHTML='';
 
-    const price = Number(p.precio) || 0;
-    currentPkg._final = price;
+    const priceFinal=Number(p.precio_final)||Number(p.precio)||0;
+    const priceRef=Number(p.precio_referencia)||Number(p.precio_original)||0;
 
-    document.getElementById('detail-title').textContent = p.nombre;
-    document.getElementById('detail-desc').textContent = p.descripcion || '';
-    document.getElementById('detail-price').textContent = fmt(price);
-    document.getElementById('total-price').textContent = fmt(price);
+    currentPkg._final=priceFinal;
 
-    const se = document.getElementById('detail-stock');
-    se.textContent = Number(p.stock) > 0 ? 'Disponible' : 'Agotado';
-    se.style.color = Number(p.stock) > 0 ? 'var(--green)' : '#ef4444';
+    document.getElementById('detail-title').textContent=p.nombre;
+    document.getElementById('detail-desc').textContent=p.descripcion||'';
+    document.getElementById('detail-price').textContent=fmt(priceFinal);
+    document.getElementById('total-price').textContent=fmt(priceFinal);
 
-    const img = document.getElementById('detail-img');
-    img.src = p.imagen_url || 'https://placehold.co/800x500/141414/10b981?text=TOKTOK';
-    img.alt = p.nombre;
+    const se=document.getElementById('detail-stock');
+    se.textContent=Number(p.stock)>0?'Disponible':'Agotado';
+    se.style.color=Number(p.stock)>0?'var(--green)':'#ef4444';
+
+    const img=document.getElementById('detail-img');
+    img.src=p.imagen_url||'https://placehold.co/800x500/141414/10b981?text=TOKTOK';
+    img.alt=p.nombre;
 
     updateBtn();
     open('modal-detail');
   }
 
-  function updateBtn() {
-    const btn = document.getElementById('buy-btn');
-    if (!currentPkg) return;
-    const hasStock = Number(currentPkg.stock) > 0;
-    const hasBalance = balance >= currentPkg._final;
-    const idOk = validId(playerId).ok;
-    btn.disabled = !hasStock || !hasBalance || !idOk;
+  function updateBtn(){
+    const btn=document.getElementById('buy-btn');
+    if(!currentPkg)return;
+    const hasStock=Number(currentPkg.stock)>0;
+    const hasBalance=balance>=currentPkg._final;
+    const idOk=validId(playerId).ok;
+    btn.disabled=!hasStock||!hasBalance||!idOk;
 
-    if (!hasStock) btn.innerHTML = 'Sin stock';
-    else if (!idOk) btn.innerHTML = 'Completa el ID';
-    else if (!hasBalance) btn.innerHTML = 'Saldo insuficiente';
-    else btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>Recargar ahora`;
+    if(!hasStock)btn.innerHTML='Sin stock';
+    else if(!idOk)btn.innerHTML='Completa el ID';
+    else if(!hasBalance)btn.innerHTML='Saldo insuficiente';
+    else btn.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>Recargar ahora`;
   }
 
-  document.addEventListener('input', (e) => {
-    if (e.target.id === 'player-id') {
-      playerId = e.target.value;
-      const fb = document.getElementById('player-feedback');
-      const v = validId(playerId);
-      if (playerId.trim() === '') fb.innerHTML = '';
-      else if (v.ok) fb.innerHTML = `<div class="feedback-ok">${v.msg}</div>`;
-      else fb.innerHTML = `<div class="feedback-err">${v.err}</div>`;
+  document.addEventListener('input',(e)=>{
+    if(e.target.id==='player-id'){
+      playerId=e.target.value;
+      const fb=document.getElementById('player-feedback');
+      const v=validId(playerId);
+      if(playerId.trim()==='')fb.innerHTML='';
+      else if(v.ok)fb.innerHTML=`<div class="feedback-ok">${v.msg}</div>`;
+      else fb.innerHTML=`<div class="feedback-err">${v.err}</div>`;
       updateBtn();
     }
   });
 
-  async function loadProfile(userId) {
-    const { data, error } = await sb.from('user_profiles').select('*').eq('id', userId).single();
-    if (error && error.code !== 'PGRST116') return null;
+  async function loadProfile(userId){
+    const{data,error}=await sb.from('user_profiles').select('*').eq('id',userId).single();
+    if(error&&error.code!=='PGRST116')return null;
     return data;
   }
 
-  async function calcBalance(userId) {
-    const { data, error } = await sb.from('transacciones')
+  async function calcBalance(userId){
+    const{data,error}=await sb.from('transacciones')
       .select('monto,tipo,metadata')
-      .eq('usuario_id', userId)
-      .eq('estado', 'completado');
-    if (error) return 0;
-    let b = 0;
-    for (const t of (data || [])) {
-      b += (t.tipo === 'deposito' || (t.tipo === 'transferencia' && t.metadata?.type === 'receive') ? 1 : -1) * Number(t.monto);
+      .eq('usuario_id',userId)
+      .eq('estado','completado');
+    if(error)return 0;
+    let b=0;
+    for(const t of (data||[])){
+      b+=(t.tipo==='deposito'||(t.tipo==='transferencia'&&t.metadata?.type==='receive')?1:-1)*Number(t.monto);
     }
     return b;
   }
 
-  function updateBalance() {
-    const el = document.getElementById('balance');
-    if (el) el.textContent = fmt(balance);
+  function updateBalance(){
+    const el=document.getElementById('balance');
+    if(el)el.textContent=fmt(balance);
   }
 
-  document.addEventListener('DOMContentLoaded', async () => {
-    const { data: { session } } = await sb.auth.getSession();
-    if (!session) { window.location.href = 'index.html'; return; }
+  document.addEventListener('DOMContentLoaded',async()=>{
+    const{data:{session}}=await sb.auth.getSession();
+    if(!session){window.location.href='index.html';return;}
 
-    currentUser = session.user;
-    userProfile = await loadProfile(currentUser.id);
-    if (!userProfile) { window.location.href = 'index.html'; return; }
+    currentUser=session.user;
+    userProfile=await loadProfile(currentUser.id);
+    if(!userProfile){window.location.href='index.html';return;}
 
-    const ipR = await checkIP(currentUser.id);
-    if (!ipR.permitido) return;
+    const ipR=await checkIP(currentUser.id);
+    if(!ipR.permitido)return;
 
-    balance = await calcBalance(currentUser.id);
+    balance=await calcBalance(currentUser.id);
     updateBalance();
 
     await loadCats();
     await loadPkgs();
 
-    document.getElementById('search').addEventListener('input', (e) => {
+    document.getElementById('search').addEventListener('input',(e)=>{
       clearTimeout(searchTimer);
-      searchTimer = setTimeout(() => filterPkgs(e.target.value, currentCat), 200);
+      searchTimer=setTimeout(()=>filterPkgs(e.target.value,currentCat),200);
     });
 
-    document.getElementById('close-detail').onclick = () => close('modal-detail');
-    document.getElementById('buy-btn').onclick = startBuy;
-    document.getElementById('close-confirm').onclick = () => close('modal-confirm');
-    document.getElementById('cancel-btn').onclick = () => close('modal-confirm');
-    document.getElementById('confirm-btn').onclick = doBuy;
-    document.getElementById('close-result').onclick = () => {
-      close('modal-result');
-      window.location.reload();
-    };
+    document.getElementById('close-detail').onclick=()=>close('modal-detail');
+    document.getElementById('buy-btn').onclick=startBuy;
+    document.getElementById('close-confirm').onclick=()=>close('modal-confirm');
+    document.getElementById('cancel-btn').onclick=()=>close('modal-confirm');
+    document.getElementById('confirm-btn').onclick=doBuy;
+    document.getElementById('close-result').onclick=()=>{close('modal-result');window.location.reload();};
   });
 
-  function startBuy() {
-    const total = currentPkg._final;
-    document.getElementById('confirm-text').innerHTML = `
-      <div style="background:#0d1a16;padding:14px;border-radius:10px;border:1px solid rgba(16,185,129,0.2);">
-        <div style="font-weight:700;margin-bottom:8px;color:#fff;">${esc(currentPkg.nombre)}</div>
-        <div style="font-size:13px;color:#a3a3a3;">ID: <strong style="color:#10b981;">${esc(playerId)}</strong></div>
-        <div style="font-size:13px;color:#a3a3a3;margin-top:4px;">Total: <strong style="color:#10b981;">${fmt(total)}</strong></div>
+  function startBuy(){
+    const total=currentPkg._final;
+    document.getElementById('confirm-text').innerHTML=`
+      <div style="background:#0d1a16;padding:14px;border-radius:10px;border:1px solid rgba(16,185,129,.2)">
+        <div style="font-weight:700;margin-bottom:8px;color:#fff">${esc(currentPkg.nombre)}</div>
+        <div style="font-size:13px;color:#a3a3a3">ID: <strong style="color:#10b981">${esc(playerId)}</strong></div>
+        <div style="font-size:13px;color:#a3a3a3;margin-top:4px">Total: <strong style="color:#10b981">${fmt(total)}</strong></div>
       </div>`;
     open('modal-confirm');
   }
 
-  async function doBuy() {
-    const btn = document.getElementById('confirm-btn');
-    const txt = document.getElementById('confirm-txt');
-    const spin = document.getElementById('confirm-spin');
+  async function doBuy(){
+    const btn=document.getElementById('confirm-btn');
+    const txt=document.getElementById('confirm-txt');
+    const spin=document.getElementById('confirm-spin');
 
-    btn.disabled = true;
-    txt.textContent = 'Procesando...';
-    spin.style.display = 'block';
+    btn.disabled=true;txt.textContent='Procesando...';spin.style.display='block';
 
-    try {
-      const tries = JSON.parse(localStorage.getItem('intentos_compra') || '[]');
-      const now = Date.now();
-      const rec = tries.filter(t => now - t < 60000);
-      if (rec.length >= 3) { toast('Demasiados intentos. Espera 1 minuto.'); return; }
+    try{
+      const tries=JSON.parse(localStorage.getItem('intentos_compra')||'[]');
+      const now=Date.now();
+      const rec=tries.filter(t=>now-t<60000);
+      if(rec.length>=3){toast('Demasiados intentos. Espera 1 minuto.');return;}
       rec.push(now);
-      localStorage.setItem('intentos_compra', JSON.stringify(rec));
+      localStorage.setItem('intentos_compra',JSON.stringify(rec));
 
-      const total = currentPkg._final;
-      const tk = token();
+      const total=currentPkg._final;
+      const tk=token();
 
-      const { error: tErr } = await sb.from('compras_tokens').insert([{ user_id: currentUser.id, token: tk }]);
-      if (tErr) throw new Error('No se pudo iniciar la compra');
+      const{error:tErr}=await sb.from('compras_tokens').insert([{user_id:currentUser.id,token:tk}]);
+      if(tErr)throw new Error('No se pudo iniciar la compra');
 
-      const res = await fetch(PROXY_URL + '/process-order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-proxy-secret': PROXY_SECRET },
-        body: JSON.stringify({
-          user_id: currentUser.id,
-          package_id: currentPkg.id,
-          package_sku: currentPkg.sku_razer,
-          price: total,
-          token: tk,
-          custom_value: { userName: playerId },
-          ip: clientIP,
-          user_agent: navigator.userAgent
+      const res=await fetch(PROXY_URL+'/process-order',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','x-proxy-secret':PROXY_SECRET},
+        body:JSON.stringify({
+          user_id:currentUser.id,
+          package_id:currentPkg.id,
+          package_sku:currentPkg.sku_razer,
+          price:total,
+          token:tk,
+          custom_value:{userName:playerId},
+          ip:clientIP,
+          user_agent:navigator.userAgent
         })
       });
 
-      const result = await res.json();
+      const result=await res.json();
+      if(!res.ok)throw new Error(result.message||'Error al procesar');
 
-      if (!res.ok) throw new Error(result.message || 'Error al procesar');
-
-      balance = Number(result.saldo_restante);
+      balance=Number(result.saldo_restante);
       updateBalance();
 
-      document.getElementById('result-icon').className = 'result-icon';
-      document.getElementById('result-icon').innerHTML = `
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M20 6 9 17l-5-5"/>
-        </svg>`;
-      document.getElementById('result-title').textContent = '¡Recarga exitosa!';
-      document.getElementById('result-msg').textContent = `Se descontó ${fmt(result.precio_cobrado)} de tu saldo.`;
+      document.getElementById('result-icon').className='result-icon';
+      document.getElementById('result-icon').innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>`;
+      document.getElementById('result-title').textContent='¡Recarga exitosa!';
+      document.getElementById('result-msg').textContent=`Se descontó ${fmt(result.precio_cobrado)} de tu saldo.`;
 
-      close('modal-confirm');
-      close('modal-detail');
-      open('modal-result');
-
-    } catch (err) {
+      close('modal-confirm');close('modal-detail');open('modal-result');
+    }catch(err){
       console.error(err);
-      const msg = err.message || 'No se pudo completar la recarga.';
-      if (msg.includes('bloqueada')) block(msg);
+      const msg=err.message||'No se pudo completar la recarga.';
+      if(msg.includes('bloqueada'))block(msg);
       else showError(msg);
-    } finally {
-      btn.disabled = false;
-      txt.textContent = 'Confirmar';
-      spin.style.display = 'none';
+    }finally{
+      btn.disabled=false;txt.textContent='Confirmar';spin.style.display='none';
     }
   }
-
 })();
 </script>
 </body>
