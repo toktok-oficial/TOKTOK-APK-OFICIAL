@@ -297,7 +297,7 @@
   async function loadPkgs(){
     try{
       const{data,error}=await sb.from('paquetes_juegos')
-        .select('id,nombre,descripcion,precio,precio_original,precio_referencia,precio_final,porcentaje_descuento,stock,imagen_url,sku_razer,destacado,categoria_id')
+        .select('id,nombre,descripcion,precio_referencia,precio_final,porcentaje_descuento,stock,imagen_url,sku_razer,destacado,categoria_id')
         .eq('activo',true)
         .order('destacado',{ascending:false})
         .order('creado_en',{ascending:false});
@@ -328,8 +328,8 @@
     for(const p of list){
       const stock=Number(p.stock)||0;
       const discount=Number(p.porcentaje_descuento)||0;
-      const priceFinal=Number(p.precio_final)||Number(p.precio)||0;
-      const priceRef=Number(p.precio_referencia)||Number(p.precio_original)||0;
+      const priceFinal=Number(p.precio_final)||0;
+      const priceRef=Number(p.precio_referencia)||0;
       const hasRef=priceRef>priceFinal&&priceRef>0;
 
       html+=`
@@ -366,9 +366,7 @@
     document.getElementById('player-id').value='';
     document.getElementById('player-feedback').innerHTML='';
 
-    const priceFinal=Number(p.precio_final)||Number(p.precio)||0;
-    const priceRef=Number(p.precio_referencia)||Number(p.precio_original)||0;
-
+    const priceFinal=Number(p.precio_final)||0;
     currentPkg._final=priceFinal;
 
     document.getElementById('detail-title').textContent=p.nombre;
