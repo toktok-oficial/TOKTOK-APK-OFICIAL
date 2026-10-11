@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="Descarga TokTok para Android y comparte la app con tus amigos.">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/ico.png" type="image/png">
+  <link rel="apple-touch-icon" href="icons/ico2.png">
+  <title>Descargar TokTok</title>
+  <style>
+    :root{font-family:Arial,Helvetica,sans-serif;color:#202124;background:#fff;font-synthesis:none;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased}
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;background:#fff}
+    a{color:inherit}
+    .topbar{height:64px;display:flex;align-items:center;gap:14px;padding:0 max(20px,calc((100vw - 1040px)/2));border-bottom:1px solid #e8eaed}
+    .back{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;text-decoration:none;color:#5f6368;font-size:22px}
+    .back:hover{background:#f1f3f4}
+    .brand{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:600;letter-spacing:-.4px}
+    .brand img{width:30px;height:30px}
+    main{width:min(100% - 40px,900px);margin:0 auto;padding:48px 0 64px}
+    .app-head{display:grid;grid-template-columns:132px minmax(0,1fr);gap:28px;align-items:center}
+    .app-icon{display:block;width:132px;height:132px;border-radius:28px;box-shadow:0 3px 10px #0002;object-fit:cover}
+    h1{margin:0 0 8px;font-size:32px;font-weight:500;letter-spacing:-.8px}
+    .developer{margin:0;color:#137333;font-size:15px;font-weight:500}
+    .category{margin:8px 0 0;color:#5f6368;font-size:14px}
+    .app-facts{display:flex;align-items:center;gap:0;margin:30px 0 26px;color:#5f6368}
+    .fact{min-width:120px;padding:0 22px;text-align:center;border-right:1px solid #dadce0}
+    .fact:first-child{padding-left:0}
+    .fact:last-child{border:0}
+    .fact strong{display:block;margin-bottom:6px;color:#202124;font-size:14px;font-weight:600}
+    .fact span{font-size:12px}
+    .actions{display:flex;gap:12px;max-width:520px}
+    .button{min-height:48px;display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:0 24px;border:0;border-radius:24px;font:600 14px Arial,Helvetica,sans-serif;text-decoration:none;cursor:pointer;transition:background .18s,box-shadow .18s}
+    .button:focus-visible{outline:3px solid #a8c7fa;outline-offset:2px}
+    .button-primary{flex:1;background:#0b57d0;color:#fff}
+    .button-primary:hover{background:#0842a0;box-shadow:0 2px 7px #0003}
+    .button-secondary{background:#e8f0fe;color:#174ea6}
+    .button-secondary:hover{background:#d3e3fd}
+    .button svg{width:19px;height:19px;fill:currentColor}
+    .notice{min-height:20px;margin:12px 0 0;color:#5f6368;font-size:13px;line-height:1.5}
+    .section{margin-top:42px;padding-top:24px;border-top:1px solid #e8eaed}
+    .section h2{margin:0 0 12px;font-size:19px;font-weight:500}
+    .section p{max-width:680px;margin:0;color:#5f6368;font-size:14px;line-height:1.7}
+    .install-steps{display:grid;gap:12px;margin:20px 0 0;padding:0;list-style:none;counter-reset:install-step}
+    .install-steps li{position:relative;padding:16px 16px 16px 58px;border:1px solid #e8eaed;border-radius:14px;counter-increment:install-step}
+    .install-steps li::before{position:absolute;top:14px;left:16px;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#e8f0fe;color:#174ea6;font-size:14px;font-weight:700;content:counter(install-step)}
+    .install-steps strong{display:block;margin-bottom:5px;font-size:14px}
+    .install-steps span{display:block;color:#5f6368;font-size:13px;line-height:1.6}
+    .security-note{margin-top:18px;padding:16px;border:1px solid #f9ab00;border-radius:14px;background:#fef7e0}
+    .security-note strong{display:block;margin-bottom:7px;color:#5f4200;font-size:14px}
+    .security-note p{color:#5f5200;font-size:13px;line-height:1.6}
+    .security-note p+p{margin-top:8px}
+    .preview{display:flex;align-items:center;gap:18px;margin-top:22px;padding:20px;border:1px solid #dadce0;border-radius:16px;background:linear-gradient(120deg,#f8f9fa,#eef3fd)}
+    .preview-mark{display:grid;place-items:center;width:56px;height:56px;flex:none;border-radius:17px;background:#fff;color:#6d28d9;font-size:25px;box-shadow:0 1px 5px #0002}
+    .preview strong{display:block;margin-bottom:5px;font-size:14px}
+    .preview span{color:#5f6368;font-size:13px;line-height:1.5}
+    @media(max-width:560px){
+      .topbar{height:58px;padding:0 14px}
+      main{width:calc(100% - 36px);padding:32px 0 48px}
+      .app-head{grid-template-columns:88px minmax(0,1fr);gap:18px}
+      .app-icon{width:88px;height:88px;border-radius:20px}
+      h1{font-size:25px}
+      .developer{font-size:14px}
+      .category{font-size:12px}
+      .app-facts{margin:25px 0 22px}
+      .fact{min-width:0;flex:1;padding:0 10px}
+      .fact:first-child{padding-left:0}
+      .actions{flex-direction:column}
+      .button{width:100%}
+      .section{margin-top:34px}
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="back" href="dashboard.html" aria-label="Volver al dashboard">&larr;</a>
+    <div class="brand"><img src="icons/ico.png" alt="">TokTok</div>
+  </header>
+  <main>
+    <section aria-labelledby="app-name">
+      <div class="app-head">
+        <img class="app-icon" src="icons/ico2.png" alt="Icono de TokTok">
+        <div>
+          <h1 id="app-name">TokTok</h1>
+          <p class="developer">TokTok</p>
+          <p class="category">Finanzas · Billetera digital</p>
+        </div>
+      </div>
+      <div class="app-facts" aria-label="Información de la aplicación">
+        <div class="fact"><strong>Gratis</strong><span>Sin costo</span></div>
+        <div class="fact"><strong>Android</strong><span>Archivo APK</span></div>
+        <div class="fact"><strong>TokTok</strong><span>Finanzas</span></div>
+      </div>
+      <div class="actions">
+        <a id="download-app" class="button button-primary" href="Tok-Tok.apk" download="Tok-Tok.apk">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"/></svg>
+          Descargar
+        </a>
+        <button id="copy-link" class="button button-secondary" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+          Copiar enlace
+        </button>
+        <button id="share-link" class="button button-secondary" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a3.1 3.1 0 0 0 0-1.39l7.05-4.11A3 3 0 1 0 15 5c0 .23.03.46.08.68L8.03 9.79a3 3 0 1 0 0 4.42l7.12 4.16c-.05.2-.07.41-.07.63a2.92 2.92 0 1 0 2.92-2.92z"/></svg>
+          Compartir
+        </button>
+      </div>
+      <p id="action-notice" class="notice" role="status" aria-live="polite"></p>
+    </section>
+    <section class="section" aria-labelledby="about-title">
+      <h2 id="about-title">Acerca de esta app</h2>
+      <p>TokTok es tu billetera digital para gestionar recargas, pagos y tu cuenta desde el celular. Descarga el archivo APK para instalar la aplicación en Android o comparte el enlace con tus amigos.</p>
+      <div class="preview">
+        <div class="preview-mark" aria-hidden="true"><span class="fas">✦</span></div>
+        <div><strong>Tu TokTok, siempre a mano</strong><span>Descarga el instalador de Android y sigue las instrucciones de tu dispositivo para completar la instalación.</span></div>
+      </div>
+    </section>
+    <section class="section" aria-labelledby="install-title">
+      <h2 id="install-title">Cómo instalar TokTok en Android</h2>
+      <p>El archivo APK se instala fuera de Google Play. Descárgalo únicamente desde el sitio oficial de TokTok y sigue estos pasos. Los nombres de los menús pueden variar según la marca y la versión de Android.</p>
+      <ol class="install-steps">
+        <li><strong>Descarga el APK</strong><span>Pulsa “Descargar” y espera a que termine la descarga de <b>Tok-Tok.apk</b>. Si el navegador pregunta si deseas conservar el archivo, confirma solo si lo descargaste desde el sitio oficial de TokTok.</span></li>
+        <li><strong>Abre el archivo descargado</strong><span>Pulsa la notificación de descarga o abre la aplicación “Archivos” / “Mis archivos”, entra en “Descargas” y toca <b>Tok-Tok.apk</b>.</span></li>
+        <li><strong>Permite instalar desde esa fuente</strong><span>Si Android lo solicita, pulsa “Ajustes” y habilita “Permitir desde esta fuente” para la aplicación que abrió el archivo (por ejemplo, Chrome o Archivos). Vuelve atrás para continuar con la instalación. Este permiso se concede a esa aplicación, no hace falta habilitarlo para todas las fuentes.</span></li>
+        <li><strong>Confirma la instalación</strong><span>Revisa el aviso del instalador y pulsa “Instalar”. Al finalizar, pulsa “Abrir”. Si no aparece la opción, busca en Ajustes “Instalar aplicaciones desconocidas” o “Instalar apps desconocidas” y selecciona el navegador o gestor de archivos que usaste.</span></li>
+        <li><strong>Si Play Protect muestra un aviso</strong><span>Si verificaste que descargaste el APK desde el sitio oficial de TokTok y el aviso solo permite confirmar la instalación, puedes tocar “Instalar de todos modos” y seguir las indicaciones en pantalla.</span></li>
+      </ol>
+    </section>
+  </main>
+  <script>
+    const notice = document.getElementById('action-notice');
+    const inviteUrl = new URL('invitar.html', window.location.href).href;
+
+    document.getElementById('copy-link').addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(inviteUrl);
+        notice.textContent = 'Enlace copiado. Ya puedes compartirlo.';
+      } catch (error) {
+        notice.textContent = 'No se pudo copiar el enlace. Copia esta dirección desde la barra del navegador: ' + inviteUrl;
+      }
+    });
+
+    document.getElementById('share-link').addEventListener('click', async () => {
+      if (!navigator.share) {
+        notice.textContent = 'Tu navegador no permite compartir directamente. Usa “Copiar enlace”.';
+        return;
+      }
+      try {
+        await navigator.share({ title: 'TokTok', text: 'Descarga TokTok', url: inviteUrl });
+      } catch (error) {
+        if (error.name !== 'AbortError') notice.textContent = 'No se pudo compartir el enlace. Usa “Copiar enlace”.';
+      }
+    });
+
+    if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+      navigator.serviceWorker.register('sw.js').catch(error => {
+        notice.textContent = 'No se pudo preparar la instalación de TokTok en este navegador.';
+        console.error('Error registrando el service worker:', error);
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,9 +1,14 @@
-const CACHE_NAME = 'toktok-cache-v1';
+const CACHE_NAME = 'toktok-cache-v2';
 const urlsToCache = [
   '/',
   '/index.html',
-  '/css/styles.css',
-  '/js/auth.js'
+  '/dashboard.html',
+  '/invitar.html',
+  '/manifest.json',
+  '/css/style.css',
+  '/js/auth.js',
+  '/icons/ico.png',
+  '/icons/ico2.png'
 ];
 
 self.addEventListener('install', event => {
