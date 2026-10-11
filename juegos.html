@@ -676,11 +676,13 @@
     const ipR=await checkIP(currentUser.id);
     if(!ipR.permitido)return;
 
-    balance=await calcBalance(currentUser.id);
+    const [loadedBalance]=await Promise.all([
+      calcBalance(currentUser.id),
+      loadCats(),
+      loadPkgs()
+    ]);
+    balance=loadedBalance;
     updateBalance();
-
-    await loadCats();
-    await loadPkgs();
 
     document.getElementById('search').addEventListener('input',(e)=>{
       clearTimeout(searchTimer);

@@ -278,11 +278,13 @@
         }
 
         async function loadPlans() {
-            const { data: cats } = await supabase.from('package_categories').select('*').eq('is_active', true).order('display_order', { ascending: true });
+            const [{ data: cats }, { data, error }] = await Promise.all([
+                supabase.from('package_categories').select('*').eq('is_active', true).order('display_order', { ascending: true }),
+                supabase.from('internet_packages').select('*').eq('is_active', true)
+                    .order('is_featured', { ascending: false }).order('price', { ascending: true })
+            ]);
             allCategories = cats || [];
 
-            const { data, error } = await supabase.from('internet_packages').select('*').eq('is_active', true)
-                .order('is_featured', { ascending: false }).order('price', { ascending: true });
             if (error) { showToast('Error al cargar planes', 'error'); return; }
             allPlans = data || [];
 

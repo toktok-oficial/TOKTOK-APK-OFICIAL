@@ -1409,7 +1409,11 @@ const updateCardUserName = () => {
 
 const updateUI = async () => {
   if (!currentUser) return;
-  currentBalance = await calculateBalance(currentUser.id);
+  const [, balance] = await Promise.all([
+    applyFilters(),
+    calculateBalance(currentUser.id),
+  ]);
+  currentBalance = balance;
   document.querySelectorAll('#balance, #mobile-balance').forEach(el => {
     if (!el) return;
     el.textContent = isBalanceHidden ? 'Bs ••••••' : formatCurrency(currentBalance);
@@ -1417,7 +1421,6 @@ const updateUI = async () => {
     el.classList.toggle('balance-amount', !isBalanceHidden);
   });
   updateCardUserName();
-  await applyFilters();
 };
 
 const refreshDashboard = async () => {
@@ -1700,10 +1703,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   const { data: { session } } = await supabase.auth.getSession();
   if (!session) { window.location.href = 'index.html'; return; }
   currentUser = session.user;
-  userProfile = await loadUserProfile(currentUser.id);
+  const [profile, ads] = await Promise.all([
+    loadUserProfile(currentUser.id),
+    loadAds(),
+  ]);
+  userProfile = profile;
   if (!userProfile) { window.location.href = 'index.html'; return; }
 
-  const ads = await loadAds();
   allAds = ads || [];
   renderDashboardAnnouncements(allAds);
   if (ads && ads.length > 0) showAdModal(ads);

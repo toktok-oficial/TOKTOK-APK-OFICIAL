@@ -1112,6 +1112,8 @@
         let currentInvoiceData = null;
         let products = [];
         let currentCategory = 'all';
+        let productSearchTimer = null;
+        let productsRequestId = 0;
 
         // Variables para el mapa
         let fullscreenMap = null;
@@ -1440,6 +1442,7 @@
         // FUNCIONES DE PRODUCTOS
         // ============================================
         async function loadProducts(searchTerm = '', category = 'all') {
+            const requestId = ++productsRequestId;
             try {
                 let query = window.supabase
                     .from('products')
@@ -1460,9 +1463,11 @@
 
                 if (error) throw error;
 
+                if (requestId !== productsRequestId) return;
                 products = data || [];
                 renderProducts(products);
             } catch (error) {
+                if (requestId !== productsRequestId) return;
                 console.error('Error loading products:', error);
                 showToast('Error al cargar productos', 'error');
             }
@@ -2232,17 +2237,21 @@ ${notes ? `📝 <b>NOTAS</b>\n${notes}` : ''}
                     return;
                 }
 
-                currentBalance = await calculateBalance(currentUser.id);
+                const [balance] = await Promise.all([
+                    calculateBalance(currentUser.id),
+                    loadProducts()
+                ]);
+                currentBalance = balance;
                 updateBalanceDisplay();
-
-                await loadProducts();
 
                 // ============================================
                 // EVENT LISTENERS
                 // ============================================
 
                 document.getElementById('product-search').addEventListener('input', (e) => {
-                    loadProducts(e.target.value, currentCategory);
+                    clearTimeout(productSearchTimer);
+                    const searchTerm = e.target.value;
+                    productSearchTimer = setTimeout(() => loadProducts(searchTerm, currentCategory), 250);
                 });
 
                 document.querySelectorAll('.category-btn').forEach(btn => {
@@ -2254,6 +2263,7 @@ ${notes ? `📝 <b>NOTAS</b>\n${notes}` : ''}
                         btn.classList.add('active');
 
                         currentCategory = btn.dataset.category;
+                        clearTimeout(productSearchTimer);
                         const searchTerm = document.getElementById('product-search').value;
                         loadProducts(searchTerm, currentCategory);
                     });
