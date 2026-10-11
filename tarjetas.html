@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Tarjetas - TokTok</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<meta name="theme-color" content="#000000">
+<style>
+:root{--bg:#000;--bg2:#0a0a0a;--card:#141414;--card2:#1c1c1c;--text:#fff;--muted:#8a8a8a;--accent:#6F2A82;--border:rgba(255,255,255,.08);--safe-bottom:env(safe-area-inset-bottom,0px);}
+:root.light-mode{--bg:#f5f5f5;--bg2:#fff;--card:#fff;--card2:#fafafa;--text:#1a1a1a;--muted:#666;--accent:#7B1FA2;--border:rgba(0,0,0,.08);}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:'Public Sans','Inter',sans-serif;-webkit-font-smoothing:antialiased;}
+body{padding-bottom:var(--safe-bottom);transition:background .2s,color .2s;}
+.app{max-width:480px;margin:0 auto;min-height:100vh;background:linear-gradient(180deg,var(--bg),var(--bg2));padding-bottom:90px;position:relative;}
+.header{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:12px;padding:16px 16px;background:var(--bg);border-bottom:1px solid var(--border);}
+.back-btn{width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--card);color:var(--text);text-decoration:none;border:1px solid var(--border);}
+.title{font-size:18px;font-weight:700;flex:1;}
+.icon-btn{width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--card);color:var(--text);border:1px solid var(--border);cursor:pointer;}
+.balance-pill{display:flex;align-items:center;justify-content:space-between;margin:12px 16px;padding:12px 16px;border-radius:14px;background:linear-gradient(135deg,var(--accent),#4A145A);color:#fff;box-shadow:0 10px 30px rgba(74,20,90,.4);}
+.balance-pill .label{font-size:11px;opacity:.85;}
+.balance-pill .amount{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;}
+.categories{display:flex;gap:8px;overflow-x:auto;padding:8px 16px 16px;scrollbar-width:none;}
+.categories::-webkit-scrollbar{display:none;}
+.cat-btn{padding:8px 14px;border-radius:20px;border:1px solid var(--border);background:var(--card);color:var(--muted);font-size:12px;font-weight:600;white-space:nowrap;cursor:pointer;transition:all .2s;}
+.cat-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:0 16px 20px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:transform .2s;}
+.card:active{transform:scale(.98);}
+.card img{width:100%;aspect-ratio:1;object-fit:cover;background:var(--card2);display:block;}
+.card-body{padding:10px 12px 12px;}
+.card-name{font-size:13px;font-weight:600;line-height:1.3;margin:0 0 6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:34px;}
+.card-price{font-size:15px;font-weight:800;color:var(--accent);}
+.card-buy{width:100%;margin-top:8px;padding:8px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#8A3A9B);color:#fff;font-size:12px;font-weight:700;border:0;cursor:pointer;}
+.card-buy:disabled{opacity:.5;cursor:not-allowed;}
+.empty{padding:60px 20px;text-align:center;color:var(--muted);}
+.empty i{font-size:40px;margin-bottom:12px;display:block;opacity:.5;}
+.tabs{display:flex;margin:0 16px 16px;border-bottom:1px solid var(--border);}
+.tab{flex:1;padding:12px 0;text-align:center;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;position:relative;background:transparent;border:0;}
+.tab.active{color:var(--accent);}
+.tab.active::after{content:'';position:absolute;bottom:-1px;left:50%;transform:translateX(-50%);width:40%;height:2px;background:var(--accent);border-radius:2px;}
+.hist-item{display:flex;gap:12px;margin:0 16px 10px;padding:12px;background:var(--card);border:1px solid var(--border);border-radius:14px;align-items:center;}
+.hist-item img{width:56px;height:56px;border-radius:10px;object-fit:cover;background:var(--card2);}
+.hist-info{flex:1;min-width:0;}
+.hist-name{font-size:13px;font-weight:600;margin-bottom:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.hist-meta{font-size:11px;color:var(--muted);}
+.hist-view{padding:8px 12px;border-radius:10px;background:var(--accent);color:#fff;font-size:11px;font-weight:700;border:0;cursor:pointer;white-space:nowrap;}
+.modal{position:fixed;inset:0;z-index:100;display:none;align-items:flex-end;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);}
+.modal.active{display:flex;}
+.modal-content{width:100%;max-width:480px;margin:0 auto;background:var(--card);border-radius:24px 24px 0 0;padding:20px;max-height:92vh;overflow-y:auto;position:relative;}
+.modal-img{width:100%;aspect-ratio:1.4;object-fit:cover;border-radius:14px;margin-bottom:14px;background:var(--card2);}
+.modal-title{font-size:18px;font-weight:700;margin:0 0 6px;}
+.modal-desc{font-size:13px;color:var(--muted);margin:0 0 14px;line-height:1.5;}
+.modal-price{font-size:24px;font-weight:800;color:var(--accent);margin-bottom:16px;}
+.btn{width:100%;padding:14px;border-radius:12px;font-size:15px;font-weight:700;border:0;cursor:pointer;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-primary{background:linear-gradient(135deg,var(--accent),#8A3A9B);color:#fff;}
+.btn-secondary{background:var(--card2);color:var(--text);border:1px solid var(--border);}
+.btn:disabled{opacity:.5;cursor:not-allowed;}
+.creds-box{background:var(--card2);border:1px dashed var(--accent);border-radius:14px;padding:16px;margin:14px 0;}
+.creds-label{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);font-weight:700;margin-bottom:8px;}
+.creds-value{font-family:'Courier New',monospace;font-size:14px;color:var(--text);word-break:break-all;white-space:pre-wrap;line-height:1.5;background:var(--bg);padding:12px;border-radius:10px;border:1px solid var(--border);}
+.close-x{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.5);color:#fff;border:0;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:5;}
+.spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);padding:12px 18px;border-radius:12px;background:#059669;color:#fff;font-size:13px;font-weight:600;z-index:200;box-shadow:0 10px 30px rgba(0,0,0,.3);}
+.toast.error{background:#dc2626;}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="header">
+    <a href="dashboard.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+    <div class="title">Tarjetas</div>
+    <button class="icon-btn" id="themeBtn" type="button"><i class="fas fa-moon"></i></button>
+  </div>
+
+  <div class="balance-pill">
+    <div>
+      <div class="label">Saldo disponible</div>
+      <div class="amount" id="balance">Bs 0.00</div>
+    </div>
+    <i class="fas fa-wallet" style="font-size:22px;opacity:.7;"></i>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="shop">Comprar</button>
+    <button class="tab" data-tab="history">Historial</button>
+  </div>
+
+  <div id="shopView">
+    <div class="categories" id="categories"></div>
+    <div class="grid" id="products"><div class="empty"><i class="fas fa-spinner fa-spin"></i>Cargando...</div></div>
+  </div>
+
+  <div id="historyView" style="display:none;">
+    <div id="history"></div>
+  </div>
+</div>
+
+<!-- Modal detalle/compra -->
+<div class="modal" id="detailModal">
+  <div class="modal-content">
+    <button class="close-x" id="closeDetail"><i class="fas fa-times"></i></button>
+    <img id="detImg" class="modal-img" alt="">
+    <h2 id="detName" class="modal-title"></h2>
+    <p id="detDesc" class="modal-desc"></p>
+    <div id="detPrice" class="modal-price"></div>
+    <button class="btn btn-primary" id="buyBtn"><i class="fas fa-shopping-cart"></i><span>Comprar ahora</span></button>
+    <button class="btn btn-secondary" id="cancelDetail">Cancelar</button>
+  </div>
+</div>
+
+<!-- Modal credenciales -->
+<div class="modal" id="credsModal">
+  <div class="modal-content">
+    <button class="close-x" id="closeCreds"><i class="fas fa-times"></i></button>
+    <div style="text-align:center;margin-bottom:10px;">
+      <div style="width:64px;height:64px;border-radius:50%;background:rgba(5,150,105,.15);color:#059669;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:28px;">
+        <i class="fas fa-check"></i>
+      </div>
+      <h2 style="font-size:18px;font-weight:700;margin:0 0 4px;">¡Compra exitosa!</h2>
+      <p style="font-size:13px;color:var(--muted);margin:0;">Guarda estas credenciales</p>
+    </div>
+    <div class="creds-box">
+      <div class="creds-label">Credenciales del producto</div>
+      <div id="credsValue" class="creds-value"></div>
+    </div>
+    <button class="btn btn-primary" id="copyCreds"><i class="fas fa-copy"></i>Copiar credenciales</button>
+    <button class="btn btn-secondary" id="doneCreds">Listo</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const supabaseUrl = 'https://fmhjuisoibynjgfrqvgj.supabase.co';
+const supabaseKey = 'sb_publishable_M7yramCIWbPyxnH3xwJNEQ_p77ModBz';
+const sb = supabase.createClient(supabaseUrl, supabaseKey);
+
+let currentUser = null;
+let currentBalance = 0;
+let categorias = [];
+let productos = [];
+let catActiva = 'all';
+let productoSeleccionado = null;
+
+const formatCurrency = (n) => 'Bs ' + parseFloat(n||0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+function showToast(msg, type='ok'){
+  const t = document.createElement('div');
+  t.className = 'toast' + (type==='error'?' error':'');
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(()=>{ t.style.opacity='0'; t.style.transition='opacity .3s'; setTimeout(()=>t.remove(),300); }, 2500);
+}
+
+// ============ HISTORIAL LOCAL ============
+const HIST_KEY = 'toktok_tarjetas_historial';
+function getHistorial(){
+  try { return JSON.parse(localStorage.getItem(HIST_KEY) || '[]'); } catch { return []; }
+}
+function addHistorial(item){
+  const h = getHistorial();
+  h.unshift(item);
+  try { localStorage.setItem(HIST_KEY, JSON.stringify(h)); } catch {}
+}
+
+// ============ CARGA DE DATOS ============
+async function loadCategorias(){
+  const { data, error } = await sb.from('categorias_tarjetas').select('*').eq('activo', true).order('orden',{ascending:true});
+  if (error) { console.error(error); return; }
+  categorias = data || [];
+  renderCategorias();
+}
+
+async function loadProductos(){
+  const { data, error } = await sb.from('productos_tarjetas').select('*').eq('estado','disponible').order('creado_en',{ascending:false});
+  if (error) { console.error(error); return; }
+  productos = data || [];
+  renderProductos();
+}
+
+async function loadBalance(){
+  if (!currentUser) return;
+  const { data, error } = await sb.from('transacciones').select('monto,tipo,metadata').eq('usuario_id', currentUser.id).eq('estado','completado');
+  if (error) { console.error(error); return; }
+  let bal = 0;
+  (data||[]).forEach(t=>{
+    const inc = t.tipo === 'deposito' || (t.tipo === 'transferencia' && t.metadata?.type === 'receive');
+    bal += (inc ? 1 : -1) * Number(t.monto);
+  });
+  currentBalance = bal;
+  document.getElementById('balance').textContent = formatCurrency(bal);
+}
+
+// ============ RENDER ============
+function renderCategorias(){
+  const c = document.getElementById('categories');
+  let html = `<button class="cat-btn ${catActiva==='all'?'active':''}" data-cat="all">Todas</button>`;
+  categorias.forEach(cat=>{
+    html += `<button class="cat-btn ${catActiva===cat.id?'active':''}" data-cat="${cat.id}">${cat.nombre}</button>`;
+  });
+  c.innerHTML = html;
+  c.querySelectorAll('.cat-btn').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      catActiva = b.dataset.cat;
+      renderCategorias();
+      renderProductos();
+    });
+  });
+}
+
+function renderProductos(){
+  const g = document.getElementById('products');
+  const list = catActiva==='all' ? productos : productos.filter(p=>p.categoria_id===catActiva);
+  if (list.length===0){
+    g.innerHTML = `<div class="empty" style="grid-column:1/-1;"><i class="fas fa-box-open"></i>No hay productos disponibles</div>`;
+    return;
+  }
+  g.innerHTML = list.map(p=>`
+    <div class="card" data-id="${p.id}">
+      <img src="${p.imagen_url}" alt="${p.nombre}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x300/1c1c1c/8a8a8a?text=Sin+Imagen'">
+      <div class="card-body">
+        <div class="card-name">${p.nombre}</div>
+        <div class="card-price">${formatCurrency(p.precio)}</div>
+        <button class="card-buy" data-buy="${p.id}">Comprar</button>
+      </div>
+    </div>
+  `).join('');
+  g.querySelectorAll('.card').forEach(card=>{
+    card.addEventListener('click', (e)=>{
+      if (e.target.closest('[data-buy]')) return;
+      openDetail(card.dataset.id);
+    });
+  });
+  g.querySelectorAll('[data-buy]').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      openDetail(btn.dataset.buy, true);
+    });
+  });
+}
+
+function renderHistorial(){
+  const h = getHistorial();
+  const el = document.getElementById('history');
+  if (h.length===0){
+    el.innerHTML = `<div class="empty"><i class="fas fa-receipt"></i>No has comprado tarjetas aún</div>`;
+    return;
+  }
+  el.innerHTML = h.map((item, idx)=>`
+    <div class="hist-item">
+      <img src="${item.imagen_url}" alt="" onerror="this.src='https://via.placeholder.com/100x100/1c1c1c/8a8a8a?text=?'">
+      <div class="hist-info">
+        <div class="hist-name">${item.nombre}</div>
+        <div class="hist-meta">${formatCurrency(item.precio)} · ${new Date(item.fecha).toLocaleDateString('es-ES')}</div>
+      </div>
+      <button class="hist-view" data-idx="${idx}">Ver</button>
+    </div>
+  `).join('');
+  el.querySelectorAll('.hist-view').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      const item = getHistorial()[parseInt(b.dataset.idx)];
+      if (item) showCreds(item.nombre, item.credenciales);
+    });
+  });
+}
+
+// ============ MODAL DETALLE ============
+function openDetail(id, autoBuy=false){
+  const p = productos.find(x=>x.id===id);
+  if (!p) return;
+  productoSeleccionado = p;
+  document.getElementById('detImg').src = p.imagen_url;
+  document.getElementById('detName').textContent = p.nombre;
+  document.getElementById('detDesc').textContent = p.descripcion || 'Sin descripción';
+  document.getElementById('detPrice').textContent = formatCurrency(p.precio);
+  document.getElementById('detailModal').classList.add('active');
+  if (autoBuy) setTimeout(()=>comprarProducto(), 150);
+}
+
+function closeDetail(){
+  document.getElementById('detailModal').classList.remove('active');
+  productoSeleccionado = null;
+}
+
+async function comprarProducto(){
+  const p = productoSeleccionado;
+  if (!p) return;
+  if (currentBalance < parseFloat(p.precio)){
+    showToast('Saldo insuficiente', 'error');
+    return;
+  }
+  const btn = document.getElementById('buyBtn');
+  const orig = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div><span>Procesando...</span>';
+
+  try {
+    // 1. Verificar que el producto siga disponible
+    const { data: fresh, error: e1 } = await sb.from('productos_tarjetas')
+      .select('estado').eq('id', p.id).single();
+    if (e1 || !fresh || fresh.estado !== 'disponible'){
+      showToast('Producto no disponible', 'error');
+      btn.disabled = false; btn.innerHTML = orig;
+      return;
+    }
+
+    // 2. Marcar producto como comprado
+    const { error: e2 } = await sb.from('productos_tarjetas')
+      .update({ estado:'comprado', comprado_por: currentUser.id, comprado_en: new Date().toISOString() })
+      .eq('id', p.id);
+    if (e2){ throw e2; }
+
+    // 3. Registrar transacción (tipo retiro)
+    const { error: e3 } = await sb.from('transacciones').insert([{
+      usuario_id: currentUser.id,
+      monto: parseFloat(p.precio),
+      tipo: 'retiro',
+      descripcion: `Compra de tarjeta: ${p.nombre}`,
+      metadata: { producto_id: p.id, categoria: 'tarjetas', producto_nombre: p.nombre },
+      estado: 'completado'
+    }]);
+    if (e3){ throw e3; }
+
+    // 4. Guardar en historial local
+    addHistorial({
+      id: p.id,
+      nombre: p.nombre,
+      precio: parseFloat(p.precio),
+      credenciales: p.credenciales,
+      imagen_url: p.imagen_url,
+      fecha: new Date().toISOString()
+    });
+
+    // 5. Cerrar detalle y mostrar credenciales
+    closeDetail();
+    await loadProductos();
+    await loadBalance();
+    renderHistorial();
+    showCreds(p.nombre, p.credenciales);
+    showToast('¡Compra exitosa!');
+  } catch(err){
+    console.error(err);
+    showToast('Error al procesar la compra', 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = orig;
+  }
+}
+
+// ============ MODAL CREDENCIALES ============
+let credsActual = '';
+function showCreds(nombre, creds){
+  credsActual = creds || '';
+  document.getElementById('credsValue').textContent = credsActual;
+  document.getElementById('credsModal').classList.add('active');
+}
+function closeCreds(){
+  document.getElementById('credsModal').classList.remove('active');
+}
+
+document.getElementById('copyCreds').addEventListener('click', async ()=>{
+  try {
+    await navigator.clipboard.writeText(credsActual);
+    showToast('Credenciales copiadas');
+  } catch { showToast('No se pudo copiar','error'); }
+});
+
+// ============ TABS ============
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    const isShop = t.dataset.tab==='shop';
+    document.getElementById('shopView').style.display = isShop?'':'none';
+    document.getElementById('historyView').style.display = isShop?'none':'';
+    if (!isShop) renderHistorial();
+  });
+});
+
+// ============ EVENTOS ============
+document.getElementById('closeDetail').addEventListener('click', closeDetail);
+document.getElementById('cancelDetail').addEventListener('click', closeDetail);
+document.getElementById('detailModal').addEventListener('click', e=>{ if (e.target.id==='detailModal') closeDetail(); });
+document.getElementById('buyBtn').addEventListener('click', comprarProducto);
+document.getElementById('closeCreds').addEventListener('click', closeCreds);
+document.getElementById('doneCreds').addEventListener('click', closeCreds);
+document.getElementById('credsModal').addEventListener('click', e=>{ if (e.target.id==='credsModal') closeCreds(); });
+
+// Tema
+const themeBtn = document.getElementById('themeBtn');
+let isLight = false;
+try { isLight = localStorage.getItem('toktok_wallet_theme')==='light'; } catch {}
+document.documentElement.classList.toggle('light-mode', isLight);
+themeBtn.innerHTML = isLight ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+themeBtn.addEventListener('click', ()=>{
+  isLight = !isLight;
+  document.documentElement.classList.toggle('light-mode', isLight);
+  try { localStorage.setItem('toktok_wallet_theme', isLight?'light':'dark'); } catch {}
+  themeBtn.innerHTML = isLight ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+});
+
+// ============ INIT ============
+(async ()=>{
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session){ window.location.href = 'index.html'; return; }
+  currentUser = session.user;
+  await Promise.all([ loadCategorias(), loadProductos(), loadBalance() ]);
+})();
+</script>
+</body>
+</html>
