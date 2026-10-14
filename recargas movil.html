@@ -1664,8 +1664,18 @@
             async function loadRechargeTypes(operatorId) {
                 const { data, error } = await supabase.from('tipos_recarga').select('*').eq('operador_id', operatorId).eq('activo', true).order('orden_visual');
                 if (error) throw error;
-                const pasoType = { id: 'recarga-paso', nombre: 'Recarga al paso', is_permanent: true };
-                rechargeTypes = [...(data || []), pasoType];
+                let tipos = data || [];
+                
+                // *** CAMBIO: Solo agregar "Recarga al paso" si el código es entel, tigo o viva ***
+                const codigoOperador = selectedOperator?.codigo?.toLowerCase() || '';
+                const permitePaso = ['entel', 'tigo', 'viva'].includes(codigoOperador);
+                
+                if (permitePaso) {
+                    const pasoType = { id: 'recarga-paso', nombre: 'Recarga al paso', is_permanent: true };
+                    tipos.push(pasoType);
+                }
+                
+                rechargeTypes = tipos;
                 selectedType = null;
                 renderTypes();
             }
