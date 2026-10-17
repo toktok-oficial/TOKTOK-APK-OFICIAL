@@ -21,50 +21,66 @@ body{padding-bottom:var(--safe-bottom);transition:background .2s,color .2s;}
 .balance-pill{display:flex;align-items:center;justify-content:space-between;margin:12px 16px;padding:12px 16px;border-radius:14px;background:linear-gradient(135deg,var(--accent),#4A145A);color:#fff;box-shadow:0 10px 30px rgba(74,20,90,.4);}
 .balance-pill .label{font-size:11px;opacity:.85;}
 .balance-pill .amount{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;}
-.categories{display:flex;gap:8px;overflow-x:auto;padding:8px 16px 16px;scrollbar-width:none;}
-.categories::-webkit-scrollbar{display:none;}
-.cat-btn{padding:8px 14px;border-radius:20px;border:1px solid var(--border);background:var(--card);color:var(--muted);font-size:12px;font-weight:600;white-space:nowrap;cursor:pointer;transition:all .2s;}
-.cat-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:0 16px 20px;}
-.card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:transform .2s;}
-.card:active{transform:scale(.98);}
-.card img{width:100%;aspect-ratio:1;object-fit:cover;background:var(--card2);display:block;}
-.card-body{padding:10px 12px 12px;}
-.card-name{font-size:13px;font-weight:600;line-height:1.3;margin:0 0 6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:34px;}
-.card-price{font-size:15px;font-weight:800;color:var(--accent);}
-.card-buy{width:100%;margin-top:8px;padding:8px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#8A3A9B);color:#fff;font-size:12px;font-weight:700;border:0;cursor:pointer;}
-.card-buy:disabled{opacity:.5;cursor:not-allowed;}
-.empty{padding:60px 20px;text-align:center;color:var(--muted);}
-.empty i{font-size:40px;margin-bottom:12px;display:block;opacity:.5;}
-.tabs{display:flex;margin:0 16px 16px;border-bottom:1px solid var(--border);}
+
+/* TABS */
+.tabs{display:flex;margin:0 12px 12px;border-bottom:1px solid var(--border);}
 .tab{flex:1;padding:12px 0;text-align:center;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;position:relative;background:transparent;border:0;}
 .tab.active{color:var(--accent);}
 .tab.active::after{content:'';position:absolute;bottom:-1px;left:50%;transform:translateX(-50%);width:40%;height:2px;background:var(--accent);border-radius:2px;}
-.hist-item{display:flex;gap:12px;margin:0 16px 10px;padding:12px;background:var(--card);border:1px solid var(--border);border-radius:14px;align-items:center;}
-.hist-item img{width:56px;height:56px;border-radius:10px;object-fit:cover;background:var(--card2);}
+
+/* GRID 3 COLUMNAS */
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px 12px 20px;}
+.card-mini{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:transform .15s;}
+.card-mini:active{transform:scale(.96);}
+.card-mini img{width:100%;aspect-ratio:1;object-fit:cover;background:var(--card2);display:block;}
+.card-mini .mini-body{padding:7px 8px 9px;}
+.card-mini .mini-name{font-size:11px;font-weight:600;line-height:1.2;margin:0 0 4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:26px;}
+.card-mini .mini-price{font-size:12px;font-weight:800;color:var(--accent);}
+.card-mini .mini-badge{position:absolute;top:5px;right:5px;font-size:8px;font-weight:700;padding:2px 6px;border-radius:6px;background:rgba(220,38,38,.95);color:#fff;text-transform:uppercase;letter-spacing:.4px;}
+.card-mini .card-img-wrap{position:relative;}
+.card-mini.agotado img{filter:grayscale(.7) brightness(.6);}
+
+.empty{padding:60px 20px;text-align:center;color:var(--muted);}
+.empty i{font-size:40px;margin-bottom:12px;display:block;opacity:.5;}
+
+/* HISTORIAL */
+.hist-item{display:flex;gap:12px;margin:0 12px 10px;padding:12px;background:var(--card);border:1px solid var(--border);border-radius:14px;align-items:center;}
+.hist-item img{width:56px;height:56px;border-radius:10px;object-fit:cover;background:var(--card2);flex-shrink:0;}
 .hist-info{flex:1;min-width:0;}
 .hist-name{font-size:13px;font-weight:600;margin-bottom:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .hist-meta{font-size:11px;color:var(--muted);}
 .hist-view{padding:8px 12px;border-radius:10px;background:var(--accent);color:#fff;font-size:11px;font-weight:700;border:0;cursor:pointer;white-space:nowrap;}
-.modal{position:fixed;inset:0;z-index:100;display:none;align-items:flex-end;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);}
-.modal.active{display:flex;}
-.modal-content{width:100%;max-width:480px;margin:0 auto;background:var(--card);border-radius:24px 24px 0 0;padding:20px;max-height:92vh;overflow-y:auto;position:relative;}
-.modal-img{width:100%;aspect-ratio:1.4;object-fit:cover;border-radius:14px;margin-bottom:14px;background:var(--card2);}
-.modal-title{font-size:18px;font-weight:700;margin:0 0 6px;}
-.modal-desc{font-size:13px;color:var(--muted);margin:0 0 14px;line-height:1.5;}
-.modal-price{font-size:24px;font-weight:800;color:var(--accent);margin-bottom:16px;}
-.btn{width:100%;padding:14px;border-radius:12px;font-size:15px;font-weight:700;border:0;cursor:pointer;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:8px;}
+.hist-view:active{transform:scale(.96);}
+
+/* MODAL con animación 120fps (GPU) */
+.modal{position:fixed;inset:0;z-index:100;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,0);backdrop-filter:blur(0px);opacity:0;pointer-events:none;transition:background .28s ease, backdrop-filter .28s ease, opacity .28s ease;will-change:background, backdrop-filter, opacity;}
+.modal.active{background:rgba(0,0,0,.7);backdrop-filter:blur(6px);opacity:1;pointer-events:auto;}
+.modal-sheet{width:100%;max-width:480px;padding:0 12px calc(16px + var(--safe-bottom));transform:translate3d(0, 100%, 0);transition:transform .32s cubic-bezier(.22,1,.36,1);will-change:transform;backface-visibility:hidden;}
+.modal.active .modal-sheet{transform:translate3d(0, 0, 0);}
+.modal-content{background:var(--card);border-radius:22px;padding:16px;max-height:62vh;overflow-y:auto;position:relative;box-shadow:0 -10px 40px rgba(0,0,0,.5);will-change:transform, opacity;transform:translateZ(0);-webkit-overflow-scrolling:touch;}
+
+.modal-img{width:100%;aspect-ratio:1.6;object-fit:cover;border-radius:14px;margin-bottom:12px;background:var(--card2);}
+.modal-title{font-size:17px;font-weight:700;margin:0 0 4px;line-height:1.25;}
+.modal-desc{font-size:12.5px;color:var(--muted);margin:0 0 10px;line-height:1.45;}
+.modal-price{font-size:22px;font-weight:800;color:var(--accent);margin-bottom:12px;}
+.btn{width:100%;padding:13px;border-radius:12px;font-size:14.5px;font-weight:700;border:0;cursor:pointer;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .12s ease, opacity .12s ease;}
+.btn:active{transform:scale(.97);}
 .btn-primary{background:linear-gradient(135deg,var(--accent),#8A3A9B);color:#fff;}
-.btn-secondary{background:var(--card2);color:var(--text);border:1px solid var(--border);}
+.btn-secondary{background:var(--card2);color:var(--text);border:1px solid var(--border);margin-bottom:0;}
 .btn:disabled{opacity:.5;cursor:not-allowed;}
-.creds-box{background:var(--card2);border:1px dashed var(--accent);border-radius:14px;padding:16px;margin:14px 0;}
+.creds-box{background:var(--card2);border:1px dashed var(--accent);border-radius:14px;padding:14px;margin:12px 0;}
 .creds-label{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);font-weight:700;margin-bottom:8px;}
-.creds-value{font-family:'Courier New',monospace;font-size:14px;color:var(--text);word-break:break-all;white-space:pre-wrap;line-height:1.5;background:var(--bg);padding:12px;border-radius:10px;border:1px solid var(--border);}
-.close-x{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.5);color:#fff;border:0;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:5;}
+.creds-value{font-family:'Courier New',monospace;font-size:13.5px;color:var(--text);word-break:break-all;white-space:pre-wrap;line-height:1.5;background:var(--bg);padding:12px;border-radius:10px;border:1px solid var(--border);}
+.close-x{position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,.55);color:#fff;border:0;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:5;transition:transform .12s ease, background .12s ease;}
+.close-x:active{transform:scale(.92);background:rgba(0,0,0,.8);}
 .spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
 .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);padding:12px 18px;border-radius:12px;background:#059669;color:#fff;font-size:13px;font-weight:600;z-index:200;box-shadow:0 10px 30px rgba(0,0,0,.3);}
 .toast.error{background:#dc2626;}
+
+@media (prefers-reduced-motion: reduce){
+  .modal, .modal-sheet, .modal-content, .btn, .close-x, .card-mini { transition-duration: .01ms !important; }
+}
 </style>
 </head>
 <body>
@@ -90,8 +106,9 @@ body{padding-bottom:var(--safe-bottom);transition:background .2s,color .2s;}
   </div>
 
   <div id="shopView">
-    <div class="categories" id="categories"></div>
-    <div class="grid" id="products"><div class="empty"><i class="fas fa-spinner fa-spin"></i>Cargando...</div></div>
+    <div class="grid-3" id="productsGrid">
+      <div class="empty" style="grid-column:1/-1;"><i class="fas fa-spinner fa-spin"></i>Cargando...</div>
+    </div>
   </div>
 
   <div id="historyView" style="display:none;">
@@ -99,36 +116,40 @@ body{padding-bottom:var(--safe-bottom);transition:background .2s,color .2s;}
   </div>
 </div>
 
-<!-- Modal detalle/compra -->
+<!-- Modal previa vista / detalle -->
 <div class="modal" id="detailModal">
-  <div class="modal-content">
-    <button class="close-x" id="closeDetail"><i class="fas fa-times"></i></button>
-    <img id="detImg" class="modal-img" alt="">
-    <h2 id="detName" class="modal-title"></h2>
-    <p id="detDesc" class="modal-desc"></p>
-    <div id="detPrice" class="modal-price"></div>
-    <button class="btn btn-primary" id="buyBtn"><i class="fas fa-shopping-cart"></i><span>Comprar ahora</span></button>
-    <button class="btn btn-secondary" id="cancelDetail">Cancelar</button>
+  <div class="modal-sheet">
+    <div class="modal-content">
+      <button class="close-x" id="closeDetail"><i class="fas fa-times"></i></button>
+      <img id="detImg" class="modal-img" alt="">
+      <h2 id="detName" class="modal-title"></h2>
+      <p id="detDesc" class="modal-desc"></p>
+      <div id="detPrice" class="modal-price"></div>
+      <button class="btn btn-primary" id="buyBtn"><i class="fas fa-bolt"></i><span>Obtener ahora</span></button>
+      <button class="btn btn-secondary" id="cancelDetail">Cancelar</button>
+    </div>
   </div>
 </div>
 
 <!-- Modal credenciales -->
 <div class="modal" id="credsModal">
-  <div class="modal-content">
-    <button class="close-x" id="closeCreds"><i class="fas fa-times"></i></button>
-    <div style="text-align:center;margin-bottom:10px;">
-      <div style="width:64px;height:64px;border-radius:50%;background:rgba(5,150,105,.15);color:#059669;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:28px;">
-        <i class="fas fa-check"></i>
+  <div class="modal-sheet">
+    <div class="modal-content">
+      <button class="close-x" id="closeCreds"><i class="fas fa-times"></i></button>
+      <div style="text-align:center;margin-bottom:10px;">
+        <div style="width:58px;height:58px;border-radius:50%;background:rgba(5,150,105,.15);color:#059669;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:26px;">
+          <i class="fas fa-check"></i>
+        </div>
+        <h2 style="font-size:17px;font-weight:700;margin:0 0 4px;">¡Obtuviste tu tarjeta!</h2>
+        <p style="font-size:12.5px;color:var(--muted);margin:0;">Guarda estas credenciales</p>
       </div>
-      <h2 style="font-size:18px;font-weight:700;margin:0 0 4px;">¡Compra exitosa!</h2>
-      <p style="font-size:13px;color:var(--muted);margin:0;">Guarda estas credenciales</p>
+      <div class="creds-box">
+        <div class="creds-label">Credenciales del producto</div>
+        <div id="credsValue" class="creds-value"></div>
+      </div>
+      <button class="btn btn-primary" id="copyCreds"><i class="fas fa-copy"></i>Copiar credenciales</button>
+      <button class="btn btn-secondary" id="doneCreds">Listo</button>
     </div>
-    <div class="creds-box">
-      <div class="creds-label">Credenciales del producto</div>
-      <div id="credsValue" class="creds-value"></div>
-    </div>
-    <button class="btn btn-primary" id="copyCreds"><i class="fas fa-copy"></i>Copiar credenciales</button>
-    <button class="btn btn-secondary" id="doneCreds">Listo</button>
   </div>
 </div>
 
@@ -140,9 +161,7 @@ const sb = supabase.createClient(supabaseUrl, supabaseKey);
 
 let currentUser = null;
 let currentBalance = 0;
-let categorias = [];
 let productos = [];
-let catActiva = 'all';
 let productoSeleccionado = null;
 
 const formatCurrency = (n) => 'Bs ' + parseFloat(n||0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -166,118 +185,91 @@ function addHistorial(item){
   try { localStorage.setItem(HIST_KEY, JSON.stringify(h)); } catch {}
 }
 
-// ============ CARGA DE DATOS ============
-async function loadCategorias(){
-  const { data, error } = await sb.from('categorias_tarjetas').select('*').eq('activo', true).order('orden',{ascending:true});
-  if (error) { console.error(error); return; }
-  categorias = data || [];
-  renderCategorias();
+// ============ AGRUPAR PRODUCTOS ============
+function groupProductos(list){
+  const map = new Map();
+  list.forEach(p => {
+    const key = [(p.nombre||'').trim().toLowerCase(), String(p.categoria_id||''), parseFloat(p.precio)].join('|');
+    if (!map.has(key)) map.set(key, []);
+    map.get(key).push(p);
+  });
+  return Array.from(map.values()).map(g => ({
+    nombre: g[0].nombre,
+    categoria_id: g[0].categoria_id,
+    precio: parseFloat(g[0].precio),
+    descripcion: g[0].descripcion || '',
+    imagen_url: g[0].imagen_url || '',
+    creds: g
+  }));
 }
 
+// ============ CARGA DE PRODUCTOS ============
 async function loadProductos(){
-  const { data, error } = await sb.from('productos_tarjetas').select('*').eq('estado','disponible').order('creado_en',{ascending:false});
-  if (error) { console.error(error); return; }
-  productos = data || [];
+  const grid = document.getElementById('productsGrid');
+  const { data, error } = await sb.from('productos_tarjetas')
+    .select('*').eq('estado','disponible').order('creado_en',{ascending:false});
+
+  if (error){
+    console.error(error);
+    grid.innerHTML = `<div class="empty" style="grid-column:1/-1;"><i class="fas fa-exclamation-triangle"></i>Error al cargar</div>`;
+    return;
+  }
+  if (!data || data.length === 0){
+    productos = [];
+    grid.innerHTML = `<div class="empty" style="grid-column:1/-1;"><i class="fas fa-box-open"></i>No hay tarjetas disponibles</div>`;
+    return;
+  }
+  productos = groupProductos(data);
   renderProductos();
 }
 
-async function loadBalance(){
-  if (!currentUser) return;
-  const { data, error } = await sb.from('transacciones').select('monto,tipo,metadata').eq('usuario_id', currentUser.id).eq('estado','completado');
-  if (error) { console.error(error); return; }
-  let bal = 0;
-  (data||[]).forEach(t=>{
-    const inc = t.tipo === 'deposito' || (t.tipo === 'transferencia' && t.metadata?.type === 'receive');
-    bal += (inc ? 1 : -1) * Number(t.monto);
-  });
-  currentBalance = bal;
-  document.getElementById('balance').textContent = formatCurrency(bal);
-}
-
-// ============ RENDER ============
-function renderCategorias(){
-  const c = document.getElementById('categories');
-  let html = `<button class="cat-btn ${catActiva==='all'?'active':''}" data-cat="all">Todas</button>`;
-  categorias.forEach(cat=>{
-    html += `<button class="cat-btn ${catActiva===cat.id?'active':''}" data-cat="${cat.id}">${cat.nombre}</button>`;
-  });
-  c.innerHTML = html;
-  c.querySelectorAll('.cat-btn').forEach(b=>{
-    b.addEventListener('click', ()=>{
-      catActiva = b.dataset.cat;
-      renderCategorias();
-      renderProductos();
-    });
-  });
-}
-
 function renderProductos(){
-  const g = document.getElementById('products');
-  const list = catActiva==='all' ? productos : productos.filter(p=>p.categoria_id===catActiva);
-  if (list.length===0){
-    g.innerHTML = `<div class="empty" style="grid-column:1/-1;"><i class="fas fa-box-open"></i>No hay productos disponibles</div>`;
+  const grid = document.getElementById('productsGrid');
+  if (!productos.length){
+    grid.innerHTML = `<div class="empty" style="grid-column:1/-1;"><i class="fas fa-box-open"></i>No hay tarjetas disponibles</div>`;
     return;
   }
-  g.innerHTML = list.map(p=>`
-    <div class="card" data-id="${p.id}">
-      <img src="${p.imagen_url}" alt="${p.nombre}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x300/1c1c1c/8a8a8a?text=Sin+Imagen'">
-      <div class="card-body">
-        <div class="card-name">${p.nombre}</div>
-        <div class="card-price">${formatCurrency(p.precio)}</div>
-        <button class="card-buy" data-buy="${p.id}">Comprar</button>
+  grid.innerHTML = productos.map((prod, idx) => {
+    const agotado = prod.creds.length === 0;
+    return `
+      <div class="card-mini ${agotado?'agotado':''}" data-idx="${idx}">
+        <div class="card-img-wrap">
+          <img src="${prod.imagen_url || ''}" alt="${prod.nombre || ''}"
+            onerror="this.src='https://via.placeholder.com/200x200/1c1c1c/8a8a8a?text=?'">
+          ${agotado ? '<span class="mini-badge">Agotado</span>' : ''}
+        </div>
+        <div class="mini-body">
+          <div class="mini-name">${prod.nombre || ''}</div>
+          <div class="mini-price">${formatCurrency(prod.precio)}</div>
+        </div>
       </div>
-    </div>
-  `).join('');
-  g.querySelectorAll('.card').forEach(card=>{
-    card.addEventListener('click', (e)=>{
-      if (e.target.closest('[data-buy]')) return;
-      openDetail(card.dataset.id);
-    });
-  });
-  g.querySelectorAll('[data-buy]').forEach(btn=>{
-    btn.addEventListener('click', (e)=>{
-      e.stopPropagation();
-      openDetail(btn.dataset.buy, true);
-    });
+    `;
+  }).join('');
+
+  grid.querySelectorAll('.card-mini').forEach(card => {
+    card.addEventListener('click', () => openDetail(parseInt(card.dataset.idx)));
   });
 }
 
-function renderHistorial(){
-  const h = getHistorial();
-  const el = document.getElementById('history');
-  if (h.length===0){
-    el.innerHTML = `<div class="empty"><i class="fas fa-receipt"></i>No has comprado tarjetas aún</div>`;
-    return;
-  }
-  el.innerHTML = h.map((item, idx)=>`
-    <div class="hist-item">
-      <img src="${item.imagen_url}" alt="" onerror="this.src='https://via.placeholder.com/100x100/1c1c1c/8a8a8a?text=?'">
-      <div class="hist-info">
-        <div class="hist-name">${item.nombre}</div>
-        <div class="hist-meta">${formatCurrency(item.precio)} · ${new Date(item.fecha).toLocaleDateString('es-ES')}</div>
-      </div>
-      <button class="hist-view" data-idx="${idx}">Ver</button>
-    </div>
-  `).join('');
-  el.querySelectorAll('.hist-view').forEach(b=>{
-    b.addEventListener('click', ()=>{
-      const item = getHistorial()[parseInt(b.dataset.idx)];
-      if (item) showCreds(item.nombre, item.credenciales);
-    });
-  });
-}
+// ============ MODAL PREVIA VISTA ============
+function openDetail(idx){
+  const prod = productos[idx];
+  if (!prod) return;
+  productoSeleccionado = prod;
 
-// ============ MODAL DETALLE ============
-function openDetail(id, autoBuy=false){
-  const p = productos.find(x=>x.id===id);
-  if (!p) return;
-  productoSeleccionado = p;
-  document.getElementById('detImg').src = p.imagen_url;
-  document.getElementById('detName').textContent = p.nombre;
-  document.getElementById('detDesc').textContent = p.descripcion || 'Sin descripción';
-  document.getElementById('detPrice').textContent = formatCurrency(p.precio);
+  document.getElementById('detImg').src = prod.imagen_url || '';
+  document.getElementById('detName').textContent = prod.nombre || '';
+  document.getElementById('detDesc').textContent = prod.descripcion || 'Sin descripción';
+  document.getElementById('detPrice').textContent = formatCurrency(prod.precio);
+
+  const agotado = prod.creds.length === 0;
+  const buyBtn = document.getElementById('buyBtn');
+  buyBtn.disabled = agotado;
+  buyBtn.innerHTML = agotado
+    ? '<i class="fas fa-ban"></i><span>Agotado</span>'
+    : '<i class="fas fa-bolt"></i><span>Obtener ahora</span>';
+
   document.getElementById('detailModal').classList.add('active');
-  if (autoBuy) setTimeout(()=>comprarProducto(), 150);
 }
 
 function closeDetail(){
@@ -285,62 +277,58 @@ function closeDetail(){
   productoSeleccionado = null;
 }
 
+// ============ COMPRAR / OBTENER ============
 async function comprarProducto(){
   const p = productoSeleccionado;
   if (!p) return;
-  if (currentBalance < parseFloat(p.precio)){
-    showToast('Saldo insuficiente', 'error');
-    return;
-  }
+  if (p.creds.length === 0){ showToast('Producto agotado', 'error'); closeDetail(); return; }
+  if (currentBalance < parseFloat(p.precio)){ showToast('Saldo insuficiente', 'error'); return; }
+
   const btn = document.getElementById('buyBtn');
   const orig = btn.innerHTML;
   btn.disabled = true;
   btn.innerHTML = '<div class="spinner"></div><span>Procesando...</span>';
 
   try {
-    // 1. Verificar que el producto siga disponible
     const { data: fresh, error: e1 } = await sb.from('productos_tarjetas')
-      .select('estado').eq('id', p.id).single();
-    if (e1 || !fresh || fresh.estado !== 'disponible'){
-      showToast('Producto no disponible', 'error');
-      btn.disabled = false; btn.innerHTML = orig;
-      return;
+      .select('*').eq('estado','disponible')
+      .ilike('nombre', p.nombre)
+      .eq('categoria_id', p.categoria_id)
+      .eq('precio', p.precio)
+      .order('creado_en',{ascending:true}).limit(1);
+    if (e1) throw e1;
+    if (!fresh || fresh.length === 0){
+      showToast('Producto agotado', 'error');
+      await loadProductos(); closeDetail(); return;
     }
+    const item = fresh[0];
 
-    // 2. Marcar producto como comprado
     const { error: e2 } = await sb.from('productos_tarjetas')
       .update({ estado:'comprado', comprado_por: currentUser.id, comprado_en: new Date().toISOString() })
-      .eq('id', p.id);
-    if (e2){ throw e2; }
+      .eq('id', item.id).eq('estado','disponible');
+    if (e2) throw e2;
 
-    // 3. Registrar transacción (tipo retiro)
     const { error: e3 } = await sb.from('transacciones').insert([{
       usuario_id: currentUser.id,
       monto: parseFloat(p.precio),
       tipo: 'retiro',
       descripcion: `Compra de tarjeta: ${p.nombre}`,
-      metadata: { producto_id: p.id, categoria: 'tarjetas', producto_nombre: p.nombre },
+      metadata: { producto_id: item.id, categoria: 'tarjetas', producto_nombre: p.nombre },
       estado: 'completado'
     }]);
-    if (e3){ throw e3; }
+    if (e3) throw e3;
 
-    // 4. Guardar en historial local
     addHistorial({
-      id: p.id,
-      nombre: p.nombre,
-      precio: parseFloat(p.precio),
-      credenciales: p.credenciales,
-      imagen_url: p.imagen_url,
+      id: item.id, nombre: p.nombre, precio: parseFloat(p.precio),
+      credenciales: item.credenciales, imagen_url: p.imagen_url,
       fecha: new Date().toISOString()
     });
 
-    // 5. Cerrar detalle y mostrar credenciales
     closeDetail();
     await loadProductos();
     await loadBalance();
-    renderHistorial();
-    showCreds(p.nombre, p.credenciales);
-    showToast('¡Compra exitosa!');
+    showCreds(p.nombre, item.credenciales);
+    showToast('¡Tarjeta obtenida!');
   } catch(err){
     console.error(err);
     showToast('Error al procesar la compra', 'error');
@@ -357,28 +345,65 @@ function showCreds(nombre, creds){
   document.getElementById('credsValue').textContent = credsActual;
   document.getElementById('credsModal').classList.add('active');
 }
-function closeCreds(){
-  document.getElementById('credsModal').classList.remove('active');
-}
+function closeCreds(){ document.getElementById('credsModal').classList.remove('active'); }
 
 document.getElementById('copyCreds').addEventListener('click', async ()=>{
-  try {
-    await navigator.clipboard.writeText(credsActual);
-    showToast('Credenciales copiadas');
-  } catch { showToast('No se pudo copiar','error'); }
+  try { await navigator.clipboard.writeText(credsActual); showToast('Credenciales copiadas'); }
+  catch { showToast('No se pudo copiar','error'); }
 });
 
+// ============ HISTORIAL ============
+function renderHistorial(){
+  const h = getHistorial();
+  const el = document.getElementById('history');
+  if (h.length === 0){
+    el.innerHTML = `<div class="empty"><i class="fas fa-receipt"></i>No has comprado tarjetas aún</div>`;
+    return;
+  }
+  el.innerHTML = h.map((item, idx) => `
+    <div class="hist-item">
+      <img src="${item.imagen_url || ''}" alt="" onerror="this.src='https://via.placeholder.com/100x100/1c1c1c/8a8a8a?text=?'">
+      <div class="hist-info">
+        <div class="hist-name">${item.nombre || ''}</div>
+        <div class="hist-meta">${formatCurrency(item.precio)} · ${new Date(item.fecha).toLocaleDateString('es-ES')}</div>
+      </div>
+      <button class="hist-view" data-idx="${idx}">Ver</button>
+    </div>
+  `).join('');
+
+  el.querySelectorAll('.hist-view').forEach(b => {
+    b.addEventListener('click', () => {
+      const item = getHistorial()[parseInt(b.dataset.idx)];
+      if (item) showCreds(item.nombre, item.credenciales);
+    });
+  });
+}
+
 // ============ TABS ============
-document.querySelectorAll('.tab').forEach(t=>{
-  t.addEventListener('click', ()=>{
-    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
     t.classList.add('active');
-    const isShop = t.dataset.tab==='shop';
-    document.getElementById('shopView').style.display = isShop?'':'none';
-    document.getElementById('historyView').style.display = isShop?'none':'';
+    const isShop = t.dataset.tab === 'shop';
+    document.getElementById('shopView').style.display = isShop ? '' : 'none';
+    document.getElementById('historyView').style.display = isShop ? 'none' : '';
     if (!isShop) renderHistorial();
   });
 });
+
+// ============ BALANCE ============
+async function loadBalance(){
+  if (!currentUser) return;
+  const { data, error } = await sb.from('transacciones').select('monto,tipo,metadata').eq('usuario_id', currentUser.id).eq('estado','completado');
+  if (error) { console.error(error); return; }
+  let bal = 0;
+  (data||[]).forEach(t=>{
+    const inc = t.tipo === 'deposito' || (t.tipo === 'transferencia' && t.metadata?.type === 'receive');
+    bal += (inc ? 1 : -1) * Number(t.monto);
+  });
+  currentBalance = bal;
+  document.getElementById('balance').textContent = formatCurrency(bal);
+}
 
 // ============ EVENTOS ============
 document.getElementById('closeDetail').addEventListener('click', closeDetail);
@@ -407,7 +432,7 @@ themeBtn.addEventListener('click', ()=>{
   const { data: { session } } = await sb.auth.getSession();
   if (!session){ window.location.href = 'index.html'; return; }
   currentUser = session.user;
-  await Promise.all([ loadCategorias(), loadProductos(), loadBalance() ]);
+  await Promise.all([ loadProductos(), loadBalance() ]);
 })();
 </script>
 </body>

@@ -177,11 +177,6 @@
     </div>
 
     <div id="rewards-section" class="hidden px-3 py-3">
-        <div style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); border-radius: 14px; padding: 16px; color: white; margin-bottom: 12px;">
-            <p style="font-size: 11px; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Total Recompensas</p>
-            <p id="total-rewards" style="font-size: 28px; font-weight: 800; margin-top: 4px;">Bs 0.00</p>
-            <p id="rewards-count" style="font-size: 11px; opacity: 0.85; margin-top: 4px;">0 solicitudes confirmadas</p>
-        </div>
         <div id="rewards-list"></div>
         <div id="no-rewards" class="no-history hidden">
             <i class="fas fa-gift text-3xl mb-3"></i>
@@ -250,6 +245,7 @@
             fullName: '', idNumber: '', phonePrimary: '', phoneReference: '', phoneBeneficiary: '',
             installationAddress: '', city: '', zone: '',
             idFrontPhoto: null, idBackPhoto: null, selfiePhoto: null,
+            distributorBeneficiaryPhoto: null,
             location: null
         };
 
@@ -360,10 +356,11 @@
             currentPlan = plan;
             currentStep = 1;
             formData = {
-                fullName: userProfile?.full_name || '', idNumber: '',
-                phonePrimary: userProfile?.phone || '', phoneReference: '', phoneBeneficiary: '',
+                fullName: '', idNumber: '',
+                phonePrimary: '', phoneReference: '', phoneBeneficiary: '',
                 installationAddress: '', city: '', zone: '',
                 idFrontPhoto: null, idBackPhoto: null, selfiePhoto: null,
+                distributorBeneficiaryPhoto: null,
                 location: null
             };
 
@@ -458,7 +455,7 @@
             return `
                 <div>
                     <h4 class="font-bold text-base mb-3">📸 Documentación Requerida</h4>
-                    <p class="text-xs text-gray-600 mb-3">Sube fotos de tu carnet y una selfie</p>
+                    <p class="text-xs text-gray-600 mb-3">Sube fotos de tu carnet, selfie con carnet, y una foto del distribuidor junto al beneficiario</p>
 
                     <div class="mb-3">
                         <label style="font-size: 12px; font-weight: 600; color: #475569; display: block; margin-bottom: 4px;">ANVERSO del Carnet</label>
@@ -482,6 +479,14 @@
                             ${formData.selfiePhoto ? `<img src="${formData.selfiePhoto}">` : '<i class="fas fa-camera text-2xl text-gray-400"></i><p style="font-size: 12px; font-weight: 600; color: #64748b;">Tocar para selfie</p>'}
                         </div>
                         <input type="file" id="selfie-input" accept="image/*" style="display: none;" onchange="handlePhoto(event, 'selfiePhoto')">
+                    </div>
+
+                    <div class="mb-3">
+                        <label style="font-size: 12px; font-weight: 600; color: #475569; display: block; margin-bottom: 4px;">Foto del Distribuidor junto al Beneficiario (en una sola imagen)</label>
+                        <div class="upload-area ${formData.distributorBeneficiaryPhoto ? 'has-photo' : ''}" onclick="document.getElementById('distributor-beneficiary-input').click()">
+                            ${formData.distributorBeneficiaryPhoto ? `<img src="${formData.distributorBeneficiaryPhoto}">` : '<i class="fas fa-camera text-2xl text-gray-400"></i><p style="font-size: 12px; font-weight: 600; color: #64748b;">Tocar para subir foto</p>'}
+                        </div>
+                        <input type="file" id="distributor-beneficiary-input" accept="image/*" style="display: none;" onchange="handlePhoto(event, 'distributorBeneficiaryPhoto')">
                     </div>
 
                     <div class="flex gap-3 mt-5">
@@ -575,7 +580,7 @@
             setTimeout(() => {
                 let id = '', valid = false;
                 if (currentStep === 1) { valid = !!formData.location; id = 'step1-next'; }
-                else if (currentStep === 2) { valid = formData.idFrontPhoto && formData.idBackPhoto && formData.selfiePhoto; id = 'step2-next'; }
+                else if (currentStep === 2) { valid = formData.idFrontPhoto && formData.idBackPhoto && formData.selfiePhoto && formData.distributorBeneficiaryPhoto; id = 'step2-next'; }
                 else if (currentStep === 3) { valid = formData.fullName && formData.idNumber && formData.phonePrimary && formData.phoneBeneficiary && formData.installationAddress && formData.city; id = 'step3-next'; }
                 const btn = document.getElementById(id);
                 if (btn) btn.disabled = !valid;
@@ -683,7 +688,8 @@ ${formData.city}${formData.zone ? ', ' + formData.zone : ''}
                 const photos = [];
                 if (formData.idFrontPhoto) photos.push({ base64: formData.idFrontPhoto, caption: `📸 ANVERSO - ${formData.fullName} - #${shortId}` });
                 if (formData.idBackPhoto) photos.push({ base64: formData.idBackPhoto, caption: `📸 REVERSO - ${formData.fullName} - #${shortId}` });
-                if (formData.selfiePhoto) photos.push({ base64: formData.selfiePhoto, caption: `🤳 SELFIE - ${formData.fullName} - #${shortId}` });
+                if (formData.selfiePhoto) photos.push({ base64: formData.selfiePhoto, caption: `🤳 SELFIE CLIENTE - ${formData.fullName} - #${shortId}` });
+                if (formData.distributorBeneficiaryPhoto) photos.push({ base64: formData.distributorBeneficiaryPhoto, caption: `🤳 DISTRIBUIDOR + BENEFICIARIO - ${formData.fullName} - #${shortId}` });
 
                 if (photos.length > 0) await sendPhotosAsAlbum(photos);
 
@@ -812,12 +818,6 @@ ${formData.city}${formData.zone ? ', ' + formData.zone : ''}
 
             const list = document.getElementById('rewards-list');
             const noRewards = document.getElementById('no-rewards');
-            const totalEl = document.getElementById('total-rewards');
-            const countEl = document.getElementById('rewards-count');
-
-            const total = (txs || []).reduce((s, t) => s + Number(t.monto || 0), 0);
-            totalEl.textContent = formatCurrency(total);
-            countEl.textContent = `${(requests || []).length} solicitudes confirmadas`;
 
             if (!requests || !requests.length) {
                 list.innerHTML = '';
