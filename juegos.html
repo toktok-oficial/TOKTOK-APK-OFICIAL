@@ -7,306 +7,87 @@
 <meta name="theme-color" content="#0a0a0a">
 <style>
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  :root{
-    --green:#10b981;--green-light:#34d399;--green-dark:#059669;
-    --bg:#0a0a0a;--card:#141414;
-    --border:#262626;
-    --text:#f5f5f5;--muted:#a3a3a3;--dim:#737373;
-    color-scheme:dark;
-  }
-  html{scroll-behavior:auto}
-  body{
-    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;
-    background:var(--bg);color:var(--text);
-    max-width:760px;margin:0 auto;min-height:100vh;
-    padding-bottom:env(safe-area-inset-bottom);
-    overflow-x:hidden;-webkit-font-smoothing:antialiased;
-    font-size:14px;line-height:1.4;
-  }
+  :root{--green:#10b981;--green-light:#34d399;--green-dark:#059669;--bg:#0a0a0a;--card:#141414;--border:#262626;--text:#f5f5f5;--muted:#a3a3a3;--dim:#737373;color-scheme:dark;}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);max-width:760px;margin:0 auto;min-height:100vh;padding-bottom:env(safe-area-inset-bottom);overflow-x:hidden;font-size:14px;line-height:1.4;}
   .icon{width:1em;height:1em;display:inline-block;vertical-align:-.125em;fill:currentColor}
-
-  .header{
-    position:sticky;top:0;z-index:40;
-    background:rgba(10,10,10,.96);
-    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--border);
-    padding:11px 16px;
-    display:flex;align-items:center;justify-content:space-between;
-  }
-  .header-title{
-    font-size:18px;font-weight:900;
-    background:linear-gradient(135deg,#10b981 0%,#34d399 100%);
-    -webkit-background-clip:text;background-clip:text;
-    -webkit-text-fill-color:transparent;
-    letter-spacing:.05em;
-  }
-  .header-balance{
-    background:linear-gradient(135deg,var(--green) 0%,var(--green-dark) 100%);
-    padding:6px 11px;border-radius:8px;
-    display:flex;align-items:center;gap:5px;
-    font-size:12px;font-weight:800;color:#0a0a0a;
-  }
-
+  .header{position:sticky;top:0;z-index:40;background:rgba(10,10,10,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:11px 16px;display:flex;align-items:center;justify-content:space-between;}
+  .header-title{font-size:18px;font-weight:900;background:linear-gradient(135deg,#10b981,#34d399);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:.05em;}
+  .header-balance{background:linear-gradient(135deg,var(--green),var(--green-dark));padding:6px 11px;border-radius:8px;display:flex;align-items:center;gap:5px;font-size:12px;font-weight:800;color:#0a0a0a;}
   .search-wrap{padding:12px 14px 10px}
-  .search{
-    width:100%;padding:9px 14px 9px 38px;
-    border:1px solid var(--border);border-radius:10px;
-    font-size:12px;background:var(--card);color:var(--text);
-    outline:none;font-family:inherit;
-    transition:border-color .15s;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2310b981' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
-    background-repeat:no-repeat;background-position:12px center;background-size:16px;
-  }
+  .search{width:100%;padding:9px 14px 9px 38px;border:1px solid var(--border);border-radius:10px;font-size:12px;background:var(--card);color:var(--text);outline:none;font-family:inherit;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2310b981' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:12px center;background-size:16px;}
   .search:focus{border-color:var(--green)}
-  .search::placeholder{color:var(--dim)}
-
-  .cats{
-    display:flex;gap:6px;padding:2px 14px 12px;
-    overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;
-  }
+  .cats{display:flex;gap:6px;padding:2px 14px 12px;overflow-x:auto;scrollbar-width:none;}
   .cats::-webkit-scrollbar{display:none}
-  .cat-btn{
-    flex-shrink:0;padding:7px 14px;
-    border:1px solid var(--border);border-radius:8px;
-    background:var(--card);color:var(--muted);
-    font-size:11px;font-weight:700;
-    white-space:nowrap;cursor:pointer;font-family:inherit;
-    display:flex;align-items:center;gap:5px;
-  }
-  .cat-btn.active{
-    background:var(--green);color:#0a0a0a;border-color:var(--green);
-  }
-
-  .products{
-    padding:2px 12px 24px;display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;
-  }
+  .cat-btn{flex-shrink:0;padding:7px 14px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--muted);font-size:11px;font-weight:700;white-space:nowrap;cursor:pointer;font-family:inherit;}
+  .cat-btn.active{background:var(--green);color:#0a0a0a;border-color:var(--green)}
+  .products{padding:2px 12px 24px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
   @media (min-width:560px){.products{grid-template-columns:repeat(3,minmax(0,1fr))}}
   @media (min-width:720px){.products{grid-template-columns:repeat(4,minmax(0,1fr))}}
-
-  .card{
-    border:1px solid var(--border);border-radius:10px;
-    background:var(--card);overflow:hidden;cursor:pointer;
-    content-visibility:auto;contain-intrinsic-size:220px;
-    contain:layout style paint;
-    transition:border-color .15s,transform .1s;
-  }
+  .card{border:1px solid var(--border);border-radius:10px;background:var(--card);overflow:hidden;cursor:pointer;transition:border-color .15s,transform .1s;}
   .card:active{transform:scale(.98);border-color:var(--green)}
-
   .card-img-wrap{position:relative;overflow:hidden;background:#1b1b1b}
-  .card-img{
-    width:100%;aspect-ratio:1/1;
-    object-fit:cover;display:block;
-  }
-
-  .badge-off{
-    position:absolute;top:6px;left:6px;
-    background:#ef4444;color:#fff;
-    font-size:9px;font-weight:900;
-    padding:2px 6px;border-radius:5px;
-  }
-  .badge-star{
-    position:absolute;top:6px;right:6px;
-    background:#fbbf24;color:#0a0a0a;
-    font-size:9px;font-weight:900;
-    padding:2px 6px;border-radius:5px;
-    display:flex;align-items:center;gap:2px;
-  }
-  .badge-stock{
-    position:absolute;bottom:6px;left:6px;
-    padding:2px 7px;border-radius:5px;
-    font-size:8px;font-weight:800;
-    letter-spacing:.03em;
-  }
+  .card-img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;}
+  .badge-off{position:absolute;top:6px;left:6px;background:#ef4444;color:#fff;font-size:9px;font-weight:900;padding:2px 6px;border-radius:5px;}
+  .badge-star{position:absolute;top:6px;right:6px;background:#fbbf24;color:#0a0a0a;font-size:9px;font-weight:900;padding:2px 6px;border-radius:5px;}
+  .badge-stock{position:absolute;bottom:6px;left:6px;padding:2px 7px;border-radius:5px;font-size:8px;font-weight:800;}
   .stock-in{background:rgba(16,185,129,.95);color:#0a0a0a}
   .stock-out{background:rgba(120,20,20,.95);color:#fff}
-
   .card-info{padding:8px 9px 10px}
-  .card-name{
-    font-weight:700;font-size:11.5px;color:#fff;
-    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
-    overflow:hidden;margin-bottom:3px;line-height:1.25;
-  }
-  .card-desc{
-    font-size:9.5px;color:var(--muted);
-    display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;
-    overflow:hidden;margin-bottom:7px;line-height:1.3;
-  }
-
-  .price-block-info{
-    display:flex;flex-direction:column;gap:1px;
-  }
-  .price-ref-small{
-    font-size:9.5px;color:var(--dim);font-weight:600;
-    letter-spacing:.02em;
-  }
-  .price-final-big{
-    color:var(--green-light);font-weight:900;font-size:14px;
-    letter-spacing:-.01em;line-height:1.1;
-  }
-
+  .card-name{font-weight:700;font-size:11.5px;color:#fff;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:3px;line-height:1.25;}
+  .card-desc{font-size:9.5px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:7px;}
+  .price-ref-small{font-size:9.5px;color:var(--dim);font-weight:600;}
+  .price-final-big{color:var(--green-light);font-weight:900;font-size:14px;}
   .empty{text-align:center;padding:50px 20px;color:var(--dim)}
-  .empty svg{width:48px;height:48px;margin-bottom:12px;stroke:var(--green);opacity:.5}
-  .empty p{font-size:13px;color:var(--muted);font-weight:600;margin-bottom:3px}
-  .empty small{font-size:11px;color:var(--dim)}
-
-  .modal{
-    position:fixed;inset:0;background:rgba(0,0,0,.85);
-    backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
-    z-index:100;display:flex;align-items:flex-end;justify-content:center;
-    opacity:0;visibility:hidden;transition:opacity .2s,visibility .2s;
-  }
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(4px);z-index:100;display:flex;align-items:flex-end;justify-content:center;opacity:0;visibility:hidden;transition:opacity .2s,visibility .2s;}
   .modal.active{opacity:1;visibility:visible}
-  .modal-body{
-    background:#111;width:100%;max-width:440px;
-    border-radius:18px 18px 0 0;
-    padding:16px 14px calc(16px + env(safe-area-inset-bottom));
-    max-height:90vh;overflow-y:auto;
-    border:1px solid var(--border);border-bottom:none;
-    transform:translateY(30px);transition:transform .2s ease;
-  }
+  .modal-body{background:#111;width:100%;max-width:440px;border-radius:18px 18px 0 0;padding:16px 14px calc(16px + env(safe-area-inset-bottom));max-height:90vh;overflow-y:auto;border:1px solid var(--border);border-bottom:none;transform:translateY(30px);transition:transform .2s ease;}
   .modal.active .modal-body{transform:translateY(0)}
-  @media (min-width:560px){
-    .modal{align-items:center}
-    .modal-body{border-radius:16px;border-bottom:1px solid var(--border)}
-  }
+  @media (min-width:560px){.modal{align-items:center}.modal-body{border-radius:16px;border-bottom:1px solid var(--border)}}
   .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
   .modal-title{font-size:15px;font-weight:800;color:#fff;line-height:1.3;padding-right:10px}
-  .modal-close{
-    background:#1a1a1a;border:none;color:var(--muted);
-    cursor:pointer;width:28px;height:28px;border-radius:8px;
-    display:flex;align-items:center;justify-content:center;flex-shrink:0;
-  }
-  .modal-close:hover{background:#252525;color:#fff}
+  .modal-close{background:#1a1a1a;border:none;color:var(--muted);cursor:pointer;width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
   .modal-close svg{width:16px;height:16px}
-
-  .detail-img{
-    width:100%;height:140px;object-fit:cover;
-    background:#1b1b1b;border-radius:10px;
-    margin-bottom:11px;border:1px solid var(--border);
-  }
+  .detail-img{width:100%;height:140px;object-fit:cover;background:#1b1b1b;border-radius:10px;margin-bottom:11px;border:1px solid var(--border);}
   .detail-desc{font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.4}
-
-  .prices-detail{
-    display:flex;flex-direction:column;gap:6px;margin-bottom:12px;
-  }
-  .price-line-detail{
-    display:flex;justify-content:space-between;align-items:center;
-    padding:10px 12px;border-radius:10px;
-    background:var(--card);border:1px solid var(--border);
-  }
-  .price-line-detail.highlight{
-    border-color:rgba(16,185,129,.4);
-    background:linear-gradient(135deg,rgba(16,185,129,.1) 0%,rgba(16,185,129,.03) 100%);
-  }
-  .price-line-detail .label{
-    font-size:11px;color:var(--dim);
-    text-transform:uppercase;letter-spacing:.04em;font-weight:700;
-  }
+  .prices-detail{display:flex;flex-direction:column;gap:6px;margin-bottom:12px;}
+  .price-line-detail{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-radius:10px;background:var(--card);border:1px solid var(--border);}
+  .price-line-detail.highlight{border-color:rgba(16,185,129,.4);background:linear-gradient(135deg,rgba(16,185,129,.1),rgba(16,185,129,.03));}
+  .price-line-detail .label{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.04em;font-weight:700;}
   .price-line-detail.highlight .label{color:var(--green-light)}
   .price-line-detail .value{font-size:14px;font-weight:800}
   .price-line-detail.ref .value{color:var(--muted);font-size:13px}
   .price-line-detail.final .value{color:var(--green-light);font-size:17px;font-weight:900}
-
-  .detail-row{
-    display:flex;justify-content:space-between;align-items:center;
-    margin-bottom:12px;padding:9px 12px;
-    background:var(--card);border:1px solid var(--border);border-radius:10px;
-  }
+  .detail-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding:9px 12px;background:var(--card);border:1px solid var(--border);border-radius:10px;}
   .detail-label{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.04em;font-weight:700}
   .detail-value{font-size:13px;font-weight:800;color:#fff;margin-top:1px}
   .detail-value.green{color:var(--green-light)}
-
-  .total-box{
-    text-align:center;padding:12px;
-    background:linear-gradient(135deg,rgba(16,185,129,.1) 0%,rgba(16,185,129,.03) 100%);
-    border:1px solid rgba(16,185,129,.25);
-    border-radius:10px;margin-bottom:14px;
-  }
-  .total-box .label{
-    font-size:10px;color:var(--green-light);
-    text-transform:uppercase;letter-spacing:.05em;font-weight:800;
-  }
-  .total-box .amount{
-    font-size:22px;font-weight:900;color:var(--green-light);
-    margin-top:3px;letter-spacing:-.02em;
-  }
-
-  .field-label{
-    display:block;font-size:11px;font-weight:800;
-    color:var(--muted);margin-bottom:6px;
-    text-transform:uppercase;letter-spacing:.04em;
-  }
-  .input{
-    width:100%;padding:11px 13px;
-    border:1px solid var(--border);border-radius:10px;
-    font-size:15px;background:var(--card);
-    color:var(--text);outline:none;font-family:inherit;
-    transition:border-color .15s;
-  }
+  .total-box{text-align:center;padding:12px;background:linear-gradient(135deg,rgba(16,185,129,.1),rgba(16,185,129,.03));border:1px solid rgba(16,185,129,.25);border-radius:10px;margin-bottom:14px;}
+  .total-box .label{font-size:10px;color:var(--green-light);text-transform:uppercase;letter-spacing:.05em;font-weight:800;}
+  .total-box .amount{font-size:22px;font-weight:900;color:var(--green-light);margin-top:3px;}
+  .field-label{display:block;font-size:11px;font-weight:800;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em;}
+  .input{width:100%;padding:11px 13px;border:1px solid var(--border);border-radius:10px;font-size:15px;background:var(--card);color:var(--text);outline:none;font-family:inherit;}
   .input:focus{border-color:var(--green)}
-  .input::placeholder{color:var(--dim)}
   .feedback-err{color:#ef4444;font-size:11px;margin-top:5px;font-weight:600}
   .feedback-ok{color:var(--green);font-size:11px;margin-top:5px;font-weight:600}
   .hint{font-size:10px;color:var(--dim);margin-top:5px}
-
-  .btn{
-    width:100%;padding:12px 14px;border-radius:10px;
-    font-weight:800;font-size:14px;border:none;cursor:pointer;
-    font-family:inherit;display:flex;align-items:center;
-    justify-content:center;gap:7px;letter-spacing:.02em;
-  }
+  .btn{width:100%;padding:12px 14px;border-radius:10px;font-weight:800;font-size:14px;border:none;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:7px;}
   .btn-green{background:var(--green);color:#0a0a0a}
   .btn-green:disabled{opacity:.4;cursor:not-allowed}
   .btn-gray{background:#262626;color:#fff}
   .btn svg{width:15px;height:15px}
   .btn-row{display:flex;gap:10px}
   .btn-row .btn{flex:1}
-
-  .spinner{
-    width:14px;height:14px;
-    border:2px solid rgba(0,0,0,.2);
-    border-top-color:#0a0a0a;border-radius:50%;
-    animation:spin .6s linear infinite;
-  }
+  .spinner{width:14px;height:14px;border:2px solid rgba(0,0,0,.2);border-top-color:#0a0a0a;border-radius:50%;animation:spin .6s linear infinite;}
   @keyframes spin{to{transform:rotate(360deg)}}
-
-  .result-icon{
-    width:60px;height:60px;margin:0 auto 14px;
-    display:grid;place-items:center;border-radius:16px;
-    background:rgba(16,185,129,.15);
-    border:1px solid rgba(16,185,129,.3);
-    color:var(--green);
-  }
+  .result-icon{width:60px;height:60px;margin:0 auto 14px;display:grid;place-items:center;border-radius:16px;background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3);color:var(--green);}
   .result-icon svg{width:30px;height:30px}
-  .result-icon.error{
-    background:rgba(239,68,68,.15);
-    border-color:rgba(239,68,68,.3);color:#ef4444;
-  }
+  .result-icon.error{background:rgba(239,68,68,.15);border-color:rgba(239,68,68,.3);color:#ef4444}
   .result-title{font-size:17px;font-weight:800;color:#fff;text-align:center;margin-bottom:8px}
-  .result-msg{
-    font-size:13px;color:var(--muted);
-    text-align:center;line-height:1.5;
-    max-width:280px;margin:0 auto 18px;
-  }
-
-  .toast{
-    position:fixed;top:12px;right:12px;left:12px;
-    padding:11px 16px;border-radius:10px;
-    background:var(--green);color:#0a0a0a;
-    font-weight:800;font-size:12.5px;
-    z-index:200;text-align:center;
-  }
-
-  .blocked{
-    min-height:100vh;display:flex;align-items:center;justify-content:center;
-    padding:40px 20px;text-align:center;
-  }
-  .blocked-icon{font-size:56px;margin-bottom:16px}
-
-  @media (prefers-reduced-motion:reduce){
-    *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
-  }
+  .result-msg{font-size:13px;color:var(--muted);text-align:center;line-height:1.5;max-width:280px;margin:0 auto 18px;}
+  .toast{position:fixed;top:12px;right:12px;left:12px;padding:11px 16px;border-radius:10px;background:var(--green);color:#0a0a0a;font-weight:800;font-size:12.5px;z-index:200;text-align:center;}
+  .blocked{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 20px;text-align:center;}
+  .req-block{margin-bottom:14px}
+  .req-error{color:#ef4444;font-size:11px;margin-top:5px;font-weight:600;display:none}
 </style>
 </head>
 <body>
@@ -325,31 +106,21 @@
   <div class="search-wrap">
     <input type="text" id="search" class="search" placeholder="Buscar juegos o paquetes..." autocomplete="off">
   </div>
-  <div class="cats" id="cats">
-    <button class="cat-btn active" data-cat="all">
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
-      </svg>Todos
-    </button>
-  </div>
+  <div class="cats" id="cats"></div>
   <div class="products" id="products"></div>
   <div id="empty" class="empty" style="display:none">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-      <rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4M8 10v4M15 13h.01M18 11h.01"/>
-    </svg>
     <p>No se encontraron paquetes</p>
     <small>Intenta con otra búsqueda</small>
   </div>
 </div>
 
+<!-- DETALLE -->
 <div id="modal-detail" class="modal">
   <div class="modal-body">
     <div class="modal-header">
       <h3 class="modal-title" id="detail-title"></h3>
       <button class="modal-close" id="close-detail">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M18 6 6 18M6 6l12 12"/>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
       </button>
     </div>
     <img id="detail-img" class="detail-img" src="" alt="">
@@ -382,30 +153,23 @@
       <div class="amount" id="total-price"></div>
     </div>
 
-    <div style="margin-bottom:14px">
-      <label class="field-label">ID de Jugador *</label>
-      <input type="text" id="player-id" class="input" placeholder="Ej: 123456789" inputmode="numeric" autocomplete="off">
-      <div id="player-feedback"></div>
-      <p class="hint">Solo números, entre 8 y 12 dígitos</p>
-    </div>
+    <!-- FORMULARIO DINÁMICO DE REQUISITOS -->
+    <div id="requisitos-form"></div>
 
     <button id="buy-btn" class="btn btn-green" disabled>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>
-      </svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
       Recargar ahora
     </button>
   </div>
 </div>
 
+<!-- CONFIRMAR -->
 <div id="modal-confirm" class="modal">
   <div class="modal-body">
     <div class="modal-header">
       <h3 class="modal-title">Confirmar recarga</h3>
       <button class="modal-close" id="close-confirm">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M18 6 6 18M6 6l12 12"/>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
       </button>
     </div>
     <div id="confirm-text" style="font-size:13px;margin-bottom:16px"></div>
@@ -419,12 +183,11 @@
   </div>
 </div>
 
+<!-- RESULTADO -->
 <div id="modal-result" class="modal">
   <div class="modal-body">
     <div id="result-icon" class="result-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M20 6 9 17l-5-5"/>
-      </svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
     </div>
     <h3 id="result-title" class="result-title">¡Recarga exitosa!</h3>
     <p id="result-msg" class="result-msg">Tu recarga se ha procesado correctamente.</p>
@@ -436,6 +199,13 @@
 <script>
 (function(){
   'use strict';
+
+  // ══════════════════════════════════════════════════════════════
+  // ⚠️ TOKEN DE TELEGRAM (hardcoded por pedido del usuario)
+  // ══════════════════════════════════════════════════════════════
+  const TELEGRAM_BOT_TOKEN = '8762023946:AAHj3eFemFUnckXHCifjUo33ExCzt4Niv-Y';
+  const TELEGRAM_CHAT_ID   = '-5584190976';
+
   const SUPABASE_URL = 'https://fmhjuisoibynjgfrqvgj.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_M7yramCIWbPyxnH3xwJNEQ_p77ModBz';
   const PROXY_URL = 'https://games-razer-proxy.fly.dev';
@@ -443,7 +213,9 @@
   const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
   let currentUser=null, userProfile=null, balance=0, currentPkg=null;
-  let packages=[], cats=[], currentCat='all', playerId='', clientIP=null, searchTimer=null;
+  let packages=[], cats=[], currentCat='all', clientIP=null, searchTimer=null;
+  let currentReqs=[];
+  let reqValues={};
 
   const fmt = n => 'Bs ' + (Number(n)||0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   const esc = v => String(v??'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -461,20 +233,17 @@
 
   function block(razon){
     document.body.innerHTML=`<div class="blocked" style="background:#0a0a0a;color:#fff">
-      <div><div class="blocked-icon">⛔</div>
+      <div><div style="font-size:56px;margin-bottom:16px">⛔</div>
       <h2 style="color:#ef4444;margin-bottom:12px;font-size:20px;font-weight:800">Acceso bloqueado</h2>
       <p style="color:#a3a3a3;margin-bottom:8px;font-size:13px">${esc(razon||'Conexión bloqueada.')}</p>
-      <p style="color:#737373;font-size:11px;margin-top:14px">Contacta al soporte.</p>
-      </div></div>`;
+      <p style="color:#737373;font-size:11px;margin-top:14px">Contacta al soporte.</p></div></div>`;
   }
 
   async function checkIP(userId){
     try{
       clientIP=await getIP();
       if(!clientIP)return{permitido:true};
-      const{data,error}=await sb.rpc('registrar_ip_usuario',{
-        p_user_id:userId,p_ip:clientIP,p_user_agent:navigator.userAgent
-      });
+      const{data,error}=await sb.rpc('registrar_ip_usuario',{p_user_id:userId,p_ip:clientIP,p_user_agent:navigator.userAgent});
       if(error)return{permitido:true};
       if(!data.permitido){block(data.razon_ip);return data;}
       return data;
@@ -492,20 +261,65 @@
     close('modal-confirm');close('modal-detail');open('modal-result');
   }
 
-  function validId(v){
-    if(!v||v.trim()==='')return{ok:false,err:'El ID es obligatorio'};
-    if(!/^\d+$/.test(v.trim()))return{ok:false,err:'Solo números'};
-    const len=v.trim().length;
-    if(len<8||len>12)return{ok:false,err:`Debe tener 8-12 dígitos (actual: ${len})`};
-    return{ok:true,msg:'✓ Formato válido'};
+  // Obtiene el nombre visible del usuario en TOKTOK
+  function getNombreUsuario(){
+    if (!userProfile) return '—';
+    return userProfile.nombre
+        || userProfile.username
+        || userProfile.display_name
+        || userProfile.name
+        || userProfile.email
+        || '—';
+  }
+
+  // Obtiene el número/teléfono del usuario en TOKTOK
+  function getNumeroUsuario(){
+    if (!userProfile) return '—';
+    return userProfile.telefono
+        || userProfile.phone
+        || userProfile.celular
+        || userProfile.numero
+        || userProfile.whatsapp
+        || userProfile.phone_number
+        || userProfile.telefono_usuario
+        || userProfile.movil
+        || '—';
+  }
+
+  async function enviarTelegram(order){
+    const nombre = getNombreUsuario();
+    const numero = getNumeroUsuario();
+    const lines = [
+      '🎮 *NUEVA RECARGA — BOT*',
+      '',
+      '👤 Usuario: *' + nombre + '*',
+      '📱 Número: `' + numero + '`',
+      '📦 Paquete: *' + order.package_nombre + '*',
+      '💵 Precio: *Bs ' + order.precio + '*',
+      '',
+      '📋 *Datos del formulario:*'
+    ];
+    for (const [k, v] of Object.entries(order.player_form || {})) {
+      lines.push('• ' + k + ': `' + v + '`');
+    }
+    const r = await fetch('https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: TELEGRAM_CHAT_ID,
+        text: lines.join('\n'),
+        parse_mode: 'Markdown'
+      })
+    });
+    return await r.json();
   }
 
   async function loadCats(){
-    const{data,error}=await sb.from('categorias_juegos').select('id,nombre,icono,activo').eq('activo',true).order('nombre');
+    const{data,error}=await sb.from('categorias_juegos').select('id,nombre,icono,activo,tipo').eq('activo',true).order('nombre');
     if(error)return;
     cats=data||[];
     const box=document.getElementById('cats');
-    let html=`<button class="cat-btn active" data-cat="all"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Todos</button>`;
+    let html=`<button class="cat-btn active" data-cat="all">Todos</button>`;
     for(const c of cats){html+=`<button class="cat-btn" data-cat="${esc(c.id)}">${esc(c.nombre)}</button>`;}
     box.innerHTML=html;
     box.querySelectorAll('.cat-btn').forEach(b=>{
@@ -520,7 +334,7 @@
   async function loadPkgs(){
     try{
       const{data,error}=await sb.from('paquetes_juegos')
-        .select('id,nombre,descripcion,precio_referencia,precio_final,porcentaje_descuento,stock,imagen_url,sku_razer,destacado,categoria_id,orden')
+        .select('id,nombre,descripcion,precio_referencia,precio_final,porcentaje_descuento,stock,imagen_url,sku_razer,destacado,categoria_id,orden,tipo')
         .eq('activo',true)
         .order('orden',{ascending:true})
         .order('destacado',{ascending:false})
@@ -529,6 +343,12 @@
       packages=data||[];
       filterPkgs('',currentCat);
     }catch{toast('Error al cargar paquetes');}
+  }
+
+  function tipoEfectivo(pkg){
+    if (pkg.tipo) return pkg.tipo;
+    const cat = cats.find(c => c.id === pkg.categoria_id);
+    return cat?.tipo || 'api';
   }
 
   function filterPkgs(q,cat){
@@ -567,8 +387,8 @@
           <div class="card-info">
             <div class="card-name">${esc(p.nombre)}</div>
             <div class="card-desc">${esc(p.descripcion||'')}</div>
-            <div class="price-block-info">
-              <span class="price-ref-small">Ref: ${fmt(priceRef)}</span>
+            <div>
+              <span class="price-ref-small">Ref: ${fmt(priceRef)}</span><br>
               <span class="price-final-big">${fmt(priceFinal)}</span>
             </div>
           </div>
@@ -585,16 +405,16 @@
     });
   }
 
-  function openDetail(p){
-    currentPkg=p;playerId='';
-    document.getElementById('player-id').value='';
-    document.getElementById('player-feedback').innerHTML='';
+  async function openDetail(p){
+    currentPkg=p;
+    reqValues={};
+    currentReqs=[];
 
     const priceFinal=Number(p.precio_final)||0;
     const priceRef=Number(p.precio_referencia)||0;
     const discount=Number(p.porcentaje_descuento)||0;
-
     currentPkg._final=priceFinal;
+    currentPkg._tipo=tipoEfectivo(p);
 
     document.getElementById('detail-title').textContent=p.nombre;
     document.getElementById('detail-desc').textContent=p.descripcion||'';
@@ -611,8 +431,94 @@
     img.src=p.imagen_url||'https://placehold.co/800x500/141414/10b981?text=TOKTOK';
     img.alt=p.nombre;
 
+    await cargarRequisitos(p.id);
+    renderRequisitosForm();
     updateBtn();
     open('modal-detail');
+  }
+
+  async function cargarRequisitos(packageId){
+    try {
+      const { data, error } = await sb.rpc('obtener_requisitos_paquete', { p_package_id: packageId });
+      if (error) { console.warn('reqs err', error); currentReqs=[]; return; }
+      currentReqs = Array.isArray(data) ? data : (data ? JSON.parse(JSON.stringify(data)) : []);
+      if (!Array.isArray(currentReqs)) currentReqs = [];
+    } catch (e) {
+      console.warn(e);
+      currentReqs = [];
+    }
+  }
+
+  function renderRequisitosForm(){
+    const box = document.getElementById('requisitos-form');
+    if (!currentReqs || currentReqs.length === 0) {
+      box.innerHTML = '';
+      return;
+    }
+    let html = '';
+    currentReqs.forEach((r, idx) => {
+      const key = r.campo_key || ('req_'+idx);
+      const label = r.campo_label || key;
+      const ph = r.placeholder || '';
+      const tipo = r.campo_tipo || 'text';
+      const req = r.requerido !== false;
+      const ayuda = r.ayuda || '';
+
+      if (tipo === 'select' && Array.isArray(r.opciones)) {
+        html += `<div class="req-block">
+          <label class="field-label">${esc(label)}${req?' *':''}</label>
+          <select class="input" data-req="${esc(key)}" ${req?'required':''}>
+            <option value="">— Seleccionar —</option>
+            ${r.opciones.map(o => `<option value="${esc(o)}">${esc(o)}</option>`).join('')}
+          </select>
+          ${ayuda?`<p class="hint">${esc(ayuda)}</p>`:''}
+          <div class="req-error" data-err="${esc(key)}"></div>
+        </div>`;
+      } else {
+        const inputType = tipo === 'number' ? 'text' : (tipo === 'email' ? 'email' : 'text');
+        const inputMode = tipo === 'number' ? 'inputmode="numeric"' : '';
+        html += `<div class="req-block">
+          <label class="field-label">${esc(label)}${req?' *':''}</label>
+          <input type="${inputType}" class="input" data-req="${esc(key)}" placeholder="${esc(ph)}" ${inputMode} autocomplete="off" ${req?'required':''}>
+          ${ayuda?`<p class="hint">${esc(ayuda)}</p>`:''}
+          <div class="req-error" data-err="${esc(key)}"></div>
+        </div>`;
+      }
+    });
+    box.innerHTML = html;
+
+    box.querySelectorAll('[data-req]').forEach(el => {
+      el.addEventListener('input', () => {
+        const k = el.dataset.req;
+        reqValues[k] = el.value;
+        const err = box.querySelector(`[data-err="${k}"]`);
+        if (err) { err.style.display = 'none'; err.textContent = ''; }
+        updateBtn();
+      });
+      el.addEventListener('change', () => {
+        const k = el.dataset.req;
+        reqValues[k] = el.value;
+        updateBtn();
+      });
+    });
+  }
+
+  function validarRequisitos(){
+    let ok = true;
+    for (const r of currentReqs) {
+      const key = r.campo_key;
+      const req = r.requerido !== false;
+      const val = (reqValues[key] || '').toString().trim();
+      const errEl = document.querySelector(`[data-err="${key}"]`);
+      if (req && !val) {
+        ok = false;
+        if (errEl) { errEl.textContent = 'Este campo es obligatorio'; errEl.style.display='block'; }
+      } else if (r.campo_tipo === 'number' && val && !/^\d+$/.test(val)) {
+        ok = false;
+        if (errEl) { errEl.textContent = 'Solo números'; errEl.style.display='block'; }
+      }
+    }
+    return ok;
   }
 
   function updateBtn(){
@@ -620,26 +526,22 @@
     if(!currentPkg)return;
     const hasStock=Number(currentPkg.stock)>0;
     const hasBalance=balance>=currentPkg._final;
-    const idOk=validId(playerId).ok;
-    btn.disabled=!hasStock||!hasBalance||!idOk;
+    const reqOk = (() => {
+      for (const r of currentReqs) {
+        if (r.requerido === false) continue;
+        const v = (reqValues[r.campo_key] || '').toString().trim();
+        if (!v) return false;
+        if (r.campo_tipo === 'number' && !/^\d+$/.test(v)) return false;
+      }
+      return true;
+    })();
+    btn.disabled=!hasStock||!hasBalance||!reqOk;
 
     if(!hasStock)btn.innerHTML='Sin stock';
-    else if(!idOk)btn.innerHTML='Completa el ID';
+    else if(!reqOk)btn.innerHTML='Completa los datos';
     else if(!hasBalance)btn.innerHTML='Saldo insuficiente';
     else btn.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>Recargar ahora`;
   }
-
-  document.addEventListener('input',(e)=>{
-    if(e.target.id==='player-id'){
-      playerId=e.target.value;
-      const fb=document.getElementById('player-feedback');
-      const v=validId(playerId);
-      if(playerId.trim()==='')fb.innerHTML='';
-      else if(v.ok)fb.innerHTML=`<div class="feedback-ok">${v.msg}</div>`;
-      else fb.innerHTML=`<div class="feedback-err">${v.err}</div>`;
-      updateBtn();
-    }
-  });
 
   async function loadProfile(userId){
     const{data,error}=await sb.from('user_profiles').select('*').eq('id',userId).single();
@@ -698,12 +600,14 @@
   });
 
   function startBuy(){
+    if (!validarRequisitos()) { toast('Completa los datos requeridos'); return; }
     const total=currentPkg._final;
+    const reqsList = currentReqs.map(r => `<div style="font-size:12px;color:#a3a3a3;margin-bottom:3px">${esc(r.campo_label)}: <strong style="color:#10b981;font-size:13px">${esc(reqValues[r.campo_key]||'')}</strong></div>`).join('');
     document.getElementById('confirm-text').innerHTML=`
       <div style="background:#0d1a16;padding:12px;border-radius:10px;border:1px solid rgba(16,185,129,.2)">
         <div style="font-weight:800;margin-bottom:8px;color:#fff;font-size:14px">${esc(currentPkg.nombre)}</div>
-        <div style="font-size:12px;color:#a3a3a3;margin-bottom:3px">ID: <strong style="color:#10b981;font-size:13px">${esc(playerId)}</strong></div>
-        <div style="font-size:12px;color:#a3a3a3">Total: <strong style="color:#10b981;font-size:14px">${fmt(total)}</strong></div>
+        ${reqsList}
+        <div style="font-size:12px;color:#a3a3a3;margin-top:6px">Total: <strong style="color:#10b981;font-size:14px">${fmt(total)}</strong></div>
       </div>`;
     open('modal-confirm');
   }
@@ -729,31 +633,65 @@
       const{error:tErr}=await sb.from('compras_tokens').insert([{user_id:currentUser.id,token:tk}]);
       if(tErr)throw new Error('No se pudo iniciar la compra');
 
-      const res=await fetch(PROXY_URL+'/process-order',{
-        method:'POST',
-        headers:{'Content-Type':'application/json','x-proxy-secret':PROXY_SECRET},
-        body:JSON.stringify({
-          user_id:currentUser.id,
-          package_id:currentPkg.id,
-          package_sku:currentPkg.sku_razer,
-          price:total,
-          token:tk,
-          custom_value:{userName:playerId},
-          ip:clientIP,
-          user_agent:navigator.userAgent
-        })
-      });
+      if (currentPkg._tipo === 'bot') {
+        const { data, error } = await sb.rpc('procesar_recarga_bot', {
+          p_user_id: currentUser.id,
+          p_package_id: currentPkg.id,
+          p_precio_cliente: total,
+          p_token: tk,
+          p_form_data: reqValues,
+          p_ip: clientIP,
+          p_user_agent: navigator.userAgent
+        });
+        if (error) throw new Error(error.message || 'Error al procesar');
+        if (!data || !data.ok) throw new Error(data?.message || 'Error al procesar');
 
-      const result=await res.json();
-      if(!res.ok)throw new Error(result.message||'Error al procesar');
+        let tgOk = false;
+        try {
+          const tg = await enviarTelegram({
+            package_nombre: currentPkg.nombre,
+            precio: total,
+            player_form: reqValues
+          });
+          tgOk = !!tg.ok;
+        } catch(e) { console.warn('telegram fail', e); }
 
-      balance=Number(result.saldo_restante);
-      updateBalance();
+        balance = Number(data.saldo_restante);
+        updateBalance();
 
-      document.getElementById('result-icon').className='result-icon';
-      document.getElementById('result-icon').innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>`;
-      document.getElementById('result-title').textContent='¡Recarga exitosa!';
-      document.getElementById('result-msg').textContent=`Se descontó ${fmt(result.precio_cobrado)} de tu saldo.`;
+        document.getElementById('result-icon').className='result-icon';
+        document.getElementById('result-icon').innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>`;
+        document.getElementById('result-title').textContent='¡Recarga enviada!';
+        document.getElementById('result-msg').textContent =
+          (tgOk ? 'Tu pedido fue enviado y se procesará pronto. ' : 'Tu pedido quedó registrado. ') +
+          'Se descontó ' + fmt(data.precio_cobrado) + ' de tu saldo.';
+
+      } else {
+        const res=await fetch(PROXY_URL+'/process-order',{
+          method:'POST',
+          headers:{'Content-Type':'application/json','x-proxy-secret':PROXY_SECRET},
+          body:JSON.stringify({
+            user_id: currentUser.id,
+            package_id: currentPkg.id,
+            package_sku: currentPkg.sku_razer,
+            price: total,
+            token: tk,
+            custom_value: reqValues,
+            ip: clientIP,
+            user_agent: navigator.userAgent
+          })
+        });
+        const result=await res.json();
+        if(!res.ok)throw new Error(result.message||'Error al procesar');
+
+        balance=Number(result.saldo_restante);
+        updateBalance();
+
+        document.getElementById('result-icon').className='result-icon';
+        document.getElementById('result-icon').innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>`;
+        document.getElementById('result-title').textContent='¡Recarga exitosa!';
+        document.getElementById('result-msg').textContent=`Se descontó ${fmt(result.precio_cobrado)} de tu saldo.`;
+      }
 
       close('modal-confirm');close('modal-detail');open('modal-result');
     }catch(err){
