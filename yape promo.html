@@ -7,6 +7,7 @@
 <title>YAPE — Participar</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
 <script>
   tailwind.config = {
     theme: {
@@ -39,6 +40,7 @@
   @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  #scanModal video { width: 100%; height: 100%; object-fit: cover; display: block; }
 </style>
 </head>
 <body class="font-system bg-ink text-slate-100 antialiased min-h-screen flex justify-center">
@@ -83,7 +85,7 @@
           Participar de la<br>comisión YAPE
         </h1>
         <p class="text-[13px] text-slate-400 leading-relaxed max-w-[300px] mx-auto">
-          Ingresa tu número y sube tu QR para participar
+          Ingresa tu número y sube o escanea tu QR para participar
         </p>
         <p class="mt-2 text-[11px] text-violet-200/80 leading-relaxed max-w-[320px] mx-auto">
           También puedes participar con un número YAPE de otra persona y su QR, para poder participar más de una vez.
@@ -121,54 +123,87 @@
           </div>
         </section>
 
+        <!-- QR: Subir o Escanear -->
         <section class="mb-6">
           <div class="flex items-center justify-between px-1 mb-2">
-            <span class="text-[11px] uppercase tracking-[1px] text-slate-500 font-semibold">Su QR generado de YAPE</span>
+            <span class="text-[11px] uppercase tracking-[1px] text-slate-500 font-semibold">QR de YAPE</span>
           </div>
-          <div id="qrZona" role="button" tabindex="0" aria-label="Subir su QR"
-               class="rounded-[14px] overflow-hidden bg-ink3/80 border border-borde/80
-                      transition-[border-color,background] duration-300
-                      hover:border-yape2/60 hover:bg-ink3
-                      focus-visible:outline-2 focus-visible:outline-yape2 focus-visible:outline-offset-2
-                      active:scale-[.995]">
-            <div id="qrVacio" class="flex items-center gap-3.5 px-4 py-4">
-              <div class="w-10 h-10 rounded-[10px] shrink-0 bg-gradient-to-br from-yape/40 to-yape4/50
-                          border border-yape2/30 flex items-center justify-center text-violet-300">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                     stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
-                  <rect x="3" y="3" width="7" height="7" rx="1"/>
-                  <rect x="14" y="3" width="7" height="7" rx="1"/>
-                  <rect x="3" y="14" width="7" height="7" rx="1"/>
-                  <path d="M14 14h3v3h-3z"/><path d="M20 14v3"/><path d="M14 20h3"/><path d="M20 20h.01"/>
-                </svg>
+
+          <div class="grid grid-cols-2 gap-2.5">
+            <!-- Botón Subir QR -->
+            <div id="qrZona" role="button" tabindex="0" aria-label="Subir su QR"
+                 class="rounded-[14px] overflow-hidden bg-ink3/80 border border-borde/80
+                        transition-[border-color,background] duration-300
+                        hover:border-yape2/60 hover:bg-ink3
+                        focus-visible:outline-2 focus-visible:outline-yape2 focus-visible:outline-offset-2
+                        active:scale-[.995]">
+              <div id="qrVacio" class="flex items-center gap-2.5 px-3 py-3">
+                <div class="w-9 h-9 rounded-[10px] shrink-0 bg-gradient-to-br from-yape/40 to-yape4/50
+                            border border-yape2/30 flex items-center justify-center text-violet-300">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                       stroke-linecap="round" stroke-linejoin="round" class="w-[18px] h-[18px]">
+                    <rect x="3" y="3" width="7" height="7" rx="1"/>
+                    <rect x="14" y="3" width="7" height="7" rx="1"/>
+                    <rect x="3" y="14" width="7" height="7" rx="1"/>
+                    <path d="M14 14h3v3h-3z"/><path d="M20 14v3"/><path d="M14 20h3"/><path d="M20 20h.01"/>
+                  </svg>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="text-[13px] font-medium text-slate-200 leading-tight">Subir QR</div>
+                  <div class="text-[10px] text-slate-500 leading-tight">PNG · JPG</div>
+                </div>
               </div>
-              <div class="flex-1 min-w-0">
-                <div class="text-[15px] font-medium text-slate-200 leading-tight mb-0.5">Subir QR</div>
-                <div class="text-[12px] text-slate-500 leading-tight">PNG · JPG · máx. 5 MB</div>
+              <div id="qrCargado" class="hidden items-center gap-2.5 px-3 py-3">
+                <div class="w-9 h-9 rounded-[10px] shrink-0 bg-green-500/15 border border-green-500/40
+                            flex items-center justify-center text-green-400 pop">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                       stroke-linecap="round" stroke-linejoin="round" class="w-[18px] h-[18px]">
+                    <path d="M20 6L9 17l-5-5"/>
+                  </svg>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="text-[13px] font-medium text-green-400 leading-tight">Listo</div>
+                  <div class="text-[10px] text-green-500/70 leading-tight truncate">QR subido</div>
+                </div>
               </div>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                   stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-slate-600 shrink-0">
-                <path d="M9 18l6-6-6-6"/>
-              </svg>
+              <input type="file" id="qrInput" accept="image/*" class="hidden">
             </div>
-            <div id="qrCargado" class="hidden flex items-center gap-3.5 px-4 py-4">
-              <div class="w-10 h-10 rounded-[10px] shrink-0 bg-green-500/15 border border-green-500/40
-                          flex items-center justify-center text-green-400 pop">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
-                     stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
-                  <path d="M20 6L9 17l-5-5"/>
-                </svg>
+
+            <!-- Botón Escanear QR -->
+            <div id="qrScanZona" role="button" tabindex="0" aria-label="Escanear QR"
+                 class="rounded-[14px] overflow-hidden bg-ink3/80 border border-borde/80
+                        transition-[border-color,background] duration-300
+                        hover:border-yape2/60 hover:bg-ink3
+                        focus-visible:outline-2 focus-visible:outline-yape2 focus-visible:outline-offset-2
+                        active:scale-[.995]">
+              <div id="qrScanVacio" class="flex items-center gap-2.5 px-3 py-3">
+                <div class="w-9 h-9 rounded-[10px] shrink-0 bg-gradient-to-br from-yape/40 to-yape4/50
+                            border border-yape2/30 flex items-center justify-center text-violet-300">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                       stroke-linecap="round" stroke-linejoin="round" class="w-[18px] h-[18px]">
+                    <path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/>
+                    <circle cx="12" cy="12" r="3"/>
+                  </svg>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="text-[13px] font-medium text-slate-200 leading-tight">Escanear</div>
+                  <div class="text-[10px] text-slate-500 leading-tight">Cámara</div>
+                </div>
               </div>
-              <div class="flex-1 min-w-0">
-                <div class="text-[15px] font-medium text-green-400 leading-tight mb-0.5">QR cargado</div>
-                <div id="qrNombre" class="text-[12px] text-green-500/70 leading-tight truncate"></div>
+              <div id="qrScanListo" class="hidden items-center gap-2.5 px-3 py-3">
+                <div class="w-9 h-9 rounded-[10px] shrink-0 bg-green-500/15 border border-green-500/40
+                            flex items-center justify-center text-green-400 pop">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                       stroke-linecap="round" stroke-linejoin="round" class="w-[18px] h-[18px]">
+                    <path d="M20 6L9 17l-5-5"/>
+                  </svg>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="text-[13px] font-medium text-green-400 leading-tight">Listo</div>
+                  <div class="text-[10px] text-green-500/70 leading-tight truncate">QR escaneado</div>
+                </div>
               </div>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                   stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-green-500/60 shrink-0">
-                <path d="M20 6L9 17l-5-5"/>
-              </svg>
             </div>
-            <input type="file" id="qrInput" accept="image/*" class="hidden">
           </div>
         </section>
       </div>
@@ -203,6 +238,46 @@
       </button>
     </div>
 
+  </div>
+
+  <!-- ============================================ -->
+  <!-- MODAL: ESCANEAR QR CON CÁMARA                -->
+  <!-- ============================================ -->
+  <div id="scanModal" class="hidden fixed inset-0 z-[60] flex flex-col bg-black">
+    <div class="relative flex-1 overflow-hidden">
+      <video id="scanVideo" playsinline muted autoplay></video>
+
+      <!-- Overlay con marco -->
+      <div class="absolute inset-0 pointer-events-none flex items-center justify-center">
+        <div class="relative w-[72%] aspect-square max-w-[300px] rounded-[16px] border-2 border-violet-400/50">
+          <span class="absolute -top-0.5 -left-0.5 w-5 h-5 border-t-4 border-l-4 border-violet-300 rounded-tl-[12px]"></span>
+          <span class="absolute -top-0.5 -right-0.5 w-5 h-5 border-t-4 border-r-4 border-violet-300 rounded-tr-[12px]"></span>
+          <span class="absolute -bottom-0.5 -left-0.5 w-5 h-5 border-b-4 border-l-4 border-violet-300 rounded-bl-[12px]"></span>
+          <span class="absolute -bottom-0.5 -right-0.5 w-5 h-5 border-b-4 border-r-4 border-violet-300 rounded-br-[12px]"></span>
+        </div>
+      </div>
+
+      <!-- Barra superior -->
+      <div class="absolute top-0 left-0 right-0 p-4 flex items-center justify-between bg-gradient-to-b from-black/70 to-transparent">
+        <div class="text-white font-semibold text-[14px]">Escanear QR de YAPE</div>
+        <button id="cerrarScan" type="button" aria-label="Cerrar"
+                class="w-9 h-9 rounded-full flex items-center justify-center text-white
+                       bg-white/10 backdrop-blur hover:bg-white/20 active:scale-95 transition">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+               stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+            <path d="M18 6L6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Mensaje inferior -->
+      <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
+        <p id="scanHint" class="text-center text-white/80 text-[12.5px]">
+          Apunta la cámara al QR de YAPE
+        </p>
+      </div>
+    </div>
+    <canvas id="scanCanvas" class="hidden"></canvas>
   </div>
 
   <!-- ============================================ -->
@@ -281,9 +356,15 @@
     lose: `<svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></svg>`,
   };
 
-  let qrFile = null;
+  let qrFile = null;           // archivo de imagen subido
+  let qrScannedData = null;    // texto del QR escaneado
   let currentPartId = null;
   let pollTimer = null;
+
+  // Scanner
+  let scanStream = null;
+  let scanAnimFrame = null;
+  let scanningActive = false;
 
   function normalizarBO(raw) {
     let n = String(raw || "").replace(/\D/g, "");
@@ -291,9 +372,11 @@
     return n.slice(0, DIGITOS_BO);
   }
 
+  function hayQR() { return qrFile !== null || qrScannedData !== null; }
+
   function habilitarBoton() {
     const num = normalizarBO($("numero").value);
-    const ok = num.length === DIGITOS_BO && qrFile !== null;
+    const ok = num.length === DIGITOS_BO && hayQR();
     $("participar").disabled = !ok;
   }
 
@@ -304,24 +387,51 @@
     return data || { full_name: "Usuario" };
   }
 
-  async function enviarTelegram(nombre, numero, archivoQR) {
+  // ============================================================
+  // 📤 ENVÍO A TELEGRAM
+  // - Si hay archivo: sendDocument con caption
+  // - Si hay QR escaneado: sendPhoto (generamos imagen) o sendMessage
+  // ============================================================
+  async function enviarTelegram(nombre, numero, archivoQR, textoQR) {
     const API = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}`;
-    const caption =
+
+    let caption =
       `🎯 *NUEVA PARTICIPACIÓN YAPE*\n` +
       `━━━━━━━━━━━━━━━━━━━\n` +
       `👤 *Usuario:* ${nombre}\n` +
       `📱 *Número YAPE:* \`${numero}\``;
 
+    if (textoQR) {
+      caption += `\n📦 *QR (data):*\n\`\`\`\n${textoQR}\n\`\`\``;
+    }
+
+    // Caso 1: hay archivo de imagen subido
+    if (archivoQR) {
+      const fd = new FormData();
+      fd.append("chat_id", TELEGRAM_CHAT_ID);
+      fd.append("caption", caption);
+      fd.append("parse_mode", "Markdown");
+      fd.append("document", archivoQR, archivoQR.name || "qr_yape.jpg");
+
+      const r = await fetch(`${API}/sendDocument`, { method: "POST", body: fd });
+      if (!r.ok) {
+        const errorText = await r.text().catch(() => "");
+        console.error("Telegram sendDocument error:", errorText);
+        throw new Error(ERROR_GENERICO);
+      }
+      return;
+    }
+
+    // Caso 2: solo texto QR escaneado
     const fd = new FormData();
     fd.append("chat_id", TELEGRAM_CHAT_ID);
-    fd.append("caption", caption);
+    fd.append("text", caption);
     fd.append("parse_mode", "Markdown");
-    fd.append("document", archivoQR, archivoQR.name || "qr_yape.jpg");
 
-    const r = await fetch(`${API}/sendDocument`, { method: "POST", body: fd });
+    const r = await fetch(`${API}/sendMessage`, { method: "POST", body: fd });
     if (!r.ok) {
       const errorText = await r.text().catch(() => "");
-      console.error("Telegram sendDocument error:", errorText);
+      console.error("Telegram sendMessage error:", errorText);
       throw new Error(ERROR_GENERICO);
     }
   }
@@ -433,7 +543,7 @@
     }
   }
 
-  async function crearParticipacion(numero, file) {
+  async function crearParticipacion(numero, file, textoQR) {
     const { data: { user }, error: userErr } = await sb.auth.getUser();
     if (userErr || !user) throw new Error("Debes iniciar sesión");
 
@@ -445,7 +555,7 @@
       .select().single();
     if (pErr) throw pErr;
 
-    await enviarTelegram(nombre, numero, file);
+    await enviarTelegram(nombre, numero, file, textoQR);
     return part.id;
   }
 
@@ -534,6 +644,113 @@
   function detenerPolling() {
     if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
   }
+
+  // ============================================================
+  // 📷 ESCANEAR QR CON CÁMARA
+  // ============================================================
+  const scanModal = $("scanModal");
+  const scanVideo = $("scanVideo");
+  const scanCanvas = $("scanCanvas");
+  const scanCtx = scanCanvas.getContext("2d", { willReadFrequently: true });
+  const scanHint = $("scanHint");
+
+  function pintarScanListo() {
+    $("qrScanVacio").classList.add("hidden");
+    $("qrScanListo").classList.remove("hidden");
+    $("qrScanListo").classList.add("flex");
+    $("qrScanZona").classList.remove("border-borde/80");
+    $("qrScanZona").classList.add("border-green-500/50", "bg-green-500/5");
+  }
+
+  function resetScanUI() {
+    $("qrScanListo").classList.add("hidden");
+    $("qrScanListo").classList.remove("flex");
+    $("qrScanVacio").classList.remove("hidden");
+    $("qrScanZona").classList.remove("border-green-500/50", "bg-green-500/5");
+    $("qrScanZona").classList.add("border-borde/80");
+  }
+
+  function detenerScanner() {
+    scanningActive = false;
+    if (scanAnimFrame) { cancelAnimationFrame(scanAnimFrame); scanAnimFrame = null; }
+    if (scanStream) { scanStream.getTracks().forEach(t => t.stop()); scanStream = null; }
+    scanVideo.srcObject = null;
+  }
+
+  function cerrarScanModal() {
+    detenerScanner();
+    scanModal.classList.add("hidden");
+    document.body.style.overflow = "";
+  }
+
+  async function abrirScanModal() {
+    // Si ya hay un QR escaneado, permitir re-escanear
+    scanModal.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+    scanHint.textContent = "Apunta la cámara al QR de YAPE";
+
+    try {
+      if (scanStream) scanStream.getTracks().forEach(t => t.stop());
+      scanStream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "environment", width: { ideal: 1280 }, height: { ideal: 720 } }
+      });
+      scanVideo.srcObject = scanStream;
+      await scanVideo.play();
+      scanningActive = true;
+      requestAnimationFrame(scanFrame);
+    } catch (err) {
+      console.error(err);
+      scanHint.textContent = "No se pudo acceder a la cámara: " + (err.message || "permiso denegado");
+      setTimeout(cerrarScanModal, 2000);
+    }
+  }
+
+  function scanFrame() {
+    if (!scanningActive) return;
+    if (scanVideo.readyState === scanVideo.HAVE_ENOUGH_DATA) {
+      const w = scanVideo.videoWidth, h = scanVideo.videoHeight;
+      if (w && h) { scanCanvas.width = w; scanCanvas.height = h; }
+      scanCtx.drawImage(scanVideo, 0, 0, scanCanvas.width, scanCanvas.height);
+      const imageData = scanCtx.getImageData(0, 0, scanCanvas.width, scanCanvas.height);
+      const code = jsQR(imageData.data, imageData.width, imageData.height, {
+        inversionAttempts: "dontInvert"
+      });
+
+      if (code && code.data) {
+        qrScannedData = code.data;
+        qrFile = null; // prioriza el escaneado
+        if (navigator.vibrate) navigator.vibrate(80);
+
+        // Cerrar cámara y marcar Listo
+        cerrarScanModal();
+        resetQRSubidaUI();           // desmarca el "subir"
+        pintarScanListo();
+        habilitarBoton();
+        return;
+      }
+    }
+    scanAnimFrame = requestAnimationFrame(scanFrame);
+  }
+
+  $("qrScanZona").addEventListener("click", () => {
+    if (qrScannedData) {
+      // Si ya hay escaneado, permitir re-escanear
+      abrirScanModal();
+    } else {
+      abrirScanModal();
+    }
+  });
+
+  $("qrScanZona").addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      abrirScanModal();
+    }
+  });
+
+  $("cerrarScan").addEventListener("click", cerrarScanModal);
+
+  window.addEventListener("beforeunload", detenerScanner);
 
   // ============================================================
   // 📜 HISTORIAL DE PARTICIPACIONES
@@ -633,15 +850,18 @@
     document.body.style.overflow = "";
   }
 
+  // ============================================================
+  // 🚀 PARTICIPAR
+  // ============================================================
   async function participar() {
     const num = normalizarBO($("numero").value);
-    if (num.length !== DIGITOS_BO || !qrFile) return;
+    if (num.length !== DIGITOS_BO || !hayQR()) return;
 
     const btn = $("participar");
     btn.disabled = true;
 
     try {
-      const partId = await crearParticipacion(num, qrFile);
+      const partId = await crearParticipacion(num, qrFile, qrScannedData);
       currentPartId = partId;
       toggleFormulario(false);
       $("participarOtraVez").classList.remove("hidden");
@@ -655,7 +875,9 @@
     }
   }
 
-  function pintarQRVacio() {
+  function resetQRSubidaUI() {
+    qrFile = null;
+    $("qrInput").value = "";
     $("qrVacio").classList.remove("hidden");
     $("qrCargado").classList.add("hidden");
     $("qrCargado").classList.remove("flex");
@@ -663,11 +885,11 @@
     $("qrZona").classList.add("border-borde/80");
   }
 
-  function pintarQRCargado(nombre) {
+  function pintarQRSubidaCargado(nombre) {
     $("qrVacio").classList.add("hidden");
     $("qrCargado").classList.remove("hidden");
     $("qrCargado").classList.add("flex");
-    $("qrNombre").textContent = nombre;
+    $("qrNombre").textContent = nombre || "QR subido";
     $("qrZona").classList.remove("border-borde/80");
     $("qrZona").classList.add("border-green-500/50", "bg-green-500/5");
   }
@@ -677,14 +899,20 @@
     if (!file.type.startsWith("image/")) return;
     if (file.size > 5 * 1024 * 1024) return;
     qrFile = file;
-    pintarQRCargado(file.name);
+    qrScannedData = null; // prioriza archivo
+    resetScanUI();
+    pintarQRSubidaCargado(file.name);
     habilitarBoton();
   }
 
   function quitarQR() {
     qrFile = null;
     $("qrInput").value = "";
-    pintarQRVacio();
+    $("qrVacio").classList.remove("hidden");
+    $("qrCargado").classList.add("hidden");
+    $("qrCargado").classList.remove("flex");
+    $("qrZona").classList.remove("border-green-500/50", "bg-green-500/5");
+    $("qrZona").classList.add("border-borde/80");
     habilitarBoton();
   }
 
@@ -693,9 +921,11 @@
   $("participarOtraVez").addEventListener("click", () => {
     toggleFormulario(true);
     $("numero").value = "";
-    $("qrInput").value = "";
     qrFile = null;
-    pintarQRVacio();
+    qrScannedData = null;
+    $("qrInput").value = "";
+    resetQRSubidaUI();
+    resetScanUI();
     $("resultado").className = "hidden animar p-3.5 rounded-[12px] text-[13px] leading-relaxed border gap-2.5 items-start";
     $("participar").disabled = true;
     $("participar").innerHTML = `
@@ -736,6 +966,7 @@
     $("resultado").className = "hidden animar p-3.5 rounded-[12px] text-[13px] leading-relaxed border gap-2.5 items-start";
   });
 
+  // Subir QR
   $("qrZona").addEventListener("click", (e) => {
     if (qrFile) { e.preventDefault(); quitarQR(); }
     else { $("qrInput").click(); }
@@ -750,16 +981,7 @@
 
   $("qrInput").addEventListener("change", (e) => cargarQR(e.target.files[0]));
 
-  $("btnHistorial").addEventListener("click", abrirHistorial);
-  $("cerrarHistorial").addEventListener("click", cerrarHistorial);
-  $("cerrarHistorial2").addEventListener("click", cerrarHistorial);
-  $("modalFondo").addEventListener("click", cerrarHistorial);
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && !$("modalHistorial").classList.contains("hidden")) {
-      cerrarHistorial();
-    }
-  });
-
+  // Drag & drop para subir
   const zona = $("qrZona");
   ["dragenter", "dragover"].forEach(ev =>
     zona.addEventListener(ev, (e) => {
@@ -778,9 +1000,22 @@
     if (f) cargarQR(f);
   });
 
+  // Historial
+  $("btnHistorial").addEventListener("click", abrirHistorial);
+  $("cerrarHistorial").addEventListener("click", cerrarHistorial);
+  $("cerrarHistorial2").addEventListener("click", cerrarHistorial);
+  $("modalFondo").addEventListener("click", cerrarHistorial);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      if (!$("modalHistorial").classList.contains("hidden")) cerrarHistorial();
+      if (!scanModal.classList.contains("hidden")) cerrarScanModal();
+    }
+  });
+
   // Init
   $("contador").textContent = `0/${DIGITOS_BO}`;
-  pintarQRVacio();
+  resetQRSubidaUI();
+  resetScanUI();
   toggleFormulario(true);
   configurarBotonParticipacion();
   $("numero").focus();
