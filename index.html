@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<link rel="manifest" href="/manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="TokTok">
+<link rel="apple-touch-icon" href="/icons/ico2.png">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>TokTok</title>
@@ -69,6 +75,7 @@ body { background-color: #e8e8ed; color: var(--text); min-height: 100vh; min-hei
 .toast-title { font-weight: 700; margin-bottom: 2px; font-size: 0.85rem; }
 .toast-msg { font-size: 0.78rem; opacity: 0.85; line-height: 1.35; }
 </style>
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));}</script>
 </head>
 <body>
 

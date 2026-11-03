@@ -1,7 +1,8 @@
 {
   "name": "TokTok - Billetera Digital",
   "short_name": "TokTok",
-  "start_url": "/dashboard.html",
+  "id": "/",
+  "start_url": "/index.html",
   "scope": "/",
   "display": "standalone",
   "background_color": "#ffffff",
