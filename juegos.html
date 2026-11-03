@@ -334,7 +334,7 @@
   async function loadPkgs(){
     try{
       const{data,error}=await sb.from('paquetes_juegos')
-        .select('id,nombre,descripcion,precio_referencia,precio_final,porcentaje_descuento,stock,imagen_url,sku_razer,destacado,categoria_id,orden,tipo')
+        .select('id,nombre,descripcion,precio_referencia,precio_final,porcentaje_descuento,stock,imagen_url,imagen_ajuste,sku_razer,destacado,categoria_id,orden,tipo')
         .eq('activo',true)
         .order('orden',{ascending:true})
         .order('destacado',{ascending:false})
@@ -350,6 +350,8 @@
     const cat = cats.find(c => c.id === pkg.categoria_id);
     return cat?.tipo || 'api';
   }
+
+  const getImageFit = value => ['cover', 'contain', 'fill'].includes(value) ? value : 'cover';
 
   function filterPkgs(q,cat){
     q=(q||'').trim().toLowerCase();
@@ -379,7 +381,7 @@
       html+=`
         <div class="card" data-id="${esc(p.id)}">
           <div class="card-img-wrap">
-            <img src="${esc(p.imagen_url||'https://placehold.co/400x400/141414/10b981?text=TOKTOK')}" alt="${esc(p.nombre)}" class="card-img" loading="lazy" decoding="async">
+            <img src="${esc(p.imagen_url||'https://placehold.co/400x400/141414/10b981?text=TOKTOK')}" alt="${esc(p.nombre)}" class="card-img" style="object-fit:${getImageFit(p.imagen_ajuste)}" loading="lazy" decoding="async">
             ${hasDiscount?`<span class="badge-off">-${discount}%</span>`:''}
             ${p.destacado?`<span class="badge-star">★</span>`:''}
             <span class="badge-stock ${stock>0?'stock-in':'stock-out'}">${stock>0?'Disponible':'Agotado'}</span>
@@ -430,6 +432,7 @@
     const img=document.getElementById('detail-img');
     img.src=p.imagen_url||'https://placehold.co/800x500/141414/10b981?text=TOKTOK';
     img.alt=p.nombre;
+    img.style.objectFit=getImageFit(p.imagen_ajuste);
 
     await cargarRequisitos(p.id);
     renderRequisitosForm();

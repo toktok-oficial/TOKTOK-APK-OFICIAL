@@ -1606,7 +1606,7 @@
                     const imgUrl = op.logo_url || '';
                     return `<div class="operator-card" data-id="${escapeHTML(op.id)}" data-code="${escapeHTML(op.codigo)}">
                         <div class="operator-logo">
-                            ${imgUrl ? `<img src="${escapeHTML(imgUrl)}" alt="${escapeHTML(op.nombre)}" loading="lazy" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\'fas fa-sim-card\' style=\'font-size:24px;color:var(--primary);\'></i>'">` : '<i class="fas fa-sim-card" style="font-size:24px;color:var(--primary);"></i>'}
+                            ${imgUrl ? `<img src="${escapeHTML(imgUrl)}" alt="${escapeHTML(op.nombre)}" style="object-fit:${['cover', 'contain', 'fill'].includes(op.imagen_ajuste) ? op.imagen_ajuste : 'contain'}" loading="lazy" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\'fas fa-sim-card\' style=\'font-size:24px;color:var(--primary);\'></i>'">` : '<i class="fas fa-sim-card" style="font-size:24px;color:var(--primary);"></i>'}
                         </div>
                         <div class="op-name">${escapeHTML(op.nombre)}</div>
                     </div>`;

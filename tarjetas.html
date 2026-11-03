@@ -185,10 +185,12 @@ function addHistorial(item){
   try { localStorage.setItem(HIST_KEY, JSON.stringify(h)); } catch {}
 }
 
+const getImageFit = value => ['cover', 'contain', 'fill'].includes(value) ? value : 'cover';
+
 // ============ AGRUPAR PRODUCTOS ============
 function groupProductos(list){
   const map = new Map();
-  list.forEach(p => {
+  list.slice().sort((a, b) => Number(a.orden) - Number(b.orden)).forEach(p => {
     const key = [(p.nombre||'').trim().toLowerCase(), String(p.categoria_id||''), parseFloat(p.precio)].join('|');
     if (!map.has(key)) map.set(key, []);
     map.get(key).push(p);
@@ -199,6 +201,7 @@ function groupProductos(list){
     precio: parseFloat(g[0].precio),
     descripcion: g[0].descripcion || '',
     imagen_url: g[0].imagen_url || '',
+    imagen_ajuste: getImageFit(g[0].imagen_ajuste),
     creds: g
   }));
 }
@@ -207,7 +210,9 @@ function groupProductos(list){
 async function loadProductos(){
   const grid = document.getElementById('productsGrid');
   const { data, error } = await sb.from('productos_tarjetas')
-    .select('*').eq('estado','disponible').order('creado_en',{ascending:false});
+    .select('*').eq('estado','disponible')
+    .order('orden',{ascending:true})
+    .order('creado_en',{ascending:true});
 
   if (error){
     console.error(error);
@@ -235,6 +240,7 @@ function renderProductos(){
       <div class="card-mini ${agotado?'agotado':''}" data-idx="${idx}">
         <div class="card-img-wrap">
           <img src="${prod.imagen_url || ''}" alt="${prod.nombre || ''}"
+            style="object-fit:${getImageFit(prod.imagen_ajuste)}"
             onerror="this.src='https://via.placeholder.com/200x200/1c1c1c/8a8a8a?text=?'">
           ${agotado ? '<span class="mini-badge">Agotado</span>' : ''}
         </div>
@@ -257,7 +263,9 @@ function openDetail(idx){
   if (!prod) return;
   productoSeleccionado = prod;
 
-  document.getElementById('detImg').src = prod.imagen_url || '';
+  const detailImage = document.getElementById('detImg');
+  detailImage.src = prod.imagen_url || '';
+  detailImage.style.objectFit = getImageFit(prod.imagen_ajuste);
   document.getElementById('detName').textContent = prod.nombre || '';
   document.getElementById('detDesc').textContent = prod.descripcion || 'Sin descripción';
   document.getElementById('detPrice').textContent = formatCurrency(prod.precio);
@@ -295,6 +303,7 @@ async function comprarProducto(){
       .ilike('nombre', p.nombre)
       .eq('categoria_id', p.categoria_id)
       .eq('precio', p.precio)
+      .order('orden',{ascending:true})
       .order('creado_en',{ascending:true}).limit(1);
     if (e1) throw e1;
     if (!fresh || fresh.length === 0){
@@ -321,6 +330,7 @@ async function comprarProducto(){
     addHistorial({
       id: item.id, nombre: p.nombre, precio: parseFloat(p.precio),
       credenciales: item.credenciales, imagen_url: p.imagen_url,
+      imagen_ajuste: p.imagen_ajuste,
       fecha: new Date().toISOString()
     });
 
@@ -362,7 +372,7 @@ function renderHistorial(){
   }
   el.innerHTML = h.map((item, idx) => `
     <div class="hist-item">
-      <img src="${item.imagen_url || ''}" alt="" onerror="this.src='https://via.placeholder.com/100x100/1c1c1c/8a8a8a?text=?'">
+      <img src="${item.imagen_url || ''}" alt="" style="object-fit:${getImageFit(item.imagen_ajuste)}" onerror="this.src='https://via.placeholder.com/100x100/1c1c1c/8a8a8a?text=?'">
       <div class="hist-info">
         <div class="hist-name">${item.nombre || ''}</div>
         <div class="hist-meta">${formatCurrency(item.precio)} · ${new Date(item.fecha).toLocaleDateString('es-ES')}</div>

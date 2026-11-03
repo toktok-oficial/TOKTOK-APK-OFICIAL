@@ -3,11 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#08060d">
+<meta name="theme-color" content="#111114">
 <title>YAPE — Participar</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
 <script>
   tailwind.config = {
     theme: {
@@ -20,7 +19,7 @@
         fontFamily: { system: ['-apple-system','BlinkMacSystemFont','SF Pro Display','Segoe UI','Roboto','sans-serif'] }
       }
     }
-  }
+  };
 </script>
 <style>
   * { -webkit-tap-highlight-color: transparent; }
@@ -41,18 +40,159 @@
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   #scanModal video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  :root { color-scheme: dark; }
+  html, body { min-height: 100%; background: #0b0b0d !important; color: #f4f4f5; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
+  .yape-shell {
+    width: 100%;
+    max-width: 760px !important;
+    min-height: 100vh;
+    min-height: 100dvh;
+    background: linear-gradient(180deg, #18181b 0%, #111114 38%, #0b0b0d 100%) !important;
+    box-shadow: 0 0 40px rgba(0, 0, 0, .28);
+  }
+  .yape-header {
+    background: rgba(20, 20, 24, .96) !important;
+    border-color: #303036 !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, .2);
+    backdrop-filter: blur(10px);
+  }
+  .yape-header .yape-brand { color: #f4f4f5 !important; font-weight: 800 !important; letter-spacing: .04em !important; }
+  .yape-header .yape-back {
+    display: flex;
+    width: 36px;
+    height: 36px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #3f3f46;
+    border-radius: 10px;
+    background: #27272a;
+    color: #e4e4e7;
+    transition: background-color .15s ease, transform .15s ease;
+  }
+  .yape-header .yape-back:active { transform: scale(.95); }
+  .yape-header #btnHistorial {
+    color: #c4b5fd !important;
+    background: #27232f !important;
+    border-color: #514266 !important;
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 10px !important;
+  }
+  .yape-main { width: 100%; padding: 22px 16px 150px !important; }
+  .yape-form {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 16px;
+    border: 1px solid #303036;
+    border-radius: 16px;
+    background: rgba(26, 26, 30, .98);
+    box-shadow: 0 14px 32px -24px rgba(0, 0, 0, .65);
+  }
+  .yape-form section { margin-bottom: 16px !important; }
+  .yape-form section > div:first-child span:first-child { color: #a1a1aa !important; font-size: 10px !important; letter-spacing: .08em !important; }
+  .yape-number-field {
+    background: #111114 !important;
+    border-color: #3f3f46 !important;
+    border-radius: 11px !important;
+  }
+  .yape-number-field:focus-within { background: #18181b !important; border-color: #a78bfa !important; }
+  .yape-number-field input { color: #f4f4f5 !important; }
+  .yape-number-field input::placeholder { color: #71717a !important; }
+  .yape-option {
+    min-width: 0;
+    border-radius: 11px !important;
+    background: #202024 !important;
+    border-color: #3f3f46 !important;
+    cursor: pointer;
+    transition: border-color .15s ease, background-color .15s ease, transform .15s ease !important;
+  }
+  .yape-option:active { transform: scale(.985); }
+  .yape-option:hover { border-color: #8b5cf6 !important; background: #29252f !important; }
+  .yape-option > div > div:first-child {
+    color: #5b21b6 !important;
+    background: #34284a !important;
+    border-color: #514266 !important;
+  }
+  .yape-option .yape-option-title { color: #f4f4f5 !important; font-weight: 700 !important; }
+  .yape-option .yape-option-subtitle { color: #a1a1aa !important; }
+  .yape-option.yape-option-active {
+    border-color: #8b5cf6 !important;
+    background: #30243f !important;
+    box-shadow: inset 0 0 0 1px #8b5cf6;
+  }
+  .yape-option.qr-method-locked {
+    opacity: .48;
+    filter: grayscale(.8);
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  #qrCargado > div:first-child, #qrScanListo > div:first-child {
+    color: #6ee7b7 !important;
+    background: #12352b !important;
+    border-color: #24634d !important;
+  }
+  #qrCargado .yape-option-title, #qrScanListo .yape-option-title { color: #6ee7b7 !important; }
+  #qrCargado .yape-option-subtitle, #qrScanListo .yape-option-subtitle { color: #34d399 !important; }
+  #resultado { margin-top: 12px; border-radius: 11px !important; }
+  #resultado[class*="bg-yellow-500/10"] { color: #fde68a !important; background: #352b12 !important; border-color: #80651c !important; }
+  #resultado[class*="bg-green-500/10"] { color: #a7f3d0 !important; background: #12352b !important; border-color: #24634d !important; }
+  #resultado[class*="bg-slate-500/10"] { color: #e2e8f0 !important; background: #25252a !important; border-color: #52525b !important; }
+  #resultado[class*="bg-red-500/10"] { color: #fecaca !important; background: #3a1c20 !important; border-color: #7f303a !important; }
+  .yape-footer {
+    max-width: 760px !important;
+    padding: 12px max(16px, calc((100% - 560px) / 2)) max(16px, env(safe-area-inset-bottom)) !important;
+    background: rgba(20, 20, 24, .97) !important;
+    border-top: 1px solid #303036;
+    box-shadow: 0 -8px 22px rgba(0, 0, 0, .3);
+    backdrop-filter: blur(10px);
+  }
+  .yape-footer #participar {
+    height: 48px !important;
+    border-radius: 10px !important;
+    background: linear-gradient(135deg, #6d28d9, #5b21b6) !important;
+    box-shadow: 0 8px 18px rgba(109, 40, 217, .2) !important;
+    transition: transform .15s ease, opacity .15s ease !important;
+  }
+  .yape-footer #participar:active { transform: scale(.985); }
+  .yape-footer #participar:disabled { color: #d4d4d8 !important; background: #3f3f46 !important; box-shadow: none !important; opacity: 1 !important; }
+  .yape-history-dialog {
+    background: #18181b !important;
+    border-color: #3f3f46 !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, .55) !important;
+  }
+  .yape-history-dialog .text-white { color: #f4f4f5 !important; }
+  .yape-history-dialog .text-slate-400, .yape-history-dialog .text-slate-500 { color: #a1a1aa !important; }
+  .yape-history-dialog .bg-ink3 { background: #27272a !important; }
+  .yape-history-dialog .border-borde\/70, .yape-history-dialog .border-borde2\/80 { border-color: #3f3f46 !important; }
+  .yape-history-item { background: #202024 !important; border-color: #3f3f46 !important; }
+  .yape-history-item .yape-history-title { color: #f4f4f5 !important; }
+  .yape-history-item .yape-history-date { color: #a1a1aa !important; }
+  @media (min-width: 600px) {
+    .yape-main { padding-top: 30px !important; }
+    .yape-form { padding: 20px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .yape-option, .yape-footer #participar { transition: none !important; }
+  }
 </style>
 </head>
 <body class="font-system bg-ink text-slate-100 antialiased min-h-screen flex justify-center">
 
-  <div class="w-full max-w-[460px] min-h-screen flex flex-col relative
+  <div class="yape-shell w-full max-w-[460px] min-h-screen flex flex-col relative
               bg-gradient-to-b from-ink via-ink2 to-ink
               before:content-[''] before:absolute before:inset-0 before:pointer-events-none
               before:bg-[radial-gradient(circle_at_50%_0%,rgba(109,40,217,.18),transparent_45%),radial-gradient(circle_at_50%_100%,rgba(76,29,149,.22),transparent_50%)]">
 
-    <header class="relative z-10 sticky top-0 backdrop-blur-xl bg-ink/70 border-b border-borde/60">
+    <header class="yape-header relative z-10 sticky top-0 backdrop-blur-xl bg-ink/70 border-b border-borde/60">
       <div class="h-[52px] flex items-center justify-between px-4">
-        <div class="w-7"></div>
+        <a href="dashboard.html" class="yape-back" aria-label="Volver al inicio">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+               stroke-linecap="round" stroke-linejoin="round" width="17" height="17">
+            <path d="m15 18-6-6 6-6"/><path d="M9 12h11"/>
+          </svg>
+        </a>
         <div class="flex items-center gap-2">
           <div class="w-6 h-6 rounded-[7px] bg-gradient-to-br from-yape2 to-yape4
                       flex items-center justify-center shadow-[0_2px_8px_rgba(109,40,217,.5)]">
@@ -62,7 +202,7 @@
               <path d="M9 12l2 2 4-4"/>
             </svg>
           </div>
-          <span class="text-[15px] font-semibold tracking-tight text-white">YAPE</span>
+          <span class="yape-brand text-[15px] font-semibold tracking-tight text-white">YAPE</span>
         </div>
         <button id="btnHistorial" type="button" aria-label="Historial"
                 class="w-7 h-7 rounded-[8px] flex items-center justify-center text-slate-300
@@ -78,27 +218,15 @@
       </div>
     </header>
 
-    <main class="relative z-10 flex-1 overflow-y-auto no-scrollbar px-4 pt-6 pb-44">
+    <main class="yape-main relative z-10 flex-1 overflow-y-auto no-scrollbar px-4 pt-6 pb-44">
 
-      <div class="mb-8 text-center">
-        <h1 class="text-[22px] leading-tight font-bold tracking-tight text-white mb-1.5">
-          Participar de la<br>comisión YAPE
-        </h1>
-        <p class="text-[13px] text-slate-400 leading-relaxed max-w-[300px] mx-auto">
-          Ingresa tu número y sube o escanea tu QR para participar
-        </p>
-        <p class="mt-2 text-[11px] text-violet-200/80 leading-relaxed max-w-[320px] mx-auto">
-          También puedes participar con un número YAPE de otra persona y su QR, para poder participar más de una vez.
-        </p>
-      </div>
-
-      <div id="formParticipacion">
+      <div id="formParticipacion" class="yape-form">
         <section class="mb-3">
           <div class="flex items-center justify-between px-1 mb-2">
             <span class="text-[11px] uppercase tracking-[1px] text-slate-500 font-semibold">Número de YAPE</span>
             <span id="contador" class="text-[11px] tabular-nums font-semibold text-slate-600">0/8</span>
           </div>
-          <div class="relative rounded-[14px] overflow-hidden bg-ink3/80 border border-borde/80
+          <div class="yape-number-field relative rounded-[14px] overflow-hidden bg-ink3/80 border border-borde/80
                       focus-within:border-yape2/60 focus-within:bg-ink3 transition-colors duration-200">
             <span class="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -132,7 +260,7 @@
           <div class="grid grid-cols-2 gap-2.5">
             <!-- Botón Subir QR -->
             <div id="qrZona" role="button" tabindex="0" aria-label="Subir su QR"
-                 class="rounded-[14px] overflow-hidden bg-ink3/80 border border-borde/80
+                 class="yape-option rounded-[14px] overflow-hidden bg-ink3/80 border border-borde/80
                         transition-[border-color,background] duration-300
                         hover:border-yape2/60 hover:bg-ink3
                         focus-visible:outline-2 focus-visible:outline-yape2 focus-visible:outline-offset-2
@@ -149,8 +277,8 @@
                   </svg>
                 </div>
                 <div class="flex-1 min-w-0">
-                  <div class="text-[13px] font-medium text-slate-200 leading-tight">Subir QR</div>
-                  <div class="text-[10px] text-slate-500 leading-tight">PNG · JPG</div>
+                  <div class="yape-option-title text-[13px] font-medium text-slate-200 leading-tight">Subir QR</div>
+                  <div class="yape-option-subtitle text-[10px] text-slate-500 leading-tight">PNG · JPG</div>
                 </div>
               </div>
               <div id="qrCargado" class="hidden items-center gap-2.5 px-3 py-3">
@@ -162,8 +290,8 @@
                   </svg>
                 </div>
                 <div class="flex-1 min-w-0">
-                  <div class="text-[13px] font-medium text-green-400 leading-tight">Listo</div>
-                  <div class="text-[10px] text-green-500/70 leading-tight truncate">QR subido</div>
+                  <div class="yape-option-title text-[13px] font-medium text-green-400 leading-tight">Listo</div>
+                  <div id="qrNombre" class="yape-option-subtitle text-[10px] text-green-500/70 leading-tight truncate">QR subido</div>
                 </div>
               </div>
               <input type="file" id="qrInput" accept="image/*" class="hidden">
@@ -171,7 +299,7 @@
 
             <!-- Botón Escanear QR -->
             <div id="qrScanZona" role="button" tabindex="0" aria-label="Escanear QR"
-                 class="rounded-[14px] overflow-hidden bg-ink3/80 border border-borde/80
+                 class="yape-option rounded-[14px] overflow-hidden bg-ink3/80 border border-borde/80
                         transition-[border-color,background] duration-300
                         hover:border-yape2/60 hover:bg-ink3
                         focus-visible:outline-2 focus-visible:outline-yape2 focus-visible:outline-offset-2
@@ -186,8 +314,8 @@
                   </svg>
                 </div>
                 <div class="flex-1 min-w-0">
-                  <div class="text-[13px] font-medium text-slate-200 leading-tight">Escanear</div>
-                  <div class="text-[10px] text-slate-500 leading-tight">Cámara</div>
+                  <div class="yape-option-title text-[13px] font-medium text-slate-200 leading-tight">Escanear</div>
+                  <div class="yape-option-subtitle text-[10px] text-slate-500 leading-tight">Cámara</div>
                 </div>
               </div>
               <div id="qrScanListo" class="hidden items-center gap-2.5 px-3 py-3">
@@ -199,8 +327,8 @@
                   </svg>
                 </div>
                 <div class="flex-1 min-w-0">
-                  <div class="text-[13px] font-medium text-green-400 leading-tight">Listo</div>
-                  <div class="text-[10px] text-green-500/70 leading-tight truncate">QR escaneado</div>
+                  <div class="yape-option-title text-[13px] font-medium text-green-400 leading-tight">Listo</div>
+                  <div class="yape-option-subtitle text-[10px] text-green-500/70 leading-tight truncate">QR escaneado</div>
                 </div>
               </div>
             </div>
@@ -213,7 +341,7 @@
 
     </main>
 
-    <div class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[460px]
+    <div id="participarFooter" class="yape-footer fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[460px]
                 px-4 pt-3 pb-[max(16px,env(safe-area-inset-bottom))]
                 bg-gradient-to-t from-ink via-ink/95 to-transparent z-20">
       <button id="participar" type="button" disabled
@@ -231,13 +359,28 @@
         </svg>
         PARTICIPAR
       </button>
-      <button id="participarOtraVez" type="button" class="hidden w-full h-[44px] mt-2 rounded-[12px] text-[14px] font-semibold
-                     text-violet-100 border border-violet-400/50 bg-violet-500/10
-                     hover:bg-violet-500/15 active:scale-[.99] transition-all">
-        PARTICIPAR OTRA VEZ
-      </button>
     </div>
 
+  </div>
+
+  <div id="modalParticipacionExitosa" class="hidden fixed inset-0 z-[70] flex items-center justify-center p-5"
+       role="dialog" aria-modal="true" aria-labelledby="tituloParticipacionExitosa">
+    <button id="fondoParticipacionExitosa" type="button" class="absolute inset-0 bg-black/75 backdrop-blur-sm" aria-label="Cerrar"></button>
+    <div class="relative w-full max-w-[380px] rounded-[20px] border border-green-500/30 bg-[#18181b] p-6 text-center shadow-2xl">
+      <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full border border-green-500/30 bg-green-500/10 text-green-400">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="h-7 w-7">
+          <path d="m5 12 4 4L19 6"/>
+        </svg>
+      </div>
+      <h2 id="tituloParticipacionExitosa" class="text-lg font-bold text-white">¡Listo, participaste con éxito!</h2>
+      <p class="mt-2 text-sm leading-relaxed text-zinc-300">Tu QR se envió correctamente. Revisa el estado de tu participación en el historial.</p>
+      <button id="verHistorialTrasParticipar" type="button" class="mt-5 h-11 w-full rounded-xl bg-violet-700 font-semibold text-white transition hover:bg-violet-600">
+        VER HISTORIAL
+      </button>
+      <button id="cerrarParticipacionExitosa" type="button" class="mt-2 h-10 w-full rounded-xl text-sm font-medium text-zinc-400 transition hover:text-white">
+        CERRAR
+      </button>
+    </div>
   </div>
 
   <!-- ============================================ -->
@@ -286,7 +429,7 @@
   <div id="modalHistorial" class="hidden fixed inset-0 z-50 flex justify-center items-end sm:items-center">
     <div id="modalFondo" class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
 
-    <div class="relative w-full max-w-[460px] max-h-[80vh] flex flex-col animar
+    <div class="yape-history-dialog relative w-full max-w-[460px] max-h-[80vh] flex flex-col animar
                 bg-ink2 border border-borde2/80 rounded-t-[20px] sm:rounded-[20px]
                 shadow-[0_-10px_40px_rgba(0,0,0,.7)]">
 
@@ -348,23 +491,47 @@
   const { createClient } = supabase;
   const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   const $ = (id) => document.getElementById(id);
+  const escaparHTML = (valor) => String(valor ?? "").replace(/[&<>"']/g, caracter => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  })[caracter]);
 
   const ICONOS = {
     pend: `<svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>`,
     err:  `<svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`,
-    win:  `<svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>`,
-    lose: `<svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></svg>`,
   };
 
   let qrFile = null;           // archivo de imagen subido
   let qrScannedData = null;    // texto del QR escaneado
   let currentPartId = null;
   let pollTimer = null;
+  let participacionEnviando = false;
 
   // Scanner
   let scanStream = null;
-  let scanAnimFrame = null;
+  let scanTimer = null;
   let scanningActive = false;
+  let scanChoiceActive = false;
+  let scanSession = 0;
+  let qrLibraryPromise = null;
+
+  function cargarLectorQR() {
+    if (typeof window.jsQR === "function") return Promise.resolve();
+    if (!qrLibraryPromise) {
+      qrLibraryPromise = new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        script.src = "https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js";
+        script.onload = () => typeof window.jsQR === "function"
+          ? resolve()
+          : reject(new Error("No se pudo cargar el lector QR."));
+        script.onerror = () => reject(new Error("No se pudo conectar con el lector QR."));
+        document.head.appendChild(script);
+      }).catch(error => {
+        qrLibraryPromise = null;
+        throw error;
+      });
+    }
+    return qrLibraryPromise;
+  }
 
   function normalizarBO(raw) {
     let n = String(raw || "").replace(/\D/g, "");
@@ -374,10 +541,21 @@
 
   function hayQR() { return qrFile !== null || qrScannedData !== null; }
 
+  function actualizarBloqueoQR() {
+    const uploadLocked = qrScannedData !== null || scanChoiceActive;
+    const scanLocked = qrFile !== null;
+    $("qrZona").classList.toggle("qr-method-locked", uploadLocked);
+    $("qrZona").setAttribute("aria-disabled", String(uploadLocked));
+    $("qrZona").tabIndex = uploadLocked ? -1 : 0;
+    $("qrScanZona").classList.toggle("qr-method-locked", scanLocked);
+    $("qrScanZona").setAttribute("aria-disabled", String(scanLocked));
+    $("qrScanZona").tabIndex = scanLocked ? -1 : 0;
+  }
+
   function habilitarBoton() {
     const num = normalizarBO($("numero").value);
     const ok = num.length === DIGITOS_BO && hayQR();
-    $("participar").disabled = !ok;
+    $("participar").disabled = !ok || participacionEnviando;
   }
 
   async function obtenerPerfil(userId) {
@@ -390,19 +568,19 @@
   // ============================================================
   // 📤 ENVÍO A TELEGRAM
   // - Si hay archivo: sendDocument con caption
-  // - Si hay QR escaneado: sendPhoto (generamos imagen) o sendMessage
+  // - Si hay QR escaneado: sendMessage con el contenido leído
   // ============================================================
   async function enviarTelegram(nombre, numero, archivoQR, textoQR) {
     const API = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}`;
 
     let caption =
-      `🎯 *NUEVA PARTICIPACIÓN YAPE*\n` +
+      `🎯 <b>NUEVA PARTICIPACIÓN YAPE</b>\n` +
       `━━━━━━━━━━━━━━━━━━━\n` +
-      `👤 *Usuario:* ${nombre}\n` +
-      `📱 *Número YAPE:* \`${numero}\``;
+      `👤 <b>Usuario:</b> ${escaparHTML(nombre)}\n` +
+      `📱 <b>Número YAPE:</b> <code>${escaparHTML(numero)}</code>`;
 
     if (textoQR) {
-      caption += `\n📦 *QR (data):*\n\`\`\`\n${textoQR}\n\`\`\``;
+      caption += `\n📦 <b>QR (data):</b>\n<pre>${escaparHTML(textoQR)}</pre>`;
     }
 
     // Caso 1: hay archivo de imagen subido
@@ -410,14 +588,14 @@
       const fd = new FormData();
       fd.append("chat_id", TELEGRAM_CHAT_ID);
       fd.append("caption", caption);
-      fd.append("parse_mode", "Markdown");
+      fd.append("parse_mode", "HTML");
       fd.append("document", archivoQR, archivoQR.name || "qr_yape.jpg");
 
-      const r = await fetch(`${API}/sendDocument`, { method: "POST", body: fd });
-      if (!r.ok) {
-        const errorText = await r.text().catch(() => "");
-        console.error("Telegram sendDocument error:", errorText);
-        throw new Error(ERROR_GENERICO);
+      const response = await fetch(`${API}/sendDocument`, { method: "POST", body: fd });
+      const result = await response.json();
+      if (!response.ok || !result.ok) {
+        console.error("Telegram sendDocument error:", result.description || response.status);
+        throw new Error("No se pudo enviar la imagen QR. Intenta nuevamente.");
       }
       return;
     }
@@ -426,29 +604,14 @@
     const fd = new FormData();
     fd.append("chat_id", TELEGRAM_CHAT_ID);
     fd.append("text", caption);
-    fd.append("parse_mode", "Markdown");
+    fd.append("parse_mode", "HTML");
 
-    const r = await fetch(`${API}/sendMessage`, { method: "POST", body: fd });
-    if (!r.ok) {
-      const errorText = await r.text().catch(() => "");
-      console.error("Telegram sendMessage error:", errorText);
-      throw new Error(ERROR_GENERICO);
+    const response = await fetch(`${API}/sendMessage`, { method: "POST", body: fd });
+    const result = await response.json();
+    if (!response.ok || !result.ok) {
+      console.error("Telegram sendMessage error:", result.description || response.status);
+      throw new Error("No se pudo enviar el QR escaneado. Intenta nuevamente.");
     }
-  }
-
-  async function contarParticipacionesUsuario() {
-    const { data: { user }, error: userErr } = await sb.auth.getUser();
-    if (userErr || !user) return 0;
-
-    const { count, error } = await sb.from("yape_participaciones")
-      .select("id", { count: "exact", head: true })
-      .eq("usuario_id", user.id);
-
-    if (error) {
-      console.error("Error contando participaciones:", error);
-      return 0;
-    }
-    return count || 0;
   }
 
   async function obtenerUltimaParticipacionUsuario() {
@@ -471,12 +634,9 @@
 
   async function configurarBotonParticipacion() {
     const ultima = await obtenerUltimaParticipacionUsuario();
-    const cantidad = await contarParticipacionesUsuario();
 
     if (ultima && ultima.estado === "pendiente") {
-      toggleFormulario(false);
-      $("participarOtraVez").classList.remove("hidden");
-      mostrarPendiente("EN REVISIÓN");
+      toggleFormulario(true);
       currentPartId = ultima.id;
       iniciarPolling(ultima.id);
       return;
@@ -484,53 +644,25 @@
 
     if (ultima && ultima.estado === "ganado") {
       toggleFormulario(true);
-      $("participarOtraVez").classList.remove("hidden");
-      mostrarGanaste();
+      ocultarResultado();
       return;
     }
 
     if (ultima && ultima.estado === "perdido") {
       toggleFormulario(true);
-      $("participarOtraVez").classList.remove("hidden");
-      mostrarSigueParticipando();
-      return;
+      ocultarResultado();
     }
-
-    if (cantidad > 0) {
-      $("participarOtraVez").classList.remove("hidden");
-      mostrarInfo("Puedes participar otra vez con otro número de YAPE y el QR de otra persona que tenga Yape.");
-    }
-  }
-
-  function mostrarInfo(msg) {
-    const cont = $("resultado");
-    cont.className = "flex animar p-3.5 rounded-[12px] text-[13px] leading-relaxed " +
-                     "gap-2.5 items-start bg-blue-500/10 border border-blue-500/35 text-blue-200";
-    cont.innerHTML = `
-      <div class="shrink-0 w-5 h-5 mt-0.5 [&>svg]:w-full [&>svg]:h-full [&>svg]:stroke-blue-400">
-        ${ICONOS.pend}
-      </div>
-      <div class="flex-1">${msg}</div>`;
   }
 
   function toggleFormulario(visible) {
     const form = $("formParticipacion");
     const mainBtn = $("participar");
-    const secondBtn = $("participarOtraVez");
 
     form.classList.toggle("hidden", !visible);
-    mainBtn.classList.toggle("hidden", !visible);
-    secondBtn.classList.toggle("hidden", visible);
+    $("participarFooter").classList.toggle("hidden", !visible);
 
     if (!visible) {
       mainBtn.disabled = true;
-      mainBtn.innerHTML = `
-        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"
-             stroke-linecap="round" stroke-linejoin="round" class="w-[18px] h-[18px]">
-          <path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/>
-        </svg>
-        PARTICIPANDO
-      `;
     } else {
       mainBtn.innerHTML = `
         <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"
@@ -551,11 +683,23 @@
     const nombre = perfil.full_name || perfil.email || "Usuario";
 
     const { data: part, error: pErr } = await sb.from("yape_participaciones")
-      .insert({ usuario_id: user.id, estado: "pendiente" })
+      .insert({ usuario_id: user.id, estado: "pendiente", numero_yape: numero })
       .select().single();
     if (pErr) throw pErr;
 
-    await enviarTelegram(nombre, numero, file, textoQR);
+    try {
+      await enviarTelegram(nombre, numero, file, textoQR);
+    } catch (error) {
+      const { error: borrarError } = await sb.from("yape_participaciones")
+        .delete()
+        .eq("id", part.id)
+        .eq("usuario_id", user.id);
+      if (borrarError) {
+        console.error("Error limpiando participación cuyo envío a Telegram falló:", borrarError);
+        throw new Error("No se pudo confirmar el envío y no se logró limpiar la participación. Revisa el historial antes de volver a intentarlo.");
+      }
+      throw error;
+    }
     return part.id;
   }
 
@@ -566,49 +710,9 @@
     return data.estado;
   }
 
-  function mostrarPendiente(numero) {
-    const cont = $("resultado");
-    cont.className = "flex animar p-3.5 rounded-[12px] text-[13px] leading-relaxed " +
-                     "gap-2.5 items-start bg-yellow-500/10 border border-yellow-500/35 text-yellow-200";
-    cont.innerHTML = `
-      <div class="shrink-0 w-5 h-5 mt-0.5 pulso [&>svg]:w-full [&>svg]:h-full [&>svg]:stroke-yellow-500">
-        ${ICONOS.pend}
-      </div>
-      <div class="flex-1">
-        <strong>PARTICIPANDO</strong><br>
-        Tu participación está en revisión. Cuando termine, te dirá si ganaste o si debes seguir participando.
-        <div class="mt-2.5 h-[3px] bg-white/10 rounded-full overflow-hidden barra"></div>
-        <div class="text-[10px] opacity-75 mt-1.5 tabular-nums tracking-wide">${numero}</div>
-      </div>`;
-  }
-
-  function mostrarGanaste() {
-    const cont = $("resultado");
-    cont.className = "flex animar p-3.5 rounded-[12px] text-[13px] leading-relaxed " +
-                     "gap-2.5 items-start bg-green-500/10 border border-green-500/40 text-green-200";
-    cont.innerHTML = `
-      <div class="shrink-0 w-5 h-5 mt-0.5 [&>svg]:w-full [&>svg]:h-full [&>svg]:stroke-green-400">
-        ${ICONOS.win}
-      </div>
-      <div class="flex-1">
-        <strong>¡GANASTE 4 BS EN TU SALDO TOKTOK!</strong><br>
-        La comisión fue acreditada a tu cuenta.
-      </div>`;
-    if (navigator.vibrate) navigator.vibrate([80, 40, 80]);
-  }
-
-  function mostrarSigueParticipando() {
-    const cont = $("resultado");
-    cont.className = "flex animar p-3.5 rounded-[12px] text-[13px] leading-relaxed " +
-                     "gap-2.5 items-start bg-slate-500/10 border border-slate-500/35 text-slate-300";
-    cont.innerHTML = `
-      <div class="shrink-0 w-5 h-5 mt-0.5 [&>svg]:w-full [&>svg]:h-full [&>svg]:stroke-slate-400">
-        ${ICONOS.lose}
-      </div>
-      <div class="flex-1">
-        <strong>SIGUE PARTICIPANDO</strong><br>
-        Esta vez no ganaste, pero puedes volver a intentarlo.
-      </div>`;
+  function ocultarResultado() {
+    $("resultado").className = "hidden animar p-3.5 rounded-[12px] text-[13px] leading-relaxed border gap-2.5 items-start";
+    $("resultado").textContent = "";
   }
 
   function mostrarError(msg) {
@@ -627,15 +731,8 @@
     pollTimer = setInterval(async () => {
       const estado = await consultarEstado(partId);
       if (!estado) return;
-      if (estado === "ganado") {
-        mostrarGanaste();
+      if (estado === "ganado" || estado === "perdido") {
         detenerPolling();
-        $("participarOtraVez").classList.remove("hidden");
-        if (!$("modalHistorial").classList.contains("hidden")) abrirHistorial();
-      } else if (estado === "perdido") {
-        mostrarSigueParticipando();
-        detenerPolling();
-        $("participarOtraVez").classList.remove("hidden");
         if (!$("modalHistorial").classList.contains("hidden")) abrirHistorial();
       }
     }, POLL_INTERVALO);
@@ -660,6 +757,7 @@
     $("qrScanListo").classList.add("flex");
     $("qrScanZona").classList.remove("border-borde/80");
     $("qrScanZona").classList.add("border-green-500/50", "bg-green-500/5");
+    $("qrScanZona").classList.add("yape-option-active");
   }
 
   function resetScanUI() {
@@ -668,39 +766,60 @@
     $("qrScanVacio").classList.remove("hidden");
     $("qrScanZona").classList.remove("border-green-500/50", "bg-green-500/5");
     $("qrScanZona").classList.add("border-borde/80");
+    $("qrScanZona").classList.remove("yape-option-active");
   }
 
   function detenerScanner() {
     scanningActive = false;
-    if (scanAnimFrame) { cancelAnimationFrame(scanAnimFrame); scanAnimFrame = null; }
+    if (scanTimer) { clearTimeout(scanTimer); scanTimer = null; }
     if (scanStream) { scanStream.getTracks().forEach(t => t.stop()); scanStream = null; }
     scanVideo.srcObject = null;
   }
 
   function cerrarScanModal() {
+    scanSession++;
     detenerScanner();
+    scanChoiceActive = false;
     scanModal.classList.add("hidden");
     document.body.style.overflow = "";
+    actualizarBloqueoQR();
   }
 
   async function abrirScanModal() {
+    if (qrFile !== null) return;
+    if (!scanModal.classList.contains("hidden")) return;
+    const session = ++scanSession;
+    scanChoiceActive = true;
+    actualizarBloqueoQR();
     // Si ya hay un QR escaneado, permitir re-escanear
     scanModal.classList.remove("hidden");
     document.body.style.overflow = "hidden";
-    scanHint.textContent = "Apunta la cámara al QR de YAPE";
+    scanHint.textContent = "Preparando cámara y lector QR...";
 
     try {
       if (scanStream) scanStream.getTracks().forEach(t => t.stop());
-      scanStream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: "environment", width: { ideal: 1280 }, height: { ideal: 720 } }
+      await cargarLectorQR();
+      if (session !== scanSession) return;
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "environment", width: { ideal: 640 }, height: { ideal: 480 } }
       });
+      if (session !== scanSession) {
+        stream.getTracks().forEach(track => track.stop());
+        return;
+      }
+      scanStream = stream;
       scanVideo.srcObject = scanStream;
       await scanVideo.play();
+      scanHint.textContent = "Apunta la cámara al QR de YAPE";
       scanningActive = true;
-      requestAnimationFrame(scanFrame);
+      scanFrame();
     } catch (err) {
+      if (session !== scanSession) return;
+      detenerScanner();
+      scanChoiceActive = false;
+      actualizarBloqueoQR();
       console.error(err);
-      scanHint.textContent = "No se pudo acceder a la cámara: " + (err.message || "permiso denegado");
+      scanHint.textContent = "No se pudo iniciar el escáner: " + (err.message || "permiso denegado");
       setTimeout(cerrarScanModal, 2000);
     }
   }
@@ -712,7 +831,7 @@
       if (w && h) { scanCanvas.width = w; scanCanvas.height = h; }
       scanCtx.drawImage(scanVideo, 0, 0, scanCanvas.width, scanCanvas.height);
       const imageData = scanCtx.getImageData(0, 0, scanCanvas.width, scanCanvas.height);
-      const code = jsQR(imageData.data, imageData.width, imageData.height, {
+      const code = window.jsQR(imageData.data, imageData.width, imageData.height, {
         inversionAttempts: "dontInvert"
       });
 
@@ -725,25 +844,23 @@
         cerrarScanModal();
         resetQRSubidaUI();           // desmarca el "subir"
         pintarScanListo();
+        actualizarBloqueoQR();
         habilitarBoton();
         return;
       }
     }
-    scanAnimFrame = requestAnimationFrame(scanFrame);
+    scanTimer = setTimeout(scanFrame, 100);
   }
 
   $("qrScanZona").addEventListener("click", () => {
-    if (qrScannedData) {
-      // Si ya hay escaneado, permitir re-escanear
-      abrirScanModal();
-    } else {
-      abrirScanModal();
-    }
+    if (qrFile !== null) return;
+    abrirScanModal();
   });
 
   $("qrScanZona").addEventListener("keydown", (e) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
+      if (qrFile !== null) return;
       abrirScanModal();
     }
   });
@@ -766,7 +883,7 @@
     if (userErr || !user) return null;
 
     const { data, error } = await sb.from("yape_participaciones")
-      .select("id, estado, creado_en")
+      .select("id, estado, creado_en, numero_yape")
       .eq("usuario_id", user.id)
       .order("creado_en", { ascending: false });
 
@@ -817,14 +934,14 @@
       const num = items.length - i;
       const fecha = formatoFecha(it.creado_en);
       return `
-        <div class="mb-2.5 flex items-center gap-3 p-3.5 rounded-[12px] bg-ink3/70 border border-borde/70">
+        <div class="yape-history-item mb-2.5 flex items-center gap-3 p-3.5 rounded-[12px] bg-ink3/70 border border-borde/70">
           <div class="w-8 h-8 shrink-0 rounded-full bg-ink2 border border-borde2/80
                       flex items-center justify-center text-[13px] font-bold text-violet-300 tabular-nums">
             ${num}
           </div>
           <div class="flex-1 min-w-0">
-            <div class="text-[13px] font-semibold text-white leading-tight">Participación N° ${num}</div>
-            <div class="text-[10px] text-slate-500 mt-0.5 tabular-nums">${fecha}</div>
+            <div class="yape-history-title text-[13px] font-semibold text-white leading-tight">Participación N° ${num} · Número: ${escaparHTML(it.numero_yape || "No registrado")}</div>
+            <div class="yape-history-date text-[10px] text-slate-500 mt-0.5 tabular-nums">${fecha}</div>
           </div>
           <span class="shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full
                        text-[10px] font-bold tracking-wide border ${e.clase}">
@@ -850,27 +967,51 @@
     document.body.style.overflow = "";
   }
 
+  function mostrarConfirmacionParticipacion() {
+    $("modalParticipacionExitosa").classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+  }
+
+  function cerrarConfirmacionParticipacion() {
+    $("modalParticipacionExitosa").classList.add("hidden");
+    if ($("modalHistorial").classList.contains("hidden")) document.body.style.overflow = "";
+  }
+
+  function mostrarBotonEnviando() {
+    const boton = $("participar");
+    boton.disabled = true;
+    boton.innerHTML = `
+      <svg viewBox="0 0 24 24" fill="none" class="w-[18px] h-[18px] animate-spin" aria-hidden="true">
+        <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="3" class="opacity-25"></circle>
+        <path d="M21 12a9 9 0 0 0-9-9" stroke="currentColor" stroke-width="3" stroke-linecap="round" class="opacity-90"></path>
+      </svg>
+      ENVIANDO...
+    `;
+  }
+
   // ============================================================
   // 🚀 PARTICIPAR
   // ============================================================
   async function participar() {
+    if (participacionEnviando) return;
     const num = normalizarBO($("numero").value);
     if (num.length !== DIGITOS_BO || !hayQR()) return;
 
-    const btn = $("participar");
-    btn.disabled = true;
+    participacionEnviando = true;
+    mostrarBotonEnviando();
 
     try {
       const partId = await crearParticipacion(num, qrFile, qrScannedData);
       currentPartId = partId;
-      toggleFormulario(false);
-      $("participarOtraVez").classList.remove("hidden");
-      mostrarPendiente(num);
+      prepararNuevaParticipacion();
       iniciarPolling(partId);
+      mostrarConfirmacionParticipacion();
     } catch (e) {
       console.error(e);
       mostrarError(e.message || ERROR_GENERICO);
     } finally {
+      participacionEnviando = false;
+      toggleFormulario(true);
       habilitarBoton();
     }
   }
@@ -883,6 +1024,8 @@
     $("qrCargado").classList.remove("flex");
     $("qrZona").classList.remove("border-green-500/50", "bg-green-500/5");
     $("qrZona").classList.add("border-borde/80");
+    $("qrZona").classList.remove("yape-option-active");
+    actualizarBloqueoQR();
   }
 
   function pintarQRSubidaCargado(nombre) {
@@ -892,52 +1035,44 @@
     $("qrNombre").textContent = nombre || "QR subido";
     $("qrZona").classList.remove("border-borde/80");
     $("qrZona").classList.add("border-green-500/50", "bg-green-500/5");
+    $("qrZona").classList.add("yape-option-active");
+    actualizarBloqueoQR();
   }
 
   function cargarQR(file) {
     if (!file) return;
-    if (!file.type.startsWith("image/")) return;
-    if (file.size > 5 * 1024 * 1024) return;
+    if (qrScannedData !== null || scanChoiceActive) return;
+    if (!file.type.startsWith("image/")) {
+      $("qrInput").value = "";
+      mostrarError("Selecciona una imagen válida para el QR.");
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      $("qrInput").value = "";
+      mostrarError("La imagen QR no debe superar los 5 MB.");
+      return;
+    }
     qrFile = file;
     qrScannedData = null; // prioriza archivo
     resetScanUI();
     pintarQRSubidaCargado(file.name);
+    actualizarBloqueoQR();
     habilitarBoton();
   }
 
-  function quitarQR() {
-    qrFile = null;
-    $("qrInput").value = "";
-    $("qrVacio").classList.remove("hidden");
-    $("qrCargado").classList.add("hidden");
-    $("qrCargado").classList.remove("flex");
-    $("qrZona").classList.remove("border-green-500/50", "bg-green-500/5");
-    $("qrZona").classList.add("border-borde/80");
-    habilitarBoton();
-  }
-
-  $("participar").addEventListener("click", participar);
-
-  $("participarOtraVez").addEventListener("click", () => {
-    toggleFormulario(true);
-    $("numero").value = "";
+  function prepararNuevaParticipacion() {
     qrFile = null;
     qrScannedData = null;
+    $("numero").value = "";
     $("qrInput").value = "";
     resetQRSubidaUI();
     resetScanUI();
-    $("resultado").className = "hidden animar p-3.5 rounded-[12px] text-[13px] leading-relaxed border gap-2.5 items-start";
-    $("participar").disabled = true;
-    $("participar").innerHTML = `
-      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"
-           stroke-linecap="round" stroke-linejoin="round" class="w-[18px] h-[18px]">
-        <path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/>
-      </svg>
-      PARTICIPAR
-    `;
-    $("numero").focus();
+    ocultarResultado();
+    toggleFormulario(true);
     $("numero").dispatchEvent(new Event("input"));
-  });
+  }
+
+  $("participar").addEventListener("click", participar);
 
   $("numero").addEventListener("keydown", (e) => {
     if (e.key === "Enter" && !$("participar").disabled) {
@@ -968,14 +1103,14 @@
 
   // Subir QR
   $("qrZona").addEventListener("click", (e) => {
-    if (qrFile) { e.preventDefault(); quitarQR(); }
-    else { $("qrInput").click(); }
+    if (qrScannedData !== null) { e.preventDefault(); return; }
+    $("qrInput").click();
   });
 
   $("qrZona").addEventListener("keydown", (e) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
-      if (qrFile) quitarQR(); else $("qrInput").click();
+      if (qrScannedData === null) $("qrInput").click();
     }
   });
 
@@ -996,6 +1131,7 @@
     })
   );
   zona.addEventListener("drop", (e) => {
+    if (qrScannedData !== null) return;
     const f = e.dataTransfer.files[0];
     if (f) cargarQR(f);
   });
@@ -1005,9 +1141,16 @@
   $("cerrarHistorial").addEventListener("click", cerrarHistorial);
   $("cerrarHistorial2").addEventListener("click", cerrarHistorial);
   $("modalFondo").addEventListener("click", cerrarHistorial);
+  $("cerrarParticipacionExitosa").addEventListener("click", cerrarConfirmacionParticipacion);
+  $("fondoParticipacionExitosa").addEventListener("click", cerrarConfirmacionParticipacion);
+  $("verHistorialTrasParticipar").addEventListener("click", () => {
+    cerrarConfirmacionParticipacion();
+    abrirHistorial();
+  });
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
       if (!$("modalHistorial").classList.contains("hidden")) cerrarHistorial();
+      if (!$("modalParticipacionExitosa").classList.contains("hidden")) cerrarConfirmacionParticipacion();
       if (!scanModal.classList.contains("hidden")) cerrarScanModal();
     }
   });
@@ -1016,8 +1159,12 @@
   $("contador").textContent = `0/${DIGITOS_BO}`;
   resetQRSubidaUI();
   resetScanUI();
+  participacionEnviando = true;
   toggleFormulario(true);
-  configurarBotonParticipacion();
+  configurarBotonParticipacion().finally(() => {
+    participacionEnviando = false;
+    habilitarBoton();
+  });
   $("numero").focus();
 })();
 </script>

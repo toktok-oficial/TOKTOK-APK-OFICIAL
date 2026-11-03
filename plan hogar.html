@@ -52,23 +52,23 @@
         .category-chip.active i { color: white; }
 
         .products-container { padding: 4px 12px 24px; }
-        .products-grid { display: grid; grid-template-columns: repeat(1, 1fr); gap: 10px; }
-        .product-card { border-radius: 12px; overflow: hidden; background: white; border: 1px solid #eef1f5; box-shadow: 0 1px 4px rgba(0,0,0,0.04); position: relative; cursor: pointer; transition: transform 0.15s cubic-bezier(0.4,0,0.2,1), box-shadow 0.2s ease; padding: 16px; will-change: transform; }
+        .products-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+        .product-card { border-radius: 12px; overflow: hidden; background: white; border: 1px solid #eef1f5; box-shadow: 0 1px 4px rgba(0,0,0,0.04); position: relative; cursor: pointer; transition: transform 0.15s cubic-bezier(0.4,0,0.2,1), box-shadow 0.2s ease; padding: 10px; will-change: transform; min-width: 0; }
         .product-card:active { transform: scale(0.98); }
-        .plan-image { width: 100%; height: 140px; object-fit: cover; border-radius: 10px; margin-bottom: 12px; background: #f1f5f9; }
-        .badge-discount { position: absolute; top: 10px; right: 10px; background: #ef4444; color: #fff; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 6px; z-index: 2; }
-        .badge-featured { position: absolute; top: 10px; right: 10px; background: #fbbf24; color: #78350f; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 6px; z-index: 2; }
-        .plan-speed-display { font-size: 32px; font-weight: 900; color: var(--primary); line-height: 1; margin-bottom: 4px; }
-        .plan-speed-display span { font-size: 14px; font-weight: 500; }
-        .product-name { font-weight: 600; font-size: 14px; color: #1e293b; margin-bottom: 4px; }
-        .product-description { font-size: 11px; color: #94a3b8; margin-bottom: 8px; }
-        .price-row { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
-        .product-price { color: var(--primary); font-weight: 800; font-size: 18px; }
+        .plan-image { width: 100%; height: 92px; object-fit: cover; border-radius: 8px; margin-bottom: 8px; background: #f1f5f9; }
+        .badge-discount { position: absolute; top: 8px; right: 8px; background: #ef4444; color: #fff; font-size: 9px; font-weight: 700; padding: 3px 6px; border-radius: 6px; z-index: 2; }
+        .badge-featured { position: absolute; top: 8px; right: 8px; background: #fbbf24; color: #78350f; font-size: 9px; font-weight: 700; padding: 3px 6px; border-radius: 6px; z-index: 2; }
+        .plan-speed-display { font-size: 23px; font-weight: 900; color: var(--primary); line-height: 1; margin-bottom: 4px; }
+        .plan-speed-display span { font-size: 11px; font-weight: 500; }
+        .product-name { font-weight: 600; font-size: 12px; color: #1e293b; margin-bottom: 4px; overflow-wrap: anywhere; }
+        .product-description { font-size: 10px; color: #94a3b8; margin-bottom: 6px; overflow-wrap: anywhere; }
+        .price-row { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px; margin-bottom: 7px; }
+        .product-price { color: var(--primary); font-weight: 800; font-size: 15px; }
         .product-price-old { color: #cbd5e1; font-size: 11px; text-decoration: line-through; }
-        .features-list { list-style: none; padding: 0; margin: 0 0 12px 0; }
-        .features-list li { font-size: 11px; color: #64748b; padding: 2px 0; display: flex; align-items: center; gap: 6px; }
+        .features-list { list-style: none; padding: 0; margin: 0 0 8px 0; }
+        .features-list li { font-size: 9px; color: #64748b; padding: 2px 0; display: flex; align-items: flex-start; gap: 5px; overflow-wrap: anywhere; }
         .features-list li i { color: #10b981; font-size: 10px; }
-        .btn-contract { width: 100%; padding: 10px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border: none; border-radius: 10px; font-weight: 700; font-size: 13px; cursor: pointer; transition: transform 0.12s cubic-bezier(0.4,0,0.2,1), box-shadow 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 6px; will-change: transform; }
+        .btn-contract { width: 100%; padding: 8px 4px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border: none; border-radius: 8px; font-weight: 700; font-size: 10px; cursor: pointer; transition: transform 0.12s cubic-bezier(0.4,0,0.2,1), box-shadow 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 4px; will-change: transform; }
         .btn-contract:active { transform: scale(0.97); }
 
         .history-item { background: white; border-radius: 10px; padding: 12px; margin-bottom: 8px; border: 1px solid #e2e8f0; animation: fadeInUp 0.25s cubic-bezier(0.4,0,0.2,1); }
@@ -250,6 +250,7 @@
         };
 
         const formatCurrency = (amount) => 'Bs ' + parseFloat(amount || 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        const escapeHTML = (value) => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 
         const showToast = (msg, type = 'success') => {
             const t = document.createElement('div');
@@ -319,24 +320,24 @@
 
             list.innerHTML = plans.map(plan => {
                 const finalPrice = plan.discount_percentage > 0 ? plan.price * (1 - plan.discount_percentage / 100) : plan.price;
-                const totalFirstPayment = finalPrice + (plan.installation_fee || 0);
                 const hasDiscount = plan.discount_percentage > 0;
                 const features = Array.isArray(plan.features) ? plan.features : [];
+                const description = String(plan.description || '').trim();
+                const duplicateDescription = description.toLocaleLowerCase('es') === String(plan.name || '').trim().toLocaleLowerCase('es');
                 return `
                     <div class="product-card" data-plan-id="${plan.id}">
                         ${plan.is_featured && !hasDiscount ? '<span class="badge-featured">★ Destacado</span>' : ''}
                         ${hasDiscount ? `<span class="badge-discount">-${plan.discount_percentage}%</span>` : ''}
-                        ${plan.image_url ? `<img src="${plan.image_url}" class="plan-image" alt="${plan.name}" loading="lazy">` : ''}
+                        ${plan.image_url ? `<img src="${plan.image_url}" class="plan-image" alt="${plan.name}" style="object-fit:${['cover', 'contain', 'fill'].includes(plan.imagen_ajuste) ? plan.imagen_ajuste : 'cover'}" loading="lazy">` : ''}
                         <div class="plan-speed-display">${plan.speed_mbps} <span>Mbps</span></div>
                         <div class="product-name">${plan.name}</div>
-                        <div class="product-description">${plan.description || ''}</div>
+                        ${description && !duplicateDescription ? `<div class="product-description">${description}</div>` : ''}
                         <div class="price-row">
                             <span class="product-price">${formatCurrency(finalPrice)}</span>
                             <span style="font-size: 12px; color: #64748b;">/mes</span>
                             ${hasDiscount ? `<span class="product-price-old">${formatCurrency(plan.price)}</span>` : ''}
                         </div>
                         ${plan.installation_fee > 0 ? `<p style="font-size: 12px; color: #d97706; font-weight: 600; margin-bottom: 8px;">+ Instalación: ${formatCurrency(plan.installation_fee)}</p>` : `<p style="font-size: 12px; color: #059669; font-weight: 600; margin-bottom: 8px;">¡Instalación GRATIS!</p>`}
-                        <p style="font-size: 11px; color: #64748b; margin-bottom: 8px;">Primer pago: <strong>${formatCurrency(totalFirstPayment)}</strong></p>
                         ${features.length ? `<ul class="features-list">${features.map(f => `<li><i class="fas fa-check-circle"></i> ${f}</li>`).join('')}</ul>` : ''}
                         <button class="btn-contract" onclick="event.stopPropagation(); startContract('${plan.id}')">
                             <i class="fas fa-wifi"></i> Solicitar Plan
@@ -498,7 +499,6 @@
 
         function renderDataStep() {
             const finalPrice = currentPlan.discount_percentage > 0 ? currentPlan.price * (1 - currentPlan.discount_percentage / 100) : currentPlan.price;
-            const totalFirstPayment = finalPrice + (currentPlan.installation_fee || 0);
 
             return `
                 <div>
@@ -549,7 +549,6 @@
                         <p style="font-size: 12px; font-weight: 700; color: #1e40af; margin-bottom: 4px;">📦 ${currentPlan.name}</p>
                         <p style="font-size: 11px; color: #64748b;">Velocidad: ${currentPlan.speed_mbps} Mbps</p>
                         <p style="font-size: 11px; color: #64748b;">Precio mensual: ${formatCurrency(finalPrice)}</p>
-                        <p style="font-size: 11px; font-weight: 600; color: #1e293b;">Primer pago: ${formatCurrency(totalFirstPayment)}</p>
                         ${formData.location ? `<p style="font-size: 11px; color: #64748b; margin-top: 4px;">📍 Ubicación: ${formData.location.lat.toFixed(6)}, ${formData.location.lng.toFixed(6)}</p>` : ''}
                     </div>
 
@@ -588,15 +587,12 @@
         }
 
         function confirmSubmit() {
-            const finalPrice = currentPlan.discount_percentage > 0 ? currentPlan.price * (1 - currentPlan.discount_percentage / 100) : currentPlan.price;
-            const totalFirstPayment = finalPrice + (currentPlan.installation_fee || 0);
             const locationText = formData.location ? `${formData.location.lat.toFixed(6)}, ${formData.location.lng.toFixed(6)}` : 'No especificada';
 
             document.getElementById('confirmation-text').innerHTML = `
                 <div style="background: #f8fafc; padding: 10px; border-radius: 8px; margin-bottom: 8px;">
                     <strong>${currentPlan.name}</strong><br>
                     <span style="font-size: 12px;">Velocidad: ${currentPlan.speed_mbps} Mbps</span><br>
-                    <span style="font-size: 12px;">Primer pago: <strong style="color: var(--primary);">${formatCurrency(totalFirstPayment)}</strong></span>
                 </div>
                 <div style="font-size: 12px;">
                     <p><strong>Nombre:</strong> ${formData.fullName}</p>
@@ -628,15 +624,16 @@
 
             try {
                 const finalPrice = currentPlan.discount_percentage > 0 ? currentPlan.price * (1 - currentPlan.discount_percentage / 100) : currentPlan.price;
-                const totalFirstPayment = finalPrice + (currentPlan.installation_fee || 0);
 
-                // 1) Insertar SOLO lo esencial en Supabase
+                // 1) Guardar la solicitud y los datos necesarios para el historial
                 const { data: request, error } = await supabase
                     .from('request_status')
                     .insert([{
                         user_id: currentUser.id,
                         status: 'pending',
-                        status_message: 'Solicitud en revisión'
+                        status_message: 'Solicitud en revisión',
+                        client_name: formData.fullName,
+                        reference_number: formData.phoneReference || null
                     }])
                     .select()
                     .single();
@@ -654,7 +651,6 @@
 📦 <b>PLAN:</b> ${currentPlan.name}
 ⚡ Velocidad: ${currentPlan.speed_mbps} Mbps
 💰 Precio mensual: ${formatCurrency(finalPrice)}
-💵 Primer pago: ${formatCurrency(totalFirstPayment)}
 📅 ${new Date().toLocaleString('es-BO')}
 
 👤 <b>CLIENTE</b>
@@ -790,11 +786,12 @@ ${formData.city}${formData.zone ? ', ' + formData.zone : ''}
                 return `
                     <div class="history-item">
                         <div class="history-item-header">
-                            <div class="history-product-name">Solicitud #${req.id.slice(0, 8)}</div>
+                            <div class="history-product-name">${escapeHTML(req.client_name || 'Cliente')}</div>
                             <span class="status-badge ${st.class}">${st.label}</span>
                         </div>
+                        <div class="history-detail">N° de referencia: ${escapeHTML(req.reference_number || 'No registrado')}</div>
                         <div class="history-detail">${new Date(req.created_at).toLocaleDateString('es-BO', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
-                        ${req.status_message ? `<div style="background: #f1f5f9; padding: 8px; border-radius: 6px; margin-top: 6px; font-size: 11px; color: #475569;"><i class="fas fa-info-circle mr-1"></i>${req.status_message}</div>` : ''}
+                        ${req.status_message ? `<div style="background: #f1f5f9; padding: 8px; border-radius: 6px; margin-top: 6px; font-size: 11px; color: #475569;"><i class="fas fa-info-circle mr-1"></i>${escapeHTML(req.status_message)}</div>` : ''}
                     </div>`;
             }).join('');
         }
@@ -837,9 +834,10 @@ ${formData.city}${formData.zone ? ', ' + formData.zone : ''}
                 return `
                     <div class="history-item">
                         <div class="history-item-header">
-                            <div class="history-product-name">Solicitud #${req.id.slice(0, 8)}</div>
+                            <div class="history-product-name">${escapeHTML(req.client_name || 'Cliente')}</div>
                             ${badge}
                         </div>
+                        <div class="history-detail">N° de referencia: ${escapeHTML(req.reference_number || 'No registrado')}</div>
                         <div class="history-detail">${new Date(req.created_at).toLocaleDateString('es-BO', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
                         ${rewardsOfReq.length ? `
                             <div class="reward-box">

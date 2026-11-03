@@ -140,33 +140,33 @@ main{padding-left:0;padding-right:0;}
 }
 .mobile-only{display:flex!important;}
 .desktop-only{display:none!important;}
-.invoice-dialog{overflow:hidden;border:1px solid #e2e8f0;border-radius:20px;background:#fff;box-shadow:0 24px 64px rgba(15,23,42,.2);}
+.invoice-dialog{overflow:hidden;border:1px solid #eadcf0;border-radius:20px;background:#fff;box-shadow:0 24px 64px rgba(74,20,90,.2);}
 .invoice-dialog-header{display:flex;align-items:center;justify-content:space-between;padding:17px 20px;border-bottom:1px solid #e8edef;background:#fff;}
 .invoice-dialog-title{margin:0;color:#172b2a;font-size:16px;font-weight:700;}
 .invoice-close-btn{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border:1px solid #e2e8f0;border-radius:10px;background:#fff;color:#64748b;cursor:pointer;transition:background .16s,color .16s;}
 .invoice-close-btn:hover{background:#f1f5f5;color:#172b2a;}
 .invoice-content{max-height:62vh;overflow-y:auto;padding:16px;background:#f6f8f8;}
 .invoice-paper{overflow:hidden;border:1px solid #e1e8e7;border-radius:16px;background:#fff;box-shadow:0 3px 12px rgba(15,23,42,.04);}
-.invoice-total{position:relative;padding:58px 18px 22px;border-bottom:1px solid #d8eeea;background:#eff8f6;text-align:center;}
-.invoice-stamp{position:absolute;top:14px;right:16px;display:flex;flex-direction:column;align-items:center;gap:1px;padding:5px 8px;border:1px solid #0f766e;outline:1px solid rgba(15,118,110,.35);outline-offset:2px;border-radius:3px;background:rgba(255,255,255,.72);color:#0f766e;font-size:8px;font-weight:800;line-height:1.1;text-align:center;transform:rotate(7deg);}
+.invoice-total{position:relative;padding:58px 18px 22px;border-bottom:1px solid #e7d6ed;background:#f7f0f9;text-align:center;}
+.invoice-stamp{position:absolute;top:14px;right:16px;display:flex;flex-direction:column;align-items:center;gap:1px;padding:5px 8px;border:1px solid #6f2a82;outline:1px solid rgba(111,42,130,.35);outline-offset:2px;border-radius:3px;background:rgba(255,255,255,.72);color:#6f2a82;font-size:8px;font-weight:800;line-height:1.1;text-align:center;transform:rotate(7deg);}
 .invoice-stamp small{font-size:7px;font-weight:700;}
-.invoice-total-label{color:#607674;font-size:11px;font-weight:700;text-transform:uppercase;}
+.invoice-total-label{color:#765d7e;font-size:11px;font-weight:700;text-transform:uppercase;}
 .invoice-total-value{display:block;margin-top:8px;font-size:34px;font-weight:800;line-height:1.15;font-variant-numeric:tabular-nums;overflow-wrap:anywhere;}
-.invoice-total-value.positive{color:#047857;}
+.invoice-total-value.positive{color:#6f2a82;}
 .invoice-total-value.negative{color:#be123c;}
 .invoice-details{padding:0 18px;}
-.invoice-row{display:grid;grid-template-columns:minmax(68px,88px) minmax(0,1fr);align-items:start;gap:12px;padding:14px 0;border-bottom:1px solid #edf1f0;font-size:13px;line-height:1.45;}
+.invoice-row{display:grid;grid-template-columns:minmax(68px,88px) minmax(0,1fr);align-items:start;gap:12px;padding:14px 0;border-bottom:1px solid #f0eaf2;font-size:13px;line-height:1.45;}
 .invoice-row:last-child{border-bottom:0;}
-.invoice-label{color:#647674;font-weight:500;}
+.invoice-label{color:#746679;font-weight:500;}
 .invoice-value{min-width:0;color:#243331;font-weight:600;text-align:right;overflow-wrap:anywhere;}
-.invoice-status{display:inline-flex;justify-content:center;padding:4px 10px;border-radius:999px;background:#eaf7f1;color:#087443;font-size:11px;font-weight:700;}
+.invoice-status{display:inline-flex;justify-content:center;padding:4px 10px;border-radius:999px;background:#f1e7f5;color:#6f2a82;font-size:11px;font-weight:700;}
 .invoice-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:14px 18px 18px;border-top:1px solid #e8edef;background:#fff;}
 .invoice-action-btn{width:100%;min-height:44px;border:1px solid transparent;border-radius:12px;padding:11px 12px;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;margin:0;cursor:pointer;transition:transform .14s,background .14s;}
 .invoice-action-btn:active{transform:translateY(1px);}
-.invoice-action-btn.primary{background:#0f766e;color:white;}
-.invoice-action-btn.primary:hover{background:#115e59;}
-.invoice-action-btn.secondary{border-color:#dce6e4;background:#f7f9f9;color:#334744;}
-.invoice-action-btn.secondary:hover{background:#edf3f2;}
+.invoice-action-btn.primary{background:#6f2a82;color:white;}
+.invoice-action-btn.primary:hover{background:#4a145a;}
+.invoice-action-btn.secondary{border-color:#e7d6ed;background:#faf7fb;color:#4a145a;}
+.invoice-action-btn.secondary:hover{background:#f1e7f5;}
 .filter-container{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-bottom:16px;padding:12px;background:#f8fafc;border-radius:14px;border:1px solid #e2e8f0;}
 .filter-group{flex:1;min-width:100px;}
 .filter-label{font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px;display:block;text-transform:uppercase;letter-spacing:.3px;}
@@ -197,6 +197,8 @@ main{padding-left:0;padding-right:0;}
 .recharge-quick.active{background:linear-gradient(135deg,#6d28d9,#8b5cf6);color:white;border-color:#8b5cf6;box-shadow:0 12px 18px -12px rgba(109,40,217,.7);}
 .recharge-timer{font-variant-numeric:tabular-nums;font-weight:700;color:var(--primary);}
 .recharge-status-dot{width:8px;height:8px;border-radius:50%;background:#f59e0b;display:inline-block;margin-right:6px;animation:rechargePulse 1.5s infinite;}
+.recharge-shell .recharge-warning{display:flex!important;align-items:flex-start;gap:9px;margin:0 0 12px;padding:12px 14px;border:1px solid #8b5cf6;border-radius:12px;background:#5b21b6!important;color:#fff!important;font-size:12px;font-weight:600;line-height:1.5;text-align:left;box-shadow:0 6px 18px rgba(76,29,149,.3);}
+.recharge-shell .recharge-warning i{margin-top:2px;color:#fff!important;}
 #mobile-recharge-balance-modal .recharge-shell .text-gray-600,#mobile-recharge-balance-modal .recharge-shell .text-gray-500,#mobile-recharge-balance-modal .recharge-shell .text-gray-400{color:var(--muted);}
 @keyframes rechargePulse{0%,100%{opacity:1;}50%{opacity:.4;}}
 :root{--bg:#000000;--bg2:#0a0a0a;--card:#141414;--card2:#1c1c1c;--text:#fff;--muted:#8a8a8a;--accent:#6F2A82;--accent-soft:rgba(111,42,130,.24);--accent2:#26A69A;--accent2-soft:rgba(38,166,154,.15);--success:#26A69A;--danger:#EF5350;--border:rgba(255,255,255,.08);--safe-area-inset-bottom:env(safe-area-inset-bottom,0px);}
@@ -383,17 +385,25 @@ body{font-family:'Public Sans',sans-serif;background:var(--bg);color:var(--text)
         <a href="tienda.html" class="action-item"><span class="action-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 5h18v14H3z"/><path d="M7 9h10M7 13h6"/></svg></span><span class="action-label">Tienda</span></a>
         <a href="juegos.html" class="action-item"><span class="action-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 8h8l1 4H7l1-4z"/><path d="M7 12v5h10v-5M9 17v3M15 17v3M5 8h14"/></svg></span><span class="action-label">Juegos</span></a>
         <a href="recargas movil.html" class="action-item"><span class="action-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span><span class="action-label">Recargas</span></a>
-        <a href="plan hogar.html" class="action-item"><span class="action-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span><span class="action-label">Plan Hogar</span></a>
+        <a href="tarjetas.html" class="action-item">
+          <span class="action-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <rect x="2" y="5" width="20" height="14" rx="2"/>
+              <path d="M2 10h20"/>
+            </svg>
+          </span>
+          <span class="action-label">Tarjetas</span>
+        </a>
         <a href="yape promo.html" class="action-item"><span class="action-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l18-5-5 18-4-8-9-5z"/><path d="M12 16l5-6"/></svg></span><span class="action-label">Yape Promo</span></a>
-      <a href="tarjetas.html" class="action-item">
-  <span class="action-icon">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-      <rect x="2" y="5" width="20" height="14" rx="2"/>
-      <path d="M2 10h20"/>
-    </svg>
-  </span>
-  <span class="action-label">Tarjetas</span>
-</a>
+        <a href="plan hogar.html" class="action-item">
+          <span class="action-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+          </span>
+          <span class="action-label">Plan Hogar</span>
+        </a>
       </div>
 
       <div class="section-title"><h3>Movimientos recientes</h3><button id="mobile-open-transactions-btn" type="button">Historial completo</button></div>
@@ -401,9 +411,6 @@ body{font-family:'Public Sans',sans-serif;background:var(--bg);color:var(--text)
     </div>
 
     <div id="mobile-transactions-view" class="wallet-view hidden">
-      <h2 class="wallet-view-title">Todos los movimientos</h2>
-      <p class="wallet-view-subtitle">Consulta los movimientos de tu cuenta.</p>
-      <div class="movement-overview"><div><span class="movement-overview-label">Actividad de cuenta</span><strong>Historial completo</strong></div><span id="mobile-transaction-count" class="movement-overview-count">0 registros</span></div>
       <div class="filter-container">
         <div class="filter-group" style="min-width:100%;"><label class="filter-label">Tipo de transacción</label><select id="mobile-transactions-filter" class="filter-select"><option value="all">Todos los tipos</option><option value="deposit">Ingresos</option><option value="withdrawal">Retiros</option><option value="transfer">Transferencias</option><option value="recharge">Recargas</option></select></div>
         <div class="filter-row-mobile" style="display:flex;gap:8px;width:100%;"><div class="filter-group" style="flex:1;"><label class="filter-label">Desde</label><input type="date" id="mobile-date-from" class="date-input"></div><div class="filter-group" style="flex:1;"><label class="filter-label">Hasta</label><input type="date" id="mobile-date-to" class="date-input"></div></div>
@@ -416,7 +423,6 @@ body{font-family:'Public Sans',sans-serif;background:var(--bg);color:var(--text)
     <div id="mobile-announcements-view" class="wallet-view hidden">
       <h2 class="wallet-view-title">Anuncios</h2><p class="wallet-view-subtitle">Promociones y novedades disponibles para ti.</p>
       <div id="mobile-announcements-list"></div>
-      <a href="yape promo.html" class="promo-banner"><span class="promo-icon"><i class="fas fa-percent text-white"></i></span><span class="promo-text"><h4>Yape Promo</h4><p>Ver promociones disponibles</p></span></a>
     </div>
 
     <div id="mobile-profile-view" class="wallet-view hidden">
@@ -527,10 +533,10 @@ body{font-family:'Public Sans',sans-serif;background:var(--bg);color:var(--text)
       </div>
       <div id="mobile-recharge-step-qr" class="recharge-step hidden recharge-shell">
         <div class="recharge-badge"><i class="fas fa-qrcode"></i> Pago seguro</div>
+        <div class="recharge-warning"><i class="fas fa-exclamation-triangle mr-1"></i> Recomendación: no salgas ni cierres la app mientras realizas el pago. Espera la confirmación de tu recarga.</div>
         <p class="text-sm text-center text-gray-600 mb-3">Escanea este código QR desde tu app de pagos</p>
         <div class="qr-code-container"><img id="mobile-recharge-qr-image" class="qr-code" alt="QR de pago"></div>
         <p class="text-center text-sm text-gray-500 mt-3">Vence en <span id="mobile-recharge-countdown" class="recharge-timer">10:00</span></p>
-        <p class="text-center text-xs text-gray-400 mt-1">ID: <span id="mobile-recharge-qr-id" class="font-mono"></span></p>
         <p id="mobile-recharge-status-msg" class="text-center text-sm mt-3 text-gray-500"><span class="recharge-status-dot"></span>Esperando confirmación...</p>
         <button id="mobile-recharge-cancel-btn" class="mobile-btn mobile-btn-secondary mt-3">Cancelar</button>
       </div>
@@ -792,10 +798,10 @@ body{font-family:'Public Sans',sans-serif;background:var(--bg);color:var(--text)
       </div>
       <div id="recharge-step-qr" class="recharge-step hidden recharge-shell space-y-3">
         <div class="recharge-badge"><i class="fas fa-qrcode"></i> Pago seguro</div>
+        <div class="recharge-warning"><i class="fas fa-exclamation-triangle mr-1"></i> Recomendación: no salgas ni cierres la app mientras realizas el pago. Espera la confirmación de tu recarga.</div>
         <p class="text-sm text-center text-gray-600">Escanea este código QR desde tu app de pagos</p>
         <div class="qr-code-container-desktop"><img id="recharge-qr-image" class="qr-code-desktop" alt="QR de pago"></div>
         <p class="text-center text-sm text-gray-500">Vence en <span id="recharge-countdown" class="recharge-timer">10:00</span></p>
-        <p class="text-center text-xs text-gray-400">ID: <span id="recharge-qr-id" class="font-mono"></span></p>
         <p id="recharge-status-msg" class="text-center text-sm text-gray-500"><span class="recharge-status-dot"></span>Esperando confirmación...</p>
         <button id="recharge-cancel-btn" class="w-full py-3 rounded-xl bg-gray-100 text-gray-800 font-medium">Cancelar</button>
       </div>
@@ -858,6 +864,7 @@ let rechargeQrId = null;
 let rechargePoller = null;
 let rechargeCountdownTimer = null;
 let rechargeSecondsLeft = 0;
+let rechargeExpiresAt = 0;
 let rechargePollerStartedAt = 0;
 let rechargeCompletionWarningShown = false;
 const RECHARGE_POLL_INTERVAL_MS = 2000;
@@ -926,6 +933,12 @@ document.addEventListener('keydown', (e) => {
     e.stopPropagation();
   }
 }, true);
+
+window.addEventListener('beforeunload', (e) => {
+  if (!isTxLocked) return;
+  e.preventDefault();
+  e.returnValue = '';
+});
 
 // Bloquear clic derecho durante la transacción
 document.addEventListener('contextmenu', (e) => {
@@ -1006,6 +1019,7 @@ const renderDashboardAnnouncements = (ads) => {
     image.src = ad.imagen_url;
     image.alt = `Anuncio ${index + 1} de TokTok`;
     image.loading = 'lazy';
+    image.style.objectFit = ['cover', 'contain', 'fill'].includes(ad.imagen_ajuste) ? ad.imagen_ajuste : 'cover';
     const label = document.createElement('div');
     label.className = 'wallet-ad-label';
     label.textContent = 'Promoción TokTok';
@@ -1028,7 +1042,9 @@ const showAdModal = (ads) => {
     dot.className = 'ad-dot' + (index===0?' active':'');
     indicators.appendChild(dot);
   });
-  adImage.src = ads[0].imagen_url;
+  const firstAd = ads[0];
+  adImage.src = firstAd.imagen_url;
+  adImage.style.objectFit = ['cover', 'contain', 'fill'].includes(firstAd.imagen_ajuste) ? firstAd.imagen_ajuste : 'cover';
   modal.style.display = 'flex';
   document.body.style.overflow = 'hidden';
   closeBtn.classList.remove('active');
@@ -1039,7 +1055,9 @@ const showAdModal = (ads) => {
     currentAdIndex = (currentAdIndex + 1) % allAds.length;
     adImage.classList.add('fade-out');
     setTimeout(() => {
-      adImage.src = allAds[currentAdIndex].imagen_url;
+      const currentAd = allAds[currentAdIndex];
+      adImage.src = currentAd.imagen_url;
+      adImage.style.objectFit = ['cover', 'contain', 'fill'].includes(currentAd.imagen_ajuste) ? currentAd.imagen_ajuste : 'cover';
       adImage.classList.remove('fade-out');
       document.querySelectorAll('.ad-dot').forEach((d,i) => d.classList.toggle('active', i===currentAdIndex));
     }, 300);
@@ -1087,6 +1105,35 @@ function closeInvoiceModal(){
   document.body.style.overflow = '';
 }
 
+const escapeInvoiceValue = (value) => String(value).replace(/[&<>"']/g, char => ({
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#39;',
+}[char]));
+
+const getGamePlayerId = (metadata) => {
+  const formKeys = new Set(['playerform', 'formdata', 'customvalue', 'datosjugador', 'requisitos']);
+  const playerIdKeys = new Set(['playerid', 'idplayer', 'jugadorid', 'idjugador', 'gameplayerid', 'uid', 'gameuid']);
+  const visit = (value, inPlayerForm = false) => {
+    if (!value || typeof value !== 'object') return null;
+    for (const [key, nestedValue] of Object.entries(value)) {
+      const normalizedKey = key.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const isPlayerId = playerIdKeys.has(normalizedKey)
+        || ((normalizedKey.includes('player') || normalizedKey.includes('jugador')) && /id|uid/.test(normalizedKey))
+        || (inPlayerForm && ['id', 'uid'].includes(normalizedKey));
+      if (isPlayerId && ['string', 'number'].includes(typeof nestedValue) && String(nestedValue).trim()) {
+        return String(nestedValue).trim();
+      }
+      const result = visit(nestedValue, inPlayerForm || formKeys.has(normalizedKey));
+      if (result) return result;
+    }
+    return null;
+  };
+  return visit(metadata);
+};
+
 function showTransactionInvoice(transaction, transactionType='general'){
   if (!transaction) return;
   const isPositive = transaction.type === 'deposit' || (transaction.type === 'transfer' && transaction.metadata?.type === 'receive');
@@ -1097,6 +1144,7 @@ function showTransactionInvoice(transaction, transactionType='general'){
   const transactionTypeName = typeNames[transaction.type] || transaction.type;
   const displayType = transactionType === 'transfer' ? 'Transferencia' : transactionTypeName;
   const createdDate = transaction.created_at ? new Date(transaction.created_at).toLocaleString('es-ES', { dateStyle:'medium', timeStyle:'short' }) : new Date().toLocaleString('es-ES');
+  const playerId = getGamePlayerId(transaction.metadata);
   const invoiceHTML = `
     <div class="invoice-paper">
       <div class="invoice-total">
@@ -1105,6 +1153,7 @@ function showTransactionInvoice(transaction, transactionType='general'){
         <strong class="invoice-total-value ${amountClass}">${amountSign} ${formatCurrency(transaction.amount).replace(/^Bs/, 'Bs ')}</strong>
       </div>
       <div class="invoice-details">
+        ${playerId ? `<div class="invoice-row"><span class="invoice-label">ID del jugador</span><strong class="invoice-value" style="word-break:break-all;text-align:right;">${escapeInvoiceValue(playerId)}</strong></div>` : ''}
         <div class="invoice-row"><span class="invoice-label">Fecha</span><strong class="invoice-value">${createdDate}</strong></div>
         <div class="invoice-row"><span class="invoice-label">Tipo</span><strong class="invoice-value">${displayType}</strong></div>
         <div class="invoice-row"><span class="invoice-label">Usuario</span><strong class="invoice-value">${userProfile?.full_name || currentUser?.email || 'Usuario'}</strong></div>
@@ -1505,13 +1554,21 @@ function switchRechargeStep(step){
 }
 
 function startRechargeCountdown(){
-  rechargeSecondsLeft = 600;
+  rechargeExpiresAt = Date.now() + 600000;
   const el = document.getElementById(`${rechargePrefix()}-countdown`);
+  const actualizarTemporizador = () => {
+    rechargeSecondsLeft = Math.max(0, Math.ceil((rechargeExpiresAt - Date.now()) / 1000));
+    const mm = String(Math.floor(rechargeSecondsLeft / 60)).padStart(2, '0');
+    const ss = String(rechargeSecondsLeft % 60).padStart(2, '0');
+    if (el) el.textContent = rechargeSecondsLeft > 0 ? `${mm}:${ss}` : 'Expirado';
+  };
   clearInterval(rechargeCountdownTimer);
+  actualizarTemporizador();
   rechargeCountdownTimer = setInterval(async () => {
-    rechargeSecondsLeft--;
+    actualizarTemporizador();
     if (rechargeSecondsLeft <= 0) {
       clearInterval(rechargeCountdownTimer);
+      rechargeCountdownTimer = null;
       stopRechargePolling();
       if (rechargeQrId) await markRechargeFailed(rechargeQrId);
       if (el) el.textContent = 'Expirado';
@@ -1520,15 +1577,13 @@ function startRechargeCountdown(){
       closeRechargeFlow(true);
       return;
     }
-    const mm = String(Math.floor(rechargeSecondsLeft/60)).padStart(2,'0');
-    const ss = String(rechargeSecondsLeft%60).padStart(2,'0');
-    if (el) el.textContent = `${mm}:${ss}`;
   }, 1000);
 }
 
 function stopRechargePolling(){
   if (rechargePoller) { clearInterval(rechargePoller); rechargePoller = null; }
   if (rechargeCountdownTimer) { clearInterval(rechargeCountdownTimer); rechargeCountdownTimer = null; }
+  rechargeExpiresAt = 0;
 }
 
 function startRechargePolling(){
@@ -1644,11 +1699,10 @@ async function generateRechargeQR(){
       throw new Error('No se pudo guardar la recarga pendiente');
     }
     document.getElementById(`${p}-qr-image`).src = 'data:image/png;base64,' + data.qrImage;
-    document.getElementById(`${p}-qr-id`).textContent = data.qrId;
     switchRechargeStep('qr');
     lockTransaction();
-    startRechargeCountdown();
     startRechargePolling();
+    startRechargeCountdown();
   } catch (err) {
     console.error(err);
     showToast(err.message || 'Error generando QR','error');
